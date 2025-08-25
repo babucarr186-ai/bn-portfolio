@@ -3,19 +3,18 @@ import './App.css';
 export default function App() {
   return (
     <main>
-      {/* Header */}
       <header className="header">
         <h1>Bubacar Nget</h1>
         <p className="sub">Digital Marketing · Web Development · Automation</p>
       </header>
 
-      {/* Content */}
       <div className="container">
         <section className="card">
           <h2>About</h2>
           <p>
-            I help small businesses and diaspora projects build clean websites, create simple content
-            systems, and automate repetitive work. Straightforward, fast, and focused on results.
+            I help small businesses and diaspora projects build clean websites, create simple
+            content systems, and automate repetitive work. Straightforward, fast, and focused
+            on results.
           </p>
         </section>
 
@@ -41,7 +40,6 @@ export default function App() {
         </section>
       </div>
 
-      {/* Always-visible social dock (right-bottom) */}
       <nav className="dock" aria-label="Quick links">
         <a className="dock-btn" href="mailto:nget@web.de" title="Email">Email</a>
         <a className="dock-btn" href="https://wa.me/4915679652076" target="_blank" rel="noreferrer" title="WhatsApp">WhatsApp</a>
