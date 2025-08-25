@@ -14,7 +14,9 @@ export default function App() {
           </p>
           <div className="cta">
             <a className="btn" href="mailto:nget@web.de">Email me</a>
-            <a className="btn outline" href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">WhatsApp</a>
+            <a className="btn outline" href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">
+              WhatsApp
+            </a>
           </div>
         </div>
       </section>
@@ -30,11 +32,11 @@ export default function App() {
             </article>
             <article className="card">
               <h3>Digital Marketing</h3>
-              <p>Content strategy, TikTok/YouTube shorts, captions, SEO basics, and analytics to grow reach.</p>
+              <p>Content strategy, TikTok/YouTube Shorts, captions, SEO basics, and analytics to grow reach.</p>
             </article>
             <article className="card">
               <h3>Automation</h3>
-              <p>Simple bots/flows that save time: lead capture, email replies, form → sheet, and reporting.</p>
+              <p>Simple bots/flows that save time: lead capture, smart replies, form → sheet, and reporting.</p>
             </article>
           </div>
         </div>
@@ -58,7 +60,7 @@ export default function App() {
               <p>Scripts, thumbnails, schedule — 30 days.</p>
             </a>
           </div>
-          <p className="note">Replace the “#” links with real demos when ready.</p>
+          <p className="note">Replace “#” links with real demos when ready.</p>
         </div>
       </section>
 
@@ -67,8 +69,11 @@ export default function App() {
         <div className="container">
           <h2>Contact</h2>
           <p>
-            Email: <a href="mailto:nget@web.de">nget@web.de</a><br/>
-            WhatsApp: <a href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">+49 15679 652076</a>
+            Email: <a href="mailto:nget@web.de">nget@web.de</a><br />
+            WhatsApp:{' '}
+            <a href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">
+              +49 15679 652076
+            </a>
           </p>
         </div>
       </section>
