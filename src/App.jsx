@@ -1,35 +1,73 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+    <main>
+      {/* HERO */}
+      <section className="hero">
+        <h1>Bubacar Nget</h1>
+        <p className="tag">Digital Marketer • Automation • Web Developer • Content Creator</p>
+        <p className="intro">
+          I help small businesses and diaspora projects build clean websites, grow on social,
+          and automate the boring stuff. Based in Germany • Working worldwide.
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+        <div className="cta">
+          <a className="btn" href="mailto:pmoney186@gmail.com">Email me</a>
+          <a className="btn outline" href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">WhatsApp</a>
+        </div>
+      </section>
 
-export default App
+      {/* SERVICES */}
+      <section className="wrap">
+        <h2>Services</h2>
+        <div className="grid">
+          <article className="card">
+            <h3>Web Design & Dev</h3>
+            <p>Fast sites with React/Vite, clean UX, mobile-first. Landing pages, mini-shops, and portfolios.</p>
+          </article>
+          <article className="card">
+            <h3>Digital Marketing</h3>
+            <p>Content strategy, TikTok/YouTube shorts, captions, SEO basics, and analytics to grow reach.</p>
+          </article>
+          <article className="card">
+            <h3>Automation</h3>
+            <p>Simple bots/flows that save time: lead capture, email replies, form → sheet, and reporting.</p>
+          </article>
+        </div>
+      </section>
+
+      {/* PROJECTS */}
+      <section className="wrap">
+        <h2>Projects</h2>
+        <div className="grid">
+          <a className="card link" href="#" target="_blank" rel="noreferrer">
+            <h3>Client Landing Page</h3>
+            <p>One-page site for a local brand. 2-day turnaround.</p>
+          </a>
+          <a className="card link" href="#" target="_blank" rel="noreferrer">
+            <h3>Automated Lead Capture</h3>
+            <p>Form → Google Sheet + WhatsApp follow-up.</p>
+          </a>
+          <a className="card link" href="#" target="_blank" rel="noreferrer">
+            <h3>YouTube Shorts System</h3>
+            <p>Scripts, thumbnails, schedule — 30 days.</p>
+          </a>
+        </div>
+        <p className="note">Replace the “#” links with your real demos when ready.</p>
+      </section>
+
+      {/* CONTACT */}
+      <section className="wrap">
+        <h2>Contact</h2>
+        <p>
+          Email: <a href="mailto:pmoney186@gmail.com">pmoney186@gmail.com</a><br/>
+          WhatsApp: <a href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">+49 15679 652076</a>
+        </p>
+      </section>
+
+      <footer className="footer">
+        © {new Date().getFullYear()} Bubacar Nget
+      </footer>
+    </main>
+  );
+}
