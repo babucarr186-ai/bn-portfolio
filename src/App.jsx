@@ -40,6 +40,7 @@ export default function App() {
         </section>
       </div>
 
+      {/* Always-visible social dock */}
       <nav className="dock" aria-label="Quick links">
         <a className="dock-btn" href="mailto:nget@web.de" title="Email">Email</a>
         <a className="dock-btn" href="https://wa.me/4915679652076" target="_blank" rel="noreferrer" title="WhatsApp">WhatsApp</a>
