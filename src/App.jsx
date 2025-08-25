@@ -6,6 +6,13 @@ export default function App() {
       {/* HERO */}
       <section className="hero">
         <div className="container">
+          <div className="profile-wrapper">
+            <img
+              src="/me.jpg"
+              alt="Bubacar Nget – Digital Marketer & Web Developer"
+              className="profile-pic"
+            />
+          </div>
           <h1>Bubacar Nget</h1>
           <p className="tag">Digital Marketer • Automation • Web Developer • Content Creator</p>
           <p className="intro">
@@ -14,7 +21,12 @@ export default function App() {
           </p>
           <div className="cta">
             <a className="btn" href="mailto:nget@web.de">Email me</a>
-            <a className="btn outline" href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">
+            <a
+              className="btn outline"
+              href="https://wa.me/4915679652076"
+              target="_blank"
+              rel="noreferrer"
+            >
               WhatsApp
             </a>
           </div>
@@ -28,15 +40,24 @@ export default function App() {
           <div className="grid">
             <article className="card">
               <h3>Web Design & Dev</h3>
-              <p>Fast sites with React/Vite, clean UX, mobile-first. Landing pages, mini-shops, portfolios.</p>
+              <p>
+                Fast sites with React/Vite, clean UX, mobile-first. Landing pages, mini-shops, and
+                portfolios.
+              </p>
             </article>
             <article className="card">
               <h3>Digital Marketing</h3>
-              <p>Content strategy, TikTok/YouTube Shorts, captions, SEO basics, and analytics to grow reach.</p>
+              <p>
+                Content strategy, TikTok/YouTube Shorts, captions, SEO basics, and analytics to grow
+                reach.
+              </p>
             </article>
             <article className="card">
               <h3>Automation</h3>
-              <p>Simple bots/flows that save time: lead capture, smart replies, form → sheet, and reporting.</p>
+              <p>
+                Simple bots/flows that save time: lead capture, smart replies, form → sheet, and
+                reporting.
+              </p>
             </article>
           </div>
         </div>
@@ -69,7 +90,8 @@ export default function App() {
         <div className="container">
           <h2>Contact</h2>
           <p>
-            Email: <a href="mailto:nget@web.de">nget@web.de</a><br />
+            Email: <a href="mailto:nget@web.de">nget@web.de</a>
+            <br />
             WhatsApp:{' '}
             <a href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">
               +49 15679 652076
