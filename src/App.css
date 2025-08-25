@@ -1,125 +1,142 @@
-/* ===== Theme ===== */
-:root{
-  --bg: #0b0d12;
-  --surface: #111520;
-  --card: #141a27;
-  --border: #233047;
-  --text: #e6e9ef;
-  --muted: #b6c1d6;
-  --accent: #2b77ff;       /* brand blue */
-  --accent-weak: #e6efff;  /* light blue for subtle backgrounds */
-  --max: 1100px;
-}
+import './App.css';
 
-*{ box-sizing: border-box; }
-html, body { height: 100%; }
-body{
-  margin:0;
-  font-family: "Inter", system-ui, -apple-system, Arial, sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(1200px 600px at 10% -10%, #1a2340 0%, transparent 60%),
-    radial-gradient(1000px 500px at 110% 10%, #0f1b36 0%, transparent 55%),
-    var(--bg);
-}
-a{ color: var(--accent); }
+export default function App() {
+  return (
+    <main>
+      {/* ===== HERO ===== */}
+      <header className="hero">
+        <div className="container">
+          <nav className="nav">
+            <div className="brand">Nget<span>Tech</span></div>
+            <div className="nav-links">
+              <a href="#about">About</a>
+              <a href="#work">Work</a>
+              <a href="#cases">Case Studies</a>
+              <a className="btn btn-sm btn-primary" href="mailto:nget@web.de">Let’s talk</a>
+            </div>
+          </nav>
 
-/* ===== Layout ===== */
-main{ display:block; }
-.container{ max-width: var(--max); margin: 0 auto; padding: 0 20px; }
-.container-narrow{ max-width: 780px; }
+          <div className="hero-inner">
+            <h1 className="hero-title">
+              Strategic <em>Marketing</em> for
+              <br /> Visionary <em>Growth</em>
+            </h1>
+            <p className="hero-sub">
+              We combine content, web, and automation to create measurable growth for modern brands.
+            </p>
 
-/* ===== Hero ===== */
-.hero{
-  padding: 72px 0 56px;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  background: linear-gradient(180deg, rgba(43,119,255,.08), rgba(43,119,255,0) 60%);
-  text-align:center;
-}
-.title{
-  font-size: clamp(32px, 5vw, 48px);
-  margin: 10px 0 6px;
-  letter-spacing: 0.2px;
-  font-weight: 800;
-}
-.tag{ color: var(--muted); margin:0 0 10px; }
-.intro{ margin: 10px auto 26px; color:#d7deeb; opacity:.95; }
+            <div className="cta">
+              <a className="btn btn-primary" href="mailto:nget@web.de">Email me</a>
+              <a className="btn btn-ghost" href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">WhatsApp</a>
+            </div>
+          </div>
 
-/* Profile with light frame */
-.profile-wrap{
-  display:flex; justify-content:center; margin-bottom:16px;
-}
-.profile-pic{
-  width: 160px; height: 160px; object-fit: cover; border-radius: 50%;
-  border: 4px solid #fff;
-  box-shadow: 0 0 0 8px var(--accent-weak), 0 10px 30px rgba(0,0,0,.35);
-}
+          {/* Stat strip */}
+          <div className="stats">
+            <div><strong>10+</strong><span>Years Building</span></div>
+            <div><strong>260+</strong><span>Projects</span></div>
+            <div><strong>15</strong><span>Partners</span></div>
+          </div>
+        </div>
+      </header>
 
-/* ===== Buttons ===== */
-.btn{
-  display:inline-block;
-  padding:12px 18px;
-  border-radius:10px;
-  font-weight:600;
-  text-decoration:none;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, color .12s ease;
-}
-.btn-primary{
-  background: var(--accent); color:#fff; border:1px solid rgba(0,0,0,.15);
-  box-shadow: 0 6px 18px rgba(43,119,255,.35);
-}
-.btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 10px 26px rgba(43,119,255,.45); }
-.btn-ghost{
-  background: transparent; color: var(--text); border:1px solid var(--border);
-}
-.btn-ghost:hover{ background: rgba(255,255,255,.04); }
+      {/* ===== ABOUT SPLIT ===== */}
+      <section id="about" className="section split">
+        <div className="container split-grid">
+          <div>
+            <h2 className="section-title">What We Do</h2>
+            <p className="lead">
+              We help small businesses and diaspora projects look premium, communicate clearly,
+              and automate the boring stuff — so you can focus on growth.
+            </p>
+            <ul className="bullets">
+              <li>Positioning & offer messaging</li>
+              <li>Lightweight brand & content systems</li>
+              <li>Websites that are fast, clean, and easy to manage</li>
+            </ul>
+          </div>
+          <div className="media-card">
+            {/* replace /me.jpg with any image or mockup */}
+            <img src="/me.jpg" alt="Nget Tech Solution" />
+          </div>
+        </div>
+      </section>
 
-/* CTA row */
-.cta{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+      {/* ===== SERVICES LIST (striped) ===== */}
+      <section className="section striped">
+        <div className="container">
+          <h2 className="section-title">Services</h2>
+          <div className="rows">
+            <article className="row">
+              <h3>Web Design</h3>
+              <p>Fast React/Vite sites, landing pages, funnels, and mini-shops. Mobile-first, SEO-ready.</p>
+            </article>
+            <article className="row">
+              <h3>SEO</h3>
+              <p>Solid technical foundations and simple content plans that compound over time.</p>
+            </article>
+            <article className="row">
+              <h3>Social Media</h3>
+              <p>TikTok & YouTube Shorts systems — scripts, captions, thumbnails, and schedules.</p>
+            </article>
+            <article className="row">
+              <h3>PPC</h3>
+              <p>Lean campaigns to test offers quickly and double down on what converts.</p>
+            </article>
+          </div>
+        </div>
+      </section>
 
-/* ===== Sections ===== */
-.section{ padding: 44px 0; }
-.section-title{
-  font-size: 26px; margin:0 0 16px; font-weight:700;
-  position:relative; display:inline-block;
-}
-.section-title::after{
-  content:""; position:absolute; left:0; bottom:-6px;
-  width: 36px; height: 3px; background: var(--accent); border-radius:2px;
-}
+      {/* ===== CASES / PROJECT CARDS ===== */}
+      <section id="cases" className="section">
+        <div className="container">
+          <h2 className="section-title">Case Studies</h2>
+          <div className="grid">
+            <a className="card link" href="#" target="_blank" rel="noreferrer">
+              <h3>Cloud Move® Landing</h3>
+              <p>Premium visual landing in 48h. +38% lead rate.</p>
+            </a>
+            <a className="card link" href="#" target="_blank" rel="noreferrer">
+              <h3>SEO Sprint</h3>
+              <p>12-week program: technical cleanup + content flywheel.</p>
+            </a>
+            <a className="card link" href="#" target="_blank" rel="noreferrer">
+              <h3>Short-Form Engine</h3>
+              <p>30-day YouTube Shorts system — scripts, edits, posting.</p>
+            </a>
+          </div>
+          <p className="note">Swap “#” links for real examples when ready.</p>
+        </div>
+      </section>
 
-/* ===== Grid & Cards ===== */
-.grid{
-  display:grid; gap:16px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-}
-.card{
-  background: var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:18px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.2);
-  transition: border-color .12s ease, transform .12s ease, box-shadow .12s ease;
-}
-.card h3{ margin:0 0 8px; font-size:18px; }
-.card p{ color:#cbd5e7; margin:0; line-height:1.5; }
-.card.link{ text-decoration:none; color:inherit; }
-.card:hover{ border-color: #3a8bff; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,.25); }
+      {/* ===== CONTACT (simple form) ===== */}
+      <section className="section">
+        <div className="container">
+          <h2 className="section-title">Let’s Talk</h2>
+          <form
+            className="contact"
+            action="https://formspree.io/f/your-form-id"
+            method="POST"
+          >
+            <div className="form-grid">
+              <input name="first" placeholder="First name" required />
+              <input name="last" placeholder="Last name" required />
+              <input name="email" type="email" placeholder="Email" required />
+              <input name="phone" placeholder="Phone / WhatsApp" />
+              <textarea name="message" placeholder="Tell me about your project…" rows={5}></textarea>
+            </div>
+            <button className="btn btn-primary" type="submit">Send</button>
+          </form>
 
-.note{ color:#aab7cf; margin-top:10px; }
+          <p className="contact-alt">
+            Or email <a href="mailto:nget@web.de">nget@web.de</a> · WhatsApp <a href="https://wa.me/4915679652076" target="_blank" rel="noreferrer">+49 15679 652076</a>
+          </p>
+        </div>
+      </section>
 
-/* ===== Footer ===== */
-.footer{
-  border-top:1px solid rgba(255,255,255,.06);
-  color:#9fb0cd;
-  padding: 28px 0;
-  background: linear-gradient(180deg, rgba(43,119,255,.06), rgba(43,119,255,0) 60%);
-  margin-top: 28px;
-  text-align:center;
-}
-
-/* ===== Responsive tweaks ===== */
-@media (max-width: 520px){
-  .profile-pic{ width:130px; height:130px; }
-  .btn{ width:100%; text-align:center; }
+      <footer className="footer">
+        <div className="container">© {new Date().getFullYear()} Nget Tech Solution</div>
+      </footer>
+    </main>
+  );
 }
