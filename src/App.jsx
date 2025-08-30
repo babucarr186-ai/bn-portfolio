@@ -1,4 +1,5 @@
 import './App.css';
+import Calculator from './Calculator';
 
 export default function App() {
   return (
@@ -85,6 +86,12 @@ export default function App() {
           </div>
         </section>
       </main>
+
+      {/* CALCULATOR */}
+      <section className="card" aria-labelledby="calculator-title">
+        <h2 id="calculator-title">Calculator</h2>
+        <Calculator />
+      </section>
 
       <footer className="footer">
         © 2025 Bubacar Nget
