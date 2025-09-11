@@ -17,8 +17,11 @@ html, body, #root { height: 100%; }
   0% {
     background-position: 0% 0%;
   }
+  50% {
+    background-position: 100% 0%;
+  }
   100% {
-    background-position: 100% 100%;
+    background-position: 0% 0%;
   }
 }
 
@@ -75,6 +78,23 @@ body {
 
 .profile-picture:hover {
   transform: scale(1.05);
+}
+
+.profile-picture-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile-picture-container:hover .profile-picture-overlay {
+  opacity: 1;
 }
 
 /* HERO */

@@ -13,7 +13,9 @@ export default function App() {
               e.target.src = 'https://placehold.co/200x200/1f1f1f/ffffff?text=BN';
               e.target.onerror = null;
             }}
+            loading="lazy"
           />
+          <div className="profile-picture-overlay"></div>
         </div>
         <h1 id="site-title">Bubacar Nget</h1>
 
