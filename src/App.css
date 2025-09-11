@@ -50,13 +50,18 @@ body {
   height: 200px;
   margin: 0 auto 24px;
   position: relative;
+  display: none; /* Hide by default */
+}
+
+.profile-picture-container:has(img[src]:not([src=""])) {
+  display: block; /* Show only when there's a valid image */
   border-radius: 50%;
   padding: 4px;
   background: linear-gradient(45deg, #f2f4f7, #ffffff);
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-.profile-picture-container::before {
+.profile-picture-container:has(img[src]:not([src=""]))::before {
   content: "";
   position: absolute;
   top: -2px;

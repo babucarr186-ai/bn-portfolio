@@ -7,7 +7,7 @@ export default function App() {
       <header className="hero" aria-labelledby="site-title">
         <div className="profile-picture-container">
           <img 
-            src="/profile-picture.jpg" 
+            src={import.meta.env.BASE_URL + 'profile-picture.jpg'} 
             alt="Bubacar Nget" 
             className="profile-picture"
             onError={(e) => {
