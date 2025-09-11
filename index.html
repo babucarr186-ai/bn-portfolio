@@ -5,9 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bubacar Nget — Portfolio</title>
     <meta name="description" content="Digital Marketing, Web Development, and Automation. Contact: nget@web.de · WhatsApp +49 15679 652076." />
+    <style>
+      .profile-header {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .profile-pic {
+        width: 150px;         /* Adjust size */
+        height: 150px;
+        border-radius: 50%;   /* Makes it circular */
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 3px solid #ddd; /* Optional border */
+      }
+      .tags span {
+        display: inline-block;
+        background: #333;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 12px;
+        margin: 0 5px;
+        font-size: 0.9rem;
+      }
+    </style>
   </head>
   <body>
-    <!-- If you ever see this line on the live site, JS didn’t run -->
+    <div class="profile-header">
+      <img src="images/bubacar.jpg" alt="Bubacar Nget" class="profile-pic">
+      <h1>Bubacar Nget</h1>
+      <div class="tags">
+        <span>Digital Marketing</span>
+        <span>Web Development</span>
+        <span>Automation</span>
+      </div>
+    </div>
+
+    <!-- React / Vite root -->
     <div id="root">Loading… (if this text stays, JavaScript isn’t running)</div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

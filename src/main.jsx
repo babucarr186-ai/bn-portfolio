@@ -16,4 +16,12 @@ if (!rootEl) {
       <App />
     </React.StrictMode>
   );
-}
+}<div class="profile-header">
+  <img src="your-photo.jpg" alt="Bubacar Nget" class="profile-pic">
+  <h1>Bubacar Nget</h1>
+  <div class="tags">
+    <span>Digital Marketing</span>
+    <span>Web Development</span>
+    <span>Automation</span>
+  </div>
+</div>

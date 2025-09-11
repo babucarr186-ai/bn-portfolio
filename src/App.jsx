@@ -1,11 +1,20 @@
 import './App.css';
-import Calculator from './Calculator';
-
 export default function App() {
   return (
     <div className="site">
       {/* HERO */}
       <header className="hero" aria-labelledby="site-title">
+        <div className="profile-picture-container">
+          <img 
+            src="/profile-picture.jpg" 
+            alt="Bubacar Nget" 
+            className="profile-picture"
+            onError={(e) => {
+              e.target.src = 'https://placehold.co/200x200/1f1f1f/ffffff?text=BN';
+              e.target.onerror = null;
+            }}
+          />
+        </div>
         <h1 id="site-title">Bubacar Nget</h1>
 
         {/* Service pills in black shadow boxes */}
@@ -42,6 +51,32 @@ export default function App() {
             <li>Light SEO &amp; analytics setup</li>
             <li>Automation (lead capture, email replies, forms → sheets)</li>
           </ul>
+        </section>
+
+        {/* PROJECTS */}
+        <section className="card" aria-labelledby="projects-title">
+          <h2 id="projects-title">Projects</h2>
+          <div className="projects-grid">
+            <div className="project-card">
+              <h3>Gambia Multikulti e.V.</h3>
+              <p>A website for a German-Gambian cultural association promoting intercultural exchange and development projects.</p>
+              <div className="project-links">
+                <a 
+                  href="https://www.gambiamultikultivereinev.de/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="project-link"
+                >
+                  Visit Website
+                </a>
+              </div>
+              <div className="project-tags">
+                <span className="tag">Website Development</span>
+                <span className="tag">Cultural Organization</span>
+                <span className="tag">Non-Profit</span>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* CONTACT + SOCIAL */}
@@ -87,11 +122,6 @@ export default function App() {
         </section>
       </main>
 
-      {/* CALCULATOR */}
-      <section className="card" aria-labelledby="calculator-title">
-        <h2 id="calculator-title">Calculator</h2>
-        <Calculator />
-      </section>
 
       <footer className="footer">
         © 2025 Bubacar Nget
