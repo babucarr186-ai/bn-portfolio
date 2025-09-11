@@ -106,6 +106,16 @@ export default function App() {
             >
               +49 15679 652076
             </a>
+            <br />
+            Alternative WhatsApp:{' '}
+            <a
+              href="https://wa.me/491743173671"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat on WhatsApp Alternative"
+            >
+              +49 1743173671
+            </a>
           </p>
 
           <div className="social">
