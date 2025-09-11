@@ -31,13 +31,32 @@ const calculate = (expression) => {
   return result.toString();
 };
 
-// Gambian greeting messages
+// Gambian greeting messages and jokes
 const greetings = [
   "Kasumay! 🇬🇲",
   "Nanga def! 🇬🇲",
   "I bi siimaaya! 🇬🇲",
   "On fleek! 🇬🇲"
 ];
+
+// Wolof and Mandinka jokes and phrases
+const jokes = {
+  "1*2": "Suma waax deh! 😄",
+  "2*2": "Kata kata! 🎵",
+  "3*3": "I be jeleh jeleh! 🌟",
+  "4*4": "Mbolo mbolo! 🤝",
+  "5*5": "Dama fees! 😊",
+  "6*6": "A be barama! ✨",
+  "7*7": "Deh wahay! 🎉",
+  "8*8": "Ning sering! 👋",
+  "9*9": "Alhamdulillah! 🙏",
+  "2*5": "Waaw waaw! 😎",
+  "3*5": "Foneh foneh! 💃",
+  "4*5": "Jarama! 🙌",
+  "5*6": "A be siiring! 🌴",
+  "6*7": "Yangi dox? 👟",
+  "7*8": "Dama ress! 😂"
+};
 
 function Calculator() {
   const [input, setInput] = useState("");
@@ -64,10 +83,13 @@ function Calculator() {
   const handleCalculate = () => {
     try {
       if (input === "1*1") {
-        setResult("Pmoney186 🇬🇲"); // Updated with 186
+        setResult("Pmoney186 🇬🇲"); // Your signature
       } else if (input === "0*0") {
         // Random Gambian greeting
         setResult(greetings[Math.floor(Math.random() * greetings.length)]);
+      } else if (jokes[input]) {
+        // Show Wolof/Mandinka joke or phrase if it exists
+        setResult(jokes[input]);
       } else {
         const calculatedResult = calculate(input);
         setResult(calculatedResult);
