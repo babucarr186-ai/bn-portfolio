@@ -84,6 +84,8 @@ function Calculator() {
     try {
       if (input === "1*1") {
         setResult("Pmoney186 🇬🇲"); // Your signature
+      } else if (input === "1*2") {
+        setResult("BUBACAR NGET ⭐"); // Your full name
       } else if (input === "0*0") {
         // Random Gambian greeting
         setResult(greetings[Math.floor(Math.random() * greetings.length)]);
