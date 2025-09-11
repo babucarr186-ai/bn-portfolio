@@ -1,4 +1,5 @@
 import './App.css';
+import Calculator from './Calculator';
 export default function App() {
   return (
     <div className="site">
@@ -53,6 +54,12 @@ export default function App() {
             <li>Light SEO &amp; analytics setup</li>
             <li>Automation (lead capture, email replies, forms → sheets)</li>
           </ul>
+        </section>
+
+        {/* CALCULATOR */}
+        <section className="card" aria-labelledby="calculator-title">
+          <h2 id="calculator-title">Try Me!</h2>
+          <Calculator />
         </section>
 
         {/* PROJECTS */}
