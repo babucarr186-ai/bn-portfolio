@@ -1,7 +1,12 @@
 import './App.css';
 import Calculator from './Calculator';
+import IPhonePreview from './IPhonePreview';
+
 export default function App() {
-  return (
+  const params = new URLSearchParams(window.location.search);
+  const iphone = params.get('iphone') === '1';
+
+  const content = (
     <div className="site">
       {/* HERO */}
       <header className="hero" aria-labelledby="site-title">
@@ -147,4 +152,6 @@ export default function App() {
       </footer>
     </div>
   );
+
+  return iphone ? <IPhonePreview>{content}</IPhonePreview> : content;
 }
