@@ -1,6 +1,7 @@
 import './App.css';
 import Calculator from './Calculator';
 import IPhonePreview from './IPhonePreview';
+import ChatWidget from './ChatWidget';
 
 export default function App() {
   const params = new URLSearchParams(window.location.search);
@@ -182,7 +183,7 @@ export default function App() {
             <br />
             WhatsApp:{' '}
             <a
-              href="https://wa.me/491743173671"
+              href="https://wa.me/491743173671?text=%F0%9F%91%8B%20Hi%20Bubacar!%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20know%20more%20about..."
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Open WhatsApp chat with Bubacar at 0174 317 3671"
@@ -220,5 +221,13 @@ export default function App() {
     </div>
   );
 
-  return iphone ? <IPhonePreview>{content}</IPhonePreview> : content;
+  return (
+    <>
+      {iphone ? <IPhonePreview>{content}</IPhonePreview> : content}
+      <ChatWidget />
+    </>
+  );
 }
+
+// Render chat widget outside of conditional wrappers
+// NOTE: In Vite main.jsx we mount <App /> only; we can also append ChatWidget here if desired.
