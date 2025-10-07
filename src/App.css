@@ -44,63 +44,47 @@ body {
   padding: 0 20px 48px;
 }
 
-/* Profile Picture */
-.profile-picture-container {
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 24px;
-  position: relative;
-  display: none; /* Hide by default */
+/* Inline avatar in heading */
+.hero-title-with-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
 }
 
-.profile-picture-container:has(img[src]:not([src=""])) {
-  display: block; /* Show only when there's a valid image */
+.avatar-inline-wrapper {
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
+  background: linear-gradient(45deg,#f2f4f7,#ffffff);
   padding: 4px;
-  background: linear-gradient(45deg, #f2f4f7, #ffffff);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  position: relative;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  overflow: hidden;
 }
 
-.profile-picture-container:has(img[src]:not([src=""]))::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, #000000, #333333);
-  border-radius: 50%;
-  z-index: -1;
+.avatar-inline-wrapper::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:linear-gradient(45deg,#000,#333);
+  z-index:-1;
 }
 
-.profile-picture {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
+.avatar-inline {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:50%;
+  transition:transform .35s ease;
 }
+.avatar-inline:hover { transform:scale(1.06); }
 
-.profile-picture:hover {
-  transform: scale(1.05);
-}
+.hero-name-text { display:block; }
 
-.profile-picture-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 50%;
-  background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.profile-picture-container:hover .profile-picture-overlay {
-  opacity: 1;
-}
+/* Hide old container */
+.profile-picture-container { display:none !important; }
 
 /* HERO */
 .hero {

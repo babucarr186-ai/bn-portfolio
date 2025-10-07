@@ -10,20 +10,21 @@ export default function App() {
     <div className="site">
       {/* HERO */}
       <header className="hero" aria-labelledby="site-title">
-        <div className="profile-picture-container">
-          <img 
-            src={import.meta.env.BASE_URL + 'profile-picture.jpg'} 
-            alt="Bubacar Nget" 
-            className="profile-picture"
-            onError={(e) => {
-              e.target.src = 'https://placehold.co/200x200/1f1f1f/ffffff?text=BN';
-              e.target.onerror = null;
-            }}
-            loading="lazy"
-          />
-          <div className="profile-picture-overlay"></div>
-        </div>
-        <h1 id="site-title">Bubacar Nget</h1>
+        <h1 id="site-title" className="hero-title-with-avatar">
+          <span className="avatar-inline-wrapper">
+            <img
+              src={import.meta.env.BASE_URL + 'profile-picture.jpg'}
+              alt="Bubacar Nget"
+              className="avatar-inline"
+              onError={(e) => {
+                e.target.src = 'https://placehold.co/120x120/1f1f1f/ffffff?text=BN';
+                e.target.onerror = null;
+              }}
+              loading="lazy"
+            />
+          </span>
+          <span className="hero-name-text">Bubacar Nget</span>
+        </h1>
 
         {/* Service pills in black shadow boxes */}
         <div className="tagline" aria-label="Core services">
@@ -164,7 +165,6 @@ export default function App() {
           </div>
         </section>
       </main>
-
 
       <footer className="footer">
         © 2025 Bubacar Nget
