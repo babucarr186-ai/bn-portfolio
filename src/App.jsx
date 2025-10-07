@@ -5,6 +5,11 @@ import IPhonePreview from './IPhonePreview';
 export default function App() {
   const params = new URLSearchParams(window.location.search);
   const iphone = params.get('iphone') === '1';
+  const previewOverride = params.get('preview') === '1';
+
+  // Toggle this to true to lock the under construction external link for visitors
+  const UNDER_CONSTRUCTION_LOCKED = true; // set to false when you want it open
+  const showLiveLink = previewOverride || !UNDER_CONSTRUCTION_LOCKED;
 
   const content = (
     <div className="site">
@@ -96,15 +101,31 @@ export default function App() {
               <h3>Project Under Construction</h3>
               <p>Work in progress: evolving landing experience. Deployed early to gather feedback while features are being built.</p>
               <div className="project-links">
-                <a 
-                  href="https://new-page-git-main-babucarr186-9531s-projects.vercel.app/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="project-link"
-                >
-                  View Preview
-                </a>
+                {showLiveLink ? (
+                  <a
+                    href="https://new-page-git-main-babucarr186-9531s-projects.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-link"
+                  >
+                    View Preview
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    className="project-link locked"
+                    aria-disabled="true"
+                    title="Preview temporarily locked"
+                  >
+                    Locked
+                  </button>
+                )}
               </div>
+              {!showLiveLink && (
+                <p style={{fontSize:'0.75rem',margin:'4px 0 0',color:'#6b6b6b'}}>
+                  Add <code>?preview=1</code> to the URL to view (owner override).
+                </p>
+              )}
               <div className="project-tags">
                 <span className="tag">In Progress</span>
                 <span className="tag">Vercel</span>
