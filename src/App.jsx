@@ -9,6 +9,23 @@ export default function App() {
 
   // Toggle this to true to lock the under construction external link for visitors
   const UNDER_CONSTRUCTION_LOCKED = true; // set to false when you want it open
+  
+  // Progress meta for the under construction project (adjust as you complete items)
+  const projectProgress = {
+    percent: 45, // number 0-100 representing completion
+    tasks: [
+      { label: 'Initial layout scaffold', done: true },
+      { label: 'Hero section design', done: true },
+      { label: 'Responsive adjustments', done: true },
+      { label: 'Content placeholders', done: true },
+      { label: 'SEO basic metadata', done: false },
+      { label: 'Contact form wiring', done: false },
+      { label: 'Analytics integration', done: false },
+      { label: 'Performance pass & polish', done: false }
+    ]
+  };
+
+  // If percent reaches threshold we could auto-unlock; leave manual lock for now
   const showLiveLink = previewOverride || !UNDER_CONSTRUCTION_LOCKED;
 
   const content = (
@@ -100,6 +117,21 @@ export default function App() {
               <div className="ribbon" aria-label="Under construction">UNDER CONSTRUCTION</div>
               <h3>Project Under Construction</h3>
               <p>Work in progress: evolving landing experience. Deployed early to gather feedback while features are being built.</p>
+              {/* Progress Block */}
+              <div className="progress-block" aria-label={`Progress ${projectProgress.percent}% complete`}>
+                <div className="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow={projectProgress.percent}>
+                  <div className="progress-fill" style={{ width: projectProgress.percent + '%' }} />
+                </div>
+                <div className="progress-percent">{projectProgress.percent}%</div>
+                <ul className="progress-checklist">
+                  {projectProgress.tasks.map((t, i) => (
+                    <li key={i} className={t.done ? 'done' : 'todo'}>
+                      <span className="check-icon" aria-hidden="true">{t.done ? '✔' : '•'}</span>
+                      <span className="task-label">{t.label}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <div className="project-links">
                 {showLiveLink ? (
                   <a
