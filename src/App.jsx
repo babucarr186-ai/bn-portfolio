@@ -107,11 +107,11 @@ export default function App() {
           <span className="pill">Automation</span>
         </div>
 
-        {/* Decorative wave divider */}
-        <div className="wave" aria-hidden="true">
-          <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
-            <path d="M0,64 C120,96 360,112 540,96 C720,80 900,32 1080,40 C1260,48 1380,80 1440,96 L1440,120 L0,120 Z"></path>
-          </svg>
+        {/* Decorative multi-layer ocean-style waves */}
+        <div className="wave-stack" aria-hidden="true">
+          <div className="wave-layer wave-back"></div>
+          <div className="wave-layer wave-mid"></div>
+          <div className="wave-layer wave-front"></div>
         </div>
       </header>
 

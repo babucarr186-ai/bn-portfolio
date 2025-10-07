@@ -145,22 +145,17 @@ body {
 }
 
 /* Wave divider */
-.wave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 90px;
-  overflow: hidden;
-  pointer-events: none;
-}
+/* Layered Blue Waves */
+.wave-stack { position:absolute; left:0; right:0; bottom:-1px; height:140px; overflow:hidden; pointer-events:none; }
+.wave-layer { position:absolute; left:0; width:200%; height:100%; background-repeat:repeat-x; bottom:0; opacity:0.9; }
+.wave-back { background-image:radial-gradient(circle at 50% 50%, rgba(120,180,255,0.5) 25%, rgba(120,180,255,0) 70%), linear-gradient(to right,#4b8bd6 20%, #3671b8 50%, #4b8bd6 80%); animation:waveSlide 22s linear infinite; filter:blur(4px); top:10px; }
+.wave-mid { background-image:radial-gradient(circle at 50% 55%, rgba(120,190,255,0.7) 25%, rgba(120,190,255,0) 70%), linear-gradient(to right,#2d7ed8 20%, #1c66b8 50%, #2d7ed8 80%); animation:waveSlide 14s linear infinite; clip-path:polygon(0 55%,10% 60%,20% 58%,30% 63%,40% 60%,50% 65%,60% 62%,70% 66%,80% 61%,90% 64%,100% 60%,100% 100%,0 100%); }
+.wave-front { background-image:radial-gradient(circle at 60% 60%, rgba(140,210,255,0.85) 25%, rgba(140,210,255,0) 70%), linear-gradient(to right,#1e8fff 20%, #0072e0 50%, #1e8fff 80%); animation:waveSlide 8s linear infinite; clip-path:polygon(0 65%,8% 70%,16% 68%,24% 74%,32% 69%,40% 75%,48% 70%,56% 73%,64% 68%,72% 72%,80% 67%,88% 71%,96% 66%,100% 69%,100% 100%,0 100%); box-shadow:0 -4px 18px -6px rgba(0,0,0,0.25) inset; }
+@keyframes waveSlide { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
 
-.wave svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  fill: var(--bg); /* matches page background to create the wave cutout */
-}
+[data-theme='dark'] .wave-back { opacity:0.35; }
+[data-theme='dark'] .wave-mid { opacity:0.55; }
+[data-theme='dark'] .wave-front { opacity:0.75; }
 
 /* Sections */
 main {
@@ -552,4 +547,12 @@ main {
 .chat-export { background:#007bff; color:#fff; border:none; padding:6px 10px; font-size:.65rem; border-radius:8px; font-weight:600; cursor:pointer; align-self:flex-start; }
 .chat-export:hover { background:#006adc; }
 .chat-note { font-size:.55rem; color:#6b6b6b; line-height:1.3; }
-@media (max-width: 560px) { .chat-panel { width: min(100vw - 20px, 340px); } }
+@media (max-width: 560px) { 
+  .chat-panel { 
+    width: min(100vw - 10px, 360px); 
+    max-height: min(72vh, 520px); 
+    bottom:0; 
+  }
+  .chat-messages { flex:1 1 auto; }
+  .chat-input-row { position:relative; }
+}
