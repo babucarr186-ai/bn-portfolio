@@ -115,7 +115,7 @@ body {
 .hero {
   position: relative;
   text-align: center;
-  padding: 80px 16px 96px;
+  padding: 80px 16px 150px; /* extra bottom space so wave does not cover next section */
   background: linear-gradient(180deg, #f2f4f7 0%, #f7f7f7 60%, rgba(247,247,247,0) 100%);
   border-bottom: 1px solid #eee;
 }
@@ -146,11 +146,11 @@ body {
 
 /* Wave divider */
 /* Layered Blue Waves */
-.wave-stack { position:absolute; left:0; right:0; bottom:-1px; height:140px; overflow:hidden; pointer-events:none; }
+.wave-stack { position:absolute; left:0; right:0; bottom:0; height:120px; overflow:hidden; pointer-events:none; }
 .wave-layer { position:absolute; left:0; width:200%; height:100%; background-repeat:repeat-x; bottom:0; opacity:0.9; }
 .wave-back { background-image:radial-gradient(circle at 50% 50%, rgba(120,180,255,0.5) 25%, rgba(120,180,255,0) 70%), linear-gradient(to right,#4b8bd6 20%, #3671b8 50%, #4b8bd6 80%); animation:waveSlide 22s linear infinite; filter:blur(4px); top:10px; }
 .wave-mid { background-image:radial-gradient(circle at 50% 55%, rgba(120,190,255,0.7) 25%, rgba(120,190,255,0) 70%), linear-gradient(to right,#2d7ed8 20%, #1c66b8 50%, #2d7ed8 80%); animation:waveSlide 14s linear infinite; clip-path:polygon(0 55%,10% 60%,20% 58%,30% 63%,40% 60%,50% 65%,60% 62%,70% 66%,80% 61%,90% 64%,100% 60%,100% 100%,0 100%); }
-.wave-front { background-image:radial-gradient(circle at 60% 60%, rgba(140,210,255,0.85) 25%, rgba(140,210,255,0) 70%), linear-gradient(to right,#1e8fff 20%, #0072e0 50%, #1e8fff 80%); animation:waveSlide 8s linear infinite; clip-path:polygon(0 65%,8% 70%,16% 68%,24% 74%,32% 69%,40% 75%,48% 70%,56% 73%,64% 68%,72% 72%,80% 67%,88% 71%,96% 66%,100% 69%,100% 100%,0 100%); box-shadow:0 -4px 18px -6px rgba(0,0,0,0.25) inset; }
+.wave-front { background-image:radial-gradient(circle at 60% 60%, rgba(140,210,255,0.85) 25%, rgba(140,210,255,0) 70%), linear-gradient(to right,#1e8fff 20%, #0072e0 50%, #1e8fff 80%); animation:waveSlide 8s linear infinite; clip-path:polygon(0 55%,8% 60%,16% 58%,24% 64%,32% 59%,40% 65%,48% 60%,56% 63%,64% 58%,72% 62%,80% 57%,88% 61%,96% 56%,100% 59%,100% 100%,0 100%); box-shadow:0 -4px 18px -6px rgba(0,0,0,0.25) inset; }
 @keyframes waveSlide { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
 
 [data-theme='dark'] .wave-back { opacity:0.35; }
@@ -552,6 +552,7 @@ main {
 .chat-export:hover { background:#006adc; }
 .chat-note { font-size:.55rem; color:#6b6b6b; line-height:1.3; }
 @media (max-width: 560px) { 
+  .hero { padding: 70px 14px 170px; }
   .chat-panel { 
     width: min(100vw - 10px, 360px); 
     max-height: min(72vh, 520px); 
