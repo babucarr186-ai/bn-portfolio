@@ -41,7 +41,9 @@ const greetings = [
 
 // Wolof and Mandinka jokes and phrases
 const jokes = {
-  "1*2": "Suma waax deh! 😄",
+  "1*1": "Pmoney186 🇬🇲",
+  "1*2": "BUBACAR NGET ⭐",
+  "0*0": "(Random Greeting)", // marker; handled separately
   "2*2": "Kata kata! 🎵",
   "3*3": "I be jeleh jeleh! 🌟",
   "4*4": "Mbolo mbolo! 🤝",
@@ -58,20 +60,20 @@ const jokes = {
   "7*8": "Dama ress! 😂"
 };
 
+const jokeOrder = ["1*1","1*2","0*0","2*2","3*3","4*4","5*5","6*6","7*7","8*8","9*9","2*5","3*5","4*5","5*6","6*7","7*8"]; // display order
+
 function Calculator() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState("");
+  const [showHints, setShowHints] = useState(false);
   const maxLength = 12; // Maximum input length
 
   const handleClick = (value) => {
     if (input.length >= maxLength) return;
-    
-    // Prevent multiple operators in sequence
     const lastChar = input.slice(-1);
-    if (['+', '-', '*', '/'].includes(value) && ['+', '-', '*', '/'].includes(lastChar)) {
+    if (["+","-","*","/"].includes(value) && ["+","-","*","/"].includes(lastChar)) {
       return;
     }
-    
     setInput((prev) => prev + value);
   };
 
@@ -83,14 +85,12 @@ function Calculator() {
   const handleCalculate = () => {
     try {
       if (input === "1*1") {
-        setResult("Pmoney186 🇬🇲"); // Your signature
+        setResult("Pmoney186 🇬🇲");
       } else if (input === "1*2") {
-        setResult("BUBACAR NGET ⭐"); // Your full name
+        setResult("BUBACAR NGET ⭐");
       } else if (input === "0*0") {
-        // Random Gambian greeting
         setResult(greetings[Math.floor(Math.random() * greetings.length)]);
-      } else if (jokes[input]) {
-        // Show Wolof/Mandinka joke or phrase if it exists
+      } else if (jokes[input] && input !== "0*0") {
         setResult(jokes[input]);
       } else {
         const calculatedResult = calculate(input);
@@ -101,7 +101,14 @@ function Calculator() {
     }
   };
 
-  // Handle keyboard input
+  const surprise = () => {
+    const pool = jokeOrder.filter(code => code !== "0*0");
+    const pick = pool[Math.floor(Math.random()*pool.length)];
+    setInput(pick);
+    // auto calculate
+    setTimeout(() => handleCalculate(), 0);
+  };
+
   React.useEffect(() => {
     const handleKeyPress = (e) => {
       const key = e.key;
@@ -116,18 +123,53 @@ function Calculator() {
         handleClear();
       }
     };
-
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [input]);
 
   return (
-    <div className="calculator-container" role="application" aria-label="Calculator">
+    <div className="calculator-container" role="application" aria-label="Joke Calculator">
+      <div className="calc-header">
+        <h3 className="calc-title">Joke Calculator <span aria-hidden>😄</span></h3>
+        <button
+          type="button"
+          className="hint-toggle"
+            aria-expanded={showHints}
+          aria-controls="joke-hints"
+          onClick={() => setShowHints(s => !s)}
+        >
+          {showHints ? 'Hide Examples' : 'Show Joke Examples'}
+        </button>
+        <button
+          type="button"
+          className="surprise-btn"
+          onClick={surprise}
+          aria-label="Show a random joke result"
+        >Surprise Me</button>
+      </div>
+      {showHints && (
+        <div id="joke-hints" className="hints" aria-live="polite">
+          <p className="hints-intro">Type these multiplications and press = :</p>
+          <ul className="hints-list">
+            {jokeOrder.map(code => (
+              <li key={code}>
+                <button
+                  type="button"
+                  className="hint-code"
+                  onClick={() => { setInput(code); setTimeout(() => handleCalculate(),0); }}
+                  aria-label={`Use ${code} to get a joke`}
+                >{code}</button>
+                <span className="hint-preview">→ {code === "0*0" ? 'Random greeting' : jokes[code]}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="display">
-        <input 
-          type="text" 
-          value={input} 
-          readOnly 
+        <input
+          type="text"
+          value={input}
+          readOnly
           aria-label="Calculator input"
           aria-live="polite"
         />
@@ -148,8 +190,8 @@ function Calculator() {
             {btn}
           </button>
         ))}
-        <button 
-          onClick={handleClear} 
+        <button
+          onClick={handleClear}
           className="clear"
           aria-label="Clear calculator"
         >
