@@ -25,6 +25,9 @@ export default function App() {
     ]
   };
 
+  // Update this timestamp when you deploy new progress
+  const LAST_UPDATED = '2025-10-07';
+
   // If percent reaches threshold we could auto-unlock; leave manual lock for now
   const showLiveLink = previewOverride || !UNDER_CONSTRUCTION_LOCKED;
 
@@ -131,6 +134,7 @@ export default function App() {
                     </li>
                   ))}
                 </ul>
+                <div className="last-updated" aria-label={`Last updated on ${LAST_UPDATED}`}>Last updated: {LAST_UPDATED}</div>
               </div>
               <div className="project-links">
                 {showLiveLink ? (

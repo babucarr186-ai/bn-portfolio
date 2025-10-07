@@ -454,3 +454,13 @@ main {
 @media (max-width: 600px) {
   .progress-checklist { grid-template-columns: 1fr; }
 }
+
+.last-updated {
+  margin-top: 10px;
+  font-size: 0.60rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #555;
+  opacity: 0.85;
+  font-weight: 600;
+}
