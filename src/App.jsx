@@ -90,6 +90,25 @@ export default function App() {
                 <span className="tag">Non-Profit</span>
               </div>
             </div>
+            <div className="project-card">
+              <h3>New Landing Page</h3>
+              <p>Fast demo page hosted on Vercel showcasing a modern layout and deployment pipeline.</p>
+              <div className="project-links">
+                <a 
+                  href="https://new-page-git-main-babucarr186-9531s-projects.vercel.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="project-link"
+                >
+                  Visit Demo
+                </a>
+              </div>
+              <div className="project-tags">
+                <span className="tag">Vercel</span>
+                <span className="tag">Deployment</span>
+                <span className="tag">Landing Page</span>
+              </div>
+            </div>
           </div>
         </section>
 
