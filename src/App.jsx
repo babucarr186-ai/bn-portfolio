@@ -178,22 +178,12 @@ export default function App() {
             <br />
             WhatsApp:{' '}
             <a
-              href="https://wa.me/4915679652076"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chat on WhatsApp"
-            >
-              +49 15679 652076
-            </a>
-            <br />
-            Alternative WhatsApp:{' '}
-            <a
               href="https://wa.me/491743173671"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Chat on WhatsApp Alternative"
+              aria-label="Open WhatsApp chat with Bubacar at 0174 317 3671"
             >
-              +49 1743173671
+              0174 317 3671
             </a>
           </p>
 
