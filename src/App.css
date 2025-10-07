@@ -8,7 +8,25 @@
   --radius: 12px;
 }
 
+[data-theme='dark'] {
+  --bg: #111418;
+  --card: #1b1f24;
+  --text: #f3f5f7;
+  --muted: #9aa2ad;
+  --pill-bg: #f3f5f7;
+  --shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+
 * { box-sizing: border-box; }
+
+/* Global focus ring */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+[data-theme='dark'] :focus-visible {
+  outline-color: #60a5fa;
+}
 
 html, body, #root { height: 100%; }
 
@@ -36,6 +54,13 @@ body {
   line-height: 1.6;
   animation: waveMove 60s linear infinite;
   background-attachment: fixed;
+}
+
+[data-theme='dark'] body {
+  background: 
+    linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.04) 50%, transparent 52%) 0 0 / 30px 30px,
+    linear-gradient(-45deg, transparent 48%, rgba(255,255,255,0.04) 50%, transparent 52%) 0 0 / 30px 30px,
+    var(--bg);
 }
 
 .site {
@@ -227,6 +252,10 @@ main {
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+[data-theme='dark'] .project-card {
+  background: linear-gradient(to bottom right, #222831, #1c2229);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+}
 
 .project-card:hover {
   transform: translateY(-4px);
@@ -284,6 +313,7 @@ main {
   border-radius: 6px;
   font-size: 0.875rem;
 }
+[data-theme='dark'] .tag { background:#27313b; }
 
 /* Footer */
 .footer {
@@ -292,6 +322,20 @@ main {
   margin-top: 28px;
   font-size: 14px;
 }
+
+/* Dark mode toggle */
+.theme-toggle-wrapper { position:fixed; top:14px; right:14px; z-index:4100; }
+.theme-toggle-btn {
+  background: var(--card);
+  color: var(--text);
+  border:1px solid rgba(0,0,0,0.15);
+  padding:8px 14px; font-size:.7rem; font-weight:600; border-radius: 24px; cursor:pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  display:flex; gap:6px; align-items:center; backdrop-filter: blur(6px);
+  transition: background .25s, color .25s, border-color .25s;
+}
+.theme-toggle-btn:hover { background: var(--text); color: var(--card); }
+[data-theme='dark'] .theme-toggle-btn { border-color: rgba(255,255,255,0.18); }
 
 /* iPhone Preview Frame */
 .iphone-frame {
@@ -464,6 +508,21 @@ main {
   opacity: 0.85;
   font-weight: 600;
 }
+
+.checklist-toggle {
+  margin-top: 10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+.checklist-toggle:hover { opacity:0.9; }
+[data-theme='dark'] .checklist-toggle { background:#fff; color:#000; }
 
 /* Chat Widget */
 .chat-root { position: fixed; bottom: 18px; right: 18px; z-index: 4000; font-family: inherit; }

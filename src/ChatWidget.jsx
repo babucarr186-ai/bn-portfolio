@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { WHATSAPP_NUMBER_E164 } from './contactConfig';
 import './App.css';
 
 /*
@@ -12,7 +13,6 @@ import './App.css';
 
 const BOT_NAME = 'Assistant';
 const OWNER_NAME = 'Bubacar';
-const WHATSAPP_NUMBER_E164 = '491743173671'; // without leading + for wa.me
 
 function classifyMessage(text) {
   const t = text.toLowerCase();
@@ -50,9 +50,15 @@ function respond(intent) {
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([
-    { from: 'bot', text: `Hello! I'm a helper for ${OWNER_NAME}. How can I help you?` }
-  ]);
+  const [typing, setTyping] = useState(false);
+  const initialMessages = (() => {
+    try {
+      const stored = localStorage.getItem('chat_messages');
+      if (stored) return JSON.parse(stored);
+    } catch {}
+    return [{ from: 'bot', text: `Hello! I'm a helper for ${OWNER_NAME}. How can I help you?` }];
+  })();
+  const [messages, setMessages] = useState(initialMessages);
   const listRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -60,6 +66,7 @@ export default function ChatWidget() {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
+    try { localStorage.setItem('chat_messages', JSON.stringify(messages)); } catch {}
   }, [messages, open]);
 
   function sendUser() {
@@ -67,11 +74,13 @@ export default function ChatWidget() {
     if (!trimmed) return;
     setMessages(prev => [...prev, { from: 'user', text: trimmed }]);
     setInput('');
+    setTyping(true);
     setTimeout(() => {
       const intent = classifyMessage(trimmed);
       const reply = respond(intent);
       setMessages(prev => [...prev, { from: 'bot', text: reply }]);
-    }, 400);
+      setTyping(false);
+    }, 550);
   }
 
   function handleKey(e) {
@@ -85,6 +94,10 @@ export default function ChatWidget() {
     const body = messages.map(m => (m.from === 'user' ? 'You: ' : BOT_NAME + ': ') + m.text).join('\n');
     const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent('Conversation summary:%0A' + body + '\n\nMy message: ')}`;
     window.open(url, '_blank', 'noopener');
+  }
+
+  function clearChat() {
+    setMessages([{ from: 'bot', text: `Chat cleared. I'm still here for ${OWNER_NAME}. How can I help now?` }]);
   }
 
   return (
@@ -101,6 +114,7 @@ export default function ChatWidget() {
                 {m.text}
               </div>
             ))}
+            {typing && <div className="msg bot" aria-live="polite"><em>Typing…</em></div>}
           </div>
           <div className="chat-input-row">
             <textarea
@@ -117,6 +131,7 @@ export default function ChatWidget() {
           </div>
           <div className="chat-footer">
             <button className="chat-export" onClick={exportToWhatsApp} aria-label="Send conversation to WhatsApp">Send to WhatsApp</button>
+            <button className="chat-export" style={{background:'#555'}} onClick={clearChat} aria-label="Clear conversation">Clear</button>
             <span className="chat-note">Replies are simulated. For urgent queries use WhatsApp directly.</span>
           </div>
         </div>

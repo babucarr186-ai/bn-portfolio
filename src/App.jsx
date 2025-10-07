@@ -2,11 +2,23 @@ import './App.css';
 import Calculator from './Calculator';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
+import { buildWhatsAppLink, WHATSAPP_DISPLAY } from './contactConfig';
 
 export default function App() {
   const params = new URLSearchParams(window.location.search);
   const iphone = params.get('iphone') === '1';
   const previewOverride = params.get('preview') === '1';
+
+  // Theme state
+  const storedTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) || '';
+  const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+  const [theme, setTheme] = React.useState(initialTheme);
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    try { localStorage.setItem('theme', theme); } catch {}
+  }, [theme]);
+  function toggleTheme() { setTheme(t => t === 'dark' ? 'light' : 'dark'); }
 
   // Toggle this to true to lock the under construction external link for visitors
   const UNDER_CONSTRUCTION_LOCKED = true; // set to false when you want it open
@@ -30,10 +42,17 @@ export default function App() {
   const LAST_UPDATED = '2025-10-07';
 
   // If percent reaches threshold we could auto-unlock; leave manual lock for now
-  const showLiveLink = previewOverride || !UNDER_CONSTRUCTION_LOCKED;
+  const AUTO_UNLOCK_THRESHOLD = 80;
+  const autoUnlocked = projectProgress.percent >= AUTO_UNLOCK_THRESHOLD;
+  const showLiveLink = previewOverride || autoUnlocked || !UNDER_CONSTRUCTION_LOCKED;
 
   const content = (
     <div className="site">
+      <div className="theme-toggle-wrapper">
+        <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle dark mode">
+          {theme === 'dark' ? '🌞 Light' : '🌙 Dark'}
+        </button>
+      </div>
       {/* HERO */}
       <header className="hero" aria-labelledby="site-title">
         <h1 id="site-title" className="hero-title-with-avatar">
@@ -127,14 +146,31 @@ export default function App() {
                   <div className="progress-fill" style={{ width: projectProgress.percent + '%' }} />
                 </div>
                 <div className="progress-percent">{projectProgress.percent}%</div>
-                <ul className="progress-checklist">
-                  {projectProgress.tasks.map((t, i) => (
-                    <li key={i} className={t.done ? 'done' : 'todo'}>
-                      <span className="check-icon" aria-hidden="true">{t.done ? '✔' : '•'}</span>
-                      <span className="task-label">{t.label}</span>
-                    </li>
-                  ))}
-                </ul>
+                {React.useState && (() => {
+                  const [openList, setOpenList] = React.useState(window.innerWidth > 640); // collapse on small screens
+                  return (
+                    <div>
+                      <button
+                        type="button"
+                        className="checklist-toggle"
+                        aria-expanded={openList}
+                        onClick={() => setOpenList(o => !o)}
+                      >
+                        {openList ? 'Hide Tasks' : 'Show Tasks'}
+                      </button>
+                      {openList && (
+                        <ul className="progress-checklist">
+                          {projectProgress.tasks.map((t, i) => (
+                            <li key={i} className={t.done ? 'done' : 'todo'}>
+                              <span className="check-icon" aria-hidden="true">{t.done ? '✔' : '•'}</span>
+                              <span className="task-label">{t.label}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  );
+                })()}
                 <div className="last-updated" aria-label={`Last updated on ${LAST_UPDATED}`}>Last updated: {LAST_UPDATED}</div>
               </div>
               <div className="project-links">
@@ -183,12 +219,12 @@ export default function App() {
             <br />
             WhatsApp:{' '}
             <a
-              href="https://wa.me/491743173671?text=%F0%9F%91%8B%20Hi%20Bubacar!%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20know%20more%20about..."
+              href={buildWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Open WhatsApp chat with Bubacar at 0174 317 3671"
             >
-              0174 317 3671
+              {WHATSAPP_DISPLAY}
             </a>
           </p>
 

@@ -1,0 +1,15 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630' viewBox='0 0 1200 630'>
+  <defs>
+    <linearGradient id='bg' x1='0' x2='1' y1='0' y2='1'>
+      <stop offset='0%' stop-color='#0d1117'/>
+      <stop offset='100%' stop-color='#202b33'/>
+    </linearGradient>
+  </defs>
+  <rect width='1200' height='630' fill='url(#bg)'/>
+  <text x='60' y='170' fill='#ffffff' font-family='Segoe UI, Arial, sans-serif' font-size='72' font-weight='700'>Bubacar Nget</text>
+  <text x='60' y='250' fill='#9cc2ff' font-family='Segoe UI, Arial, sans-serif' font-size='40'>Digital Marketing · Web Development · Automation</text>
+  <rect x='60' y='300' width='640' height='4' fill='#3d82f6'/>
+  <text x='60' y='370' fill='#ffffff' font-family='Segoe UI, Arial, sans-serif' font-size='34'>Portfolio & Joke Calculator</text>
+  <text x='60' y='430' fill='#d0d7de' font-family='Segoe UI, Arial, sans-serif' font-size='26'>Visit to explore projects in progress and Gambian-themed fun.</text>
+  <text x='60' y='500' fill='#58d68d' font-family='Segoe UI, Arial, sans-serif' font-size='24'>WhatsApp: 0174 317 3671</text>
+</svg>
