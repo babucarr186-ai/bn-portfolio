@@ -157,6 +157,10 @@ body {
 [data-theme='dark'] .wave-mid { opacity:0.55; }
 [data-theme='dark'] .wave-front { opacity:0.75; }
 
+@media (prefers-reduced-motion: reduce) {
+  .wave-layer { animation: none !important; transform: translateX(0) !important; }
+}
+
 /* Sections */
 main {
   display: grid;

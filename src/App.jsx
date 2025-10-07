@@ -120,8 +120,9 @@ export default function App() {
         <section className="card" aria-labelledby="about-title">
           <h2 id="about-title">About</h2>
           <p>
-            I help small businesses and diaspora projects build clean websites, create simple content
-            systems, and automate repetitive work. Straightforward, fast, and focused on results.
+            Through <strong>BN Tech Solutions</strong>, I support small businesses and diaspora projects by
+            creating efficient websites, content systems, and automation tools. My goal is simple:
+            make tech practical, fast, and impactful.
           </p>
         </section>
 
