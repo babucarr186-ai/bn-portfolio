@@ -92,6 +92,7 @@ export default function App() {
               </div>
             </div>
             <div className="project-card">
+              <div className="ribbon" aria-label="Under construction">UNDER CONSTRUCTION</div>
               <h3>Project Under Construction</h3>
               <p>Work in progress: evolving landing experience. Deployed early to gather feedback while features are being built.</p>
               <div className="project-links">
