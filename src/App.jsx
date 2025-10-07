@@ -97,7 +97,7 @@ export default function App() {
               loading="lazy"
             />
           </span>
-          <span className="hero-name-text">Bubacar Nget <span className="verify-badge" aria-label="Verified profile" title="Verified">✓</span></span>
+          <span className="hero-name-text">Bubacar Nget</span>
         </h1>
 
         {/* Service pills in black shadow boxes */}
