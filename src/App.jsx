@@ -1,8 +1,35 @@
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Calculator from './Calculator';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
 import { buildWhatsAppLink, WHATSAPP_DISPLAY } from './contactConfig';
+
+function ProgressChecklist({ progress }) {
+  const [open, setOpen] = useState(typeof window !== 'undefined' ? window.innerWidth > 640 : true);
+  return (
+    <div>
+      <button
+        type="button"
+        className="checklist-toggle"
+        aria-expanded={open}
+        onClick={() => setOpen(o => !o)}
+      >
+        {open ? 'Hide Tasks' : 'Show Tasks'}
+      </button>
+      {open && (
+        <ul className="progress-checklist">
+          {progress.tasks.map((t, i) => (
+            <li key={i} className={t.done ? 'done' : 'todo'}>
+              <span className="check-icon" aria-hidden="true">{t.done ? '✔' : '•'}</span>
+              <span className="task-label">{t.label}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export default function App() {
   const params = new URLSearchParams(window.location.search);
@@ -13,8 +40,8 @@ export default function App() {
   const storedTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) || '';
   const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
-  const [theme, setTheme] = React.useState(initialTheme);
-  React.useEffect(() => {
+  const [theme, setTheme] = useState(initialTheme);
+  useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     try { localStorage.setItem('theme', theme); } catch {}
   }, [theme]);
@@ -49,7 +76,7 @@ export default function App() {
   const content = (
     <div className="site">
       <div className="theme-toggle-wrapper">
-        <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle dark mode">
+        <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle dark mode" aria-pressed={theme === 'dark'}>
           {theme === 'dark' ? '🌞 Light' : '🌙 Dark'}
         </button>
       </div>
@@ -61,8 +88,10 @@ export default function App() {
               src={import.meta.env.BASE_URL + 'profile-picture.jpg'}
               alt="Bubacar Nget"
               className="avatar-inline"
+              width={150}
+              height={150}
               onError={(e) => {
-                e.target.src = 'https://placehold.co/120x120/1f1f1f/ffffff?text=BN';
+                e.target.src = 'https://placehold.co/150x150/1f1f1f/ffffff?text=BN';
                 e.target.onerror = null;
               }}
               loading="lazy"
@@ -146,31 +175,7 @@ export default function App() {
                   <div className="progress-fill" style={{ width: projectProgress.percent + '%' }} />
                 </div>
                 <div className="progress-percent">{projectProgress.percent}%</div>
-                {React.useState && (() => {
-                  const [openList, setOpenList] = React.useState(window.innerWidth > 640); // collapse on small screens
-                  return (
-                    <div>
-                      <button
-                        type="button"
-                        className="checklist-toggle"
-                        aria-expanded={openList}
-                        onClick={() => setOpenList(o => !o)}
-                      >
-                        {openList ? 'Hide Tasks' : 'Show Tasks'}
-                      </button>
-                      {openList && (
-                        <ul className="progress-checklist">
-                          {projectProgress.tasks.map((t, i) => (
-                            <li key={i} className={t.done ? 'done' : 'todo'}>
-                              <span className="check-icon" aria-hidden="true">{t.done ? '✔' : '•'}</span>
-                              <span className="task-label">{t.label}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  );
-                })()}
+                <ProgressChecklist progress={projectProgress} />
                 <div className="last-updated" aria-label={`Last updated on ${LAST_UPDATED}`}>Last updated: {LAST_UPDATED}</div>
               </div>
               <div className="project-links">
