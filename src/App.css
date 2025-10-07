@@ -120,6 +120,11 @@ body {
   border-bottom: 1px solid #eee;
 }
 
+[data-theme='dark'] .hero {
+  background: linear-gradient(180deg,#182029 0%, #131a20 55%, rgba(19,26,32,0) 100%);
+  border-bottom: 1px solid #1f2a33;
+}
+
 .hero h1 {
   margin: 0;
   font-size: clamp(32px, 5vw, 48px);
@@ -143,6 +148,25 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   white-space: nowrap;
 }
+[data-theme='dark'] .pill { background:#0d60b7; box-shadow:0 4px 14px rgba(0,0,0,0.55); }
+
+/* Verification badge */
+.verify-badge {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#1d9bf0,#0a66c2);
+  color:#fff;
+  font-size:.55em;
+  font-weight:700;
+  padding:4px 6px 4px;
+  border-radius:999px;
+  line-height:1;
+  vertical-align:middle;
+  margin-left:6px;
+  box-shadow:0 0 0 2px var(--card), 0 2px 6px rgba(0,0,0,0.3);
+}
+[data-theme='dark'] .verify-badge { box-shadow:0 0 0 2px #1b1f24, 0 2px 8px rgba(0,0,0,0.6); }
 
 /* Wave divider */
 /* Layered Blue Waves */

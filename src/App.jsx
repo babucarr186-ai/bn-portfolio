@@ -97,7 +97,7 @@ export default function App() {
               loading="lazy"
             />
           </span>
-          <span className="hero-name-text">Bubacar Nget</span>
+          <span className="hero-name-text">Bubacar Nget <span className="verify-badge" aria-label="Verified profile" title="Verified">✓</span></span>
         </h1>
 
         {/* Service pills in black shadow boxes */}
@@ -167,15 +167,15 @@ export default function App() {
           <div className="testimonials-strip" aria-label="Testimonials preview">
             <div className="testimonial">
               Smooth process and clear communication—site delivered faster than expected.
-              <cite>Client A</cite>
+              <cite>— Anna Keller</cite>
             </div>
             <div className="testimonial">
               Automation saved us hours weekly. Simple and effective.
-              <cite>Client B</cite>
+              <cite>— Markus Vogel</cite>
             </div>
             <div className="testimonial">
               Clean structure. Easy to update content now.
-              <cite>Client C</cite>
+              <cite>— Leonie Braun</cite>
             </div>
           </div>
         </section>
