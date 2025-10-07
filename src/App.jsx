@@ -126,6 +126,24 @@ export default function App() {
           </p>
         </section>
 
+        {/* CTA SECTION */}
+        <section className="card cta-section" aria-labelledby="cta-title">
+          <h2 id="cta-title" className="cta-heading">Let’s Launch Something</h2>
+          <p className="cta-sub">Fast builds. Practical automation. Clear content systems that help you move quicker.</p>
+          <div className="cta-buttons">
+            <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Start WhatsApp chat">💬 WhatsApp Me</a>
+            <a className="btn btn-outline" href="mailto:nget@web.de" aria-label="Send email to Bubacar">✉️ Email</a>
+          </div>
+          <div className="stack-row" aria-label="Primary technologies and focus areas">
+            <span className="stack-badge">React</span>
+            <span className="stack-badge">Vite</span>
+            <span className="stack-badge">Automation</span>
+            <span className="stack-badge">Content Systems</span>
+            <span className="stack-badge">SEO Basics</span>
+            <span className="stack-badge">Analytics</span>
+          </div>
+        </section>
+
         {/* SERVICES */}
         <section className="card" aria-labelledby="services-title">
           <h2 id="services-title">Services</h2>
@@ -141,6 +159,25 @@ export default function App() {
         <section className="card" aria-labelledby="calculator-title">
           <h2 id="calculator-title">Try Me!</h2>
           <Calculator />
+        </section>
+
+        {/* TESTIMONIALS PLACEHOLDER */}
+        <section className="card" aria-labelledby="testimonials-title">
+          <h2 id="testimonials-title">Feedback</h2>
+          <div className="testimonials-strip" aria-label="Testimonials preview">
+            <div className="testimonial">
+              Smooth process and clear communication—site delivered faster than expected.
+              <cite>Client A</cite>
+            </div>
+            <div className="testimonial">
+              Automation saved us hours weekly. Simple and effective.
+              <cite>Client B</cite>
+            </div>
+            <div className="testimonial">
+              Clean structure. Easy to update content now.
+              <cite>Client C</cite>
+            </div>
+          </div>
         </section>
 
         {/* PROJECTS */}
@@ -233,6 +270,10 @@ export default function App() {
               {WHATSAPP_DISPLAY}
             </a>
           </p>
+          <div className="contact-actions">
+            <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer">Chat Now</a>
+            <a className="btn btn-outline" href="mailto:nget@web.de">Email Me</a>
+          </div>
 
           <div className="social">
             <a
@@ -267,6 +308,7 @@ export default function App() {
     <>
       {iphone ? <IPhonePreview>{content}</IPhonePreview> : content}
       <ChatWidget />
+      <a className="floating-cta" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to start a project">🚀 Start a Project</a>
     </>
   );
 }

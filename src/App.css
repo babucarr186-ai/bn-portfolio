@@ -157,6 +157,10 @@ body {
 [data-theme='dark'] .wave-mid { opacity:0.55; }
 [data-theme='dark'] .wave-front { opacity:0.75; }
 
+/* Wave mask fade */
+.wave-stack::before { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(255,255,255,0), rgba(255,255,255,0.65) 60%, rgba(255,255,255,0.9)); mix-blend-mode:screen; pointer-events:none; }
+[data-theme='dark'] .wave-stack::before { background:linear-gradient(to top, rgba(17,20,24,0), rgba(17,20,24,0.6) 60%, rgba(17,20,24,0.85)); mix-blend-mode:normal; }
+
 @media (prefers-reduced-motion: reduce) {
   .wave-layer { animation: none !important; transform: translateX(0) !important; }
 }
@@ -175,7 +179,48 @@ main {
   padding: 22px 22px;
   position: relative;
   overflow: hidden;
+  opacity:0; transform:translateY(14px);
+  animation: cardIn .8s cubic-bezier(.25,.6,.3,1) forwards;
 }
+@keyframes cardIn { to { opacity:1; transform:translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .card { animation:none; opacity:1; transform:none; } }
+
+/* CTA Section */
+.cta-section { text-align:center; display:flex; flex-direction:column; gap:14px; }
+.cta-heading { margin:0; font-size:1.45rem; letter-spacing:.5px; }
+.cta-sub { margin:0; color:var(--muted); font-size:.95rem; }
+.cta-buttons { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn { --btn-bg:#000; --btn-fg:#fff; background:var(--btn-bg); color:var(--btn-fg); border:none; padding:12px 20px; font-weight:600; border-radius:10px; cursor:pointer; font-size:.8rem; letter-spacing:.5px; box-shadow:0 6px 18px -4px rgba(0,0,0,0.35); transition:transform .2s, box-shadow .2s, background .25s; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+.btn:hover { transform:translateY(-2px); box-shadow:0 10px 26px -6px rgba(0,0,0,0.4); }
+.btn-outline { --btn-bg:transparent; --btn-fg:var(--text); border:1px solid #1f1f1f; }
+[data-theme='dark'] .btn-outline { border-color:#f3f5f7; }
+.btn-primary { background:linear-gradient(135deg,#0072e0,#00b4d8); }
+.btn-primary:hover { background:linear-gradient(135deg,#0067ca,#009cc0); }
+
+/* Tech stack badges */
+.stack-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+.stack-badge { background:linear-gradient(135deg,#e8edf3,#ffffff); padding:6px 12px; font-size:.65rem; font-weight:600; border-radius:20px; letter-spacing:.5px; box-shadow:0 2px 6px rgba(0,0,0,0.08); }
+[data-theme='dark'] .stack-badge { background:#242c33; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
+
+/* Testimonials strip */
+.testimonials-strip { display:grid; gap:18px; margin-top:12px; }
+.testimonial { background:linear-gradient(135deg,#ffffff,#f3f6fa); border:1px solid #e5e8ec; padding:16px 18px; border-radius:14px; font-size:.8rem; line-height:1.45; position:relative; }
+.testimonial::before { content:'“'; position:absolute; top:8px; left:10px; font-size:2.4rem; line-height:1; color:#d0d7de; font-family:serif; }
+.testimonial cite { display:block; margin-top:8px; font-style:normal; font-weight:600; color:#1f1f1f; font-size:.7rem; letter-spacing:.5px; text-transform:uppercase; }
+[data-theme='dark'] .testimonial { background:#1e252b; border-color:#2c343b; }
+[data-theme='dark'] .testimonial::before { color:#33424d; }
+[data-theme='dark'] .testimonial cite { color:#f3f5f7; }
+
+/* Enhanced contact buttons */
+.contact-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+.contact-actions .btn { flex:1 1 auto; min-width:140px; justify-content:center; }
+
+/* Floating CTA (optional) */
+.floating-cta { position:fixed; left:18px; bottom:18px; z-index:3500; background:linear-gradient(135deg,#0072e0,#00b4d8); color:#fff; padding:10px 18px; border-radius:30px; font-size:.7rem; font-weight:600; letter-spacing:.5px; text-decoration:none; box-shadow:0 6px 18px -4px rgba(0,0,0,0.35); display:flex; align-items:center; gap:6px; }
+.floating-cta:hover { transform:translateY(-2px); box-shadow:0 10px 30px -6px rgba(0,0,0,0.45); }
+@media (max-width:640px){ .floating-cta { font-size:.65rem; padding:9px 16px; } }
+
+@media (prefers-reduced-motion: reduce) { .floating-cta, .btn { transition:none; } }
 
 .card::before {
   content: '';
