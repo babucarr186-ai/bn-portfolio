@@ -612,3 +612,9 @@ main {
   .chat-messages { flex:1 1 auto; }
   .chat-input-row { position:relative; }
 }
+
+/* Quick reply chips */
+.quick-replies { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.qr-btn { background:#eef2f7; color:#0b2137; border:none; padding:6px 10px; border-radius:999px; font-size:.65rem; font-weight:600; cursor:pointer; }
+[data-theme='dark'] .qr-btn { background:#223242; color:#eaf2fb; }
+.qr-btn:hover { opacity: .9; }
