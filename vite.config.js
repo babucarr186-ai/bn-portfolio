@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Important for GitHub Pages under /bn-portfolio/
+  base: '/bn-portfolio/',
   plugins: [react()],
   build: {
     minify: 'terser',
