@@ -47,6 +47,7 @@ function respond(intent) {
   }
 }
 
+
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -61,6 +62,18 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState(initialMessages);
   const listRef = useRef(null);
   const inputRef = useRef(null);
+  // Proactive greeting after 30s if chat not opened
+  useEffect(() => {
+    if (open) return;
+    const timer = setTimeout(() => {
+      setMessages(msgs => {
+        // Only add if not already proactively greeted
+        if (msgs.some(m => m.text.includes('Need help?'))) return msgs;
+        return [...msgs, { from: 'bot', text: "Need help? Click the chat to ask anything or get a quote!" }];
+      });
+    }, 30000);
+    return () => clearTimeout(timer);
+  }, [open]);
 
   useEffect(() => {
     if (listRef.current) {
