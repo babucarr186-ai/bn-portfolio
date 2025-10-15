@@ -4,10 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Redirecting…</title>
-    <meta http-equiv="refresh" content="0; url=/bn-portfolio/" />
+  <!-- Dynamic redirect handled by script below -->
     <script>
       (function(){
-        var base = '/bn-portfolio/';
+        // If the path includes the repo name, use that as base; otherwise root
+        var repo = 'bn-portfolio';
+        var hasRepo = location.pathname.indexOf('/'+repo+'/') !== -1;
+        var base = hasRepo ? ('/'+repo+'/') : '/';
         var target = base;
         // Preserve query/hash when possible
         if (location.search || location.hash) {
