@@ -3,6 +3,7 @@ import './App.css';
 import Calculator from './Calculator';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
+import Gallery from './Gallery';
 import { buildWhatsAppLink, WHATSAPP_DISPLAY } from './contactConfig';
 
 function ProgressChecklist({ progress }) {
@@ -250,6 +251,9 @@ export default function App() {
             </div>
           </div>
         </section>
+
+  {/* GALLERY */}
+  <Gallery />
 
         {/* CONTACT + SOCIAL */}
         <section className="card" aria-labelledby="contact-title">
