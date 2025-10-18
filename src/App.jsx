@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Calculator from './Calculator';
+// Replaced the fun calculator with a more integrated estimator
+import Estimator from './Estimator';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
 import { buildWhatsAppLink, WHATSAPP_DISPLAY } from './contactConfig';
@@ -156,10 +157,10 @@ export default function App() {
           </ul>
         </section>
 
-        {/* CALCULATOR */}
-        <section className="card" aria-labelledby="calculator-title">
-          <h2 id="calculator-title">Try Me!</h2>
-          <Calculator />
+        {/* ESTIMATOR (replaces Calculator) */}
+        <section className="card" aria-labelledby="estimator-title">
+          <h2 id="estimator-title">Plan & Price Your Project</h2>
+          <Estimator />
         </section>
 
         {/* TESTIMONIALS PLACEHOLDER */}
