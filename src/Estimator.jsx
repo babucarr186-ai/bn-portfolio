@@ -4,7 +4,7 @@ import './App.css';
 
 // Simple scoring/estimate model
 const BASES = {
-  'Landing Page': 199,
+  'Landing Page': 250,
   'Website (3-5 pages)': 499,
   'Portfolio': 449,
   'Mini Shop': 649,
@@ -44,6 +44,7 @@ export default function Estimator(){
     try { localStorage.setItem('estimator_form', JSON.stringify(form)); } catch {}
   }, [form]);
 
+  const MIN_PRICE = 250;
   const price = useMemo(() => {
     const base = BASES[form.type] || 400;
     let total = base;
@@ -54,7 +55,7 @@ export default function Estimator(){
     if (form.seo) total += ADDONS.SEO;
     if (form.automation) total += ADDONS.Automation;
     if (form.contentHelp) total += ADDONS.ContentHelp;
-    return total;
+    return Math.max(MIN_PRICE, total);
   }, [form]);
 
   function update(key, value){ setForm(prev => ({ ...prev, [key]: value })); }
@@ -89,7 +90,7 @@ export default function Estimator(){
 
   return (
     <div>
-  <p className="subtle">Pick what you need—this creates a quick brief and a ballpark figure. Starter pricing for new clients is applied. We’ll finalize on chat.</p>
+  <p className="subtle">Pick what you need—this creates a quick brief and a ballpark figure. Starter pricing from €250 is applied. We’ll finalize on chat.</p>
 
       <div className="estimator-grid">
         <div className="block">

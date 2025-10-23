@@ -131,7 +131,7 @@ export default function App() {
         {/* CTA SECTION */}
         <section className="card cta-section" aria-labelledby="cta-title">
           <h2 id="cta-title" className="cta-heading">Let’s Launch Something</h2>
-          <p className="cta-sub">Fast builds. Practical automation. Clear content systems that help you move quicker.</p>
+          <p className="cta-sub">Fast builds. Practical automation. Clear content systems that help you move quicker. Starter pricing from €250.</p>
           <div className="cta-buttons">
             <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Start WhatsApp chat">💬 WhatsApp Me</a>
             <a className="btn btn-outline" href="mailto:nget@web.de" aria-label="Send email to Bubacar">✉️ Email</a>
@@ -150,7 +150,7 @@ export default function App() {
         <section className="card" aria-labelledby="services-title">
           <h2 id="services-title">Services</h2>
           <ul className="list">
-            <li>Websites (landing pages, portfolios, mini-shops)</li>
+            <li>Websites (landing pages, portfolios, mini-shops) — from €250</li>
             <li>Content &amp; captions (TikTok / YouTube Shorts)</li>
             <li>Light SEO &amp; analytics setup</li>
             <li>Automation (lead capture, email replies, forms → sheets)</li>
