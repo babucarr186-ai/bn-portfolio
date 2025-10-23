@@ -4,18 +4,18 @@ import './App.css';
 
 // Simple scoring/estimate model
 const BASES = {
-  'Landing Page': 350,
-  'Website (3-5 pages)': 650,
-  'Portfolio': 600,
-  'Mini Shop': 900,
+  'Landing Page': 199,
+  'Website (3-5 pages)': 499,
+  'Portfolio': 449,
+  'Mini Shop': 649,
 };
 
 const ADDONS = {
-  CMS: 120,
-  Analytics: 60,
-  SEO: 80,
-  Automation: 140,
-  ContentHelp: 90,
+  CMS: 50,
+  Analytics: 20,
+  SEO: 40,
+  Automation: 70,
+  ContentHelp: 45,
 };
 
 const PLATFORMS = ['TikTok','Instagram','YouTube','Facebook','LinkedIn'];
@@ -48,7 +48,7 @@ export default function Estimator(){
     const base = BASES[form.type] || 400;
     let total = base;
     // Pages: beyond 1 adds small increment
-    if (form.type !== 'Landing Page') total += Math.max(0, form.pages - 3) * 80;
+  if (form.type !== 'Landing Page') total += Math.max(0, form.pages - 3) * 50;
     if (form.cms) total += ADDONS.CMS;
     if (form.analytics) total += ADDONS.Analytics;
     if (form.seo) total += ADDONS.SEO;
@@ -89,7 +89,7 @@ export default function Estimator(){
 
   return (
     <div>
-      <p className="subtle">Pick what you need—this creates a quick brief and a ballpark figure. We’ll finalize on chat.</p>
+  <p className="subtle">Pick what you need—this creates a quick brief and a ballpark figure. Starter pricing for new clients is applied. We’ll finalize on chat.</p>
 
       <div className="estimator-grid">
         <div className="block">
