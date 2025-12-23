@@ -4,7 +4,7 @@ import './App.css';
 import Estimator from './Estimator';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
-import { buildWhatsAppLink, WHATSAPP_DISPLAY } from './contactConfig';
+import { buildWhatsAppLink } from './contactConfig';
 
 function ProgressChecklist({ progress }) {
   const [open, setOpen] = useState(typeof window !== 'undefined' ? window.innerWidth > 640 : true);
@@ -268,35 +268,14 @@ export default function App() {
               href={buildWhatsAppLink()}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Open WhatsApp chat with Bubacar at 0174 317 3671"
+              aria-label="Open WhatsApp chat with Bubacar"
             >
-              {WHATSAPP_DISPLAY}
+              Chat on WhatsApp
             </a>
           </p>
           <div className="contact-actions">
             <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer">Chat Now</a>
             <a className="btn btn-outline" href="mailto:nget@web.de">Email Me</a>
-          </div>
-
-          <div className="social">
-            <a
-              className="social-link"
-              href="https://www.youtube.com/@pmoney186"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube channel @pmoney186"
-            >
-              YouTube @pmoney186
-            </a>
-            <a
-              className="social-link"
-              href="https://www.tiktok.com/@pmoney1861"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="TikTok account @pmoney1861"
-            >
-              TikTok @pmoney1861
-            </a>
           </div>
         </section>
       </main>
