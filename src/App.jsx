@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-// Replaced the fun calculator with a more integrated estimator
-import Estimator from './Estimator';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
 import { buildWhatsAppLink } from './contactConfig';
@@ -35,7 +33,6 @@ function ProgressChecklist({ progress }) {
 export default function App() {
   const params = new URLSearchParams(window.location.search);
   const iphone = params.get('iphone') === '1';
-  const previewOverride = params.get('preview') === '1';
 
   // Theme state
   const storedTheme = (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) || '';
@@ -72,7 +69,7 @@ export default function App() {
   // If percent reaches threshold we could auto-unlock; leave manual lock for now
   const AUTO_UNLOCK_THRESHOLD = 80;
   const autoUnlocked = projectProgress.percent >= AUTO_UNLOCK_THRESHOLD;
-  const showLiveLink = previewOverride || autoUnlocked || !UNDER_CONSTRUCTION_LOCKED;
+  const showLiveLink = autoUnlocked || !UNDER_CONSTRUCTION_LOCKED;
 
   const content = (
     <div className="site">
@@ -131,7 +128,7 @@ export default function App() {
         {/* CTA SECTION */}
         <section className="card cta-section" aria-labelledby="cta-title">
           <h2 id="cta-title" className="cta-heading">Let’s Launch Something</h2>
-          <p className="cta-sub">Fast builds. Practical automation. Clear content systems that help you move quicker. Starter pricing from €250.</p>
+          <p className="cta-sub">Fast builds. Practical automation. Clear content systems that help you move quicker.</p>
           <div className="cta-buttons">
             <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Start WhatsApp chat">💬 WhatsApp Me</a>
             <a className="btn btn-outline" href="mailto:nget@web.de" aria-label="Send email to Bubacar">✉️ Email</a>
@@ -150,17 +147,11 @@ export default function App() {
         <section className="card" aria-labelledby="services-title">
           <h2 id="services-title">Services</h2>
           <ul className="list">
-            <li>Websites (landing pages, portfolios, mini-shops) — from €250</li>
+            <li>Websites (landing pages, portfolios, mini-shops)</li>
             <li>Content &amp; captions (TikTok / YouTube Shorts)</li>
             <li>Light SEO &amp; analytics setup</li>
             <li>Automation (lead capture, email replies, forms → sheets)</li>
           </ul>
-        </section>
-
-        {/* ESTIMATOR (replaces Calculator) */}
-        <section className="card" aria-labelledby="estimator-title">
-          <h2 id="estimator-title">Plan & Price Your Project</h2>
-          <Estimator />
         </section>
 
         {/* TESTIMONIALS PLACEHOLDER */}
@@ -239,11 +230,6 @@ export default function App() {
                   </button>
                 )}
               </div>
-              {!showLiveLink && (
-                <p style={{fontSize:'0.75rem',margin:'4px 0 0',color:'#6b6b6b'}}>
-                  Add <code>?preview=1</code> to the URL to view (owner override).
-                </p>
-              )}
               <div className="project-tags">
                 <span className="tag">In Progress</span>
                 <span className="tag">Vercel</span>

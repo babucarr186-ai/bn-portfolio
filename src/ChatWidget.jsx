@@ -8,8 +8,8 @@ import './App.css';
   - Stores conversation in memory (resets on reload)
   - Can export conversation to WhatsApp with a single click
   Smarter add-ons:
-  - Keyword scoring + entity extraction (budget, timeline, platform, type, email)
-  - Slot-filling quote flow with quick-reply chips
+  - Keyword scoring + entity extraction (timeline, platform, type, email)
+  - Slot-filling project brief flow with quick-reply chips
   - Lead state persisted and included in WhatsApp export
   NOTE: This is NOT a real AI or WhatsApp bot. For production automation you would
   integrate WhatsApp Business Cloud API or a service like Twilio.
@@ -18,11 +18,11 @@ import './App.css';
 const BOT_NAME = 'Assistant';
 const OWNER_NAME = 'Bubacar';
 
+
 // Lightweight knowledge base
 const KB = {
   intents: {
     greeting: ['hello','hi','hey','salaam','salam','hallo','moin'],
-    pricing: ['price','cost','fee','how much','budget','quote','estimate'],
     services: ['service','offer','what can you do','help','capabilities'],
     web: ['website','site','page','landing','portfolio','shop','ecommerce'],
     marketing: ['marketing','seo','promotion','traffic','analytics','content'],
@@ -47,13 +47,6 @@ function scoreIntent(text) {
 
 function extractEntities(text) {
   const t = text.toLowerCase();
-  // Budget: numbers like 300, 500, 1k
-  const budgetMatch = t.match(/\b(€|eur|euro)?\s?(\d{2,5})(?:\s?(k))?\b/);
-  let budget = null;
-  if (budgetMatch) {
-    const num = parseInt(budgetMatch[2], 10);
-    budget = budgetMatch[3] ? num * 1000 : num;
-  }
   // Timeline: e.g., 2 weeks, 1 month, asap
   const tlMatch = t.match(/\b(\d{1,2})\s*(week|weeks|month|months|day|days)\b/);
   const asap = /asap|soon|urgent|quick/.test(t);
@@ -64,10 +57,10 @@ function extractEntities(text) {
   // Email
   const contactEmailMatch = t.match(/[\w.+-]+@[\w-]+\.[\w.-]+/);
   const contactEmail = contactEmailMatch ? contactEmailMatch[0] : null;
-  return { budget, timeline, platform, projectType, contactEmail };
+  return { timeline, platform, projectType, contactEmail };
 }
 
-const FLOW_ORDER = ['projectType','platform','budget','timeline','contactEmail'];
+const FLOW_ORDER = ['projectType','platform','timeline','contactEmail'];
 function nextMissing(lead) {
   return FLOW_ORDER.find(k => !lead[k]) || null;
 }
@@ -75,7 +68,6 @@ function nextMissing(lead) {
 function classifyMessage(text) {
   const t = text.toLowerCase();
   if (/hello|hi|hey|salaam|salam/.test(t)) return 'greeting';
-  if (/price|cost|fee|much/.test(t)) return 'pricing';
   if (/service|offer|what can you do|help/.test(t)) return 'services';
   if (/website|site|page|landing/.test(t)) return 'web';
   if (/market|seo|promotion|traffic/.test(t)) return 'marketing';
@@ -88,8 +80,6 @@ function respond(intent) {
   switch (intent) {
     case 'greeting':
       return "Hi! I'm here for Bubacar. How can I help you today?";
-    case 'pricing':
-      return 'Pricing depends on scope. Basic landing pages start simple; tell me what you need and I can note it for a quote.';
     case 'services':
       return 'Core areas: Web development, digital marketing support, light automation, and content help. What are you interested in?';
     case 'web':
@@ -110,22 +100,33 @@ export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
+  const defaultMessage = { from: 'bot', text: `Hello! I'm a helper for ${OWNER_NAME}. How can I help you?` };
   const initialMessages = (() => {
     try {
       const stored = localStorage.getItem('chat_messages');
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return parsed;
+      }
     } catch {}
-    return [{ from: 'bot', text: `Hello! I'm a helper for ${OWNER_NAME}. How can I help you?` }];
+    return [defaultMessage];
   })();
   const [messages, setMessages] = useState(initialMessages);
   const initialLead = (() => {
-    try { const stored = localStorage.getItem('chat_lead'); if (stored) return JSON.parse(stored); } catch {}
-    return { projectType: null, platform: null, budget: null, timeline: null, contactEmail: null };
+    try {
+      const stored = localStorage.getItem('chat_lead');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return parsed;
+      }
+    } catch {}
+    return { projectType: null, platform: null, timeline: null, contactEmail: null };
   })();
   const [lead, setLead] = useState(initialLead);
   const [stage, setStage] = useState(nextMissing(initialLead) ? 'collect' : 'idle');
   const listRef = useRef(null);
   const inputRef = useRef(null);
+
   // Proactive greeting after 30s if chat not opened
   useEffect(() => {
     if (open) return;
@@ -133,7 +134,7 @@ export default function ChatWidget() {
       setMessages(msgs => {
         // Only add if not already proactively greeted
         if (msgs.some(m => m.text.includes('Need help?'))) return msgs;
-        return [...msgs, { from: 'bot', text: "Need help? Click the chat to ask anything or get a quote!" }];
+        return [...msgs, { from: 'bot', text: 'Need help? Click the chat to ask anything or share your project details.' }];
       });
     }, 30000);
     return () => clearTimeout(timer);
@@ -177,7 +178,7 @@ export default function ChatWidget() {
   }
 
   function exportToWhatsApp() {
-    const leadSummary = `\n\nLead Summary\n- Project: ${lead.projectType || '—'}\n- Platform: ${lead.platform || '—'}\n- Budget: ${lead.budget ? '€'+lead.budget : '—'}\n- Timeline: ${lead.timeline || '—'}\n- Email: ${lead.contactEmail || '—'}`;
+    const leadSummary = `\n\nLead Summary\n- Project: ${lead.projectType || '—'}\n- Platform: ${lead.platform || '—'}\n- Timeline: ${lead.timeline || '—'}\n- Email: ${lead.contactEmail || '—'}`;
     const body = messages.map(m => (m.from === 'user' ? 'You: ' : BOT_NAME + ': ') + m.text).join('\n') + leadSummary;
     const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent('Conversation summary:%0A' + body + '\n\nMy message: ')}`;
     window.open(url, '_blank', 'noopener');
@@ -185,7 +186,7 @@ export default function ChatWidget() {
 
   function clearChat() {
     setMessages([{ from: 'bot', text: `Chat cleared. I'm still here for ${OWNER_NAME}. How can I help now?` }]);
-    setLead({ projectType: null, platform: null, budget: null, timeline: null, contactEmail: null });
+    setLead({ projectType: null, platform: null, timeline: null, contactEmail: null });
     setStage('idle');
   }
 
@@ -193,7 +194,7 @@ export default function ChatWidget() {
     const missing = nextMissing(state);
     if (!missing) {
       setStage('done');
-      return { text: 'Thanks! I have enough to draft an estimate. Send to WhatsApp now?', suggestions: ['Send to WhatsApp','Start over'] };
+      return { text: 'Thanks! I have enough details. Send to WhatsApp now?', suggestions: ['Send to WhatsApp','Start over'] };
     }
     setStage('collect');
     switch (missing) {
@@ -201,12 +202,10 @@ export default function ChatWidget() {
         return { text: 'Is this a landing page, website, portfolio, or small shop?', suggestions: ['Landing page','Website','Portfolio','Shop'] };
       case 'platform':
         return { text: 'Which platform matters most? (TikTok, Instagram, YouTube...)', suggestions: ['TikTok','Instagram','YouTube','Not sure'] };
-      case 'budget':
-        return { text: 'Rough budget helps scoping. Any range in mind?', suggestions: ['€300','€500','€1000','Not sure'] };
       case 'timeline':
         return { text: 'What timeline are you aiming for?', suggestions: ['ASAP','2 weeks','1 month','No rush'] };
       case 'contactEmail':
-        return { text: 'What email should we use for a proposal?', suggestions: ['Use WhatsApp only'] };
+        return { text: 'What email should we use to follow up?', suggestions: ['Use WhatsApp only'] };
       default:
         return { text: "Got it. Anything else you'd like to add?", suggestions: [] };
     }
@@ -218,8 +217,7 @@ export default function ChatWidget() {
     const next = askNext(merged);
     if (next && next.text) return next.text;
     switch (intent) {
-      case 'greeting': return 'Hi! I can help with websites, marketing and small automations. Want a quick quote?';
-      case 'pricing': return 'Pricing depends on scope. I can note a few details and give you a rough estimate.';
+      case 'greeting': return 'Hi! I can help with websites, marketing and small automations. Want to share a few details?';
       case 'services': return 'Core areas: Web, marketing support, and light automation. Start with project type?';
       case 'web': return 'Website help—great. Tell me if it is a landing page, portfolio or shop.';
       case 'marketing': return 'For marketing: quick SEO, analytics, and content workflows. Which platform matters most?';
@@ -234,8 +232,7 @@ export default function ChatWidget() {
     const missing = nextMissing(lead);
     if (missing) return askNext(lead).suggestions || [];
     switch (intent) {
-      case 'greeting': return ['Get a quote','Services','Website'];
-      case 'pricing': return ['€300','€500','€1000'];
+      case 'greeting': return ['Services','Website','Marketing'];
       case 'web': return ['Landing page','Portfolio','Shop'];
       case 'marketing': return ['TikTok','Instagram','YouTube'];
       default: return ['Website','Marketing','Automation'];
