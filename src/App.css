@@ -210,6 +210,10 @@ main {
 .btn-primary { background:linear-gradient(135deg,#0072e0,#00b4d8); }
 .btn-primary:hover { background:linear-gradient(135deg,#0067ca,#009cc0); }
 
+/* Icon alignment (Apple-like glyph feel) */
+.btn svg { width: 16px; height: 16px; display: block; }
+.floating-cta svg { width: 16px; height: 16px; display: block; }
+
 /* Tech stack badges */
 .stack-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
 .stack-badge { background:linear-gradient(135deg,#e8edf3,#ffffff); padding:6px 12px; font-size:.65rem; font-weight:600; border-radius:20px; letter-spacing:.5px; box-shadow:0 2px 6px rgba(0,0,0,0.08); }
@@ -539,15 +543,16 @@ main {
 .check-icon {
   width: 14px;
   flex: 0 0 14px;
-  font-size: 0.7rem;
-  line-height: 1.2rem;
-  text-align: center;
+  display: grid;
+  place-items: center;
   border-radius: 4px;
   font-weight: 700;
   color: #fff;
   background: #bbb;
   margin-top: 1px;
 }
+
+.check-icon svg { width: 14px; height: 14px; display: block; }
 
 .progress-checklist li.done .check-icon { background: #2e7d32; }
 .progress-checklist li.todo .check-icon { background: #bbb; }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Calculator.css";
+import { Smile } from 'lucide-react';
 
 const calculate = (expression) => {
   // Remove any whitespace and validate input
@@ -130,7 +131,7 @@ function Calculator() {
   return (
     <div className="calculator-container" role="application" aria-label="Joke Calculator">
       <div className="calc-header">
-        <h3 className="calc-title">Joke Calculator <span aria-hidden>😄</span></h3>
+        <h3 className="calc-title">Joke Calculator <span aria-hidden><Smile size={16} /></span></h3>
         <button
           type="button"
           className="hint-toggle"

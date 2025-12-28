@@ -3,9 +3,11 @@ import './App.css';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
 import { buildWhatsAppLink } from './contactConfig';
+import { Check, Circle, Mail, MessageCircle, Moon, Rocket, Sun } from 'lucide-react';
 
 function ProgressChecklist({ progress }) {
   const [open, setOpen] = useState(typeof window !== 'undefined' ? window.innerWidth > 640 : true);
+  const iconSize = 14;
   return (
     <div>
       <button
@@ -20,7 +22,9 @@ function ProgressChecklist({ progress }) {
         <ul className="progress-checklist">
           {progress.tasks.map((t, i) => (
             <li key={i} className={t.done ? 'done' : 'todo'}>
-              <span className="check-icon" aria-hidden="true">{t.done ? '✔' : '•'}</span>
+              <span className="check-icon" aria-hidden="true">
+                {t.done ? <Check size={iconSize} /> : <Circle size={iconSize} />}
+              </span>
               <span className="task-label">{t.label}</span>
             </li>
           ))}
@@ -75,7 +79,15 @@ export default function App() {
     <div className="site">
       <div className="theme-toggle-wrapper">
         <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle dark mode" aria-pressed={theme === 'dark'}>
-          {theme === 'dark' ? '🌞 Light' : '🌙 Dark'}
+          {theme === 'dark' ? (
+            <>
+              <Sun size={16} /> Light
+            </>
+          ) : (
+            <>
+              <Moon size={16} /> Dark
+            </>
+          )}
         </button>
       </div>
       {/* HERO */}
@@ -130,8 +142,12 @@ export default function App() {
           <h2 id="cta-title" className="cta-heading">Let’s Launch Something</h2>
           <p className="cta-sub">Fast builds. Practical automation. Clear content systems that help you move quicker.</p>
           <div className="cta-buttons">
-            <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Start WhatsApp chat">💬 WhatsApp Me</a>
-            <a className="btn btn-outline" href="mailto:nget@web.de" aria-label="Send email to Bubacar">✉️ Email</a>
+            <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Start WhatsApp chat">
+              <MessageCircle size={16} /> WhatsApp Me
+            </a>
+            <a className="btn btn-outline" href="mailto:nget@web.de" aria-label="Send email to Bubacar">
+              <Mail size={16} /> Email
+            </a>
           </div>
           <div className="stack-row" aria-label="Primary technologies and focus areas">
             <span className="stack-badge">React</span>
@@ -276,7 +292,9 @@ export default function App() {
     <>
       {iphone ? <IPhonePreview>{content}</IPhonePreview> : content}
       <ChatWidget />
-      <a className="floating-cta" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to start a project">🚀 Start a Project</a>
+      <a className="floating-cta" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to start a project">
+        <Rocket size={16} /> Start a Project
+      </a>
     </>
   );
 }
