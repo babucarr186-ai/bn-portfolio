@@ -76,25 +76,6 @@ function classifyMessage(text) {
   return 'fallback';
 }
 
-function respond(intent) {
-  switch (intent) {
-    case 'greeting':
-      return "Hi! I'm here for Bubacar. How can I help you today?";
-    case 'services':
-      return 'Core areas: Web development, digital marketing support, light automation, and content help. What are you interested in?';
-    case 'web':
-      return 'Need a website or landing page? Share purpose (portfolio, event, business leads) and rough content length.';
-    case 'marketing':
-      return 'For marketing we keep it lean: quick SEO setup, analytics, and content workflow. What platform matters most to you?';
-    case 'thanks':
-      return 'Glad to help! Ask anything else or send the chat to WhatsApp so Bubacar can follow up.';
-    case 'bye':
-      return 'Talk soon! You can export this conversation to WhatsApp if you want a direct follow-up.';
-    default:
-      return "I noted that. Want to tell me if this is about a website, marketing, automation, or something else?";
-  }
-}
-
 
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
@@ -108,7 +89,7 @@ export default function ChatWidget() {
         const parsed = JSON.parse(stored);
         return parsed;
       }
-    } catch {}
+    } catch (e) { void e; }
     return [defaultMessage];
   })();
   const [messages, setMessages] = useState(initialMessages);
@@ -119,7 +100,7 @@ export default function ChatWidget() {
         const parsed = JSON.parse(stored);
         return parsed;
       }
-    } catch {}
+    } catch (e) { void e; }
     return { projectType: null, platform: null, timeline: null, contactEmail: null };
   })();
   const [lead, setLead] = useState(initialLead);
@@ -144,11 +125,11 @@ export default function ChatWidget() {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
     }
-    try { localStorage.setItem('chat_messages', JSON.stringify(messages)); } catch {}
+    try { localStorage.setItem('chat_messages', JSON.stringify(messages)); } catch (e) { void e; }
   }, [messages, open]);
 
   useEffect(() => {
-    try { localStorage.setItem('chat_lead', JSON.stringify(lead)); } catch {}
+    try { localStorage.setItem('chat_lead', JSON.stringify(lead)); } catch (e) { void e; }
   }, [lead]);
 
   function sendUser() {
@@ -160,7 +141,7 @@ export default function ChatWidget() {
     setTimeout(() => {
       // Extract and store any entities
       const ent = extractEntities(trimmed);
-      setLead(prev => ({ ...prev, ...Object.fromEntries(Object.entries(ent).filter(([_,v]) => v)) }));
+      setLead(prev => ({ ...prev, ...Object.fromEntries(Object.entries(ent).filter(([, v]) => v)) }));
       // Determine intent with scoring fallback
       const intent = scoreIntent(trimmed) || classifyMessage(trimmed);
       const reply = buildReply(intent, trimmed);
@@ -213,7 +194,7 @@ export default function ChatWidget() {
 
   function buildReply(intent, text) {
     const ent = extractEntities(text);
-    const merged = { ...lead, ...Object.fromEntries(Object.entries(ent).filter(([_,v]) => v)) };
+    const merged = { ...lead, ...Object.fromEntries(Object.entries(ent).filter(([, v]) => v)) };
     const next = askNext(merged);
     if (next && next.text) return next.text;
     switch (intent) {
@@ -253,7 +234,7 @@ export default function ChatWidget() {
     setTyping(true);
     setTimeout(() => {
       const ent = extractEntities(text);
-      setLead(prev => ({ ...prev, ...Object.fromEntries(Object.entries(ent).filter(([_,v]) => v)) }));
+      setLead(prev => ({ ...prev, ...Object.fromEntries(Object.entries(ent).filter(([, v]) => v)) }));
       const intent = scoreIntent(text) || classifyMessage(text);
       const reply = buildReply(intent, text);
       const suggestions = buildQuickReplies(intent);

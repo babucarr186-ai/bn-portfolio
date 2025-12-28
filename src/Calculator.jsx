@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import "./Calculator.css";
 import { Smile } from 'lucide-react';
 
@@ -69,21 +69,21 @@ function Calculator() {
   const [showHints, setShowHints] = useState(false);
   const maxLength = 12; // Maximum input length
 
-  const handleClick = (value) => {
+  const handleClick = useCallback((value) => {
     if (input.length >= maxLength) return;
     const lastChar = input.slice(-1);
     if (["+","-","*","/"].includes(value) && ["+","-","*","/"].includes(lastChar)) {
       return;
     }
     setInput((prev) => prev + value);
-  };
+  }, [input, maxLength]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setInput("");
     setResult("");
-  };
+  }, []);
 
-  const handleCalculate = () => {
+  const handleCalculate = useCallback(() => {
     try {
       if (input === "1*1") {
         setResult("Pmoney186 🇬🇲");
@@ -97,10 +97,11 @@ function Calculator() {
         const calculatedResult = calculate(input);
         setResult(calculatedResult);
       }
-    } catch {
+    } catch (e) {
+      void e;
       setResult("Error");
     }
-  };
+  }, [input]);
 
   const surprise = () => {
     const pool = jokeOrder.filter(code => code !== "0*0");
@@ -126,7 +127,7 @@ function Calculator() {
     };
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [input]);
+  }, [handleCalculate, handleClick, handleClear]);
 
   return (
     <div className="calculator-container" role="application" aria-label="Joke Calculator">
