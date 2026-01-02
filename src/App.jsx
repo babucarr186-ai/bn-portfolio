@@ -69,7 +69,7 @@ export default function App() {
   };
 
   // Update this timestamp when you deploy new progress
-  const LAST_UPDATED = '2025-10-07';
+  const LAST_UPDATED = '2026-01-02';
 
   // If percent reaches threshold we could auto-unlock; leave manual lock for now
   const AUTO_UNLOCK_THRESHOLD = 80;
@@ -286,7 +286,7 @@ export default function App() {
       </main>
 
       <footer className="footer">
-        © 2025 Bubacar Nget
+        © 2026 Bubacar Nget
       </footer>
     </div>
   );
