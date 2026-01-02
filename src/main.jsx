@@ -17,8 +17,10 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error('App Error:', error);
-    console.error('Error Info:', errorInfo);
+    if (import.meta.env.DEV) {
+      console.error('App Error:', error);
+      console.error('Error Info:', errorInfo);
+    }
   }
 
   render() {
@@ -36,14 +38,6 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-
-// Performance monitoring
-const reportWebVitals = (metric) => {
-  console.log(metric);
-};
-
-// Boot sequence
-console.log('Boot: main.jsx loaded');
 
 // Smooth scrolling (iOS-like feel) with reduced-motion fallback
 try {
@@ -70,7 +64,7 @@ try {
     requestAnimationFrame(raf);
   }
 } catch (e) {
-  console.warn('Lenis init skipped:', e);
+  if (import.meta.env.DEV) console.warn('Lenis init skipped:', e);
 }
 
 const rootEl = document.getElementById('root');
@@ -86,7 +80,4 @@ if (!rootEl) {
       </ErrorBoundary>
     </React.StrictMode>
   );
-
-  // Monitor performance
-  reportWebVitals();
 }

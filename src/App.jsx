@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
+import Estimator from './Estimator';
 import { buildWhatsAppLink } from './contactConfig';
 import { Check, Circle, Mail, MessageCircle, Moon, Rocket, Sun } from 'lucide-react';
 
@@ -169,6 +170,8 @@ export default function App() {
             <li>Automation (lead capture, email replies, forms → sheets)</li>
           </ul>
         </section>
+
+        <Estimator />
 
         {/* TESTIMONIALS PLACEHOLDER */}
         <section className="card" aria-labelledby="testimonials-title">
