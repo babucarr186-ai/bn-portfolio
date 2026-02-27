@@ -76,8 +76,9 @@ export default function App() {
     if (prefersReducedMotion) return;
 
     let rafId = 0;
-    let currentDeg = -12;
-    let targetDeg = -12;
+    let animating = false;
+    let currentDeg = -18;
+    let targetDeg = -18;
     let currentOffset = 0;
     let targetOffset = 0;
 
@@ -90,22 +91,36 @@ export default function App() {
     }
 
     function tick() {
-      // Ease toward target values
-      currentDeg += (targetDeg - currentDeg) * 0.08;
-      currentOffset += (targetOffset - currentOffset) * 0.08;
+      // Ease toward target values (lower = less "animated")
+      const ease = 0.065;
+      currentDeg += (targetDeg - currentDeg) * ease;
+      currentOffset += (targetOffset - currentOffset) * ease;
 
-      el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotateX(14deg) rotateY(-18deg) rotateZ(${currentDeg}deg)`;
+      el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotateX(12deg) rotateY(-16deg) rotateZ(${currentDeg}deg)`;
+
+      const degDone = Math.abs(targetDeg - currentDeg) < 0.03;
+      const offsetDone = Math.abs(targetOffset - currentOffset) < 0.06;
+      if (degDone && offsetDone) {
+        animating = false;
+        rafId = 0;
+        return;
+      }
       rafId = requestAnimationFrame(tick);
     }
 
-    const onScroll = () => updateTargets();
+    const onScroll = () => {
+      updateTargets();
+      if (!animating) {
+        animating = true;
+        rafId = requestAnimationFrame(tick);
+      }
+    };
     updateTargets();
-    rafId = requestAnimationFrame(tick);
     window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
