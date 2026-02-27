@@ -845,10 +845,10 @@
         if (y === lastY) return;
         lastY = y;
 
-        // Rotation (0° → 150°) from top to bottom of the page
+        // Rotation (0° → 80°) from top to bottom of the page
         const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const progress = Math.max(0, Math.min(1, y / maxScroll));
-        const angle = progress * 150;
+        const angle = progress * 80;
         rootStyle.setProperty('--bg-rot', angle.toFixed(2) + 'deg');
       }
 
