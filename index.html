@@ -39,6 +39,9 @@
       /* Background image source (replace with your own photo) */
       --bg-image: url('iphone-air.webp');
 
+      /* Scroll-linked background rotation */
+      --bg-rot: 0deg;
+
       /* Brand button (kept simple, premium, not flashy) */
       --btn: #0b0f16;
       --btnText: #ffffff;
@@ -65,8 +68,10 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
-      opacity: 0.36; /* visibility: adjust if you want stronger */
-      filter: saturate(1.02) contrast(1.02);
+      opacity: 0.52; /* visibility: adjust if you want stronger */
+      filter: saturate(1.03) contrast(1.03);
+      transform: rotate(var(--bg-rot)) scale(1.12);
+      transform-origin: center;
       pointer-events: none;
       z-index: -2;
     }
@@ -76,7 +81,7 @@
       content:"";
       position: fixed;
       inset: 0;
-      background: radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,0.55), rgba(255,255,255,0.88) 55%, rgba(255,255,255,0.96));
+      background: radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,0.38), rgba(255,255,255,0.82) 55%, rgba(255,255,255,0.94));
       pointer-events: none;
       z-index: -1;
     }
@@ -823,6 +828,35 @@
 
       window.open(buildWhatsAppLink(msg), '_blank', 'noopener,noreferrer');
     });
+
+    // Subtle scroll-linked rotation for the fixed background photo
+    (function initScrollBgRotation(){
+      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      if (reduceMotion) return;
+
+      const rootStyle = document.documentElement.style;
+      let rafId = 0;
+      let lastY = -1;
+
+      function update(){
+        rafId = 0;
+        const y = window.scrollY || 0;
+        if (y === lastY) return;
+        lastY = y;
+
+        // 0deg -> ~6deg as you scroll down (clamped)
+        const angle = Math.max(0, Math.min(6, (y / 1000) * 6));
+        rootStyle.setProperty('--bg-rot', angle.toFixed(2) + 'deg');
+      }
+
+      function onScroll(){
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(update);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      update();
+    })();
   </script>
 </body>
 </html>
