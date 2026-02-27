@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
@@ -62,6 +62,53 @@ export default function App() {
     []
   );
 
+  const airPhoneRef = useRef(null);
+
+  useEffect(() => {
+    const el = airPhoneRef.current;
+    if (!el) return;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) return;
+
+    let rafId = 0;
+    let currentDeg = -12;
+    let targetDeg = -12;
+    let currentOffset = 0;
+    let targetOffset = 0;
+
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    function updateTargets() {
+      const y = window.scrollY || 0;
+      targetDeg = -12 + y * 0.04;
+      targetOffset = clamp(y * 0.02, -24, 36);
+    }
+
+    function tick() {
+      // Ease toward target values
+      currentDeg += (targetDeg - currentDeg) * 0.08;
+      currentOffset += (targetOffset - currentOffset) * 0.08;
+
+      el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotate(${currentDeg}deg)`;
+      rafId = requestAnimationFrame(tick);
+    }
+
+    const onScroll = () => updateTargets();
+    updateTargets();
+    rafId = requestAnimationFrame(tick);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   const [reqModel, setReqModel] = useState('');
   const [reqStorage, setReqStorage] = useState('');
   const [reqColor, setReqColor] = useState('');
@@ -93,6 +140,16 @@ export default function App() {
 
   const content = (
     <div className="site">
+      <div className="air-phone-bg" aria-hidden="true">
+        <img
+          ref={airPhoneRef}
+          className="air-phone"
+          src={import.meta.env.BASE_URL + 'iphone-pro.svg'}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
       <div className="shop-topbar">
         <div className="shop-brand" aria-label="Store name">
           <ShoppingBag size={18} aria-hidden="true" />

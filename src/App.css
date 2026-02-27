@@ -67,6 +67,41 @@ body {
   max-width: 880px;
   margin: 0 auto;
   padding: 0 20px 56px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Floating iPhone background (rotates on scroll) */
+.air-phone-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.air-phone {
+  position: absolute;
+  left: 78%;
+  top: 52%;
+  width: min(520px, 70vw);
+  height: auto;
+  opacity: 0.14;
+  filter: saturate(1.05);
+  transform: translate3d(-50%, -50%, 0) rotate(-12deg);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+[data-theme='dark'] .air-phone {
+  opacity: 0.10;
+}
+
+.iphone-frame .air-phone-bg {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .air-phone-bg { display: none; }
 }
 
 /* Shop top bar */
