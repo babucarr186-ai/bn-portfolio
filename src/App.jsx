@@ -85,8 +85,8 @@ export default function App() {
 
     function updateTargets() {
       const y = window.scrollY || 0;
-      targetDeg = -12 + y * 0.04;
-      targetOffset = clamp(y * 0.02, -24, 36);
+      targetDeg = clamp(-18 + y * 0.06, -18, 32);
+      targetOffset = clamp(y * 0.03, -18, 54);
     }
 
     function tick() {
@@ -94,7 +94,7 @@ export default function App() {
       currentDeg += (targetDeg - currentDeg) * 0.08;
       currentOffset += (targetOffset - currentOffset) * 0.08;
 
-      el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotate(${currentDeg}deg)`;
+      el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotateX(14deg) rotateY(-18deg) rotateZ(${currentDeg}deg)`;
       rafId = requestAnimationFrame(tick);
     }
 
@@ -144,7 +144,7 @@ export default function App() {
         <img
           ref={airPhoneRef}
           className="air-phone"
-          src={import.meta.env.BASE_URL + 'iphone-pro.svg'}
+          src={import.meta.env.BASE_URL + 'iphone-air.svg'}
           alt=""
           loading="lazy"
           decoding="async"
@@ -203,11 +203,6 @@ export default function App() {
           <div className="trust-item"><MapPin size={16} aria-hidden="true" /><span>{STORE_LOCATION}</span></div>
         </div>
 
-        <div className="wave-stack" aria-hidden="true">
-          <div className="wave-layer wave-back"></div>
-          <div className="wave-layer wave-mid"></div>
-          <div className="wave-layer wave-front"></div>
-        </div>
       </header>
 
       <main>
