@@ -63,10 +63,15 @@ export default function App() {
   );
 
   const airPhoneRef = useRef(null);
+  const heroRef = useRef(null);
+  const heroCopyRef = useRef(null);
 
   useEffect(() => {
     const el = airPhoneRef.current;
     if (!el) return;
+
+    const heroEl = heroRef.current;
+    const heroCopyEl = heroCopyRef.current;
 
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
@@ -82,12 +87,39 @@ export default function App() {
     let currentOffset = 0;
     let targetOffset = 0;
 
+    // Fade copy out as user scrolls down the hero.
+    let copyOpacity = 1;
+    let targetCopyOpacity = 1;
+    let bgOpacity = theme === 'dark' ? 0.24 : 0.30;
+    let targetBgOpacity = bgOpacity;
+
     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    function updateHeroTargets() {
+      if (!heroEl || !heroCopyEl) {
+        targetCopyOpacity = 1;
+        targetBgOpacity = bgOpacity;
+        return;
+      }
+
+      const rect = heroEl.getBoundingClientRect();
+      const h = Math.max(1, rect.height);
+
+      // progress: 0 at top, 1 when hero is mostly scrolled past
+      const progress = clamp((-rect.top) / (h * 0.70), 0, 1);
+
+      // Keep it gentle and readable; only fade the copy.
+      targetCopyOpacity = clamp(1 - progress * 1.08, 0, 1);
+
+      // As text fades, let the background iPhone become slightly clearer.
+      targetBgOpacity = clamp(bgOpacity + progress * 0.10, 0, 0.52);
+    }
 
     function updateTargets() {
       const y = window.scrollY || 0;
       targetDeg = clamp(-18 + y * 0.06, -18, 32);
       targetOffset = clamp(y * 0.03, -18, 54);
+      updateHeroTargets();
     }
 
     function tick() {
@@ -96,11 +128,23 @@ export default function App() {
       currentDeg += (targetDeg - currentDeg) * ease;
       currentOffset += (targetOffset - currentOffset) * ease;
 
+      copyOpacity += (targetCopyOpacity - copyOpacity) * ease;
+      bgOpacity += (targetBgOpacity - bgOpacity) * ease;
+
       el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotateX(12deg) rotateY(-16deg) rotateZ(${currentDeg}deg)`;
+      el.style.opacity = `${bgOpacity}`;
+
+      if (heroCopyEl) {
+        heroCopyEl.style.opacity = `${copyOpacity}`;
+        heroCopyEl.style.transform = `translate3d(0, ${(-1 + (1 - copyOpacity)) * 8}px, 0)`;
+        heroCopyEl.style.pointerEvents = copyOpacity < 0.15 ? 'none' : 'auto';
+      }
 
       const degDone = Math.abs(targetDeg - currentDeg) < 0.03;
       const offsetDone = Math.abs(targetOffset - currentOffset) < 0.06;
-      if (degDone && offsetDone) {
+      const copyDone = Math.abs(targetCopyOpacity - copyOpacity) < 0.01;
+      const bgDone = Math.abs(targetBgOpacity - bgOpacity) < 0.01;
+      if (degDone && offsetDone && copyDone && bgDone) {
         animating = false;
         rafId = 0;
         return;
@@ -122,7 +166,7 @@ export default function App() {
       window.removeEventListener('scroll', onScroll);
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [theme]);
 
   const [reqModel, setReqModel] = useState('');
   const [reqStorage, setReqStorage] = useState('');
@@ -189,35 +233,37 @@ export default function App() {
         </button>
       </div>
 
-      <header className="hero shop-hero" aria-labelledby="site-title">
-        <h1 id="site-title" className="shop-hero-title">Original Apple products, only.</h1>
-        <p className="shop-hero-sub">
-          Located in {STORE_LOCATION}. Request iPhone availability and we’ll confirm what’s in stock.
-        </p>
+      <header ref={heroRef} className="hero shop-hero" aria-labelledby="site-title">
+        <div ref={heroCopyRef} className="hero-copy">
+          <h1 id="site-title" className="shop-hero-title">Original Apple products, only.</h1>
+          <p className="shop-hero-sub">
+            Located in {STORE_LOCATION}. Request iPhone availability and we’ll confirm what’s in stock.
+          </p>
+          <div className="cta-buttons" aria-label="Primary actions">
+            <a
+              className="btn btn-primary"
+              href={buildWhatsAppLink(`Hi ${STORE_NAME}! I want to request iPhone availability in ${STORE_LOCATION}.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MessageCircle size={16} /> Request availability (WhatsApp)
+            </a>
+            <a className="btn btn-outline" href={`mailto:${SUPPORT_EMAIL}`}>
+              <Mail size={16} /> Email Support
+            </a>
+          </div>
+
+          <div className="shop-trust" aria-label="Store promises">
+            <div className="trust-item"><Truck size={16} aria-hidden="true" /><span>Fast delivery or pickup</span></div>
+            <div className="trust-item"><ShieldCheck size={16} aria-hidden="true" /><span>No fake parts</span></div>
+            <div className="trust-item"><MapPin size={16} aria-hidden="true" /><span>{STORE_LOCATION}</span></div>
+          </div>
+        </div>
+
         <div className="hero-gallery" aria-label="iPhone previews">
           <img className="hero-phone" src={import.meta.env.BASE_URL + 'iphone-pro.svg'} alt="iPhone Pro" loading="lazy" />
           <img className="hero-phone hero-phone-back" src={import.meta.env.BASE_URL + 'iphone.svg'} alt="iPhone" loading="lazy" />
         </div>
-        <div className="cta-buttons" aria-label="Primary actions">
-          <a
-            className="btn btn-primary"
-            href={buildWhatsAppLink(`Hi ${STORE_NAME}! I want to request iPhone availability in ${STORE_LOCATION}.`)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <MessageCircle size={16} /> Request availability (WhatsApp)
-          </a>
-          <a className="btn btn-outline" href={`mailto:${SUPPORT_EMAIL}`}>
-            <Mail size={16} /> Email Support
-          </a>
-        </div>
-
-        <div className="shop-trust" aria-label="Store promises">
-          <div className="trust-item"><Truck size={16} aria-hidden="true" /><span>Fast delivery or pickup</span></div>
-          <div className="trust-item"><ShieldCheck size={16} aria-hidden="true" /><span>No fake parts</span></div>
-          <div className="trust-item"><MapPin size={16} aria-hidden="true" /><span>{STORE_LOCATION}</span></div>
-        </div>
-
       </header>
 
       <main>

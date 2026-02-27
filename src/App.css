@@ -156,6 +156,12 @@ body {
   padding-top: 54px;
 }
 
+.hero-copy {
+  display: grid;
+  gap: 12px;
+  will-change: opacity, transform;
+}
+
 .shop-hero-title {
   margin: 0;
   font-size: clamp(30px, 4.6vw, 46px);
