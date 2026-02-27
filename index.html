@@ -64,14 +64,14 @@
     body::before{
       content:"";
       position: fixed;
-      inset: 0;
+      inset: -22vmax;
       background-image: var(--bg-image);
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
       opacity: 0.75; /* visibility */
       filter: saturate(1.04) contrast(1.04);
-      transform: rotate(var(--bg-rot)) scale(1.18);
+      transform: rotate(var(--bg-rot));
       transform-origin: center;
       pointer-events: none;
       z-index: -2;
@@ -845,12 +845,10 @@
         if (y === lastY) return;
         lastY = y;
 
-        // More visible rotation while scrolling (still subtle):
-        // - ramps up to ~18deg
-        // - adds a small oscillation so it continues to feel "alive" as you scroll
-        const ramp = Math.max(0, Math.min(18, (y / 900) * 18));
-        const wobble = Math.sin(y / 240) * 2.2;
-        const angle = Math.max(0, Math.min(20, ramp + wobble));
+        // Full rotation (0° → 360°) from top to bottom of the page
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const progress = Math.max(0, Math.min(1, y / maxScroll));
+        const angle = progress * 360;
         rootStyle.setProperty('--bg-rot', angle.toFixed(2) + 'deg');
       }
 
