@@ -68,9 +68,9 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
-      opacity: 0.52; /* visibility: adjust if you want stronger */
-      filter: saturate(1.03) contrast(1.03);
-      transform: rotate(var(--bg-rot)) scale(1.12);
+      opacity: 0.75; /* visibility */
+      filter: saturate(1.04) contrast(1.04);
+      transform: rotate(var(--bg-rot)) scale(1.18);
       transform-origin: center;
       pointer-events: none;
       z-index: -2;
@@ -81,7 +81,7 @@
       content:"";
       position: fixed;
       inset: 0;
-      background: radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,0.38), rgba(255,255,255,0.82) 55%, rgba(255,255,255,0.94));
+      background: radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,0.34), rgba(255,255,255,0.78) 55%, rgba(255,255,255,0.92));
       pointer-events: none;
       z-index: -1;
     }
@@ -844,8 +844,12 @@
         if (y === lastY) return;
         lastY = y;
 
-        // 0deg -> ~6deg as you scroll down (clamped)
-        const angle = Math.max(0, Math.min(6, (y / 1000) * 6));
+        // More visible rotation while scrolling (still subtle):
+        // - ramps up to ~18deg
+        // - adds a small oscillation so it continues to feel "alive" as you scroll
+        const ramp = Math.max(0, Math.min(18, (y / 900) * 18));
+        const wobble = Math.sin(y / 240) * 2.2;
+        const angle = Math.max(0, Math.min(20, ramp + wobble));
         rootStyle.setProperty('--bg-rot', angle.toFixed(2) + 'deg');
       }
 
