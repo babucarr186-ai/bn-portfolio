@@ -4,6 +4,7 @@ import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
 import { buildWhatsAppLink } from './contactConfig';
 import { BadgeCheck, Mail, MapPin, MessageCircle, Moon, ShoppingBag, Sun, Truck, ShieldCheck } from 'lucide-react';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const params = new URLSearchParams(window.location.search);
@@ -429,6 +430,7 @@ export default function App() {
       <a className="floating-cta" href={buildWhatsAppLink(`Hi ${STORE_NAME}! I want to request iPhone availability in ${STORE_LOCATION}.`)} target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to request iPhone availability">
         <ShoppingBag size={16} /> Request availability
       </a>
+      <Analytics />
     </>
   );
 }
