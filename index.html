@@ -421,6 +421,121 @@
       justify-content: flex-start;
     }
 
+    /* Inventory carousel (dynamic from /phones.js) */
+    .inventory-carousel{
+      margin-top: 26px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(11,15,22,0.08);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .inventory-controls{
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 14px 0;
+    }
+
+    .inventory-arrows{
+      display: inline-flex;
+      gap: 10px;
+    }
+
+    .inventory-arrow{
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,15,22,0.14);
+      background: rgba(255,255,255,0.86);
+      color: rgba(11,15,22,0.92);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .inventory-arrow:hover{ background: rgba(255,255,255,0.95); }
+    .inventory-arrow:disabled{ opacity: 0.45; cursor: not-allowed; }
+
+    .inventory-viewport{
+      overflow: hidden;
+      padding: 14px;
+    }
+
+    .inventory-track{
+      display: flex;
+      will-change: transform;
+      transition: transform 420ms ease;
+    }
+
+    .inventory-slide{
+      flex: 0 0 100%;
+      min-width: 100%;
+    }
+
+    .inventory-grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .inventory-frame{
+      width: min(420px, 92vw);
+      margin: 0 auto;
+      border-radius: 42px;
+    }
+
+    .inventory-meta{
+      display: grid;
+      gap: 12px;
+    }
+
+    .inventory-title{
+      margin: 0;
+      font-size: clamp(1.35rem, 2.9vw, 1.9rem);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .inventory-specs{
+      display: grid;
+      gap: 8px;
+      color: rgba(11,15,22,0.76);
+      font-weight: 650;
+    }
+
+    .inventory-spec{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .inventory-spec strong{ color: rgba(11,15,22,0.86); }
+
+    .inventory-actions{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (min-width: 860px){
+      .inventory-viewport{ padding: 18px; }
+      .inventory-grid{ grid-template-columns: 0.95fr 1.05fr; gap: 24px; }
+      .inventory-frame{ width: min(460px, 100%); margin: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .inventory-track{ transition: none; }
+    }
+
     /* Footer */
     footer{
       padding: 46px 0 60px;
@@ -633,6 +748,26 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <section class="section" id="inventory" aria-label="iPhone inventory">
+      <div class="container">
+        <h2 class="section-title">Inventory</h2>
+        <p class="section-lead">Browse current iPhones and request directly on WhatsApp.</p>
+
+        <div class="inventory-carousel" aria-label="Inventory carousel">
+          <div class="inventory-controls">
+            <div class="inventory-arrows" aria-label="Carousel navigation">
+              <button class="inventory-arrow" type="button" id="inventoryPrev" aria-label="Previous phone">‹</button>
+              <button class="inventory-arrow" type="button" id="inventoryNext" aria-label="Next phone">›</button>
+            </div>
+          </div>
+
+          <div class="inventory-viewport">
+            <div class="inventory-track" id="inventoryTrack"></div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -880,5 +1015,7 @@
       onScroll();
     })();
   </script>
+
+  <script type="module" src="/src/iphone-inventory.js"></script>
 </body>
 </html>
