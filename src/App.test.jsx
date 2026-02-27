@@ -6,6 +6,6 @@ import App from './App';
 describe('App', () => {
   it('renders the site title', () => {
     render(<App />);
-    expect(screen.getByRole('heading', { name: /bubacar nget/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /original apple products, only\./i })).toBeInTheDocument();
   });
 });

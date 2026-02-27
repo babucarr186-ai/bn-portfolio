@@ -1,39 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
-import Estimator from './Estimator';
 import { buildWhatsAppLink } from './contactConfig';
-import { Check, Circle, Mail, MessageCircle, Moon, Rocket, Sun } from 'lucide-react';
-
-function ProgressChecklist({ progress }) {
-  const [open, setOpen] = useState(typeof window !== 'undefined' ? window.innerWidth > 640 : true);
-  const iconSize = 14;
-  return (
-    <div>
-      <button
-        type="button"
-        className="checklist-toggle"
-        aria-expanded={open}
-        onClick={() => setOpen(o => !o)}
-      >
-        {open ? 'Hide Tasks' : 'Show Tasks'}
-      </button>
-      {open && (
-        <ul className="progress-checklist">
-          {progress.tasks.map((t, i) => (
-            <li key={i} className={t.done ? 'done' : 'todo'}>
-              <span className="check-icon" aria-hidden="true">
-                {t.done ? <Check size={iconSize} /> : <Circle size={iconSize} />}
-              </span>
-              <span className="task-label">{t.label}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
+import { BadgeCheck, Mail, MapPin, MessageCircle, Moon, ShoppingBag, Sun, Truck, ShieldCheck } from 'lucide-react';
 
 export default function App() {
   const params = new URLSearchParams(window.location.search);
@@ -50,35 +20,90 @@ export default function App() {
   }, [theme]);
   function toggleTheme() { setTheme(t => t === 'dark' ? 'light' : 'dark'); }
 
-  // Toggle this to true to lock the under construction external link for visitors
-  const UNDER_CONSTRUCTION_LOCKED = true; // set to false when you want it open
-  
-  // Progress meta for the under construction project (adjust as you complete items)
-  const projectProgress = {
-    percent: 45, // number 0-100 representing completion
-    tasks: [
-      { label: 'Initial layout scaffold', done: true },
-      { label: 'Hero section design', done: true },
-      { label: 'Responsive adjustments', done: true },
-      { label: 'Content placeholders', done: true },
-      { label: 'SEO basic metadata', done: false },
-      { label: 'Contact form wiring', done: false },
-      { label: 'Analytics integration', done: false },
-      { label: 'Performance pass & polish', done: false }
-    ]
-  };
+  const STORE_NAME = 'Uncle Apple';
+  const SUPPORT_EMAIL = 'nget@web.de';
+  const STORE_LOCATION = 'The Gambia';
 
-  // Update this timestamp when you deploy new progress
-  const LAST_UPDATED = '2026-01-02';
+  const products = useMemo(
+    () => [
+      {
+        id: 'iphone-pro',
+        name: 'iPhone Pro',
+        subtitle: 'For power users',
+        image: import.meta.env.BASE_URL + 'iphone-pro.svg',
+        highlights: ['Pro camera system', 'Fast performance', 'Premium build'],
+        options: ['128GB', '256GB', '512GB', '1TB']
+      },
+      {
+        id: 'iphone',
+        name: 'iPhone',
+        subtitle: 'Balanced and reliable',
+        image: import.meta.env.BASE_URL + 'iphone.svg',
+        highlights: ['Great everyday camera', 'All‑day battery', 'Smooth iOS experience'],
+        options: ['128GB', '256GB', '512GB']
+      },
+      {
+        id: 'iphone-plus',
+        name: 'iPhone Plus',
+        subtitle: 'Big screen, big battery',
+        image: import.meta.env.BASE_URL + 'iphone-plus.svg',
+        highlights: ['Large display', 'Extra battery life', 'Perfect for media'],
+        options: ['128GB', '256GB', '512GB']
+      },
+      {
+        id: 'iphone-se',
+        name: 'iPhone SE',
+        subtitle: 'Compact and simple',
+        image: import.meta.env.BASE_URL + 'iphone-se.svg',
+        highlights: ['Compact size', 'Fast everyday performance', 'Classic feel'],
+        options: ['64GB', '128GB', '256GB']
+      }
+    ],
+    []
+  );
 
-  // If percent reaches threshold we could auto-unlock; leave manual lock for now
-  const AUTO_UNLOCK_THRESHOLD = 80;
-  const autoUnlocked = projectProgress.percent >= AUTO_UNLOCK_THRESHOLD;
-  const showLiveLink = autoUnlocked || !UNDER_CONSTRUCTION_LOCKED;
+  const [reqModel, setReqModel] = useState('');
+  const [reqStorage, setReqStorage] = useState('');
+  const [reqColor, setReqColor] = useState('');
+  const [reqCondition, setReqCondition] = useState('Original condition');
+  const [reqDelivery, setReqDelivery] = useState('Delivery');
+  const [reqNotes, setReqNotes] = useState('');
+
+  function submitAvailabilityRequest(e) {
+    e.preventDefault();
+    const model = reqModel || 'Not specified';
+    const storage = reqStorage || 'Not specified';
+    const color = reqColor || 'Not specified';
+    const condition = reqCondition || 'Not specified';
+    const delivery = reqDelivery || 'Not specified';
+    const notes = reqNotes.trim() || '—';
+
+    const msg =
+      `Hi ${STORE_NAME}! Please check iPhone availability in ${STORE_LOCATION}.\n` +
+      `Model: ${model}\n` +
+      `Storage: ${storage}\n` +
+      `Color: ${color}\n` +
+      `Condition: ${condition}\n` +
+      `Delivery/Pickup: ${delivery}\n` +
+      `Notes: ${notes}`;
+
+    const url = buildWhatsAppLink(msg);
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 
   const content = (
     <div className="site">
-      <div className="theme-toggle-wrapper">
+      <div className="shop-topbar">
+        <div className="shop-brand" aria-label="Store name">
+          <ShoppingBag size={18} aria-hidden="true" />
+          <span className="shop-brand-name">{STORE_NAME}</span>
+        </div>
+        <nav className="shop-nav" aria-label="Primary">
+          <a href="#models">Models</a>
+          <a href="#availability">Availability</a>
+          <a href="#support">Support</a>
+          <a href="#contact">Contact</a>
+        </nav>
         <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle dark mode" aria-pressed={theme === 'dark'}>
           {theme === 'dark' ? (
             <>
@@ -91,34 +116,36 @@ export default function App() {
           )}
         </button>
       </div>
-      {/* HERO */}
-      <header className="hero" aria-labelledby="site-title">
-        <h1 id="site-title" className="hero-title-with-avatar">
-          <span className="avatar-inline-wrapper">
-            <img
-              src={import.meta.env.BASE_URL + 'profile-picture.jpg'}
-              alt="Bubacar Nget"
-              className="avatar-inline"
-              width={150}
-              height={150}
-              onError={(e) => {
-                e.target.src = 'https://placehold.co/150x150/1f1f1f/ffffff?text=BN';
-                e.target.onerror = null;
-              }}
-              loading="lazy"
-            />
-          </span>
-          <span className="hero-name-text">Bubacar Nget</span>
-        </h1>
 
-        {/* Service pills in black shadow boxes */}
-        <div className="tagline" aria-label="Core services">
-          <span className="pill">Digital Marketing</span>
-          <span className="pill">Web Development</span>
-          <span className="pill">Automation</span>
+      <header className="hero shop-hero" aria-labelledby="site-title">
+        <h1 id="site-title" className="shop-hero-title">Original Apple products, only.</h1>
+        <p className="shop-hero-sub">
+          Located in {STORE_LOCATION}. Request iPhone availability and we’ll confirm what’s in stock.
+        </p>
+        <div className="hero-gallery" aria-label="iPhone previews">
+          <img className="hero-phone" src={import.meta.env.BASE_URL + 'iphone-pro.svg'} alt="iPhone Pro" loading="lazy" />
+          <img className="hero-phone hero-phone-back" src={import.meta.env.BASE_URL + 'iphone.svg'} alt="iPhone" loading="lazy" />
+        </div>
+        <div className="cta-buttons" aria-label="Primary actions">
+          <a
+            className="btn btn-primary"
+            href={buildWhatsAppLink(`Hi ${STORE_NAME}! I want to request iPhone availability in ${STORE_LOCATION}.`)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MessageCircle size={16} /> Request availability (WhatsApp)
+          </a>
+          <a className="btn btn-outline" href={`mailto:${SUPPORT_EMAIL}`}>
+            <Mail size={16} /> Email Support
+          </a>
         </div>
 
-        {/* Decorative multi-layer ocean-style waves */}
+        <div className="shop-trust" aria-label="Store promises">
+          <div className="trust-item"><Truck size={16} aria-hidden="true" /><span>Fast delivery or pickup</span></div>
+          <div className="trust-item"><ShieldCheck size={16} aria-hidden="true" /><span>No fake parts</span></div>
+          <div className="trust-item"><MapPin size={16} aria-hidden="true" /><span>{STORE_LOCATION}</span></div>
+        </div>
+
         <div className="wave-stack" aria-hidden="true">
           <div className="wave-layer wave-back"></div>
           <div className="wave-layer wave-mid"></div>
@@ -127,166 +154,143 @@ export default function App() {
       </header>
 
       <main>
-        {/* ABOUT */}
-        <section className="card" aria-labelledby="about-title">
-          <h2 id="about-title">About</h2>
+        <section className="card" aria-labelledby="policy-title">
+          <h2 id="policy-title">Authenticity policy</h2>
           <p>
-            Through <strong>BN Tech Solutions</strong>, I assist small businesses and diaspora projects in building efficient websites, intelligent content systems, and practical automation tools. My mission is simple: make technology fast, useful, and impactful.
+            Uncle Apple only sells <strong>original Apple products</strong> and genuine parts.
+            If it isn’t Apple original, we don’t deal it or sell it.
           </p>
-          <p>
-            Beyond web solutions, I also developed a solid foundation in industrial automation and PLC programming (Siemens TIA Portal), bridging the gap between digital and industrial innovation. I’m passionate about creating systems that save time, boost efficiency, and empower communities.
-          </p>
-        </section>
-
-        {/* CTA SECTION */}
-        <section className="card cta-section" aria-labelledby="cta-title">
-          <h2 id="cta-title" className="cta-heading">Let’s Launch Something</h2>
-          <p className="cta-sub">Fast builds. Practical automation. Clear content systems that help you move quicker.</p>
-          <div className="cta-buttons">
-            <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Start WhatsApp chat">
-              <MessageCircle size={16} /> WhatsApp Me
-            </a>
-            <a className="btn btn-outline" href="mailto:nget@web.de" aria-label="Send email to Bubacar">
-              <Mail size={16} /> Email
-            </a>
-          </div>
-          <div className="stack-row" aria-label="Primary technologies and focus areas">
-            <span className="stack-badge">React</span>
-            <span className="stack-badge">Vite</span>
-            <span className="stack-badge">Automation</span>
-            <span className="stack-badge">Content Systems</span>
-            <span className="stack-badge">SEO Basics</span>
-            <span className="stack-badge">Analytics</span>
+          <div className="support-points" aria-label="Policy points">
+            <div className="support-point"><BadgeCheck size={16} aria-hidden="true" /><span>Original products / genuine parts only</span></div>
+            <div className="support-point"><ShieldCheck size={16} aria-hidden="true" /><span>Defects handled with replacement options</span></div>
           </div>
         </section>
 
-        {/* SERVICES */}
-        <section className="card" aria-labelledby="services-title">
-          <h2 id="services-title">Services</h2>
-          <ul className="list">
-            <li>Websites (landing pages, portfolios, mini-shops)</li>
-            <li>Content &amp; captions (TikTok / YouTube Shorts)</li>
-            <li>Light SEO &amp; analytics setup</li>
-            <li>Automation (lead capture, email replies, forms → sheets)</li>
-          </ul>
-        </section>
+        <section className="card" id="models" aria-labelledby="models-title">
+          <h2 id="models-title">Featured models</h2>
+          <p className="muted">No prices shown online. Request availability and we’ll reply with options.</p>
 
-        <Estimator />
-
-        {/* TESTIMONIALS PLACEHOLDER */}
-        <section className="card" aria-labelledby="testimonials-title">
-          <h2 id="testimonials-title">Feedback</h2>
-          <div className="testimonials-strip" aria-label="Testimonials preview">
-            <div className="testimonial">
-              Smooth process and clear communication—site delivered faster than expected.
-              <cite>— Anna Keller</cite>
-            </div>
-            <div className="testimonial">
-              Automation saved us hours weekly. Simple and effective.
-              <cite>— Markus Vogel</cite>
-            </div>
-            <div className="testimonial">
-              Clean structure. Easy to update content now.
-              <cite>— Leonie Braun</cite>
-            </div>
-          </div>
-        </section>
-
-        {/* PROJECTS */}
-        <section className="card" aria-labelledby="projects-title">
-          <h2 id="projects-title">Projects</h2>
-          <div className="projects-grid">
-            <div className="project-card">
-              <h3>Gambia Multikulti e.V.</h3>
-              <p>A website for a German-Gambian cultural association promoting intercultural exchange and development projects.</p>
-              <div className="project-links">
-                <a 
-                  href="https://www.gambiamultikultivereinev.de/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="project-link"
-                >
-                  Visit Website
-                </a>
-              </div>
-              <div className="project-tags">
-                <span className="tag">Website Development</span>
-                <span className="tag">Cultural Organization</span>
-                <span className="tag">Non-Profit</span>
-              </div>
-            </div>
-            <div className="project-card">
-              <div className="ribbon" aria-label="Under construction">UNDER CONSTRUCTION</div>
-              <h3>Project Under Construction</h3>
-              <p>Work in progress: evolving landing experience. Deployed early to gather feedback while features are being built.</p>
-              {/* Progress Block */}
-              <div className="progress-block" aria-label={`Progress ${projectProgress.percent}% complete`}>
-                <div className="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow={projectProgress.percent}>
-                  <div className="progress-fill" style={{ width: projectProgress.percent + '%' }} />
+          <div className="product-grid" role="list" aria-label="iPhone models">
+            {products.map((p) => (
+              <article key={p.id} className="product-card" role="listitem" aria-label={p.name}>
+                <div className="product-top">
+                  <div className="product-image">
+                    <img className="product-image-img" src={p.image} alt={`${p.name} preview`} loading="lazy" />
+                  </div>
+                  <div>
+                    <h3 className="product-name">{p.name}</h3>
+                    <div className="product-sub">{p.subtitle}</div>
+                  </div>
                 </div>
-                <div className="progress-percent">{projectProgress.percent}%</div>
-                <ProgressChecklist progress={projectProgress} />
-                <div className="last-updated" aria-label={`Last updated on ${LAST_UPDATED}`}>Last updated: {LAST_UPDATED}</div>
-              </div>
-              <div className="project-links">
-                {showLiveLink ? (
-                  <a
-                    href="https://new-page-git-main-babucarr186-9531s-projects.vercel.app/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-link"
-                  >
-                    View Preview
-                  </a>
-                ) : (
-                  <button
-                    type="button"
-                    className="project-link locked"
-                    aria-disabled="true"
-                    title="Preview temporarily locked"
-                  >
-                    Locked
-                  </button>
-                )}
-              </div>
-              <div className="project-tags">
-                <span className="tag">In Progress</span>
-                <span className="tag">Vercel</span>
-                <span className="tag">Landing</span>
-              </div>
-            </div>
+
+                <ul className="product-highlights" aria-label="Highlights">
+                  {p.highlights.map((h) => (
+                    <li key={h}>{h}</li>
+                  ))}
+                </ul>
+
+                <div className="product-options" aria-label="Storage options">
+                  {p.options.map((o) => (
+                    <span key={o} className="option-pill">{o}</span>
+                  ))}
+                </div>
+
+                <a
+                  className="btn btn-primary product-cta"
+                  href={buildWhatsAppLink(`Hi ${STORE_NAME}! Please confirm availability for: ${p.name}.`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MessageCircle size={16} /> Request availability
+                </a>
+              </article>
+            ))}
           </div>
         </section>
 
+        <section className="card" id="availability" aria-labelledby="availability-title">
+          <h2 id="availability-title">Request iPhone availability</h2>
+          <p className="muted">Send your request and we’ll reply with what’s available in {STORE_LOCATION}.</p>
 
-        {/* CONTACT + SOCIAL */}
-        <section className="card" aria-labelledby="contact-title">
-          <h2 id="contact-title">Contact</h2>
+          <form className="availability-form" onSubmit={submitAvailabilityRequest} aria-label="Availability request form">
+            <label className="avail-field">
+              <span className="avail-label">Model</span>
+              <select className="avail-control" value={reqModel} onChange={(e) => setReqModel(e.target.value)}>
+                <option value="">Select a model</option>
+                {products.map(p => (
+                  <option key={p.id} value={p.name}>{p.name}</option>
+                ))}
+                <option value="Other iPhone model">Other iPhone model</option>
+              </select>
+            </label>
+
+            <label className="avail-field">
+              <span className="avail-label">Storage</span>
+              <input className="avail-control" value={reqStorage} onChange={(e) => setReqStorage(e.target.value)} placeholder="e.g., 128GB" />
+            </label>
+
+            <label className="avail-field">
+              <span className="avail-label">Color</span>
+              <input className="avail-control" value={reqColor} onChange={(e) => setReqColor(e.target.value)} placeholder="e.g., Black" />
+            </label>
+
+            <label className="avail-field">
+              <span className="avail-label">Condition</span>
+              <select className="avail-control" value={reqCondition} onChange={(e) => setReqCondition(e.target.value)}>
+                <option value="Original condition">Original condition</option>
+                <option value="New / Sealed">New / Sealed</option>
+                <option value="Used (original parts)">Used (original parts)</option>
+              </select>
+            </label>
+
+            <label className="avail-field">
+              <span className="avail-label">Delivery / Pickup</span>
+              <select className="avail-control" value={reqDelivery} onChange={(e) => setReqDelivery(e.target.value)}>
+                <option value="Delivery">Delivery</option>
+                <option value="Pickup">Pickup</option>
+              </select>
+            </label>
+
+            <label className="avail-field avail-notes">
+              <span className="avail-label">Notes</span>
+              <textarea
+                className="avail-control"
+                rows="3"
+                value={reqNotes}
+                onChange={(e) => setReqNotes(e.target.value)}
+                placeholder="Any details (dual SIM, preferred size, urgent, etc.)"
+              />
+            </label>
+
+            <button type="submit" className="btn btn-primary availability-submit">
+              <MessageCircle size={16} /> Send request on WhatsApp
+            </button>
+          </form>
+        </section>
+
+        <section className="card" id="support" aria-labelledby="support-title">
+          <h2 id="support-title">Support</h2>
           <p>
-            Email:{' '}
-            <a href="mailto:nget@web.de" rel="noopener noreferrer">
-              nget@web.de
-            </a>
-            <br />
-            WhatsApp:{' '}
-            <a
-              href={buildWhatsAppLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Open WhatsApp chat with Bubacar"
-            >
-              Chat on WhatsApp
-            </a>
+            Not sure which iPhone to pick? Use the chat (bottom right) and tell us what you care about (camera, battery, size). We’ll help you request availability.
           </p>
+          <div className="support-points" aria-label="Support points">
+            <div className="support-point"><ShieldCheck size={16} aria-hidden="true" /><span>Condition explained clearly before purchase</span></div>
+            <div className="support-point"><Truck size={16} aria-hidden="true" /><span>Delivery updates shared on WhatsApp</span></div>
+          </div>
+        </section>
+
+        <section className="card" id="contact" aria-labelledby="contact-title">
+          <h2 id="contact-title">Contact</h2>
+          <p className="muted">Fastest response: WhatsApp. Email also works for invoices and receipts.</p>
           <div className="contact-actions">
-            <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer">Chat Now</a>
-            <a className="btn btn-outline" href="mailto:nget@web.de">Email Me</a>
+            <a className="btn btn-primary" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+            <a className="btn btn-outline" href={`mailto:${SUPPORT_EMAIL}`}>Email</a>
           </div>
         </section>
       </main>
 
       <footer className="footer">
-        © 2026 Bubacar Nget
+        © 2026 {STORE_NAME} · {STORE_LOCATION}
       </footer>
     </div>
   );
@@ -295,12 +299,9 @@ export default function App() {
     <>
       {iphone ? <IPhonePreview>{content}</IPhonePreview> : content}
       <ChatWidget />
-      <a className="floating-cta" href={buildWhatsAppLink()} target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to start a project">
-        <Rocket size={16} /> Start a Project
+      <a className="floating-cta" href={buildWhatsAppLink(`Hi ${STORE_NAME}! I want to request iPhone availability in ${STORE_LOCATION}.`)} target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp to request iPhone availability">
+        <ShoppingBag size={16} /> Request availability
       </a>
     </>
   );
 }
-
-// Render chat widget outside of conditional wrappers
-// NOTE: In Vite main.jsx we mount <App /> only; we can also append ChatWidget here if desired.

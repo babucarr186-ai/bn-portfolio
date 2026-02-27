@@ -3,36 +3,33 @@ import { WHATSAPP_NUMBER_E164 } from './contactConfig';
 import './App.css';
 
 /*
-  Simple client-side chat widget simulating a basic assistant.
+  Simple client-side chat widget simulating a shop assistant.
   - Rule-based intent detection (keywords)
-  - Stores conversation in memory (resets on reload)
+  - Stores conversation in localStorage
   - Can export conversation to WhatsApp with a single click
-  Smarter add-ons:
-  - Keyword scoring + entity extraction (timeline, platform, type, email)
-  - Slot-filling project brief flow with quick-reply chips
-  - Lead state persisted and included in WhatsApp export
-  NOTE: This is NOT a real AI or WhatsApp bot. For production automation you would
+  - Lightweight slot-filling (model, storage, condition, budget, delivery, email)
+  NOTE: This is NOT a real AI or WhatsApp bot. For production you would
   integrate WhatsApp Business Cloud API or a service like Twilio.
 */
 
-const BOT_NAME = 'Assistant';
-const OWNER_NAME = 'Bubacar';
+const BOT_NAME = 'Shop Assistant';
+const STORE_NAME = 'Uncle Apple';
 
 
-// Lightweight knowledge base
 const KB = {
   intents: {
     greeting: ['hello','hi','hey','salaam','salam','hallo','moin'],
-    services: ['service','offer','what can you do','help','capabilities'],
-    web: ['website','site','page','landing','portfolio','shop','ecommerce'],
-    marketing: ['marketing','seo','promotion','traffic','analytics','content'],
-    automation: ['automation','automate','zapier','workflow','form','sheet'],
-    timeline: ['deadline','timeline','when','week','weeks','month','months','asap','soon'],
+    models: ['model','which iphone','iphone','pro','plus','se','mini','max'],
+    availability: ['available','in stock','stock','today'],
+    shipping: ['shipping','delivery','ship','pickup','pick up','collection'],
+    warranty: ['warranty','guarantee','return','returns','refund'],
+    payment: ['pay','payment','invoice','cash','card','paypal','bank'],
     thanks: ['thanks','thank you','great','cool','awesome'],
     bye: ['bye','goodbye','ciao','later','see you']
   },
-  projectTypes: ['landing page','website','portfolio','shop','ecommerce','mini shop','one pager'],
-  platforms: ['tiktok','instagram','youtube','shorts','facebook','linkedin']
+  models: ['iphone pro', 'iphone', 'iphone plus', 'iphone se'],
+  conditions: ['new','sealed','refurbished','refurb','used'],
+  delivery: ['delivery','shipping','pickup']
 };
 
 function scoreIntent(text) {
@@ -47,20 +44,22 @@ function scoreIntent(text) {
 
 function extractEntities(text) {
   const t = text.toLowerCase();
-  // Timeline: e.g., 2 weeks, 1 month, asap
-  const tlMatch = t.match(/\b(\d{1,2})\s*(week|weeks|month|months|day|days)\b/);
-  const asap = /asap|soon|urgent|quick/.test(t);
-  const timeline = asap ? 'ASAP' : (tlMatch ? `${tlMatch[1]} ${tlMatch[2]}` : null);
-  // Platform and project type
-  const platform = KB.platforms.find(p => t.includes(p)) || null;
-  const projectType = KB.projectTypes.find(p => t.includes(p)) || null;
-  // Email
+  const model = KB.models.find(m => t.includes(m)) || (t.includes('iphone') ? 'iPhone' : null);
+  const storageMatch = t.match(/\b(64|128|256|512|1024)\s*gb\b/);
+  const storage = storageMatch ? `${storageMatch[1]}GB` : null;
+  const color = (() => {
+    const colors = ['black','white','blue','red','green','pink','purple','gold','silver','grey','gray'];
+    const c = colors.find(v => t.includes(v));
+    return c ? (c === 'gray' ? 'Grey' : (c.charAt(0).toUpperCase() + c.slice(1))) : null;
+  })();
+  const condition = KB.conditions.find(c => t.includes(c)) || null;
+  const deliveryPref = KB.delivery.find(d => t.includes(d)) || null;
   const contactEmailMatch = t.match(/[\w.+-]+@[\w-]+\.[\w.-]+/);
   const contactEmail = contactEmailMatch ? contactEmailMatch[0] : null;
-  return { timeline, platform, projectType, contactEmail };
+  return { model, storage, color, condition, deliveryPref, contactEmail };
 }
 
-const FLOW_ORDER = ['projectType','platform','timeline','contactEmail'];
+const FLOW_ORDER = ['model','storage','color','condition','deliveryPref','contactEmail'];
 function nextMissing(lead) {
   return FLOW_ORDER.find(k => !lead[k]) || null;
 }
@@ -68,9 +67,10 @@ function nextMissing(lead) {
 function classifyMessage(text) {
   const t = text.toLowerCase();
   if (/hello|hi|hey|salaam|salam/.test(t)) return 'greeting';
-  if (/service|offer|what can you do|help/.test(t)) return 'services';
-  if (/website|site|page|landing/.test(t)) return 'web';
-  if (/market|seo|promotion|traffic/.test(t)) return 'marketing';
+  if (/stock|available/.test(t)) return 'availability';
+  if (/delivery|shipping|pickup/.test(t)) return 'shipping';
+  if (/warranty|return|refund/.test(t)) return 'warranty';
+  if (/payment|pay|invoice|cash|card|paypal|bank/.test(t)) return 'payment';
   if (/thank|thanks|great|cool/.test(t)) return 'thanks';
   if (/bye|goodbye|later|see you/.test(t)) return 'bye';
   return 'fallback';
@@ -81,7 +81,7 @@ export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
-  const defaultMessage = { from: 'bot', text: `Hello! I'm a helper for ${OWNER_NAME}. How can I help you?` };
+  const defaultMessage = { from: 'bot', text: `Hi! I’m the ${BOT_NAME} for ${STORE_NAME}. Tell me which iPhone you want and I’ll help you request availability.` };
   const initialMessages = (() => {
     try {
       const stored = localStorage.getItem('chat_messages');
@@ -101,7 +101,7 @@ export default function ChatWidget() {
         return parsed;
       }
     } catch (e) { void e; }
-    return { projectType: null, platform: null, timeline: null, contactEmail: null };
+    return { model: null, storage: null, color: null, condition: null, deliveryPref: null, contactEmail: null };
   })();
   const [lead, setLead] = useState(initialLead);
   const [stage, setStage] = useState(nextMissing(initialLead) ? 'collect' : 'idle');
@@ -115,7 +115,7 @@ export default function ChatWidget() {
       setMessages(msgs => {
         // Only add if not already proactively greeted
         if (msgs.some(m => m.text.includes('Need help?'))) return msgs;
-        return [...msgs, { from: 'bot', text: 'Need help? Click the chat to ask anything or share your project details.' }];
+        return [...msgs, { from: 'bot', text: 'Need help choosing an iPhone? Open chat and tell me your budget + preferred size.' }];
       });
     }, 30000);
     return () => clearTimeout(timer);
@@ -159,15 +159,15 @@ export default function ChatWidget() {
   }
 
   function exportToWhatsApp() {
-    const leadSummary = `\n\nLead Summary\n- Project: ${lead.projectType || '—'}\n- Platform: ${lead.platform || '—'}\n- Timeline: ${lead.timeline || '—'}\n- Email: ${lead.contactEmail || '—'}`;
+    const leadSummary = `\n\nAvailability Request\n- Model: ${lead.model || '—'}\n- Storage: ${lead.storage || '—'}\n- Color: ${lead.color || '—'}\n- Condition: ${lead.condition || '—'}\n- Delivery/Pickup: ${lead.deliveryPref || '—'}\n- Email: ${lead.contactEmail || '—'}\n\nNote: ${STORE_NAME} sells original Apple products/parts only.`;
     const body = messages.map(m => (m.from === 'user' ? 'You: ' : BOT_NAME + ': ') + m.text).join('\n') + leadSummary;
     const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent('Conversation summary:%0A' + body + '\n\nMy message: ')}`;
     window.open(url, '_blank', 'noopener');
   }
 
   function clearChat() {
-    setMessages([{ from: 'bot', text: `Chat cleared. I'm still here for ${OWNER_NAME}. How can I help now?` }]);
-    setLead({ projectType: null, platform: null, timeline: null, contactEmail: null });
+    setMessages([{ from: 'bot', text: `Chat cleared. I’m still here for ${STORE_NAME}. What iPhone are you looking for?` }]);
+    setLead({ model: null, storage: null, color: null, condition: null, deliveryPref: null, contactEmail: null });
     setStage('idle');
   }
 
@@ -179,14 +179,18 @@ export default function ChatWidget() {
     }
     setStage('collect');
     switch (missing) {
-      case 'projectType':
-        return { text: 'Is this a landing page, website, portfolio, or small shop?', suggestions: ['Landing page','Website','Portfolio','Shop'] };
-      case 'platform':
-        return { text: 'Which platform matters most? (TikTok, Instagram, YouTube...)', suggestions: ['TikTok','Instagram','YouTube','Not sure'] };
-      case 'timeline':
-        return { text: 'What timeline are you aiming for?', suggestions: ['ASAP','2 weeks','1 month','No rush'] };
+      case 'model':
+        return { text: 'Which model do you want?', suggestions: ['iPhone Pro','iPhone','iPhone Plus','iPhone SE'] };
+      case 'storage':
+        return { text: 'Preferred storage?', suggestions: ['128GB','256GB','512GB','Not sure'] };
+      case 'color':
+        return { text: 'Any preferred color?', suggestions: ['Black','White','Blue','Not sure'] };
+      case 'condition':
+        return { text: 'Condition?', suggestions: ['Original condition','New / Sealed','Used (original parts)','Not sure'] };
+      case 'deliveryPref':
+        return { text: 'Delivery or pickup?', suggestions: ['Delivery','Pickup','Not sure'] };
       case 'contactEmail':
-        return { text: 'What email should we use to follow up?', suggestions: ['Use WhatsApp only'] };
+        return { text: 'What email should we use for invoice/receipt (optional)?', suggestions: ['Use WhatsApp only'] };
       default:
         return { text: "Got it. Anything else you'd like to add?", suggestions: [] };
     }
@@ -198,13 +202,24 @@ export default function ChatWidget() {
     const next = askNext(merged);
     if (next && next.text) return next.text;
     switch (intent) {
-      case 'greeting': return 'Hi! I can help with websites, marketing and small automations. Want to share a few details?';
-      case 'services': return 'Core areas: Web, marketing support, and light automation. Start with project type?';
-      case 'web': return 'Website help—great. Tell me if it is a landing page, portfolio or shop.';
-      case 'marketing': return 'For marketing: quick SEO, analytics, and content workflows. Which platform matters most?';
-      case 'thanks': return 'Glad to help! You can export this chat to WhatsApp for a direct follow-up.';
-      case 'bye': return 'Talk soon! Ping me here or WhatsApp when ready.';
-      default: return 'I noted that. Is this about a website, marketing, or automation?';
+      case 'greeting':
+        return 'Hi! Tell me the model and storage you want — I’ll help you request availability.';
+      case 'models':
+        return 'We can help with iPhone Pro / iPhone / Plus / SE. Which one do you prefer?';
+      case 'availability':
+        return 'I can check availability. Which model + storage do you want?';
+      case 'shipping':
+        return 'We can do delivery or pickup. Which do you prefer?';
+      case 'warranty':
+        return 'We explain condition clearly before purchase. Which model are you considering?';
+      case 'payment':
+        return 'Payment options can be confirmed on WhatsApp. Want an invoice by email too?';
+      case 'thanks':
+        return 'Happy to help! When ready, tap “Send to WhatsApp” to place the enquiry.';
+      case 'bye':
+        return 'Talk soon — message us anytime if you want a quote.';
+      default:
+        return 'Tell me: model (Pro/Plus/SE), storage, and preferred color — and I’ll help you request availability.';
     }
   }
 
@@ -213,10 +228,9 @@ export default function ChatWidget() {
     const missing = nextMissing(lead);
     if (missing) return askNext(lead).suggestions || [];
     switch (intent) {
-      case 'greeting': return ['Services','Website','Marketing'];
-      case 'web': return ['Landing page','Portfolio','Shop'];
-      case 'marketing': return ['TikTok','Instagram','YouTube'];
-      default: return ['Website','Marketing','Automation'];
+      case 'greeting': return ['iPhone Pro','iPhone','iPhone Plus','iPhone SE'];
+      case 'shipping': return ['Delivery','Pickup'];
+      default: return ['iPhone Pro','Availability','Delivery'];
     }
   }
 

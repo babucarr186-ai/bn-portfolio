@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640" role="img" aria-label="iPhone">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#22c55e" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#111827" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="640" height="640" rx="72" fill="url(#g)"/>
+  <g transform="translate(178 92)">
+    <rect x="0" y="0" width="284" height="456" rx="56" fill="#0f172a" opacity="0.82"/>
+    <rect x="12" y="12" width="260" height="432" rx="48" fill="#0b1220"/>
+    <rect x="20" y="22" width="244" height="412" rx="42" fill="url(#screen)"/>
+    <rect x="92" y="22" width="100" height="28" rx="14" fill="#0f172a" opacity="0.9"/>
+    <circle cx="70" cy="210" r="8" fill="#22c55e" opacity="0.45"/>
+    <circle cx="220" cy="300" r="7" fill="#0ea5e9" opacity="0.38"/>
+  </g>
+  <text x="48" y="586" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a" opacity="0.85">iPhone</text>
+  <text x="48" y="618" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="18" font-weight="650" fill="#0f172a" opacity="0.70">Original Apple products • Uncle Apple</text>
+</svg>
