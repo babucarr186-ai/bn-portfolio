@@ -85,24 +85,24 @@ body {
   top: 52%;
   width: min(700px, 120vw);
   height: auto;
-  opacity: 0.24;
-  filter: drop-shadow(0 22px 56px rgba(0,0,0,0.22));
+  opacity: 0.30;
+  filter: contrast(1.03) drop-shadow(0 26px 66px rgba(0,0,0,0.26));
   transform: translate3d(-50%, -50%, 0) rotateX(14deg) rotateY(-18deg) rotateZ(-18deg);
   transform-origin: 50% 50%;
   will-change: transform;
 }
 
 [data-theme='dark'] .air-phone {
-  opacity: 0.19;
+  opacity: 0.24;
 }
 
 @media (max-width: 640px) {
   .air-phone {
     top: 58%;
     width: 150vw;
-    opacity: 0.20;
+    opacity: 0.24;
   }
-  [data-theme='dark'] .air-phone { opacity: 0.16; }
+  [data-theme='dark'] .air-phone { opacity: 0.19; }
 }
 
 .iphone-frame .air-phone-bg {
