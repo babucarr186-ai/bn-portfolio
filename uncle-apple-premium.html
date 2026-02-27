@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Uncle Apple — Original iPhone models available in The Gambia. Authentic devices. Verified condition. Fast WhatsApp response." />
+  <title>Uncle Apple — Original iPhone Models (The Gambia)</title>
+
+  <!--
+    Uncle Apple — Premium single-file page
+
+    IMAGE FILES (drop these into the SAME folder as this HTML file):
+    - iphone-real.jpg        (background)
+    - hero-iphone.jpg        (hero large phone)
+    - iphone-pro.jpg         (iPhone Pro section)
+    - iphone.jpg             (iPhone section)
+    - iphone-plus.jpg        (iPhone Plus section)
+    - iphone-se.jpg          (iPhone SE section)
+
+    If you want different filenames, update the <img src="..."> paths below.
+
+    Notes:
+    - No pricing anywhere
+    - WhatsApp is the primary conversion path
+    - Background is fixed and NOT animated
+  -->
+
+  <style>
+    :root{
+      --bg: #ffffff;
+      --text: #0b0f16;
+      --muted: rgba(11, 15, 22, 0.62);
+      --hairline: rgba(11, 15, 22, 0.10);
+      --card: rgba(255,255,255,0.78);
+      --card-solid: #ffffff;
+      --shadow: 0 22px 60px rgba(0,0,0,0.12);
+      --radius: 18px;
+      --max: 1100px;
+
+      /* Background image source (replace with your own photo) */
+      --bg-image: url('iphone-real.jpg');
+
+      /* Brand button (kept simple, premium, not flashy) */
+      --btn: #0b0f16;
+      --btnText: #ffffff;
+      --btnBorder: rgba(11,15,22,0.16);
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.45;
+      overflow-x: hidden;
+    }
+
+    /* Fixed background photo (non-animated) */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background-image: var(--bg-image);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.22; /* visibility: adjust if you want stronger */
+      filter: saturate(1.02) contrast(1.02);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    /* Soft white veil to keep text readable */
+    body::after{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,0.70), rgba(255,255,255,0.92) 55%, rgba(255,255,255,0.98));
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    a{ color: inherit; }
+
+    .container{
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* Sticky transparent navbar */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.55);
+      border-bottom: 1px solid rgba(11,15,22,0.08);
+    }
+
+    .nav-inner{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+
+    .logo{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .logo-mark{
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(11,15,22,1), rgba(11,15,22,0.78));
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    }
+
+    .nav-links{
+      display: none;
+      align-items: center;
+      gap: 18px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: rgba(11,15,22,0.78);
+    }
+
+    .nav-links a{
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+
+    .nav-links a:hover{
+      background: rgba(255,255,255,0.6);
+      color: rgba(11,15,22,1);
+    }
+
+    .nav-actions{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      border: 1px solid var(--btnBorder);
+      background: transparent;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn-primary{
+      background: var(--btn);
+      color: var(--btnText);
+      border-color: rgba(11,15,22,0.24);
+    }
+
+    .btn-primary:hover{ opacity: 0.92; }
+    .btn-outline:hover{ background: rgba(255,255,255,0.72); }
+
+    .btn-small{ padding: 10px 14px; font-size: 0.92rem; }
+
+    /* Hero section (full screen height) */
+    .hero{
+      min-height: calc(100vh - 64px);
+      display: grid;
+      align-items: center;
+      padding: 70px 0 60px;
+    }
+
+    .hero-grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .hero-copy{
+      text-align: center;
+      display: grid;
+      gap: 16px;
+      justify-items: center;
+    }
+
+    h1{
+      margin: 0;
+      font-size: clamp(2.05rem, 5.2vw, 3.6rem);
+      letter-spacing: -0.02em;
+      line-height: 1.04;
+    }
+
+    .sub{
+      margin: 0;
+      font-size: clamp(1.05rem, 2.3vw, 1.2rem);
+      color: var(--muted);
+      max-width: 52ch;
+      font-weight: 650;
+    }
+
+    .hero-actions{
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    /* Large centered iPhone product image placeholder */
+    .hero-media{
+      display: grid;
+      place-items: center;
+    }
+
+    .phone-frame{
+      width: min(420px, 88vw);
+      aspect-ratio: 9 / 19.5;
+      border-radius: 44px;
+      background: linear-gradient(180deg, rgba(11,15,22,0.92), rgba(11,15,22,0.80));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.24);
+    }
+
+    .phone-frame img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.98;
+    }
+
+    .phone-notch{
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44%;
+      height: 26px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .placeholder{
+      display: grid;
+      place-items: center;
+      height: 100%;
+      padding: 24px;
+      text-align: center;
+      color: rgba(255,255,255,0.86);
+      background: radial-gradient(600px 420px at 30% 20%, rgba(255,255,255,0.14), rgba(255,255,255,0) 55%),
+                  radial-gradient(520px 420px at 80% 70%, rgba(255,255,255,0.10), rgba(255,255,255,0) 55%);
+    }
+
+    .placeholder strong{ font-size: 1.05rem; }
+    .placeholder span{ color: rgba(255,255,255,0.72); font-weight: 650; font-size: 0.95rem; }
+
+    /* Section base */
+    .section{
+      padding: 90px 0;
+      border-top: 1px solid rgba(11,15,22,0.06);
+    }
+
+    .section-title{
+      font-size: clamp(1.55rem, 3vw, 2.15rem);
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+    }
+
+    .section-lead{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-weight: 650;
+      max-width: 65ch;
+    }
+
+    /* Product sections (vertical storytelling style) */
+    .story{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 28px;
+    }
+
+    .story-media{
+      display: grid;
+      place-items: center;
+    }
+
+    .story-media .phone-frame{
+      width: min(460px, 92vw);
+      border-radius: 46px;
+    }
+
+    .story-copy{
+      display: grid;
+      gap: 12px;
+    }
+
+    .kicker{
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(11,15,22,0.62);
+      font-size: 0.80rem;
+    }
+
+    .bullets{
+      margin: 0;
+      padding-left: 18px;
+      color: rgba(11,15,22,0.76);
+      font-weight: 650;
+      display: grid;
+      gap: 6px;
+    }
+
+    .storage{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .chip{
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.70);
+      border: 1px solid rgba(11,15,22,0.10);
+      font-weight: 800;
+      font-size: 0.92rem;
+      color: rgba(11,15,22,0.82);
+    }
+
+    /* Authenticity section icons */
+    .icon-grid{
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .icon-card{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(11,15,22,0.08);
+      padding: 16px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: rgba(11,15,22,0.92);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .icon svg{ width: 18px; height: 18px; }
+
+    .icon-card strong{ display: block; font-size: 1rem; }
+    .icon-card p{ margin: 6px 0 0; color: var(--muted); font-weight: 650; }
+
+    /* Request availability form */
+    .form{
+      margin-top: 26px;
+      max-width: 780px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(11,15,22,0.08);
+      padding: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.08);
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    label{
+      display: grid;
+      gap: 8px;
+      font-weight: 850;
+      color: rgba(11,15,22,0.86);
+      font-size: 0.95rem;
+    }
+
+    input, select, textarea{
+      width: 100%;
+      font: inherit;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(11,15,22,0.14);
+      background: rgba(255,255,255,0.95);
+      outline: none;
+    }
+
+    textarea{ resize: vertical; min-height: 110px; }
+
+    .form-actions{
+      margin-top: 14px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    /* Footer */
+    footer{
+      padding: 46px 0 60px;
+      border-top: 1px solid rgba(11,15,22,0.06);
+      color: rgba(11,15,22,0.72);
+    }
+
+    .foot{
+      display: grid;
+      gap: 10px;
+      font-weight: 650;
+    }
+
+    .foot a{ color: rgba(11,15,22,0.86); text-decoration: none; }
+    .foot a:hover{ text-decoration: underline; }
+
+    .small{
+      font-size: 0.92rem;
+      color: rgba(11,15,22,0.58);
+      max-width: 70ch;
+    }
+
+    /* Responsive */
+    @media (min-width: 860px){
+      .nav-links{ display: inline-flex; }
+      .hero-grid{ grid-template-columns: 1.1fr 0.9fr; }
+      .hero-copy{ text-align: left; justify-items: start; }
+      .hero-actions{ justify-content: flex-start; }
+      .story{ grid-template-columns: 1fr 1fr; }
+      .story.reverse{ grid-template-columns: 1fr 1fr; }
+      .story.reverse .story-media{ order: 2; }
+      .icon-grid{ grid-template-columns: 1fr 1fr; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+      .span-2{ grid-column: 1 / -1; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      html:focus-within{ scroll-behavior: auto; }
+      *{ transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sticky transparent navbar -->
+  <header class="nav" aria-label="Primary navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="logo" href="#top" aria-label="Uncle Apple home">
+          <span class="logo-mark" aria-hidden="true"></span>
+          <span>Uncle Apple</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Site links">
+          <a href="#models">Models</a>
+          <a href="#authenticity">Authenticity</a>
+          <a href="#support">Support</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+          <!-- WhatsApp button on right -->
+          <a class="btn btn-primary btn-small" id="navWhatsApp" href="#">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero section (full screen height) -->
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <h1>Original iPhone Models. Available in The Gambia.</h1>
+            <p class="sub">Authentic devices. Verified condition. Fast WhatsApp response.</p>
+
+            <div class="hero-actions" aria-label="Hero actions">
+              <a class="btn btn-primary" href="#request">Request Availability</a>
+              <a class="btn btn-outline" id="heroChat" href="#">Chat on WhatsApp</a>
+            </div>
+          </div>
+
+          <div class="hero-media" aria-label="Large iPhone image">
+            <div class="phone-frame" role="img" aria-label="iPhone image placeholder">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <img src="hero-iphone.jpg" alt="iPhone (hero)" loading="eager" decoding="async" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product sections (vertical storytelling style) -->
+    <section class="section" id="models" aria-label="iPhone models">
+      <div class="container">
+        <h2 class="section-title">Models</h2>
+        <p class="section-lead">Clean, premium selection. No prices displayed — request availability for a fast reply.</p>
+
+        <!-- iPhone Pro -->
+        <div class="story" id="iphone-pro">
+          <div class="story-media">
+            <div class="phone-frame" aria-label="iPhone Pro image placeholder">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <img src="iphone-pro.jpg" alt="iPhone Pro" loading="lazy" decoding="async" />
+            </div>
+          </div>
+          <div class="story-copy">
+            <div class="kicker">iPhone Pro</div>
+            <h3 class="section-title" style="margin:0">Pro performance. Pro camera. Premium feel.</h3>
+            <ul class="bullets">
+              <li>Pro camera system for sharp, clean photos</li>
+              <li>Fast and smooth everyday performance</li>
+              <li>Solid premium build and finish</li>
+            </ul>
+            <div>
+              <div class="kicker" style="letter-spacing:0.10em">Storage options</div>
+              <div class="storage" aria-label="iPhone Pro storage options">
+                <span class="chip">128GB</span>
+                <span class="chip">256GB</span>
+                <span class="chip">512GB</span>
+                <span class="chip">1TB</span>
+              </div>
+            </div>
+            <div>
+              <a class="btn btn-primary" data-wa-model="iPhone Pro" href="#">Request availability</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- iPhone -->
+        <div class="story reverse" id="iphone" style="margin-top: 70px;">
+          <div class="story-media">
+            <div class="phone-frame" aria-label="iPhone image placeholder">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <img src="iphone.jpg" alt="iPhone" loading="lazy" decoding="async" />
+            </div>
+          </div>
+          <div class="story-copy">
+            <div class="kicker">iPhone</div>
+            <h3 class="section-title" style="margin:0">Balanced, reliable, and easy to live with.</h3>
+            <ul class="bullets">
+              <li>Great everyday camera</li>
+              <li>All‑day battery for normal use</li>
+              <li>Clean iOS experience</li>
+            </ul>
+            <div>
+              <div class="kicker" style="letter-spacing:0.10em">Storage options</div>
+              <div class="storage" aria-label="iPhone storage options">
+                <span class="chip">128GB</span>
+                <span class="chip">256GB</span>
+                <span class="chip">512GB</span>
+              </div>
+            </div>
+            <div>
+              <a class="btn btn-primary" data-wa-model="iPhone" href="#">Request availability</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- iPhone Plus -->
+        <div class="story" id="iphone-plus" style="margin-top: 70px;">
+          <div class="story-media">
+            <div class="phone-frame" aria-label="iPhone Plus image placeholder">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <img src="iphone-plus.jpg" alt="iPhone Plus" loading="lazy" decoding="async" />
+            </div>
+          </div>
+          <div class="story-copy">
+            <div class="kicker">iPhone Plus</div>
+            <h3 class="section-title" style="margin:0">Big screen. Big battery. Premium comfort.</h3>
+            <ul class="bullets">
+              <li>Larger display for media and work</li>
+              <li>Extra battery life for long days</li>
+              <li>Comfortable typing and viewing</li>
+            </ul>
+            <div>
+              <div class="kicker" style="letter-spacing:0.10em">Storage options</div>
+              <div class="storage" aria-label="iPhone Plus storage options">
+                <span class="chip">128GB</span>
+                <span class="chip">256GB</span>
+                <span class="chip">512GB</span>
+              </div>
+            </div>
+            <div>
+              <a class="btn btn-primary" data-wa-model="iPhone Plus" href="#">Request availability</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- iPhone SE -->
+        <div class="story reverse" id="iphone-se" style="margin-top: 70px;">
+          <div class="story-media">
+            <div class="phone-frame" aria-label="iPhone SE image placeholder">
+              <div class="phone-notch" aria-hidden="true"></div>
+              <img src="iphone-se.jpg" alt="iPhone SE" loading="lazy" decoding="async" />
+            </div>
+          </div>
+          <div class="story-copy">
+            <div class="kicker">iPhone SE</div>
+            <h3 class="section-title" style="margin:0">Compact, familiar, and simple.</h3>
+            <ul class="bullets">
+              <li>Smaller size, easier one‑hand use</li>
+              <li>Fast everyday performance</li>
+              <li>Classic iPhone feel</li>
+            </ul>
+            <div>
+              <div class="kicker" style="letter-spacing:0.10em">Storage options</div>
+              <div class="storage" aria-label="iPhone SE storage options">
+                <span class="chip">64GB</span>
+                <span class="chip">128GB</span>
+                <span class="chip">256GB</span>
+              </div>
+            </div>
+            <div>
+              <a class="btn btn-primary" data-wa-model="iPhone SE" href="#">Request availability</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Authenticity section -->
+    <section class="section" id="authenticity" aria-label="Authenticity">
+      <div class="container">
+        <h2 class="section-title">Authenticity</h2>
+        <p class="section-lead">Clean standards. Clear communication. Only authentic Apple devices and genuine parts.</p>
+
+        <div class="icon-grid">
+          <div class="icon-card">
+            <div class="icon" aria-hidden="true">
+              <!-- check icon -->
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <strong>Original devices only</strong>
+              <p>No fake phones. We only deal in original iPhone models.</p>
+            </div>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon" aria-hidden="true">
+              <!-- shield icon -->
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <strong>Genuine parts only</strong>
+              <p>We don’t use or sell non‑original parts.</p>
+            </div>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon" aria-hidden="true">
+              <!-- info icon -->
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="2.2"/><path d="M12 10v6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M12 7h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <strong>Condition explained clearly</strong>
+              <p>We confirm storage, color, and condition before you buy.</p>
+            </div>
+          </div>
+
+          <div class="icon-card">
+            <div class="icon" aria-hidden="true">
+              <!-- chat icon -->
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <strong>WhatsApp delivery updates</strong>
+              <p>We share updates and confirmation via WhatsApp.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support section (simple, no clutter) -->
+    <section class="section" id="support" aria-label="Support">
+      <div class="container">
+        <h2 class="section-title">Support</h2>
+        <p class="section-lead">Tell us what you want (camera, battery, size). We’ll recommend the best model and confirm availability fast.</p>
+      </div>
+    </section>
+
+    <!-- Request availability form section -->
+    <section class="section" id="request" aria-label="Request availability">
+      <div class="container">
+        <h2 class="section-title">Request availability</h2>
+        <p class="section-lead">Fill the details and send directly on WhatsApp.</p>
+
+        <form class="form" id="availabilityForm" aria-label="Availability request form">
+          <div class="grid">
+            <label>
+              Model
+              <select id="model">
+                <option value="">Select a model</option>
+                <option>iPhone Pro</option>
+                <option>iPhone</option>
+                <option>iPhone Plus</option>
+                <option>iPhone SE</option>
+                <option>Other iPhone model</option>
+              </select>
+            </label>
+
+            <label>
+              Storage
+              <input id="storage" placeholder="e.g., 128GB" />
+            </label>
+
+            <label>
+              Color
+              <input id="color" placeholder="e.g., Black" />
+            </label>
+
+            <label>
+              Condition
+              <select id="condition">
+                <option>Original condition</option>
+                <option>New / Sealed</option>
+                <option>Used (original parts)</option>
+              </select>
+            </label>
+
+            <label>
+              Delivery or Pickup
+              <select id="delivery">
+                <option>Delivery</option>
+                <option>Pickup</option>
+              </select>
+            </label>
+
+            <label class="span-2">
+              Notes
+              <textarea id="notes" placeholder="Any details (dual SIM, preferred size, urgent, etc.)"></textarea>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Send request on WhatsApp</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Contact section -->
+    <section class="section" id="contact" aria-label="Contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-lead">Fastest response is WhatsApp. Email is available for invoices and receipts.</p>
+        <div class="hero-actions" style="justify-content:flex-start; margin-top:18px;">
+          <a class="btn btn-primary" id="contactWhatsApp" href="#">WhatsApp</a>
+          <a class="btn btn-outline" href="mailto:nget@web.de">Email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer aria-label="Footer">
+    <div class="container">
+      <div class="foot">
+        <div><strong>Located in The Gambia</strong></div>
+        <div>
+          <a id="footWhatsApp" href="#">WhatsApp</a>
+          <span aria-hidden="true"> · </span>
+          <a href="mailto:nget@web.de">Email</a>
+        </div>
+        <div>Copyright 2026 Uncle Apple</div>
+        <div class="small">Independent reseller. Not affiliated with Apple Inc.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      WhatsApp integration
+      - Updates all WhatsApp links
+      - Builds a structured message from the form
+
+      IMPORTANT: Replace with your real WhatsApp number (international format).
+      Example for The Gambia: +220XXXXXXXX (remove + and spaces in the wa.me URL)
+    */
+
+    const STORE_NAME = 'Uncle Apple';
+    const LOCATION = 'The Gambia';
+
+    // TODO: Replace with your real number (digits only)
+    const WHATSAPP_NUMBER = '2200000000';
+
+    function buildWhatsAppLink(message){
+      const encoded = encodeURIComponent(message);
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+    }
+
+    function setWhatsAppHref(el, message){
+      if (!el) return;
+      el.setAttribute('href', buildWhatsAppLink(message));
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener noreferrer');
+    }
+
+    // Global WhatsApp buttons
+    const defaultMsg = `Hi ${STORE_NAME}! I want to request iPhone availability in ${LOCATION}.`;
+    setWhatsAppHref(document.getElementById('navWhatsApp'), defaultMsg);
+    setWhatsAppHref(document.getElementById('heroChat'), defaultMsg);
+    setWhatsAppHref(document.getElementById('contactWhatsApp'), defaultMsg);
+    setWhatsAppHref(document.getElementById('footWhatsApp'), defaultMsg);
+
+    // Model-specific CTA buttons in each product section
+    document.querySelectorAll('[data-wa-model]').forEach((btn) => {
+      const model = btn.getAttribute('data-wa-model');
+      const msg = `Hi ${STORE_NAME}! Please confirm availability for: ${model} in ${LOCATION}.`;
+      setWhatsAppHref(btn, msg);
+    });
+
+    // Availability request form => WhatsApp submit
+    document.getElementById('availabilityForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const model = document.getElementById('model')?.value || 'Not specified';
+      const storage = document.getElementById('storage')?.value?.trim() || 'Not specified';
+      const color = document.getElementById('color')?.value?.trim() || 'Not specified';
+      const condition = document.getElementById('condition')?.value || 'Not specified';
+      const delivery = document.getElementById('delivery')?.value || 'Not specified';
+      const notes = document.getElementById('notes')?.value?.trim() || '—';
+
+      const msg =
+        `Hi ${STORE_NAME}! Please check iPhone availability in ${LOCATION}.\n` +
+        `Model: ${model}\n` +
+        `Storage: ${storage}\n` +
+        `Color: ${color}\n` +
+        `Condition: ${condition}\n` +
+        `Delivery/Pickup: ${delivery}\n` +
+        `Notes: ${notes}`;
+
+      window.open(buildWhatsAppLink(msg), '_blank', 'noopener,noreferrer');
+    });
+  </script>
+</body>
+</html>
