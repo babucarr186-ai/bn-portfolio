@@ -73,6 +73,7 @@
       filter: saturate(1.04) contrast(1.04);
       transform: rotate(var(--bg-rot));
       transform-origin: center;
+      will-change: transform;
       pointer-events: none;
       z-index: -2;
     }
@@ -836,29 +837,47 @@
       if (reduceMotion) return;
 
       const rootStyle = document.documentElement.style;
+
+      // Smoothly ease current rotation toward the scroll-based target.
+      // Higher = snappier, lower = smoother.
+      const EASE = 0.08;
+      const MAX_DEG = 80;
+      const STOP_EPS = 0.03;
+
       let rafId = 0;
-      let lastY = -1;
+      let current = 0;
 
-      function update(){
-        rafId = 0;
+      function targetAngle(){
         const y = window.scrollY || 0;
-        if (y === lastY) return;
-        lastY = y;
-
-        // Rotation (0° → 80°) from top to bottom of the page
         const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
         const progress = Math.max(0, Math.min(1, y / maxScroll));
-        const angle = progress * 80;
-        rootStyle.setProperty('--bg-rot', angle.toFixed(2) + 'deg');
+        return progress * MAX_DEG;
+      }
+
+      function tick(){
+        rafId = 0;
+        const target = targetAngle();
+        current = current + (target - current) * EASE;
+
+        if (Math.abs(target - current) < STOP_EPS) {
+          current = target;
+        }
+
+        rootStyle.setProperty('--bg-rot', current.toFixed(2) + 'deg');
+
+        if (Math.abs(target - current) >= STOP_EPS) {
+          rafId = window.requestAnimationFrame(tick);
+        }
       }
 
       function onScroll(){
         if (rafId) return;
-        rafId = window.requestAnimationFrame(update);
+        rafId = window.requestAnimationFrame(tick);
       }
 
       window.addEventListener('scroll', onScroll, { passive: true });
-      update();
+      window.addEventListener('resize', onScroll);
+      onScroll();
     })();
   </script>
 </body>
