@@ -65,6 +65,7 @@ export default function App() {
   const airPhoneRef = useRef(null);
   const heroRef = useRef(null);
   const heroCopyRef = useRef(null);
+  const heroGalleryRef = useRef(null);
 
   useEffect(() => {
     const el = airPhoneRef.current;
@@ -72,6 +73,7 @@ export default function App() {
 
     const heroEl = heroRef.current;
     const heroCopyEl = heroCopyRef.current;
+    const heroGalleryEl = heroGalleryRef.current;
 
     const prefersReducedMotion =
       typeof window !== 'undefined' &&
@@ -90,6 +92,8 @@ export default function App() {
     // Fade copy out as user scrolls down the hero.
     let copyOpacity = 1;
     let targetCopyOpacity = 1;
+    let galleryOpacity = 1;
+    let targetGalleryOpacity = 1;
     let bgOpacity = theme === 'dark' ? 0.24 : 0.30;
     let targetBgOpacity = bgOpacity;
 
@@ -98,6 +102,7 @@ export default function App() {
     function updateHeroTargets() {
       if (!heroEl || !heroCopyEl) {
         targetCopyOpacity = 1;
+        targetGalleryOpacity = 1;
         targetBgOpacity = bgOpacity;
         return;
       }
@@ -110,6 +115,9 @@ export default function App() {
 
       // Keep it gentle and readable; only fade the copy.
       targetCopyOpacity = clamp(1 - progress * 1.08, 0, 1);
+
+      // Slightly dim the hero gallery for the same "luxury" feel.
+      targetGalleryOpacity = clamp(1 - progress * 0.18, 0.82, 1);
 
       // As text fades, let the background iPhone become slightly clearer.
       targetBgOpacity = clamp(bgOpacity + progress * 0.10, 0, 0.52);
@@ -129,6 +137,7 @@ export default function App() {
       currentOffset += (targetOffset - currentOffset) * ease;
 
       copyOpacity += (targetCopyOpacity - copyOpacity) * ease;
+      galleryOpacity += (targetGalleryOpacity - galleryOpacity) * ease;
       bgOpacity += (targetBgOpacity - bgOpacity) * ease;
 
       el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotateX(12deg) rotateY(-16deg) rotateZ(${currentDeg}deg)`;
@@ -140,11 +149,16 @@ export default function App() {
         heroCopyEl.style.pointerEvents = copyOpacity < 0.15 ? 'none' : 'auto';
       }
 
+      if (heroGalleryEl) {
+        heroGalleryEl.style.opacity = `${galleryOpacity}`;
+      }
+
       const degDone = Math.abs(targetDeg - currentDeg) < 0.03;
       const offsetDone = Math.abs(targetOffset - currentOffset) < 0.06;
       const copyDone = Math.abs(targetCopyOpacity - copyOpacity) < 0.01;
+      const galleryDone = Math.abs(targetGalleryOpacity - galleryOpacity) < 0.01;
       const bgDone = Math.abs(targetBgOpacity - bgOpacity) < 0.01;
-      if (degDone && offsetDone && copyDone && bgDone) {
+      if (degDone && offsetDone && copyDone && galleryDone && bgDone) {
         animating = false;
         rafId = 0;
         return;
@@ -260,7 +274,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="hero-gallery" aria-label="iPhone previews">
+        <div ref={heroGalleryRef} className="hero-gallery" aria-label="iPhone previews">
           <img className="hero-phone" src={import.meta.env.BASE_URL + 'iphone-pro.svg'} alt="iPhone Pro" loading="lazy" />
           <img className="hero-phone hero-phone-back" src={import.meta.env.BASE_URL + 'iphone.svg'} alt="iPhone" loading="lazy" />
         </div>
