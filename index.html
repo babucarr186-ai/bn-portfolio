@@ -549,6 +549,13 @@
       font-weight: 650;
     }
 
+    .foot-left{ display: grid; gap: 10px; }
+
+    .foot-legal{
+      display: grid;
+      gap: 6px;
+    }
+
     .foot a{ color: rgba(11,15,22,0.86); text-decoration: none; }
     .foot a:hover{ text-decoration: underline; }
 
@@ -556,6 +563,16 @@
       font-size: 0.92rem;
       color: rgba(11,15,22,0.58);
       max-width: 70ch;
+    }
+
+    @media (min-width: 640px){
+      .foot{
+        grid-template-columns: 1fr auto;
+        align-items: start;
+      }
+
+      .foot-legal{ text-align: right; }
+      .foot-legal .small{ max-width: 52ch; margin-left: auto; }
     }
 
     /* Responsive */
@@ -901,14 +918,19 @@
   <footer aria-label="Footer">
     <div class="container">
       <div class="foot">
-        <div><strong>Located in The Gambia</strong></div>
-        <div>
-          <a id="footWhatsApp" href="#">WhatsApp</a>
-          <span aria-hidden="true"> · </span>
-          <a href="mailto:nget@web.de">Email</a>
+        <div class="foot-left">
+          <div><strong>Located in The Gambia</strong></div>
+          <div>
+            <a id="footWhatsApp" href="#">WhatsApp</a>
+            <span aria-hidden="true"> · </span>
+            <a href="mailto:nget@web.de">Email</a>
+          </div>
         </div>
-        <div>Copyright 2026 Uncle Apple</div>
-        <div class="small">Independent reseller. Not affiliated with Apple Inc.</div>
+
+        <div class="foot-legal">
+          <div>Copyright 2026 Uncle Apple</div>
+          <div class="small">Independent reseller. Not affiliated with Apple Inc.</div>
+        </div>
       </div>
     </div>
   </footer>
