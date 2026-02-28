@@ -589,6 +589,40 @@
       max-width: 70ch;
     }
 
+    /* Mobile sizing tweaks */
+    @media (max-width: 640px){
+      .container{
+        width: min(1100px, calc(100% - 32px));
+      }
+
+      .hero{
+        padding: 52px 0 44px;
+      }
+
+      .section{
+        padding: 68px 0;
+      }
+
+      .phone-frame{
+        width: min(360px, 82vw);
+        border-radius: 40px;
+      }
+
+      .story-media .phone-frame{
+        width: min(380px, 86vw);
+        border-radius: 42px;
+      }
+
+      .inventory-frame{
+        width: min(360px, 86vw);
+        border-radius: 40px;
+      }
+
+      .inventory-viewport{
+        padding: 12px;
+      }
+    }
+
     @media (min-width: 640px){
       .foot{
         grid-template-columns: 1fr auto;
