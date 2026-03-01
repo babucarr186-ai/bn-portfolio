@@ -32,6 +32,9 @@ export const watches = [
       'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 42mm — fully tested, very good condition, 12-month warranty. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
-    images: ['products/watches/watch-series-10-titan-42mm-1.jpg?v=20260301-1'],
+    images: [
+      'products/watches/watch-series-10-titan-42mm-1.jpg?v=20260301-2',
+      'products/watches/watch-series-10-titan-42mm-2.jpg?v=20260301-2',
+    ],
   },
 ];
