@@ -266,6 +266,15 @@ h1{
   opacity: 0.98;
 }
 
+/* Apple TV & Home: show full product (avoid crop/too-large) */
+html[data-category="appletvhome"] .hero .phone-frame{
+  padding: 18px;
+}
+
+html[data-category="appletvhome"] .hero .phone-frame img{
+  object-fit: contain;
+}
+
 .phone-notch{
   position: absolute;
   top: 10px;
@@ -527,6 +536,14 @@ footer{
   object-fit: cover;
   display: block;
   cursor: zoom-in;
+}
+
+html[data-category="appletvhome"] .catalog-frame{
+  padding: 16px;
+}
+
+html[data-category="appletvhome"] .catalog-frame img{
+  object-fit: contain;
 }
 
 .catalog-card[data-kind="phone"] .catalog-frame{
