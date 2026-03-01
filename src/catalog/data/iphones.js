@@ -23,9 +23,13 @@ export const iphones = [
   },
   {
     title: 'iPhone 14',
-    subtitle: '256GB • Original condition',
+    subtitle: '256GB • Excellent condition • Original parts',
     kind: 'phone',
-    images: ['iphone-plus.webp', 'hero-iphone.jpg', 'iphone.jpg'],
+    images: [
+      'products/iphones/iphone-14-256gb-excellent-1.jpg?v=20260301',
+      'products/iphones/iphone-14-256gb-excellent-2.jpg?v=20260301',
+      'products/iphones/iphone-14-256gb-excellent-3.jpg?v=20260301',
+    ],
   },
   {
     title: 'iPhone XR',
