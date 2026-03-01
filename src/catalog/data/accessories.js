@@ -14,10 +14,11 @@ export const accessories = [
   },
   {
     title: 'Apple MagSafe 2 Power Adapter',
-    subtitle: 'MacBook charger • Used (Good condition) • Ask wattage',
+    subtitle:
+      '145W • Compatible: MacBook Air 11-inch (2015), MacBook Air 13-inch (2012–2017) • Used (Good condition)',
     kind: 'square',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple MagSafe 2 Power Adapter (MacBook charger) — used (good condition). Please confirm wattage. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple MagSafe 2 Power Adapter (145W) — used (good condition). Compatible with MacBook Air 11-inch (2015) and MacBook Air 13-inch (2012–2017). In The Gambia.',
     images: ['products/accessories/magsafe-2-charger-1.jpg?v=20260301-1'],
   },
   {
