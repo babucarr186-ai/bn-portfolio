@@ -13,9 +13,13 @@ export const iphones = [
   },
   {
     title: 'iPhone 12 Pro Max',
-    subtitle: '128GB • Used • Good • Original parts',
+    subtitle: '128GB • Used • Like new • Original parts',
     kind: 'phone',
-    images: ['hero-iphone.jpg', 'iphone-pro.jpg', 'iphone.jpg'],
+    images: [
+      'products/iphones/iphone-12-pro-max-128gb-used-like-new-1.jpg?v=20260301',
+      'products/iphones/iphone-12-pro-max-128gb-used-like-new-2.jpg?v=20260301',
+      'products/iphones/iphone-12-pro-max-128gb-used-like-new-3.jpg?v=20260301',
+    ],
   },
   {
     title: 'iPhone 14',
