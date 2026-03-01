@@ -507,9 +507,10 @@ footer{
 }
 
 .catalog-card[data-kind="phone"] .catalog-frame{
-  --frame-aspect: 9 / 19.5;
-  --frame-radius: 40px;
-  max-width: 320px;
+  /* Keep iPhone inventory compact (match Accessories sizing) */
+  --frame-aspect: 1 / 1;
+  --frame-radius: 22px;
+  max-width: 360px;
 }
 
 .catalog-card[data-kind="square"] .catalog-frame{
