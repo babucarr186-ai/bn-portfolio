@@ -8,9 +8,9 @@ export const appleTvHome = [
     mediaFit: 'contain',
     mediaPad: 16,
     images: [
-      'products/apple-tv-home/apple-tv-1.jpg?v=20260301',
-      'products/apple-tv-home/apple-tv-2.jpg?v=20260301',
-      'products/apple-tv-home/apple-tv-3.jpg?v=20260301',
+      'products/apple-tv-home/apple-tv-1.jpg?v=20260301-2',
+      'products/apple-tv-home/apple-tv-2.jpg?v=20260301-2',
+      'products/apple-tv-home/apple-tv-3.jpg?v=20260301-2',
     ],
   },
   {
