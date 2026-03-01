@@ -1,20 +1,34 @@
 export const appleTvHome = [
   {
-    title: 'Apple TV',
-    subtitle: 'HD / 4K (ask availability)',
+    title: 'Apple TV 4K',
+    subtitle: 'Gen 3 (2022) • 64GB • Black • Used (Good condition) • Compatible accessories',
     kind: 'laptop',
-    images: ['iphone-air.webp', 'hero-iphone.jpg', 'iphone.jpg'],
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple TV 4K (Gen 3, 2022) — 64GB, black color, used (good condition). Compatible accessories included/available. In The Gambia.',
+    images: [
+      'products/apple-tv-home/apple-tv-1.jpg',
+      'products/apple-tv-home/apple-tv-2.jpg',
+      'products/apple-tv-home/apple-tv-3.jpg',
+    ],
   },
   {
     title: 'HomePod',
     subtitle: 'Ask availability',
     kind: 'square',
-    images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-pro.jpg'],
+    images: [
+      'products/apple-tv-home/homepod-1.jpg',
+      'products/apple-tv-home/homepod-2.jpg',
+      'products/apple-tv-home/homepod-3.jpg',
+    ],
   },
   {
     title: 'HomePod mini',
     subtitle: 'Ask availability',
     kind: 'square',
-    images: ['hero-iphone.jpg', 'iphone.jpg', 'iphone-se.jpg'],
+    images: [
+      'products/apple-tv-home/homepod-mini-1.jpg',
+      'products/apple-tv-home/homepod-mini-2.jpg',
+      'products/apple-tv-home/homepod-mini-3.jpg',
+    ],
   },
 ];
