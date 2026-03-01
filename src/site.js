@@ -19,7 +19,11 @@ window.buildWhatsAppLink = buildWhatsAppLink;
 window.setWhatsAppHref = setWhatsAppHref;
 
 function initWhatsAppLinks() {
-  const defaultMsg = `Hi ${STORE_NAME}! I want to request availability in ${LOCATION}.`;
+  const customDefaultMsg = document.documentElement?.getAttribute('data-wa-default')?.trim();
+  const defaultMsg =
+    customDefaultMsg && customDefaultMsg.length > 0
+      ? customDefaultMsg
+      : `Hi ${STORE_NAME}! I want to request availability in ${LOCATION}.`;
 
   setWhatsAppHref(document.getElementById('navWhatsApp'), defaultMsg);
   setWhatsAppHref(document.getElementById('heroChat'), defaultMsg);
