@@ -9,9 +9,11 @@ const projectRoot = fileURLToPath(new URL('.', import.meta.url))
 // https://vite.dev/config/
 export default defineConfig({
   // Dynamic base:
-  // - For custom domains: default '/'
-  // - For GitHub Pages repo path: set env VITE_BASE="/bn-portfolio/" in the workflow
-  base: process.env.VITE_BASE || '/',
+  // - Use a relative base by default so the same build works on:
+  //   - GitHub Pages project sites (served under /<repo>/)
+  //   - Custom domains (served at /)
+  // - Can still be overridden via env VITE_BASE if needed
+  base: process.env.VITE_BASE || './',
   plugins: [react()],
   build: {
     minify: 'terser',
