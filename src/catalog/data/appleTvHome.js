@@ -28,10 +28,10 @@ export const appleTvHome = [
   {
     title: 'HomePod mini',
     subtitle:
-      'White • Very good condition • 24‑month dealer warranty • Bluetooth + Wi‑Fi • Siri • Fabric finish • 345g • EAN 0190199710511',
+      'White • Very good condition • 12‑month dealer warranty • Bluetooth + Wi‑Fi • Siri • Fabric finish • 345g',
     kind: 'square',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple HomePod mini — white color, very good condition, Bluetooth + Wi‑Fi connectivity, Siri smart home compatibility, fabric finish, 345g. 24-month dealer warranty. EAN: 0190199710511. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple HomePod mini — white color, very good condition, Bluetooth + Wi‑Fi connectivity, Siri smart home compatibility, fabric finish, 345g. 12-month dealer warranty. In The Gambia.',
     images: [
       'products/apple-tv-home/homepod-mini-1.webp?v=20260301-1',
       'products/apple-tv-home/homepod-mini-2.webp?v=20260301-1',
