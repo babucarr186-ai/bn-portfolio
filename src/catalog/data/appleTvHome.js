@@ -35,7 +35,7 @@ export const appleTvHome = [
     images: [
       'products/apple-tv-home/homepod-mini-1.webp?v=20260301-1',
       'products/apple-tv-home/homepod-mini-2.webp?v=20260301-1',
-      'products/apple-tv-home/homepod-mini-3.jpg?v=20260301-1',
+      'products/apple-tv-home/homepod-mini-3.webp?v=20260301-1',
     ],
   },
 ];
