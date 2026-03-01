@@ -25,6 +25,8 @@ export const accessories = [
     kind: 'square',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Magic Mouse 2 — used (good condition). In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 16,
     images: [
       'products/accessories/magic-mouse-2-1.jpg?v=20260301-1',
       'products/accessories/magic-mouse-2-2.jpg?v=20260301-1',
