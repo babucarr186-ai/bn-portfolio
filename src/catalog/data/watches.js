@@ -8,7 +8,10 @@ export const watches = [
       'Hi Uncle Apple! Please confirm availability for: Apple Watch Ultra 2 (2024) — fully tested, excellent condition, 12-month warranty. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
-    images: ['products/watches/watch-ultra-2-2024-1.jpg?v=20260301-1'],
+    images: [
+      'products/watches/watch-ultra-2-2024-1.jpg?v=20260301-2',
+      'products/watches/watch-ultra-2-2024-2.jpg?v=20260301-2',
+    ],
   },
   {
     title: 'Apple Watch SE (2022)',
