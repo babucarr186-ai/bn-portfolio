@@ -152,7 +152,22 @@ a{ color: inherit; }
   align-items: center;
   gap: 10px;
   order: 2;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
+
+.nav-search{
+  width: min(260px, 56vw);
+  font: inherit;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,15,22,0.14);
+  background: rgba(255,255,255,0.86);
+  outline: none;
+}
+
+.nav-search::placeholder{ color: rgba(11,15,22,0.55); }
+.nav-search:focus{ background: rgba(255,255,255,0.95); }
 
 .btn{
   display: inline-flex;
@@ -267,6 +282,7 @@ h1{
 .section{
   padding: 90px 0;
   border-top: 1px solid rgba(11,15,22,0.06);
+  scroll-margin-top: 90px;
 }
 
 .section-title{
@@ -485,6 +501,12 @@ footer{
   padding: 14px;
   display: grid;
   gap: 12px;
+  scroll-margin-top: 90px;
+}
+
+.catalog-card.is-highlight{
+  outline: 2px solid rgba(11,15,22,0.30);
+  outline-offset: 3px;
 }
 
 .catalog-frame{

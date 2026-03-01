@@ -3,6 +3,14 @@ function publicAssetUrl(path) {
   return `${import.meta.env.BASE_URL}${trimmed}`;
 }
 
+function slugify(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
 function el(tag, className) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -10,13 +18,23 @@ function el(tag, className) {
 }
 
 export function renderCatalog({ mountEl, products }) {
-  if (!mountEl) return;
+  if (!mountEl) return [];
 
   mountEl.textContent = '';
+
+  const rendered = [];
 
   products.forEach((product, index) => {
     const card = el('article', 'catalog-card');
     card.dataset.kind = product.kind || 'laptop';
+
+    const titleText = product.title || 'Product';
+    const subtitleText = product.subtitle || '';
+    const idBase = slugify(titleText) || `product-${index + 1}`;
+    card.id = `product-${idBase}-${index + 1}`;
+    card.dataset.title = titleText;
+    if (subtitleText) card.dataset.subtitle = subtitleText;
+    card.dataset.search = `${titleText} ${subtitleText}`.toLowerCase();
 
     const frame = el('div', 'catalog-frame');
     const img = document.createElement('img');
@@ -32,12 +50,12 @@ export function renderCatalog({ mountEl, products }) {
     card.appendChild(frame);
 
     const title = el('h3', 'catalog-title');
-    title.textContent = product.title || 'Product';
+    title.textContent = titleText;
     card.appendChild(title);
 
-    if (product.subtitle) {
+    if (subtitleText) {
       const sub = el('p', 'catalog-sub');
-      sub.textContent = product.subtitle;
+      sub.textContent = subtitleText;
       card.appendChild(sub);
     }
 
@@ -76,7 +94,9 @@ export function renderCatalog({ mountEl, products }) {
     waBtn.href = '#';
     waBtn.textContent = 'WhatsApp';
 
-    const msg = product.whatsAppMessage || `Hi Uncle Apple! Please confirm availability for: ${product.title}${product.subtitle ? ` (${product.subtitle})` : ''} in The Gambia.`;
+    const msg =
+      product.whatsAppMessage ||
+      `Hi Uncle Apple! Please confirm availability for: ${titleText}${subtitleText ? ` (${subtitleText})` : ''} in The Gambia.`;
 
     if (window.setWhatsAppHref) {
       window.setWhatsAppHref(waBtn, msg);
@@ -86,5 +106,13 @@ export function renderCatalog({ mountEl, products }) {
     card.appendChild(actions);
 
     mountEl.appendChild(card);
+
+    rendered.push({
+      id: card.id,
+      title: titleText,
+      subtitle: subtitleText,
+    });
   });
+
+  return rendered;
 }
