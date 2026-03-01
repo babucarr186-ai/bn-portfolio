@@ -2,28 +2,27 @@ export const airpods = [
   {
     title: 'AirPods Max (2024)',
     subtitle:
-      'Green • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Very good condition • Best deal',
+      'Beige • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Excellent condition',
     kind: 'square',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2024) — green color, very good condition. Best deal. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2024) — beige color, excellent condition. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 18,
+    images: ['products/airpods/airpods-max-2024-1.jpg?v=20260301-2'],
+  },
+  {
+    title: 'AirPods Max (2020)',
+    subtitle:
+      'Green • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Very good condition',
+    kind: 'square',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2020) — green color, very good condition. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 18,
     images: [
-      'products/airpods/airpods-max-3.jpg?v=20260301-2',
-      'products/airpods/airpods-max-1.jpg?v=20260301-2',
-      'products/airpods/airpods-max-2.jpg?v=20260301-2',
+      'products/airpods/airpods-max-1.jpg?v=20260301-3',
+      'products/airpods/airpods-max-2.jpg?v=20260301-3',
     ],
-  },
-  {
-    title: 'AirPods Max (2024)',
-    subtitle:
-      'Green • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Excellent condition',
-    kind: 'square',
-    whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2024) — green color, excellent condition. In The Gambia.',
-    mediaFit: 'contain',
-    mediaPad: 18,
-    images: ['products/airpods/airpods-max-2024-1.jpg?v=20260301-1'],
   },
   {
     title: 'AirPods Pro (2nd generation)',
