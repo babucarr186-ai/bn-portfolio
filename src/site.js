@@ -114,6 +114,15 @@ function initImageViewer() {
   let isOpen = false;
   let prevOverflow = '';
 
+  let gallerySources = [];
+  let galleryIndex = 0;
+  let galleryAlt = 'Product photo';
+
+  let pointerId = null;
+  let startX = 0;
+  let startY = 0;
+  let isTracking = false;
+
   function ensureOverlay() {
     if (overlayEl) return;
 
@@ -145,14 +154,109 @@ function initImageViewer() {
     overlayEl.addEventListener('click', (e) => {
       if (e.target === overlayEl) close();
     });
+
+    // Swipe navigation (touch + pen + mouse drag)
+    content.addEventListener(
+      'pointerdown',
+      (e) => {
+        if (!isOpen) return;
+        if (!(e instanceof PointerEvent)) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+        pointerId = e.pointerId;
+        startX = e.clientX;
+        startY = e.clientY;
+        isTracking = true;
+        try {
+          content.setPointerCapture(pointerId);
+        } catch {
+          // ignore
+        }
+      },
+      { passive: true },
+    );
+
+    content.addEventListener(
+      'pointerup',
+      (e) => {
+        if (!isOpen || !isTracking) return;
+        if (pointerId !== null && e.pointerId !== pointerId) return;
+
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+
+        // Horizontal swipe threshold
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+          if (dx < 0) next();
+          else prev();
+        }
+
+        isTracking = false;
+        pointerId = null;
+      },
+      { passive: true },
+    );
+
+    content.addEventListener(
+      'pointercancel',
+      (e) => {
+        if (pointerId !== null && e.pointerId !== pointerId) return;
+        isTracking = false;
+        pointerId = null;
+      },
+      { passive: true },
+    );
   }
 
-  function open({ src, alt }) {
+  function clampIndex(nextIndex) {
+    const max = Math.max(0, gallerySources.length - 1);
+    return Math.max(0, Math.min(max, nextIndex));
+  }
+
+  function preloadAround(index) {
+    const prevIndex = index - 1;
+    const nextIndex = index + 1;
+    [prevIndex, nextIndex].forEach((i) => {
+      const src = gallerySources[i];
+      if (!src) return;
+      const pre = new Image();
+      pre.decoding = 'async';
+      pre.src = src;
+    });
+  }
+
+  function setImage(index) {
+    if (!imgEl) return;
+    galleryIndex = clampIndex(index);
+    const src = gallerySources[galleryIndex];
     if (!src) return;
+
+    imgEl.alt = galleryAlt;
+
+    if (reduceMotion) {
+      imgEl.src = src;
+      preloadAround(galleryIndex);
+      return;
+    }
+
+    imgEl.style.transition = 'opacity 120ms ease';
+    imgEl.style.opacity = '0';
+    window.setTimeout(() => {
+      if (!imgEl || !isOpen) return;
+      imgEl.src = src;
+      imgEl.style.opacity = '1';
+      preloadAround(galleryIndex);
+    }, 110);
+  }
+
+  function openGallery({ sources, index, alt }) {
+    const cleaned = Array.isArray(sources) ? sources.filter(Boolean) : [];
+    if (!cleaned.length) return;
+
     ensureOverlay();
 
-    imgEl.src = src;
-    imgEl.alt = alt || 'Product photo';
+    gallerySources = Array.from(new Set(cleaned));
+    galleryAlt = alt || 'Product photo';
 
     overlayEl.removeAttribute('hidden');
     prevOverflow = document.body.style.overflow;
@@ -163,6 +267,29 @@ function initImageViewer() {
       overlayEl.classList.add('is-open');
       window.setTimeout(() => overlayEl && overlayEl.classList.add('is-ready'), 0);
     }
+
+    setImage(typeof index === 'number' ? index : 0);
+  }
+
+  function next() {
+    if (!isOpen) return;
+    setImage(galleryIndex + 1);
+  }
+
+  function prev() {
+    if (!isOpen) return;
+    setImage(galleryIndex - 1);
+  }
+
+  function open(payload) {
+    if (!payload) return;
+    if (Array.isArray(payload.sources) && payload.sources.length) {
+      openGallery({ sources: payload.sources, index: payload.index || 0, alt: payload.alt });
+      return;
+    }
+    if (payload.src) {
+      openGallery({ sources: [payload.src], index: 0, alt: payload.alt });
+    }
   }
 
   function close() {
@@ -171,6 +298,10 @@ function initImageViewer() {
     overlayEl.classList.remove('is-open', 'is-ready');
     document.body.style.overflow = prevOverflow;
     isOpen = false;
+
+    gallerySources = [];
+    galleryIndex = 0;
+    galleryAlt = 'Product photo';
 
     if (imgEl) {
       imgEl.src = '';
@@ -182,7 +313,10 @@ function initImageViewer() {
   window.closeImageViewer = close;
 
   document.addEventListener('keydown', (e) => {
+    if (!isOpen) return;
     if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
   });
 
   document.addEventListener('click', (e) => {
@@ -192,9 +326,22 @@ function initImageViewer() {
     const img = target.closest('.catalog-frame img');
     if (!img) return;
 
-    const src = img.currentSrc || img.getAttribute('src');
+    const card = img.closest('.catalog-card');
     const alt = img.getAttribute('alt') || '';
-    open({ src, alt });
+
+    let sources = [];
+    if (card) {
+      sources = Array.from(card.querySelectorAll('.catalog-thumbs img'))
+        .map((node) => node.currentSrc || node.getAttribute('src') || '')
+        .filter(Boolean);
+    }
+
+    const clickedSrc = img.currentSrc || img.getAttribute('src') || '';
+    if (!sources.length && clickedSrc) sources = [clickedSrc];
+    if (sources.length && clickedSrc && !sources.includes(clickedSrc)) sources.unshift(clickedSrc);
+
+    const initialIndex = Math.max(0, sources.indexOf(clickedSrc));
+    open({ sources, index: initialIndex, alt });
   });
 }
 

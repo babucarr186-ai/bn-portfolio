@@ -38,27 +38,18 @@ export function renderCatalog({ mountEl, products }) {
 
     const frame = el('div', 'catalog-frame');
 
+    const img = document.createElement('img');
+    img.loading = index < 2 ? 'eager' : 'lazy';
+    img.decoding = 'async';
+
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
-    const imagesToUse = images.length ? images.slice(0, 3) : (product.image ? [product.image] : []);
+    const imagesToUse = images.length ? images.slice(0, 3) : [];
+    const firstImage = imagesToUse[0] || product.image || '';
 
-    const scroller = el('div', 'catalog-scroller');
-    const scrollerImgs = [];
+    img.src = publicAssetUrl(firstImage);
+    img.alt = product.alt || titleText || 'Product';
 
-    imagesToUse.forEach((src, imgIndex) => {
-      const img = document.createElement('img');
-      img.loading = index < 2 && imgIndex === 0 ? 'eager' : 'lazy';
-      img.decoding = 'async';
-      img.src = publicAssetUrl(src);
-      img.alt =
-        imagesToUse.length > 1
-          ? `${titleText} photo ${imgIndex + 1}`
-          : (product.alt || titleText || 'Product');
-
-      scroller.appendChild(img);
-      scrollerImgs.push(img);
-    });
-
-    frame.appendChild(scroller);
+    frame.appendChild(img);
     card.appendChild(frame);
 
     const title = el('h3', 'catalog-title');
@@ -89,8 +80,7 @@ export function renderCatalog({ mountEl, products }) {
         btn.appendChild(tImg);
 
         btn.addEventListener('click', () => {
-          const width = scroller.clientWidth || 0;
-          scroller.scrollTo({ left: width * thumbIndex, behavior: 'smooth' });
+          img.src = publicAssetUrl(src);
           thumbs
             .querySelectorAll('[aria-current="true"]')
             .forEach((node) => node.setAttribute('aria-current', 'false'));
@@ -100,25 +90,6 @@ export function renderCatalog({ mountEl, products }) {
         thumbs.appendChild(btn);
       });
       card.appendChild(thumbs);
-
-      let rafId = 0;
-      scroller.addEventListener(
-        'scroll',
-        () => {
-          if (rafId) return;
-          rafId = window.requestAnimationFrame(() => {
-            rafId = 0;
-            const width = scroller.clientWidth || 1;
-            const idx = Math.max(0, Math.min(imagesToUse.length - 1, Math.round(scroller.scrollLeft / width)));
-            thumbs
-              .querySelectorAll('[aria-current="true"]')
-              .forEach((node) => node.setAttribute('aria-current', 'false'));
-            const currentBtn = thumbs.children[idx];
-            if (currentBtn) currentBtn.setAttribute('aria-current', 'true');
-          });
-        },
-        { passive: true }
-      );
     }
 
     const actions = el('div', 'catalog-actions');
