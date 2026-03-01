@@ -27,12 +27,15 @@ export const appleTvHome = [
   },
   {
     title: 'HomePod mini',
-    subtitle: 'Ask availability',
+    subtitle:
+      'White • Very good condition • 24‑month dealer warranty • Bluetooth + Wi‑Fi • Siri • Fabric finish • 345g • EAN 0190199710511',
     kind: 'square',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple HomePod mini — white color, very good condition, Bluetooth + Wi‑Fi connectivity, Siri smart home compatibility, fabric finish, 345g. 24-month dealer warranty. EAN: 0190199710511. In The Gambia.',
     images: [
-      'products/apple-tv-home/homepod-mini-1.jpg',
-      'products/apple-tv-home/homepod-mini-2.jpg',
-      'products/apple-tv-home/homepod-mini-3.jpg',
+      'products/apple-tv-home/homepod-mini-1.webp?v=20260301-1',
+      'products/apple-tv-home/homepod-mini-2.webp?v=20260301-1',
+      'products/apple-tv-home/homepod-mini-3.jpg?v=20260301-1',
     ],
   },
 ];
