@@ -1,10 +1,11 @@
 export const accessories = [
   {
     title: 'Apple Pencil (2nd generation)',
-    subtitle: 'Precision for iPad • Used (Good condition) • Ask compatibility',
+    subtitle:
+      'Precision for iPad • Compatible: iPad Pro 12.9 (2018–2022), iPad Pro 11 (2018–2022), iPad Air (2020–2022), iPad mini (2021) • Used (Good condition)',
     kind: 'square',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Pencil (2nd generation) — used (good condition). Please confirm iPad compatibility. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Pencil (2nd generation) — used (good condition). Compatible with iPad Pro 12.9 (2018–2022), iPad Pro 11 (2018–2022), iPad Air (2020–2022), iPad mini (2021). In The Gambia.',
     images: [
       'products/accessories/apple-pencil-2-1.jpg?v=20260301-1',
       'products/accessories/apple-pencil-2-2.jpg?v=20260301-1',
