@@ -8,7 +8,11 @@ export const airpods = [
       'Hi Uncle Apple! Please confirm availability for: AirPods Max (2024) — beige color, excellent condition. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 18,
-    images: ['products/airpods/airpods-max-2024-1.jpg?v=20260301-2'],
+    images: [
+      'products/airpods/airpods-max-2024-beige-1.jpg?v=20260301-1',
+      'products/airpods/airpods-max-2024-beige-2.jpg?v=20260301-1',
+      'products/airpods/airpods-max-2024-beige-3.jpg?v=20260301-1',
+    ],
   },
   {
     title: 'AirPods Max (2020)',
