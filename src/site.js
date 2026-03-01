@@ -151,6 +151,10 @@ function initImageViewer() {
     document.body.appendChild(overlayEl);
 
     backdrop.addEventListener('click', () => close());
+    content.addEventListener('click', (e) => {
+      if (e.target !== content) return;
+      close();
+    });
     overlayEl.addEventListener('click', (e) => {
       if (e.target === overlayEl) close();
     });
