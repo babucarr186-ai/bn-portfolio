@@ -526,6 +526,7 @@ footer{
   height: 100%;
   object-fit: cover;
   display: block;
+  cursor: zoom-in;
 }
 
 .catalog-card[data-kind="phone"] .catalog-frame{
@@ -678,4 +679,47 @@ footer{
 @media (prefers-reduced-motion: reduce){
   html:focus-within{ scroll-behavior: auto; }
   *{ transition: none !important; animation: none !important; }
+}
+
+/* Full-screen image viewer (tap inventory image to enlarge) */
+.image-viewer{
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.image-viewer[hidden]{
+  display: none;
+}
+
+.image-viewer__backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(11,15,22,0.72);
+  backdrop-filter: blur(6px);
+}
+
+.image-viewer__content{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.image-viewer__img{
+  max-width: min(980px, 96vw);
+  max-height: min(86vh, 860px);
+  width: auto;
+  height: auto;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.86);
+  border: 1px solid rgba(255,255,255,0.20);
+  box-shadow: 0 22px 60px rgba(0,0,0,0.22);
+  object-fit: contain;
+}
+
+@media (max-width: 640px){
+  .image-viewer__content{ padding: 12px; }
+  .image-viewer__img{ border-radius: 18px; }
 }
