@@ -151,8 +151,17 @@ function initImageViewer() {
     document.body.appendChild(overlayEl);
 
     backdrop.addEventListener('click', () => close());
+    backdrop.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      close();
+    });
     overlayEl.addEventListener('click', (e) => {
       if (e.target === overlayEl) close();
+    });
+    overlayEl.addEventListener('contextmenu', (e) => {
+      if (e.target !== overlayEl) return;
+      e.preventDefault();
+      close();
     });
 
     // Swipe navigation (touch + pen + mouse drag)
