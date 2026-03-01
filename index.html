@@ -11,18 +11,11 @@
   <!--
     Uncle Apple — Premium single-file page (now the homepage)
 
-    IMAGE FILES (drop these into /public so Vite deploy includes them):
-    - iphone-air.webp        (background)
-    - hero-iphone.jpg        (hero large phone)
-    - iphone-pro.jpg         (iPhone Pro section)
-    - iphone.jpg             (iPhone section)
-    - iphone-plus.webp       (iPhone Plus section)
-    - iphone-se.jpg          (iPhone SE section)
-
     Notes:
     - No pricing anywhere
     - WhatsApp is the primary conversion path
     - Background is fixed and NOT animated
+    - iPhone page images are shown only in Inventory
   -->
 
   <link rel="stylesheet" href="site.css?v=20260301" />
@@ -60,7 +53,7 @@
   </header>
 
   <main id="top">
-    <section class="hero">
+    <section class="hero hero-no-media">
       <div class="container">
         <div class="hero-grid">
           <div class="hero-copy">
@@ -72,13 +65,6 @@
               <a class="btn btn-outline" id="heroChat" href="#">Chat on WhatsApp</a>
             </div>
           </div>
-
-          <div class="hero-media" aria-label="Large iPhone image">
-            <div class="phone-frame">
-              <div class="phone-notch" aria-hidden="true"></div>
-              <img src="hero-iphone.jpg" alt="iPhone (hero)" loading="eager" decoding="async" />
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -88,13 +74,7 @@
         <h2 class="section-title">Models</h2>
         <p class="section-lead">Clean, premium selection. No prices displayed — request availability for a fast reply.</p>
 
-        <div class="story" id="iphone-pro">
-          <div class="story-media">
-            <div class="phone-frame">
-              <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone-pro.jpg" alt="iPhone Pro" loading="lazy" decoding="async" />
-            </div>
-          </div>
+        <div class="story text-only" id="iphone-pro">
           <div class="story-copy">
             <div class="kicker">iPhone Pro</div>
             <h3 class="section-title" style="margin:0">Pro performance. Pro camera. Premium feel.</h3>
@@ -118,13 +98,7 @@
           </div>
         </div>
 
-        <div class="story reverse" id="iphone" style="margin-top: 70px;">
-          <div class="story-media">
-            <div class="phone-frame">
-              <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone.jpg" alt="iPhone" loading="lazy" decoding="async" />
-            </div>
-          </div>
+        <div class="story reverse text-only" id="iphone" style="margin-top: 70px;">
           <div class="story-copy">
             <div class="kicker">iPhone</div>
             <h3 class="section-title" style="margin:0">Balanced, reliable, and easy to live with.</h3>
@@ -147,13 +121,7 @@
           </div>
         </div>
 
-        <div class="story" id="iphone-plus" style="margin-top: 70px;">
-          <div class="story-media">
-            <div class="phone-frame">
-              <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone-plus.webp" alt="iPhone Plus" loading="lazy" decoding="async" />
-            </div>
-          </div>
+        <div class="story text-only" id="iphone-plus" style="margin-top: 70px;">
           <div class="story-copy">
             <div class="kicker">iPhone Plus</div>
             <h3 class="section-title" style="margin:0">Big screen. Big battery. Premium comfort.</h3>
@@ -176,13 +144,7 @@
           </div>
         </div>
 
-        <div class="story reverse" id="iphone-se" style="margin-top: 70px;">
-          <div class="story-media">
-            <div class="phone-frame">
-              <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone-se.jpg" alt="iPhone SE" loading="lazy" decoding="async" />
-            </div>
-          </div>
+        <div class="story reverse text-only" id="iphone-se" style="margin-top: 70px;">
           <div class="story-copy">
             <div class="kicker">iPhone SE</div>
             <h3 class="section-title" style="margin:0">Compact, familiar, and simple.</h3>

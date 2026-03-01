@@ -755,9 +755,11 @@ footer{
     order: 0;
   }
   .hero-grid{ grid-template-columns: 1.1fr 0.9fr; }
+  .hero.hero-no-media .hero-grid{ grid-template-columns: 1fr; }
   .hero-copy{ text-align: left; justify-items: start; }
   .hero-actions{ justify-content: flex-start; }
   .story{ grid-template-columns: 1fr 1fr; }
+  .story.text-only{ grid-template-columns: 1fr; }
   .story.reverse .story-media{ order: 2; }
   .icon-grid{ grid-template-columns: 1fr 1fr; }
   .grid{ grid-template-columns: 1fr 1fr; }
