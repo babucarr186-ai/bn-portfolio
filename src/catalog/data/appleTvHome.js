@@ -15,8 +15,10 @@ export const appleTvHome = [
   },
   {
     title: 'HomePod',
-    subtitle: 'Ask availability',
+    subtitle: '2018 • White • Wi‑Fi • Siri • AirPlay • Excellent condition • 1‑year guarantee',
     kind: 'square',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: HomePod (2018) — white color, Wi‑Fi, Siri, AirPlay, excellent condition, with 1-year guarantee. In The Gambia.',
     images: [
       'products/apple-tv-home/homepod-1.jpg?v=20260301-1',
       'products/apple-tv-home/homepod-2.jpg?v=20260301-1',
