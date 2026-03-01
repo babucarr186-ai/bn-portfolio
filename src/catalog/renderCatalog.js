@@ -38,6 +38,16 @@ export function renderCatalog({ mountEl, products }) {
 
     const frame = el('div', 'catalog-frame');
 
+    if (product?.mediaFit) {
+      frame.style.setProperty('--media-fit', String(product.mediaFit));
+    }
+
+    if (product?.mediaPad !== undefined && product?.mediaPad !== null && String(product.mediaPad).trim() !== '') {
+      const padValue =
+        typeof product.mediaPad === 'number' ? `${product.mediaPad}px` : String(product.mediaPad);
+      frame.style.setProperty('--media-pad', padValue);
+    }
+
     const img = document.createElement('img');
     img.loading = index < 2 ? 'eager' : 'lazy';
     img.decoding = 'async';
