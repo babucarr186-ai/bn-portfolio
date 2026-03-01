@@ -19,11 +19,13 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: resolve(projectRoot, 'index.html'),
+        ipads: resolve(projectRoot, 'ipads.html'),
         macbook: resolve(projectRoot, 'macbook.html'),
         appleWatch: resolve(projectRoot, 'apple-watch.html'),
         airpods: resolve(projectRoot, 'airpods.html'),
         giftCards: resolve(projectRoot, 'gift-cards.html'),
         accessories: resolve(projectRoot, 'accessories.html'),
+        appleTvHome: resolve(projectRoot, 'apple-tv-home.html'),
         premium: resolve(projectRoot, 'uncle-apple-premium.html'),
       },
       output: {
