@@ -575,6 +575,21 @@
 
     .foot-left{ display: grid; gap: 10px; }
 
+    .foot-contact{
+      display: grid;
+      gap: 6px;
+      font-weight: 650;
+      color: rgba(11,15,22,0.72);
+    }
+
+    .foot-contact a{
+      color: rgba(11,15,22,0.86);
+      text-decoration: none;
+      font-weight: 750;
+    }
+
+    .foot-contact a:hover{ text-decoration: underline; }
+
     .foot-legal{
       display: grid;
       gap: 6px;
@@ -1079,10 +1094,9 @@
       <div class="foot">
         <div class="foot-left">
           <div><strong>Located in The Gambia</strong></div>
-          <div>
-            <a id="footWhatsApp" href="#">WhatsApp</a>
-            <span aria-hidden="true"> · </span>
-            <a href="mailto:Nget@web.de">Email</a>
+          <div class="foot-contact" aria-label="Contact details">
+            <div>Email: <a href="mailto:Nget@web.de">Nget@web.de</a></div>
+            <div>WhatsApp: <a id="footWhatsApp" href="#">+49 15679652076</a></div>
           </div>
         </div>
 
