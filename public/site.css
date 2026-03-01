@@ -206,7 +206,7 @@ a{ color: inherit; }
 
 .hero.hero-compact{
   min-height: auto;
-  padding: 56px 0 28px;
+  padding: 48px 0 22px;
 }
 
 .hero-grid{
@@ -236,6 +236,8 @@ h1{
   color: var(--muted);
   max-width: 52ch;
   font-weight: 650;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .hero-actions{
@@ -292,7 +294,7 @@ h1{
 }
 
 .section.section-compact{
-  padding: 56px 0;
+  padding: 48px 0;
 }
 
 .section-title{
@@ -300,6 +302,8 @@ h1{
   margin: 0;
   letter-spacing: -0.02em;
   line-height: 1.12;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .section-lead{
@@ -307,6 +311,8 @@ h1{
   color: var(--muted);
   font-weight: 650;
   max-width: 65ch;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 /* Product sections (vertical storytelling style) */
@@ -558,12 +564,15 @@ footer{
   font-size: clamp(1.15rem, 2.3vw, 1.45rem);
   letter-spacing: -0.02em;
   line-height: 1.15;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .catalog-sub{
   margin: 0;
   color: rgba(11,15,22,0.66);
   font-weight: 650;
+  overflow-wrap: break-word;
 }
 
 .catalog-thumbs{
