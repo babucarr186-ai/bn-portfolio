@@ -204,6 +204,11 @@ a{ color: inherit; }
   padding: 70px 0 60px;
 }
 
+.hero.hero-compact{
+  min-height: auto;
+  padding: 56px 0 28px;
+}
+
 .hero-grid{
   display: grid;
   grid-template-columns: 1fr;
@@ -284,6 +289,10 @@ h1{
   padding: 90px 0;
   border-top: 1px solid rgba(11,15,22,0.06);
   scroll-margin-top: 90px;
+}
+
+.section.section-compact{
+  padding: 56px 0;
 }
 
 .section-title{
