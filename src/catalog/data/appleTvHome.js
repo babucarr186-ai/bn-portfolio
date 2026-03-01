@@ -8,9 +8,9 @@ export const appleTvHome = [
     mediaFit: 'contain',
     mediaPad: 16,
     images: [
-      'products/apple-tv-home/apple-tv-1.jpg?v=20260301-2',
-      'products/apple-tv-home/apple-tv-2.jpg?v=20260301-2',
-      'products/apple-tv-home/apple-tv-3.jpg?v=20260301-2',
+      'products/apple-tv-home/apple-tv-1.jpg?v=20260301-3',
+      'products/apple-tv-home/apple-tv-2.jpg?v=20260301-3',
+      'products/apple-tv-home/apple-tv-3.jpg?v=20260301-3',
     ],
   },
   {
@@ -18,9 +18,9 @@ export const appleTvHome = [
     subtitle: 'Ask availability',
     kind: 'square',
     images: [
-      'products/apple-tv-home/homepod-1.jpg',
-      'products/apple-tv-home/homepod-2.jpg',
-      'products/apple-tv-home/homepod-3.jpg',
+      'products/apple-tv-home/homepod-1.jpg?v=20260301-1',
+      'products/apple-tv-home/homepod-2.jpg?v=20260301-1',
+      'products/apple-tv-home/homepod-3.jpg?v=20260301-1',
     ],
   },
   {
