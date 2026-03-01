@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" data-category="giftcards">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Uncle Apple — Apple Gift Cards. Fast WhatsApp response." />
+  <meta name="theme-color" content="#0b0f16" />
+  <title>Uncle Apple — Gift Cards (The Gambia)</title>
+  <link rel="stylesheet" href="site.css" />
+</head>
+
+<body>
+  <header class="nav" aria-label="Primary navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="logo" href="./index.html" aria-label="Home">
+          <span class="logo-badge" aria-hidden="true">
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Site links">
+          <a href="./index.html">iPhones</a>
+          <a href="./macbook.html">MacBook</a>
+          <a href="./apple-watch.html">Apple Watch</a>
+          <a href="./airpods.html">AirPods</a>
+          <a href="./gift-cards.html">Gift Cards</a>
+          <a href="./accessories.html">Accessories</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn btn-primary btn-small" id="navWhatsApp" href="#">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <h1>Gift Cards. Available in The Gambia.</h1>
+            <p class="sub">Ask on WhatsApp for denominations and stock.</p>
+
+            <div class="hero-actions" aria-label="Hero actions">
+              <a class="btn btn-primary" id="heroChat" href="#">Chat on WhatsApp</a>
+              <a class="btn btn-outline" href="#contact">Contact</a>
+            </div>
+          </div>
+
+          <div class="hero-media" aria-label="Product image">
+            <div class="phone-frame" style="aspect-ratio: 16 / 9; border-radius: 28px; width: min(520px, 92vw);">
+              <img src="iphone-air.webp" alt="Gift Cards" loading="eager" decoding="async" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="inventory" aria-label="Gift cards inventory">
+      <div class="container">
+        <h2 class="section-title">Inventory</h2>
+        <p class="section-lead">Each product can show multiple photos.</p>
+
+        <div class="catalog-wrap" aria-label="Inventory grid">
+          <div class="catalog-grid" id="catalogGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" aria-label="Contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-lead">Fastest response is WhatsApp. Email is available for invoices and receipts.</p>
+        <div class="hero-actions" style="justify-content:flex-start; margin-top:18px;">
+          <a class="btn btn-primary" id="contactWhatsApp" href="#">WhatsApp</a>
+          <a class="btn btn-outline" href="mailto:Nget@web.de">Email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <div class="container">
+      <div class="foot">
+        <div class="foot-left">
+          <div><strong>Located in The Gambia</strong></div>
+          <div class="foot-contact" aria-label="Contact details">
+            <div>Email: <a href="mailto:Nget@web.de">Nget@web.de</a></div>
+            <div>WhatsApp: <a id="footWhatsApp" href="#">+49 15679652076</a></div>
+          </div>
+        </div>
+
+        <div class="foot-legal">
+          <div>Copyright 2026 Uncle Apple</div>
+          <div class="small">Independent reseller. Not affiliated with Apple Inc.</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/site.js"></script>
+  <script type="module" src="/src/catalog/page.js"></script>
+</body>
+</html>

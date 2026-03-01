@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import process from 'node:process'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const projectRoot = fileURLToPath(new URL('.', import.meta.url))
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,6 +17,15 @@ export default defineConfig({
     minify: 'terser',
     sourcemap: false,
     rollupOptions: {
+      input: {
+        index: resolve(projectRoot, 'index.html'),
+        macbook: resolve(projectRoot, 'macbook.html'),
+        appleWatch: resolve(projectRoot, 'apple-watch.html'),
+        airpods: resolve(projectRoot, 'airpods.html'),
+        giftCards: resolve(projectRoot, 'gift-cards.html'),
+        accessories: resolve(projectRoot, 'accessories.html'),
+        premium: resolve(projectRoot, 'uncle-apple-premium.html'),
+      },
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
