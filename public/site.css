@@ -501,22 +501,24 @@ footer{
   background: rgba(255,255,255,0.72);
   border: 1px solid rgba(11,15,22,0.08);
   box-shadow: 0 18px 50px rgba(0,0,0,0.08);
-  padding: 14px;
+  padding: 12px;
 }
 
 .catalog-grid{
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: 12px;
+  align-items: stretch;
 }
 
 .catalog-card{
   border-radius: 18px;
   background: rgba(255,255,255,0.72);
   border: 1px solid rgba(11,15,22,0.08);
-  padding: 14px;
-  display: grid;
-  gap: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   scroll-margin-top: 90px;
 }
 
@@ -527,15 +529,13 @@ footer{
 
 .catalog-frame{
   width: 100%;
-  max-width: 520px;
-  margin: 0 auto;
-  aspect-ratio: var(--frame-aspect, 16 / 10);
-  border-radius: var(--frame-radius, 22px);
-  background: linear-gradient(180deg, rgba(11,15,22,0.92), rgba(11,15,22,0.80));
-  border: 1px solid rgba(255,255,255,0.24);
+  aspect-ratio: var(--frame-aspect, 4 / 3);
+  border-radius: var(--frame-radius, 16px);
+  background: rgba(255,255,255,0.86);
+  border: none;
   overflow: hidden;
-  padding: var(--media-pad, 0);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+  padding: 0;
+  box-shadow: none;
 }
 
 .catalog-frame img{
@@ -543,20 +543,18 @@ footer{
   height: 100%;
   object-fit: var(--media-fit, cover);
   display: block;
-  cursor: zoom-in;
+  cursor: default;
 }
 
 .catalog-card[data-kind="phone"] .catalog-frame{
-  /* Keep iPhone inventory compact (match Accessories sizing) */
   --frame-aspect: 1 / 1;
-  --frame-radius: 22px;
-  max-width: 360px;
+  --frame-radius: 16px;
+  --media-fit: contain;
 }
 
 .catalog-card[data-kind="square"] .catalog-frame{
   --frame-aspect: 1 / 1;
-  --frame-radius: 22px;
-  max-width: 360px;
+  --frame-radius: 16px;
 }
 
 .catalog-title{
@@ -579,7 +577,7 @@ footer{
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .catalog-thumb{
@@ -609,15 +607,28 @@ footer{
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-top: auto;
 }
 
-@media (min-width: 860px){
-  .catalog-wrap{ padding: 18px; }
-  .catalog-grid{ grid-template-columns: 1fr 1fr; gap: 16px; }
-  .catalog-card{ padding: 16px; }
-  .catalog-actions{ justify-content: flex-start; }
-  .catalog-thumbs{ justify-content: flex-start; }
+/* Responsive catalog grid sizing:
+   - Mobile: 1 column
+   - Tablet: 2 columns
+   - Desktop: 3–4 columns
+*/
+@media (min-width: 640px){
+  .catalog-wrap{ padding: 14px; }
+  .catalog-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+}
+
+@media (min-width: 960px){
+  .catalog-wrap{ padding: 16px; }
+  .catalog-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .catalog-card{ padding: 14px; }
+}
+
+@media (min-width: 1100px){
+  .catalog-grid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 /* Mobile sizing tweaks */
@@ -701,23 +712,6 @@ footer{
   }
 
   .catalog-grid{ gap: 12px; }
-
-  .catalog-card{
-    padding: 12px;
-    gap: 10px;
-  }
-
-  .catalog-frame{
-    max-width: 420px;
-  }
-
-  .catalog-card[data-kind="phone"] .catalog-frame{
-    max-width: 300px;
-  }
-
-  .catalog-card[data-kind="square"] .catalog-frame{
-    max-width: 300px;
-  }
 
   .catalog-thumb{
     width: 50px;
