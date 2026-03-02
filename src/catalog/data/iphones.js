@@ -49,7 +49,11 @@ export const iphones = [
     title: 'iPhone 12 Pro',
     subtitle: '128GB',
     kind: 'phone',
-    images: ['iphone-pro.jpg', 'iphone.jpg', 'hero-iphone.jpg'],
+    images: [
+      'products/iphones/iphone-12-pro-128gb-1.jpg',
+      'products/iphones/iphone-12-pro-128gb-2.jpg',
+      'products/iphones/iphone-12-pro-128gb-3.jpg',
+    ],
   },
   {
     title: 'iPhone 11 Pro',
