@@ -1,14 +1,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bubacarnget.com/</loc>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://bubacarnget.com/models</loc>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/ipads.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bubacarnget.com/support</loc>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/macbook.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/apple-watch.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/airpods.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/gift-cards.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/accessories.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/apple-tv-home.html</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/uncle-apple-premium.html</loc>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/models/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://babucarr186-ai.github.io/bn-portfolio/support/</loc>
+    <priority>0.5</priority>
   </url>
 </urlset>
