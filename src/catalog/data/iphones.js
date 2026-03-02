@@ -3,7 +3,11 @@ export const iphones = [
     title: 'iPhone 13',
     subtitle: '128GB',
     kind: 'phone',
-    images: ['iphone-pro.jpg', 'hero-iphone.jpg', 'iphone.jpg'],
+    images: [
+      'products/iphones/iphone-13-128gb-1.png',
+      'products/iphones/iphone-13-128gb-2.png',
+      'products/iphones/iphone-13-128gb-3.png',
+    ],
   },
   {
     title: 'iPhone XS',
