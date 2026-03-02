@@ -17,6 +17,67 @@ function el(tag, className) {
   return node;
 }
 
+let catalogLightbox;
+
+function ensureCatalogLightbox() {
+  if (catalogLightbox) return catalogLightbox;
+
+  const overlay = el('div', 'catalog-lightbox');
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-hidden', 'true');
+
+  const inner = el('div', 'catalog-lightbox-inner');
+
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'catalog-lightbox-close';
+  closeBtn.setAttribute('aria-label', 'Close image');
+  closeBtn.textContent = 'Close';
+
+  const img = document.createElement('img');
+  img.className = 'catalog-lightbox-img';
+  img.alt = '';
+  img.decoding = 'async';
+
+  inner.appendChild(closeBtn);
+  inner.appendChild(img);
+  overlay.appendChild(inner);
+  document.body.appendChild(overlay);
+
+  let lastFocus;
+
+  function close() {
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('catalog-lightbox-open');
+    if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    lastFocus = null;
+  }
+
+  function open({ src, alt, focusEl }) {
+    lastFocus = focusEl || document.activeElement;
+    img.src = publicAssetUrl(src);
+    img.alt = alt || 'Product image';
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('catalog-lightbox-open');
+    closeBtn.focus();
+  }
+
+  closeBtn.addEventListener('click', close);
+
+  overlay.addEventListener('click', (event) => {
+    if (event.target === overlay) close();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (overlay.getAttribute('aria-hidden') === 'true') return;
+    if (event.key === 'Escape') close();
+  });
+
+  catalogLightbox = { open, close, overlay, img, closeBtn };
+  return catalogLightbox;
+}
+
 export function renderCatalog({ mountEl, products }) {
   if (!mountEl) return [];
 
@@ -52,12 +113,10 @@ export function renderCatalog({ mountEl, products }) {
     const imagesToUse = images.length ? images.slice(0, 3) : [];
     const firstImage = imagesToUse[0] || product.image || '';
 
-    const zoomLink = document.createElement('a');
-    zoomLink.className = 'catalog-zoom';
-    zoomLink.href = publicAssetUrl(firstImage);
-    zoomLink.target = '_blank';
-    zoomLink.rel = 'noopener noreferrer';
-    zoomLink.setAttribute('aria-label', `Open larger image for ${titleText}`);
+    const zoomBtn = document.createElement('button');
+    zoomBtn.type = 'button';
+    zoomBtn.className = 'catalog-zoom';
+    zoomBtn.setAttribute('aria-label', `Zoom image for ${titleText}`);
 
     const img = document.createElement('img');
     img.loading = index < 2 ? 'eager' : 'lazy';
@@ -66,9 +125,19 @@ export function renderCatalog({ mountEl, products }) {
     img.src = publicAssetUrl(firstImage);
     img.alt = product.alt || titleText || 'Product';
 
-    zoomLink.appendChild(img);
-    frame.appendChild(zoomLink);
+    zoomBtn.appendChild(img);
+    frame.appendChild(zoomBtn);
     card.appendChild(frame);
+
+    let activeImage = firstImage;
+    zoomBtn.addEventListener('click', () => {
+      if (!activeImage) return;
+      ensureCatalogLightbox().open({
+        src: activeImage,
+        alt: img.alt || titleText,
+        focusEl: zoomBtn,
+      });
+    });
 
     const title = el('h3', 'catalog-title');
     title.textContent = titleText;
@@ -99,7 +168,7 @@ export function renderCatalog({ mountEl, products }) {
 
         btn.addEventListener('click', () => {
           img.src = publicAssetUrl(src);
-          zoomLink.href = publicAssetUrl(src);
+          activeImage = src;
           thumbs
             .querySelectorAll('[aria-current="true"]')
             .forEach((node) => node.setAttribute('aria-current', 'false'));
