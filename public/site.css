@@ -538,12 +538,20 @@ footer{
   box-shadow: none;
 }
 
+.catalog-zoom{
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
 .catalog-frame img{
   width: 100%;
   height: 100%;
   object-fit: var(--media-fit, cover);
   display: block;
-  cursor: default;
+  cursor: zoom-in;
 }
 
 .catalog-card[data-kind="phone"] .catalog-frame{

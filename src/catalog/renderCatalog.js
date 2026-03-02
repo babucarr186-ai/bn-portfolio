@@ -48,18 +48,26 @@ export function renderCatalog({ mountEl, products }) {
       frame.style.setProperty('--media-pad', padValue);
     }
 
-    const img = document.createElement('img');
-    img.loading = index < 2 ? 'eager' : 'lazy';
-    img.decoding = 'async';
-
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
     const imagesToUse = images.length ? images.slice(0, 3) : [];
     const firstImage = imagesToUse[0] || product.image || '';
 
+    const zoomLink = document.createElement('a');
+    zoomLink.className = 'catalog-zoom';
+    zoomLink.href = publicAssetUrl(firstImage);
+    zoomLink.target = '_blank';
+    zoomLink.rel = 'noopener noreferrer';
+    zoomLink.setAttribute('aria-label', `Open larger image for ${titleText}`);
+
+    const img = document.createElement('img');
+    img.loading = index < 2 ? 'eager' : 'lazy';
+    img.decoding = 'async';
+
     img.src = publicAssetUrl(firstImage);
     img.alt = product.alt || titleText || 'Product';
 
-    frame.appendChild(img);
+    zoomLink.appendChild(img);
+    frame.appendChild(zoomLink);
     card.appendChild(frame);
 
     const title = el('h3', 'catalog-title');
@@ -91,6 +99,7 @@ export function renderCatalog({ mountEl, products }) {
 
         btn.addEventListener('click', () => {
           img.src = publicAssetUrl(src);
+          zoomLink.href = publicAssetUrl(src);
           thumbs
             .querySelectorAll('[aria-current="true"]')
             .forEach((node) => node.setAttribute('aria-current', 'false'));
