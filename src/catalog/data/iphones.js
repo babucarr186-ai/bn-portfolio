@@ -31,10 +31,12 @@ export const iphones = [
     kind: 'phone',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone XR — Red, 128GB, battery 84%, very clean condition, original parts, clear camera, 12-month warranty. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
     images: [
-      'products/iphones/iphone-xr-red-128gb-1.jpg',
-      'products/iphones/iphone-xr-red-128gb-2.jpg',
-      'products/iphones/iphone-xr-red-128gb-3.jpg',
+      'products/iphones/iphone-xr-red-128gb-1.jpg?v=20260303-2',
+      'products/iphones/iphone-xr-red-128gb-2.jpg?v=20260303-2',
+      'products/iphones/iphone-xr-red-128gb-3.jpg?v=20260303-2',
     ],
   },
   {
@@ -62,6 +64,27 @@ export const iphones = [
     subtitle: '256GB',
     kind: 'phone',
     images: ['iphone-pro.jpg', 'hero-iphone.jpg', 'iphone-se.jpg'],
+  },
+  {
+    title: 'iPhone 11 Pro Max',
+    subtitle: 'Gold • 256GB • Battery service 75% • Used (Like new) • Original parts • Very clean',
+    kind: 'phone',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gold, 256GB, battery service 75%, used (like new), original parts, very clean. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/iphones/iphone-11-pro-max-gold-256gb-1.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-2.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-3.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-4.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-5.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-6.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-7.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-8.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-9.jpg?v=20260303-1',
+      'products/iphones/iphone-11-pro-max-gold-256gb-10.jpg?v=20260303-1',
+    ],
   },
   {
     title: 'iPhone 7 Plus',
