@@ -110,7 +110,7 @@ export function renderCatalog({ mountEl, products }) {
     }
 
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
-    const imagesToUse = images.length ? images.slice(0, 3) : [];
+    const imagesToUse = images;
     const firstImage = imagesToUse[0] || product.image || '';
 
     const zoomBtn = document.createElement('button');

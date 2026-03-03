@@ -63,9 +63,18 @@ export const iphones = [
   },
   {
     title: 'iPhone 7 Plus',
-    subtitle: '128GB',
+    subtitle: 'Black • 128GB • Battery 83% • Good condition • 12‑month warranty',
     kind: 'phone',
-    images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-plus.webp'],
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 7 Plus — Black, 128GB, battery 83%, good condition, 12-month warranty. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/iphones/iphone-7-plus-128gb-1.jpg?v=20260303',
+      'products/iphones/iphone-7-plus-128gb-2.jpg?v=20260303',
+      'products/iphones/iphone-7-plus-128gb-3.jpg?v=20260303',
+      'products/iphones/iphone-7-plus-128gb-4.jpg?v=20260303',
+    ],
   },
   {
     title: 'iPhone 14',
