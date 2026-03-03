@@ -353,7 +353,222 @@ function initImageViewer() {
   });
 }
 
+function initChatWidget() {
+  if (document.getElementById('uaChatWidget')) return;
+
+  const container = document.createElement('div');
+  container.id = 'uaChatWidget';
+
+  const panel = document.createElement('section');
+  panel.className = 'chat-panel';
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-label', 'Chat with Uncle Apple');
+  panel.setAttribute('aria-modal', 'false');
+  panel.setAttribute('aria-hidden', 'true');
+
+  const header = document.createElement('div');
+  header.className = 'chat-header';
+  header.innerHTML =
+    '<div class="chat-title">Chat</div>' +
+    `<div class="chat-sub">Ask about availability in ${LOCATION}</div>`;
+
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'chat-close';
+  closeBtn.setAttribute('aria-label', 'Close chat');
+  closeBtn.textContent = '×';
+  header.appendChild(closeBtn);
+
+  const list = document.createElement('div');
+  list.className = 'chat-list';
+  list.setAttribute('role', 'log');
+  list.setAttribute('aria-live', 'polite');
+
+  const footer = document.createElement('div');
+  footer.className = 'chat-footer';
+
+  const input = document.createElement('input');
+  input.className = 'chat-input';
+  input.type = 'text';
+  input.placeholder = 'Type your message…';
+  input.autocomplete = 'off';
+  input.inputMode = 'text';
+  input.setAttribute('aria-label', 'Chat message');
+
+  const sendBtn = document.createElement('button');
+  sendBtn.type = 'button';
+  sendBtn.className = 'btn btn-primary btn-small chat-send';
+  sendBtn.textContent = 'Send';
+
+  const waBtn = document.createElement('a');
+  waBtn.className = 'btn btn-outline btn-small chat-wa';
+  waBtn.href = '#';
+  waBtn.textContent = 'WhatsApp';
+
+  footer.appendChild(input);
+  footer.appendChild(sendBtn);
+  footer.appendChild(waBtn);
+
+  panel.appendChild(header);
+  panel.appendChild(list);
+  panel.appendChild(footer);
+
+  const fab = document.createElement('button');
+  fab.type = 'button';
+  fab.className = 'btn btn-primary btn-small chat-fab';
+  fab.setAttribute('aria-expanded', 'false');
+  fab.setAttribute('aria-controls', 'uaChatPanel');
+  fab.textContent = 'Chat';
+
+  panel.id = 'uaChatPanel';
+
+  container.appendChild(panel);
+  container.appendChild(fab);
+  document.body.appendChild(container);
+
+  function scrollToBottom() {
+    list.scrollTop = list.scrollHeight;
+  }
+
+  function addMessage(from, text) {
+    const row = document.createElement('div');
+    row.className = `chat-msg ${from === 'user' ? 'chat-msg--user' : 'chat-msg--bot'}`;
+    row.textContent = text;
+    list.appendChild(row);
+    scrollToBottom();
+  }
+
+  const storageKey = 'ua_chat_messages_v1';
+  const messages = [];
+  try {
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        parsed.slice(0, 80).forEach((m) => {
+          if (!m || typeof m.text !== 'string') return;
+          const from = m.from === 'user' ? 'user' : 'bot';
+          messages.push({ from, text: m.text });
+        });
+      }
+    }
+  } catch {
+    // ignore
+  }
+
+  function persist() {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(messages.slice(-80)));
+    } catch {
+      // ignore
+    }
+  }
+
+  function botReply(text) {
+    const t = String(text || '').toLowerCase();
+    if (/(hi|hello|hey|salam|salaam)/.test(t)) {
+      return `Hi! Tell me the model + storage you want (example: iPhone XR 128GB).`;
+    }
+    if (/(available|availability|in stock|stock)/.test(t)) {
+      return `Sure — which model, storage, and color should I check?`;
+    }
+    if (/(delivery|shipping|pickup|pick up|collection)/.test(t)) {
+      return `We can arrange delivery or pickup in ${LOCATION}. Which do you prefer?`;
+    }
+    if (/(warranty|guarantee|return|refund)/.test(t)) {
+      return `Warranty depends on the model. Which iPhone are you interested in?`;
+    }
+    if (/(price|cost|how much)/.test(t)) {
+      return `We share the latest price on WhatsApp. Tell me the exact model + storage and I’ll prepare your message.`;
+    }
+    if (/(battery)/.test(t)) {
+      return `Battery health varies per device. Which iPhone model are you asking about?`;
+    }
+    return `Got it. Please share: model, storage (e.g. 128GB), and preferred color.`;
+  }
+
+  function exportToWhatsApp() {
+    const transcript = messages
+      .slice(-40)
+      .map((m) => `${m.from === 'user' ? 'You' : STORE_NAME}: ${m.text}`)
+      .join('\n');
+    const msg = `Hi ${STORE_NAME}! Here is my chat message for availability in ${LOCATION}:\n\n${transcript}`;
+    setWhatsAppHref(waBtn, msg);
+  }
+
+  function renderInitial() {
+    list.textContent = '';
+    if (messages.length) {
+      messages.forEach((m) => addMessage(m.from, m.text));
+      return;
+    }
+    const welcome = `Hi! I’m ${STORE_NAME}. Tell me which iPhone you want and I’ll help you request availability.`;
+    messages.push({ from: 'bot', text: welcome });
+    addMessage('bot', welcome);
+    persist();
+  }
+
+  function open() {
+    panel.setAttribute('aria-hidden', 'false');
+    fab.setAttribute('aria-expanded', 'true');
+    exportToWhatsApp();
+    window.setTimeout(() => input.focus(), 0);
+  }
+
+  function close() {
+    panel.setAttribute('aria-hidden', 'true');
+    fab.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggle() {
+    const isHidden = panel.getAttribute('aria-hidden') === 'true';
+    if (isHidden) open();
+    else close();
+  }
+
+  function send() {
+    const text = String(input.value || '').trim();
+    if (!text) return;
+
+    messages.push({ from: 'user', text });
+    addMessage('user', text);
+    input.value = '';
+
+    const reply = botReply(text);
+    messages.push({ from: 'bot', text: reply });
+    window.setTimeout(() => {
+      addMessage('bot', reply);
+      persist();
+      exportToWhatsApp();
+    }, 250);
+  }
+
+  fab.addEventListener('click', toggle);
+  closeBtn.addEventListener('click', close);
+  sendBtn.addEventListener('click', send);
+  waBtn.addEventListener('click', (e) => {
+    exportToWhatsApp();
+    const href = waBtn.getAttribute('href');
+    if (!href || href === '#') e.preventDefault();
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    send();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (panel.getAttribute('aria-hidden') === 'true') return;
+    close();
+  });
+
+  renderInitial();
+}
+
 initWhatsAppLinks();
 initAvailabilityForm();
 initScrollBgRotation();
 initImageViewer();
+initChatWidget();
