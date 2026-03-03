@@ -27,8 +27,10 @@ export const iphones = [
   },
   {
     title: 'iPhone XR',
-    subtitle: 'Red • 128GB',
+    subtitle: 'Red • 128GB • Battery 84% • Very clean • Original parts • Clear camera • 12‑month warranty',
     kind: 'phone',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone XR — Red, 128GB, battery 84%, very clean condition, original parts, clear camera, 12-month warranty. In The Gambia.',
     images: [
       'products/iphones/iphone-xr-red-128gb-1.jpg',
       'products/iphones/iphone-xr-red-128gb-2.jpg',
