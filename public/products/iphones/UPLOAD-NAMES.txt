@@ -10,9 +10,9 @@ Naming convention:
 Products (requested list):
 
 1) iPhone 13 — 128GB
-- iphone-13-128gb-1.jpg
-- iphone-13-128gb-2.jpg
-- iphone-13-128gb-3.jpg
+- iphone-13-128gb-1.jpg (or .png)
+- iphone-13-128gb-2.jpg (or .png)
+- iphone-13-128gb-3.jpg (or .png)
 
 1b) iPhone 13 — Green — 128GB (new folder)
 - iphone-13-green-128gb/iphone-13-green-128gb-1.jpg

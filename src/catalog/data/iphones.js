@@ -1,6 +1,22 @@
 export const iphones = [
   {
     title: 'iPhone 13',
+    subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty',
+    kind: 'phone',
+    color: 'Starlight',
+    storage: '128GB',
+    condition: 'Used — Excellent condition',
+    batteryHealth: '86%',
+    warranty: '30days waranty included.',
+    productTitle: 'iPhone 13 (128GB) — Starlight — Used (Excellent) — Battery 86%',
+    images: [
+      'products/iphones/iphone-13-128gb-1.png',
+      'products/iphones/iphone-13-128gb-2.png',
+      'products/iphones/iphone-13-128gb-3.png',
+    ],
+  },
+  {
+    title: 'iPhone 13',
     subtitle: 'Green • 128GB • Condition-Excellent • Battery-86% • 30 days Warranthy',
     kind: 'phone',
     color: 'Green',
@@ -11,9 +27,9 @@ export const iphones = [
     description: 'Model: iPhone 13 Green 128GB. Condition: Excellent. Battery: 86%. 30 days Warranthy.',
     productTitle: 'iPhone 13 (128GB) — Green — Used (Excellent) — Battery 86%',
     images: [
-      'products/iphones/iphone-13-green-128gb/iphone-13-green-128gb-1.png',
-      'products/iphones/iphone-13-green-128gb/iphone-13-green-128gb-2.png',
-      'products/iphones/iphone-13-green-128gb/iphone-13-green-128gb-3.png',
+      'products/iphones/iphone-13-green-128gb/iphone-13-green-128gb-1.jpg',
+      'products/iphones/iphone-13-green-128gb/iphone-13-green-128gb-2.jpg',
+      'products/iphones/iphone-13-green-128gb/iphone-13-green-128gb-3.jpg',
     ],
   },
   {
