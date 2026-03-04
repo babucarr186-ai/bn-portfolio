@@ -74,6 +74,32 @@
   contain-intrinsic-size: 520px;
 }
 
+/* iPhones page: cleaner Apple-like white image area */
+html[data-category="iphones"] .catalog-wrap{
+  background: rgba(255,255,255,0.92);
+}
+
+html[data-category="iphones"] .catalog-card{
+  background: rgba(255,255,255,0.92);
+}
+
+html[data-category="iphones"] .catalog-frame,
+html[data-category="iphones"] .catalog-thumb{
+  background: rgba(255,255,255,1);
+}
+
+html[data-category="iphones"] .catalog-frame img{
+  background: rgba(255,255,255,1);
+  object-fit: contain;
+}
+
+/* Avoid the 1:1 square frame for phones on iPhones page */
+html[data-category="iphones"] .catalog-card[data-kind="phone"] .catalog-frame{
+  --frame-aspect: 4 / 3;
+  --media-fit: contain;
+  --media-pad: 0px;
+}
+
 /* Cart + checkout layout */
 .cart-page h1{
   font-size: clamp(1.6rem, 3.4vw, 2.2rem);
