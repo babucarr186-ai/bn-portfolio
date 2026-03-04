@@ -53,8 +53,9 @@ export const iphones = [
   },
   {
     title: 'iPhone XR',
-    subtitle: 'Red • 128GB • Battery 84% • Very clean • Original parts • Clear camera • 12‑month warranty',
+    subtitle: 'Red • 128GB • Battery 84% • Very clean • Original parts • Clear camera • 12‑month warranty • GMD 12,000',
     kind: 'phone',
+    price: 12000,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone XR — Red, 128GB, battery 84%, very clean condition, original parts, clear camera, 12-month warranty. In The Gambia.',
     mediaFit: 'contain',
@@ -76,9 +77,19 @@ export const iphones = [
     ],
   },
   {
-    title: 'iPhone 12 Pro',
-    subtitle: '128GB',
+    title: 'iPhone 12',
+    subtitle: 'White • GMD 14,500',
     kind: 'phone',
+    color: 'White',
+    price: 14500,
+    description: 'Photos coming soon.',
+    images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-pro.jpg'],
+  },
+  {
+    title: 'iPhone 12 Pro',
+    subtitle: '128GB • GMD 19,500',
+    kind: 'phone',
+    price: 19500,
     images: [
       'products/iphones/iphone-12-pro-128gb-1.jpg',
       'products/iphones/iphone-12-pro-128gb-2.jpg',
@@ -93,8 +104,9 @@ export const iphones = [
   },
   {
     title: 'iPhone 11 Pro Max',
-    subtitle: 'Gold • 256GB • Battery service 75% • Used (Like new) • Original parts • Very clean',
+    subtitle: 'Gold • 256GB • Battery service 75% • Used (Like new) • Original parts • Very clean • GMD 17,500',
     kind: 'phone',
+    price: 17500,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gold, 256GB, battery service 75%, used (like new), original parts, very clean. In The Gambia.',
     mediaFit: 'contain',
@@ -114,8 +126,9 @@ export const iphones = [
   },
   {
     title: 'iPhone 7 Plus',
-    subtitle: 'Black • 128GB • Battery 83% • Good condition • 12‑month warranty',
+    subtitle: 'Black • 128GB • Battery 83% • Good condition • 12‑month warranty • GMD 5,500',
     kind: 'phone',
+    price: 5500,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 7 Plus — Black, 128GB, battery 83%, good condition, 12-month warranty. In The Gambia.',
     mediaFit: 'contain',
