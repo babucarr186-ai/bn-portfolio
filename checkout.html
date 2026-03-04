@@ -79,6 +79,15 @@
           </div>
 
           <div class="cart-panel" aria-label="Payment method">
+            <div id="checkoutSummary" class="checkout-summary" hidden>
+              <h2 class="section-title" style="margin-top:0">Order Summary</h2>
+              <div id="checkoutItems" class="checkout-items" aria-label="Order items"></div>
+              <div class="summary-line checkout-total">
+                <span>Total</span>
+                <span id="checkoutTotal" class="money-green"></span>
+              </div>
+            </div>
+
             <h2 class="section-title" style="margin-top:0">Payment Method</h2>
             <div class="notice">
               <div><strong>Bank Transfer only</strong></div>
@@ -116,16 +125,77 @@
 
   <script type="module" src="/src/site.js"></script>
   <script type="module">
-    import { buildOrderMessage, clearCart, loadCart } from '/cart.js';
+    import { buildOrderMessage, cartSubtotal, clearCart, formatMoney, loadCart } from '/cart.js';
     import { buildWhatsAppLink } from '/src/site.js';
 
     const form = document.getElementById('checkoutForm');
     const resultEl = document.getElementById('checkoutResult');
     const emptyEl = document.getElementById('checkoutEmpty');
+    const summaryEl = document.getElementById('checkoutSummary');
+    const itemsEl = document.getElementById('checkoutItems');
+    const totalEl = document.getElementById('checkoutTotal');
 
     function setEmptyState(isEmpty){
       emptyEl.hidden = !isEmpty;
       form.style.display = isEmpty ? 'none' : '';
+      if (summaryEl) summaryEl.hidden = isEmpty;
+    }
+
+    function renderSummary(){
+      if (!summaryEl || !itemsEl || !totalEl) return;
+
+      const cart = loadCart();
+      const items = Array.isArray(cart.items) ? cart.items : [];
+
+      itemsEl.textContent = '';
+
+      if (!items.length) {
+        summaryEl.hidden = true;
+        return;
+      }
+
+      summaryEl.hidden = false;
+
+      items.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'checkout-item';
+
+        const left = document.createElement('div');
+        left.className = 'checkout-item__left';
+
+        const name = document.createElement('div');
+        name.className = 'checkout-item__name';
+        name.textContent = item.name || 'Product';
+
+        const meta = document.createElement('div');
+        meta.className = 'checkout-item__meta';
+        const storagePart = item.storage ? ` • ${item.storage}` : '';
+        meta.textContent = `Qty ${item.quantity || 1}${storagePart}`;
+
+        left.appendChild(name);
+        left.appendChild(meta);
+
+        const right = document.createElement('div');
+        right.className = 'checkout-item__right';
+
+        const unit = document.createElement('div');
+        unit.className = 'checkout-item__unit money-green';
+        unit.textContent = item.price ? formatMoney(item.price, { currency: 'GMD' }) : '—';
+
+        const lineTotal = document.createElement('div');
+        lineTotal.className = 'checkout-item__line money-green';
+        const lineValue = (Number(item.price) || 0) * (Number(item.quantity) || 0);
+        lineTotal.textContent = lineValue ? formatMoney(lineValue, { currency: 'GMD' }) : '—';
+
+        right.appendChild(unit);
+        right.appendChild(lineTotal);
+
+        row.appendChild(left);
+        row.appendChild(right);
+        itemsEl.appendChild(row);
+      });
+
+      totalEl.textContent = formatMoney(cartSubtotal(cart), { currency: 'GMD' });
     }
 
     function cartIsEmpty(){
@@ -134,8 +204,12 @@
     }
 
     setEmptyState(cartIsEmpty());
+    renderSummary();
 
-    window.addEventListener('cart:changed', () => setEmptyState(cartIsEmpty()));
+    window.addEventListener('cart:changed', () => {
+      setEmptyState(cartIsEmpty());
+      renderSummary();
+    });
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -164,6 +238,7 @@
       resultEl.textContent = 'Please complete your payment via bank transfer and send the payment confirmation on WhatsApp.';
       form.reset();
       setEmptyState(true);
+      renderSummary();
     });
   </script>
 </body>
