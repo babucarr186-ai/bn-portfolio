@@ -32,15 +32,7 @@ export default defineConfig({
         appleTvHome: resolve(projectRoot, 'apple-tv-home.html'),
         premium: resolve(projectRoot, 'uncle-apple-premium.html'),
       },
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-        },
-      },
     },
-  },
-  optimizeDeps: {
-    include: ['react', 'react-dom'],
   },
   test: {
     environment: 'jsdom',
