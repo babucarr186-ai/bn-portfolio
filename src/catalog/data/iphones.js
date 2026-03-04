@@ -1,13 +1,14 @@
 export const iphones = [
   {
     title: 'iPhone 13',
-    subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty',
+    subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty • GMD 23,000',
     kind: 'phone',
     color: 'Starlight',
     storage: '128GB',
     condition: 'Used — Excellent condition',
     batteryHealth: '86%',
     warranty: '30days waranty included.',
+    price: 23000,
     productTitle: 'iPhone 13 (128GB) — Starlight — Used (Excellent) — Battery 86%',
     images: [
       'products/iphones/iphone-13-128gb-1.png',
@@ -17,13 +18,14 @@ export const iphones = [
   },
   {
     title: 'iPhone 13 Green',
-    subtitle: '128GB • condition-Excellent • Battery-86% • 30 days Warranthy',
+    subtitle: '128GB • condition-Excellent • Battery-86% • 30 days Warranthy • GMD 23,000',
     kind: 'phone',
     color: 'Green',
     storage: '128GB',
     condition: 'Used — Excellent condition',
     batteryHealth: '86%',
     warranty: '30 days Warranthy included.',
+    price: 23000,
     description: 'modell iphone 13 green 128GB condition-Excellent Battery-86% 30 days Warranthy',
     productTitle: 'iPhone 13 Green (128GB) — Used (Excellent) — Battery 86%',
     images: [
