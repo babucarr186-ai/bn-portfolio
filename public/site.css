@@ -7,7 +7,7 @@
   --card-solid: #ffffff;
   --shadow: 0 22px 60px rgba(0,0,0,0.12);
   --radius: 18px;
-  --max: 1100px;
+  --max: 1200px;
 
   /* Background image source (replace with your own photo) */
   --bg-image: url('iphone-air.webp');
@@ -63,7 +63,7 @@ body::after{
 a{ color: inherit; }
 
 .container{
-  width: min(1100px, calc(100% - 48px));
+  width: min(var(--max), calc(100% - 48px));
   margin: 0 auto;
 }
 
@@ -135,6 +135,11 @@ a{ color: inherit; }
   order: 3;
   flex-wrap: wrap;
 }
+
+/* Allow horizontal scrolling when the nav is crowded (desktop/tablet) */
+.nav-links{ min-width: 0; }
+.nav-links{ scrollbar-width: none; }
+.nav-links::-webkit-scrollbar{ display: none; }
 
 .nav-links a{
   text-decoration: none;
@@ -874,10 +879,16 @@ body.catalog-lightbox-open{ overflow: hidden; }
 @media (min-width: 860px){
   .nav-inner{ flex-wrap: nowrap; }
   .nav-links{
-    flex: 0 0 auto;
-    justify-content: flex-start;
+    flex: 1 1 auto;
+    justify-content: center;
     order: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    white-space: nowrap;
   }
+  .nav-links a{ white-space: nowrap; }
+  .nav-actions{ flex: 0 0 auto; }
+  .nav-search{ width: clamp(170px, 18vw, 240px); }
   .hero-grid{ grid-template-columns: 1.1fr 0.9fr; }
   .hero.hero-no-media .hero-grid{ grid-template-columns: 1fr; }
   .hero-copy{ text-align: left; justify-items: start; }
