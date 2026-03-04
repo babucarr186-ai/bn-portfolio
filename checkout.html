@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en" data-category="checkout">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Uncle Apple Store — Checkout" />
+  <meta name="robots" content="noindex,follow" />
+  <meta name="theme-color" content="#0b0f16" />
+  <title>Uncle Apple Store — Checkout</title>
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css?v=20260304" />
+</head>
+
+<body>
+  <header class="nav" aria-label="Primary navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="logo" href="./index.html#top" aria-label="Home">
+          <span class="logo-badge" aria-hidden="true">
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Site links">
+          <a href="./index.html#inventory">iPhones</a>
+          <a href="./ipads.html">iPads</a>
+          <a href="./macbook.html">MacBook</a>
+          <a href="./apple-watch.html">Apple Watch</a>
+          <a href="./airpods.html">AirPods</a>
+          <a href="./gift-cards.html">Gift Cards</a>
+          <a href="./accessories.html">Accessories</a>
+          <a href="./apple-tv-home.html">Apple TV &amp; Home</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn btn-primary btn-small" id="navWhatsApp" href="#">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="section cart-page" aria-label="Checkout">
+      <div class="container">
+        <h1>Checkout</h1>
+
+        <div id="checkoutEmpty" class="notice" hidden>
+          Your cart is empty. <a href="./index.html#inventory">Go back to iPhones</a>.
+        </div>
+
+        <div class="cart-grid">
+          <div class="cart-panel">
+            <form id="checkoutForm" class="form-grid" autocomplete="on">
+              <div class="field">
+                <label for="fullName">Full Name</label>
+                <input id="fullName" name="fullName" type="text" required />
+              </div>
+
+              <div class="field">
+                <label for="phone">Phone Number</label>
+                <input id="phone" name="phone" type="tel" required />
+              </div>
+
+              <div class="field">
+                <label for="address">Delivery Address</label>
+                <textarea id="address" name="address" required></textarea>
+              </div>
+
+              <div class="field">
+                <label for="city">City</label>
+                <input id="city" name="city" type="text" required />
+              </div>
+
+              <button class="btn btn-primary" type="submit">Place Order (WhatsApp)</button>
+            </form>
+
+            <div id="checkoutResult" class="notice" hidden></div>
+          </div>
+
+          <div class="cart-panel" aria-label="Payment method">
+            <h2 class="section-title" style="margin-top:0">Payment Method</h2>
+            <div class="notice">
+              <div><strong>Bank Transfer only</strong></div>
+              <div style="margin-top:10px">
+                <div>Bank Name: <strong>Trust Bank Ltd</strong></div>
+                <div>Country: <strong>The Gambia</strong></div>
+                <div>Account Name: <strong>Uncle Apple Store</strong></div>
+              </div>
+            </div>
+            <div class="notice">After checkout: “Please complete your payment via bank transfer and send the payment confirmation on WhatsApp.”</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <div class="container">
+      <div class="foot">
+        <div class="foot-left">
+          <div><strong>Located in The Gambia</strong></div>
+          <div class="foot-contact" aria-label="Contact details">
+            <div>Email: <a href="mailto:Nget@web.de">Nget@web.de</a></div>
+            <div>WhatsApp: <a id="footWhatsApp" href="#">+49 15679652076</a></div>
+          </div>
+        </div>
+
+        <div class="foot-legal">
+          <div>Copyright 2026 Uncle Apple</div>
+          <div class="small">Independent reseller. Not affiliated with Apple Inc.</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/site.js"></script>
+  <script type="module">
+    import { buildOrderMessage, clearCart, loadCart } from '/cart.js';
+    import { buildWhatsAppLink } from '/src/site.js';
+
+    const form = document.getElementById('checkoutForm');
+    const resultEl = document.getElementById('checkoutResult');
+    const emptyEl = document.getElementById('checkoutEmpty');
+
+    function setEmptyState(isEmpty){
+      emptyEl.hidden = !isEmpty;
+      form.style.display = isEmpty ? 'none' : '';
+    }
+
+    function cartIsEmpty(){
+      const cart = loadCart();
+      return !cart.items || cart.items.length === 0;
+    }
+
+    setEmptyState(cartIsEmpty());
+
+    window.addEventListener('cart:changed', () => setEmptyState(cartIsEmpty()));
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const cart = loadCart();
+      if (!cart.items || cart.items.length === 0){
+        setEmptyState(true);
+        return;
+      }
+
+      const customer = {
+        fullName: form.fullName.value,
+        phone: form.phone.value,
+        address: form.address.value,
+        city: form.city.value,
+      };
+
+      const msg = buildOrderMessage({ cart, customer, storeName: 'Uncle Apple Store', currency: 'GMD' });
+      const wa = buildWhatsAppLink(msg);
+
+      window.open(wa, '_blank', 'noopener,noreferrer');
+
+      clearCart();
+
+      resultEl.hidden = false;
+      resultEl.textContent = 'Please complete your payment via bank transfer and send the payment confirmation on WhatsApp.';
+      form.reset();
+      setEmptyState(true);
+    });
+  </script>
+</body>
+</html>

@@ -1,6 +1,11 @@
+import { cartItemCount, loadCart } from './cart.js';
+
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
 const WHATSAPP_NUMBER = '4915679652076';
+
+const CART_PAGE_HREF = './cart.html';
+const CHECKOUT_PAGE_HREF = './checkout.html';
 
 export function buildWhatsAppLink(message) {
   const encoded = encodeURIComponent(message);
@@ -17,6 +22,82 @@ export function setWhatsAppHref(el, message) {
 // Back-compat for other modules and inline-free HTML
 window.buildWhatsAppLink = buildWhatsAppLink;
 window.setWhatsAppHref = setWhatsAppHref;
+
+function ensureExtraStyles() {
+  const href = `${import.meta.env.BASE_URL || './'}styles.css?v=20260304`;
+  const existing = Array.from(document.querySelectorAll('link[rel="stylesheet"]')).find((l) =>
+    String(l.getAttribute('href') || '').includes('styles.css'),
+  );
+  if (existing) return;
+
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
+function ensureCartIcon() {
+  const existing = document.querySelector('[data-cart-link]');
+  if (existing) return existing;
+
+  const link = document.createElement('a');
+  link.href = CART_PAGE_HREF;
+  link.className = 'cart-link';
+  link.setAttribute('aria-label', 'Open cart');
+  link.setAttribute('data-cart-link', '');
+
+  const icon = document.createElement('span');
+  icon.className = 'cart-link__icon';
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = 'Cart';
+
+  const badge = document.createElement('span');
+  badge.className = 'cart-link__badge';
+  badge.setAttribute('data-cart-count', '');
+  badge.textContent = '0';
+
+  link.appendChild(icon);
+  link.appendChild(badge);
+
+  const navActions = document.querySelector('.nav-actions');
+  if (navActions) {
+    navActions.appendChild(link);
+    return link;
+  }
+
+  // Fallback (pages without the standard nav)
+  link.classList.add('cart-link--fixed');
+  document.body.appendChild(link);
+  return link;
+}
+
+function updateCartBadge() {
+  const badge = document.querySelector('[data-cart-count]');
+  if (!badge) return;
+  const cart = loadCart();
+  const count = cartItemCount(cart);
+
+  badge.textContent = String(count);
+  if (count > 0) badge.removeAttribute('hidden');
+  else badge.setAttribute('hidden', '');
+}
+
+function initCartUi() {
+  ensureExtraStyles();
+  ensureCartIcon();
+  updateCartBadge();
+
+  window.addEventListener('cart:changed', updateCartBadge);
+  window.addEventListener('storage', (e) => {
+    if (e.key && e.key.includes('uncle_apple_cart_v1')) updateCartBadge();
+  });
+
+  // Helpful globals for non-module pages (if any)
+  window.UA_CART = {
+    cartHref: CART_PAGE_HREF,
+    checkoutHref: CHECKOUT_PAGE_HREF,
+  };
+}
 
 function initWhatsAppLinks() {
   const customDefaultMsg = document.documentElement?.getAttribute('data-wa-default')?.trim();
@@ -568,6 +649,7 @@ function initChatWidget() {
 }
 
 initWhatsAppLinks();
+initCartUi();
 initAvailabilityForm();
 initScrollBgRotation();
 initImageViewer();

@@ -21,6 +21,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: resolve(projectRoot, 'index.html'),
+        cart: resolve(projectRoot, 'cart.html'),
+        checkout: resolve(projectRoot, 'checkout.html'),
         ipads: resolve(projectRoot, 'ipads.html'),
         macbook: resolve(projectRoot, 'macbook.html'),
         appleWatch: resolve(projectRoot, 'apple-watch.html'),

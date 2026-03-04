@@ -1,3 +1,5 @@
+import { addToCart } from '../cart.js';
+
 function publicAssetUrl(path) {
   const trimmed = String(path || '').replace(/^\/+/, '');
   return `${import.meta.env.BASE_URL}${trimmed}`;
@@ -196,6 +198,33 @@ export function renderCatalog({ mountEl, products }) {
     }
 
     actions.appendChild(waBtn);
+
+    const addBtn = document.createElement('button');
+    addBtn.type = 'button';
+    addBtn.className = 'btn btn-secondary btn-small';
+    addBtn.textContent = 'Add to Cart';
+    addBtn.addEventListener('click', () => {
+      const baseItem = {
+        id: card.id,
+        name: titleText,
+        storage: subtitleText,
+        image: firstImage,
+        price: typeof product.price === 'number' ? product.price : 0,
+        quantity: 1,
+      };
+
+      addToCart(baseItem);
+
+      const prev = addBtn.textContent;
+      addBtn.textContent = 'Added';
+      addBtn.disabled = true;
+      window.setTimeout(() => {
+        addBtn.textContent = prev;
+        addBtn.disabled = false;
+      }, 900);
+    });
+
+    actions.appendChild(addBtn);
     card.appendChild(actions);
 
     mountEl.appendChild(card);

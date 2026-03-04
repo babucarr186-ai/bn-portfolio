@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" data-category="cart">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Uncle Apple Store — Shopping cart" />
+  <meta name="robots" content="noindex,follow" />
+  <meta name="theme-color" content="#0b0f16" />
+  <title>Uncle Apple Store — Cart</title>
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css?v=20260304" />
+</head>
+
+<body>
+  <header class="nav" aria-label="Primary navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="logo" href="./index.html#top" aria-label="Home">
+          <span class="logo-badge" aria-hidden="true">
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Site links">
+          <a href="./index.html#inventory">iPhones</a>
+          <a href="./ipads.html">iPads</a>
+          <a href="./macbook.html">MacBook</a>
+          <a href="./apple-watch.html">Apple Watch</a>
+          <a href="./airpods.html">AirPods</a>
+          <a href="./gift-cards.html">Gift Cards</a>
+          <a href="./accessories.html">Accessories</a>
+          <a href="./apple-tv-home.html">Apple TV &amp; Home</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn btn-primary btn-small" id="navWhatsApp" href="#">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="section cart-page" aria-label="Shopping cart">
+      <div class="container">
+        <h1>Your cart</h1>
+
+        <div class="cart-grid">
+          <div class="cart-panel">
+            <div id="cartEmpty" class="notice" hidden>
+              Your cart is empty. <a href="./index.html#inventory">Browse iPhones</a>.
+            </div>
+
+            <div id="cartList" class="cart-list" aria-live="polite"></div>
+          </div>
+
+          <div class="cart-panel cart-summary" aria-label="Cart summary">
+            <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal">—</span></div>
+            <div class="summary-line"><span>Total</span><span id="cartTotal">—</span></div>
+            <a id="proceedBtn" class="btn btn-primary" href="./checkout.html">Proceed to Checkout</a>
+            <div class="notice">Payment method: <strong>Bank Transfer</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <div class="container">
+      <div class="foot">
+        <div class="foot-left">
+          <div><strong>Located in The Gambia</strong></div>
+          <div class="foot-contact" aria-label="Contact details">
+            <div>Email: <a href="mailto:Nget@web.de">Nget@web.de</a></div>
+            <div>WhatsApp: <a id="footWhatsApp" href="#">+49 15679652076</a></div>
+          </div>
+        </div>
+
+        <div class="foot-legal">
+          <div>Copyright 2026 Uncle Apple</div>
+          <div class="small">Independent reseller. Not affiliated with Apple Inc.</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/site.js"></script>
+  <script type="module">
+    import { formatMoney, loadCart, removeFromCart, updateQuantity, cartSubtotal, cartItemCount } from '/cart.js';
+
+    function assetUrl(path){
+      const trimmed = String(path || '').replace(/^\/+/, '');
+      return `${import.meta.env.BASE_URL}${trimmed}`;
+    }
+
+    const listEl = document.getElementById('cartList');
+    const emptyEl = document.getElementById('cartEmpty');
+    const subEl = document.getElementById('cartSubtotal');
+    const totalEl = document.getElementById('cartTotal');
+    const proceedBtn = document.getElementById('proceedBtn');
+
+    function render(){
+      const cart = loadCart();
+      const items = cart.items || [];
+
+      listEl.textContent = '';
+
+      if (!items.length){
+        emptyEl.hidden = false;
+        subEl.textContent = '—';
+        totalEl.textContent = '—';
+        proceedBtn.setAttribute('aria-disabled', 'true');
+        proceedBtn.style.pointerEvents = 'none';
+        proceedBtn.style.opacity = '0.6';
+        return;
+      }
+
+      emptyEl.hidden = true;
+      proceedBtn.removeAttribute('aria-disabled');
+      proceedBtn.style.pointerEvents = '';
+      proceedBtn.style.opacity = '';
+
+      items.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+
+        const img = document.createElement('img');
+        img.className = 'cart-item__img';
+        img.alt = item.name || 'Product';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.src = assetUrl(item.image);
+
+        const body = document.createElement('div');
+
+        const title = document.createElement('p');
+        title.className = 'cart-item__title';
+        title.textContent = item.name || 'Product';
+
+        const sub = document.createElement('p');
+        sub.className = 'cart-item__sub';
+        sub.textContent = item.storage || '';
+
+        const row2 = document.createElement('div');
+        row2.className = 'cart-item__row';
+
+        const price = document.createElement('div');
+        price.className = 'notice';
+        price.textContent = item.price ? `Price: ${formatMoney(item.price)}` : 'Price: —';
+
+        const lineTotal = document.createElement('div');
+        lineTotal.className = 'notice';
+        const lt = (Number(item.price) || 0) * (Number(item.quantity) || 0);
+        lineTotal.textContent = item.price ? `Total: ${formatMoney(lt)}` : 'Total: —';
+
+        const qty = document.createElement('div');
+        qty.className = 'qty';
+        const qtyLabel = document.createElement('span');
+        qtyLabel.textContent = 'Qty';
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'number';
+        qtyInput.min = '1';
+        qtyInput.step = '1';
+        qtyInput.value = String(item.quantity || 1);
+        qtyInput.setAttribute('aria-label', `Quantity for ${item.name}`);
+        qtyInput.addEventListener('change', () => {
+          updateQuantity(item.id, qtyInput.value);
+          render();
+        });
+        qty.appendChild(qtyLabel);
+        qty.appendChild(qtyInput);
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'btn btn-secondary btn-small';
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', () => {
+          removeFromCart(item.id);
+          render();
+        });
+
+        row2.appendChild(price);
+        row2.appendChild(lineTotal);
+        row2.appendChild(qty);
+        row2.appendChild(removeBtn);
+
+        body.appendChild(title);
+        if (item.storage) body.appendChild(sub);
+        body.appendChild(row2);
+
+        row.appendChild(img);
+        row.appendChild(body);
+
+        listEl.appendChild(row);
+      });
+
+      const subtotal = cartSubtotal(cart);
+      subEl.textContent = formatMoney(subtotal);
+      totalEl.textContent = formatMoney(subtotal);
+    }
+
+    render();
+    window.addEventListener('cart:changed', render);
+  </script>
+</body>
+</html>
