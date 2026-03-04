@@ -151,6 +151,23 @@ export function renderCatalog({ mountEl, products }) {
       card.appendChild(sub);
     }
 
+    if (product?.description) {
+      const desc = el('p', 'catalog-desc');
+      desc.textContent = String(product.description);
+      card.appendChild(desc);
+    }
+
+    const specs = Array.isArray(product?.specs) ? product.specs.filter(Boolean) : [];
+    if (specs.length) {
+      const ul = el('ul', 'catalog-specs');
+      specs.slice(0, 10).forEach((line) => {
+        const li = document.createElement('li');
+        li.textContent = String(line);
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+    }
+
     if (imagesToUse.length >= 2) {
       const thumbs = el('div', 'catalog-thumbs');
       imagesToUse.forEach((src, thumbIndex) => {
