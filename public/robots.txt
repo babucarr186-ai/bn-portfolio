@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://babucarr186-ai.github.io/bn-portfolio/sitemap.xml
+Sitemap: https://uncleapplestore.com/sitemap.xml
