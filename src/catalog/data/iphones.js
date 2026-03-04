@@ -9,14 +9,6 @@ export const iphones = [
     batteryHealth: '86%',
     warranty: '30 days warranty included.',
     productTitle: 'iPhone 13 (128GB) — Starlight — Used (Excellent) — Battery 86%',
-    specs: [
-      'Model: iPhone 13',
-      'Color: Starlight',
-      'Storage: 128GB',
-      'Condition: Used — Excellent',
-      'Battery Health: 86%',
-      'Warranty: 30 days included',
-    ],
     images: [
       'products/iphones/iphone-13-128gb-1.png',
       'products/iphones/iphone-13-128gb-2.png',
