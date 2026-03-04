@@ -1,13 +1,13 @@
 export const iphones = [
   {
     title: 'iPhone 13',
-    subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30-day warranty',
+    subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty',
     kind: 'phone',
     color: 'Starlight',
     storage: '128GB',
     condition: 'Used — Excellent condition',
     batteryHealth: '86%',
-    warranty: '30 days warranty included.',
+    warranty: '30days waranty included.',
     productTitle: 'iPhone 13 (128GB) — Starlight — Used (Excellent) — Battery 86%',
     images: [
       'products/iphones/iphone-13-128gb-1.png',
