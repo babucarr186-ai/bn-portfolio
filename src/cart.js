@@ -147,6 +147,6 @@ export function buildOrderMessage({ cart, customer, storeName = 'Uncle Apple Sto
     `Name: ${name}\n` +
     `Phone: ${phone}\n` +
     `Address: ${address}${city ? `, ${city}` : ''}\n\n` +
-    `I will complete payment via Trust Bank transfer.`
+    `I will complete payment via bank transfer (Trust Bank Ltd).`
   );
 }
