@@ -48,7 +48,7 @@ export const iphones = [
   },
   {
     title: 'iPhone 11',
-    subtitle: '128GB',
+    subtitle: 'White • 128GB • Clean • Battery 77%',
     kind: 'phone',
     images: [
       'products/iphones/iphone-11-128gb-1.jpg',
