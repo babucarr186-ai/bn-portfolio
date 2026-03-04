@@ -121,8 +121,13 @@ export function renderCatalog({ mountEl, products }) {
     zoomBtn.setAttribute('aria-label', `Zoom image for ${titleText}`);
 
     const img = document.createElement('img');
-    img.loading = index < 2 ? 'eager' : 'lazy';
+    img.loading = 'lazy';
     img.decoding = 'async';
+    try {
+      img.fetchPriority = 'low';
+    } catch {
+      // ignore
+    }
 
     img.src = publicAssetUrl(firstImage);
     img.alt = product.alt || titleText || 'Product';
@@ -180,6 +185,11 @@ export function renderCatalog({ mountEl, products }) {
         const tImg = document.createElement('img');
         tImg.loading = 'lazy';
         tImg.decoding = 'async';
+        try {
+          tImg.fetchPriority = 'low';
+        } catch {
+          // ignore
+        }
         tImg.src = publicAssetUrl(src);
         tImg.alt = '';
 

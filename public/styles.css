@@ -68,6 +68,12 @@
 
 .catalog-specs li{ margin: 4px 0; }
 
+/* Performance: avoid rendering offscreen cards until needed */
+.catalog-card{
+  content-visibility: auto;
+  contain-intrinsic-size: 520px;
+}
+
 /* Cart + checkout layout */
 .cart-page h1{
   font-size: clamp(1.6rem, 3.4vw, 2.2rem);
