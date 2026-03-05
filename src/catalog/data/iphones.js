@@ -189,9 +189,6 @@ export const iphones = [
     productTitle:
       'iPhone 11 Pro Max (256GB) — Gray — Used (Very good) — Battery 79% — 30 days warranty',
     images: [
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-1.jpg',
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-2.jpg',
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-3.jpg',
       'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-4.jpg',
       'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-5.jpg',
       'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-6.jpg',
