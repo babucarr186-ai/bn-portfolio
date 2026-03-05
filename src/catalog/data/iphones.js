@@ -230,12 +230,22 @@ export const iphones = [
   },
   {
     title: 'iPhone 14',
-    subtitle: 'White • 128GB',
+    subtitle: 'White • 128GB • Used (Like new) • Battery 85% • 30 days warranty',
     kind: 'phone',
+    color: 'White',
+    storage: '128GB',
+    condition: 'Used — Like new',
+    batteryHealth: '85%',
+    warranty: '30 days warranty',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 — White, 128GB, used (like new), battery 85%, 30 days warranty, original parts. In The Gambia.',
+    description:
+      'Color White. Storage 128GB. Condition used (like new). Battery capacity 85%. Original parts. 30 days warranty.',
+    productTitle: 'iPhone 14 (128GB) — White — Used (Like new) — Battery 85%',
     images: [
-      'products/iphones/iphone-14-256gb-excellent-1.jpg?v=20260301',
-      'products/iphones/iphone-14-256gb-excellent-2.jpg?v=20260301',
-      'products/iphones/iphone-14-256gb-excellent-3.jpg?v=20260301',
+      'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-1.jpg',
+      'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-2.jpg',
+      'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-3.jpg',
     ],
   },
 ];
