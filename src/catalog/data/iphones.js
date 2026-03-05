@@ -99,6 +99,8 @@ export const iphones = [
     kind: 'phone',
     color: 'White',
     price: 14500,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 12 — White, 64GB, battery 82%, clean condition. In The Gambia.',
     description: 'Battery capacity 82%. Storage 64GB. Condition clean.',
     images: [
       'products/iphones/iphone-12-white-64gb/iphone-12-white-64gb-1.jpg',
