@@ -17,6 +17,26 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone 13 Pro Max',
+    subtitle: 'Gold • 128GB • Battery 82% • Used • Back glass broken',
+    kind: 'phone',
+    color: 'Gold',
+    storage: '128GB',
+    condition: 'Used — Back glass broken',
+    batteryHealth: '82%',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 Pro Max — Gold, 128GB, battery 82%, used condition (back glass broken). In The Gambia.',
+    description:
+      'Color Gold. Storage 128GB. Battery capacity 82%. Condition used. Back glass is broken.',
+    productTitle:
+      'iPhone 13 Pro Max (128GB) — Gold — Used (Back glass broken) — Battery 82%',
+    images: [
+      'products/iphones/iphone-13-pro-max-gold-128gb/iphone-13-pro-max-gold-128gb-1.jpg',
+      'products/iphones/iphone-13-pro-max-gold-128gb/iphone-13-pro-max-gold-128gb-2.jpg',
+      'products/iphones/iphone-13-pro-max-gold-128gb/iphone-13-pro-max-gold-128gb-3.jpg',
+    ],
+  },
+  {
     title: 'iPhone 13 Green',
     subtitle: '128GB • condition-Excellent • Battery-86% • 30 days Warranthy • GMD 23,000',
     kind: 'phone',
