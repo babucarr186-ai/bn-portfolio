@@ -185,10 +185,20 @@ export const iphones = [
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gray, 256GB, battery 79%, used (very good condition), original parts, 30 days warranty. Price GMD 18,000. In The Gambia.',
     description:
-      'Color Gray. Storage 256GB. Battery capacity 79%. Condition used (very good). Original parts. 30 days warranty. (Waiting for images.)',
+      'Color Gray. Storage 256GB. Battery capacity 79%. Condition used (very good). Original parts. 30 days warranty.',
     productTitle:
       'iPhone 11 Pro Max (256GB) — Gray — Used (Very good) — Battery 79% — 30 days warranty',
-    images: ['iphone-pro.jpg', 'hero-iphone.jpg', 'iphone-se.jpg'],
+    images: [
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-1.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-2.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-3.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-4.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-5.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-6.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-7.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-8.jpg',
+      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-9.jpg',
+    ],
   },
   {
     title: 'iPhone 7 Plus',
