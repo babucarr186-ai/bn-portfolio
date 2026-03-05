@@ -18,7 +18,7 @@ export const iphones = [
   },
   {
     title: 'iPhone 13 Pro Max',
-    subtitle: 'Gold • 128GB • Battery 82% • Used • Back glass broken',
+    subtitle: 'Gold • 128GB • Battery 82% • Used • Back glass broken • Price on request',
     kind: 'phone',
     color: 'Gold',
     storage: '128GB',
@@ -27,7 +27,7 @@ export const iphones = [
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 13 Pro Max — Gold, 128GB, battery 82%, used condition (back glass broken). In The Gambia.',
     description:
-      'Color Gold. Storage 128GB. Battery capacity 82%. Condition used. Back glass is broken.',
+      'Color Gold. Storage 128GB. Battery capacity 82%. Condition used. Back glass is broken. Price on request.',
     productTitle:
       'iPhone 13 Pro Max (128GB) — Gold — Used (Back glass broken) — Battery 82%',
     images: [
