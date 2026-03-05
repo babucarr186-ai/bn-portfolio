@@ -230,18 +230,18 @@ export const iphones = [
   },
   {
     title: 'iPhone 14',
-    subtitle: 'White • 128GB • Used (Like new) • Battery 85% • 30 days warranty',
+    subtitle: 'Starlight • 128GB • Used (Like new) • Battery 85% • 30 days warranty',
     kind: 'phone',
-    color: 'White',
+    color: 'Starlight',
     storage: '128GB',
     condition: 'Used — Like new',
     batteryHealth: '85%',
     warranty: '30 days warranty',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 14 — White, 128GB, used (like new), battery 85%, 30 days warranty, original parts. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 — Starlight, 128GB, used (like new), battery 85%, 30 days warranty, original parts. In The Gambia.',
     description:
-      'Color White. Storage 128GB. Condition used (like new). Battery capacity 85%. Original parts. 30 days warranty.',
-    productTitle: 'iPhone 14 (128GB) — White — Used (Like new) — Battery 85%',
+      'Color Starlight. Storage 128GB. Condition used (like new). Battery capacity 85%. Original parts. 30 days warranty.',
+    productTitle: 'iPhone 14 (128GB) — Starlight — Used (Like new) — Battery 85%',
     images: [
       'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-1.jpg',
       'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-2.jpg',
