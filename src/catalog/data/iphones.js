@@ -12,8 +12,8 @@ export const iphones = [
       'Color Lavender. Storage 256GB. Condition used (like new). Original parts. Price on request.',
     productTitle: 'iPhone 17 (256GB) — Lavender — Used (Like new) — Original parts',
     images: [
-      'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-1.jpg',
       'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-2.jpg',
+      'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-1.jpg',
       'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-3.jpg',
       'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-4.jpg',
     ],
