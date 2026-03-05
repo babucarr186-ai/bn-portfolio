@@ -11,9 +11,9 @@ export const iphones = [
     price: 23000,
     productTitle: 'iPhone 13 (128GB) — Starlight — Used (Excellent) — Battery 86%',
     images: [
-      'products/iphones/iphone-13-128gb-1.png',
-      'products/iphones/iphone-13-128gb-2.png',
-      'products/iphones/iphone-13-128gb-3.png',
+      'products/iphones/iphone-13-128gb-1.jpg',
+      'products/iphones/iphone-13-128gb-2.jpg',
+      'products/iphones/iphone-13-128gb-3.jpg',
     ],
   },
   {
