@@ -174,27 +174,23 @@ export const iphones = [
   },
   {
     title: 'iPhone 11 Pro Max',
-    subtitle: 'Gray • 256GB • Battery 79% • Very good • Original parts • 30 days warranty • GMD 18,000',
+    subtitle: 'Gray • 64GB • Battery 76% • Very good • Original parts • GMD 16,000',
     kind: 'phone',
     color: 'Gray',
-    storage: '256GB',
+    storage: '64GB',
     condition: 'Used — Very good condition',
-    batteryHealth: '79%',
-    warranty: '30 days warranty',
-    price: 18000,
+    batteryHealth: '76%',
+    price: 16000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gray, 256GB, battery 79%, used (very good condition), original parts, 30 days warranty. Price GMD 18,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gray, 64GB, battery 76%, used (very good condition), original parts. Price GMD 16,000. In The Gambia.',
     description:
-      'Color Gray. Storage 256GB. Battery capacity 79%. Condition used (very good). Original parts. 30 days warranty.',
+      'Color Gray. Storage 64GB. Battery capacity 76%. Condition used (very good). Original parts.',
     productTitle:
-      'iPhone 11 Pro Max (256GB) — Gray — Used (Very good) — Battery 79% — 30 days warranty',
+      'iPhone 11 Pro Max (64GB) — Gray — Used (Very good) — Battery 76%',
     images: [
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-4.jpg',
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-5.jpg',
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-6.jpg',
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-7.jpg',
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-8.jpg',
-      'products/iphones/iphone-11-pro-max-gray-256gb/iphone-11-pro-max-gray-256gb-9.jpg',
+      'products/iphones/iphone-11-pro-max-gray-64gb/iphone-11-pro-max-gray-64gb-1.jpg',
+      'products/iphones/iphone-11-pro-max-gray-64gb/iphone-11-pro-max-gray-64gb-2.jpg',
+      'products/iphones/iphone-11-pro-max-gray-64gb/iphone-11-pro-max-gray-64gb-3.jpg',
     ],
   },
   {
