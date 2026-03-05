@@ -9,9 +9,14 @@ export const iphones = [
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 17 — Lavender, 256GB, used (like new), original parts. Price on request. In The Gambia.',
     description:
-      'Color Lavender. Storage 256GB. Condition used (like new). Original parts. Price on request. (Waiting for images.)',
+      'Color Lavender. Storage 256GB. Condition used (like new). Original parts. Price on request.',
     productTitle: 'iPhone 17 (256GB) — Lavender — Used (Like new) — Original parts',
-    images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-pro.jpg'],
+    images: [
+      'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-1.jpg',
+      'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-2.jpg',
+      'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-3.jpg',
+      'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-4.jpg',
+    ],
   },
   {
     title: 'iPhone 13',
