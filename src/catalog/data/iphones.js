@@ -173,6 +173,24 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone 11 Pro Max',
+    subtitle: 'Gray • 256GB • Battery 79% • Very good • Original parts • 30 days warranty • GMD 18,000',
+    kind: 'phone',
+    color: 'Gray',
+    storage: '256GB',
+    condition: 'Used — Very good condition',
+    batteryHealth: '79%',
+    warranty: '30 days warranty',
+    price: 18000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gray, 256GB, battery 79%, used (very good condition), original parts, 30 days warranty. Price GMD 18,000. In The Gambia.',
+    description:
+      'Color Gray. Storage 256GB. Battery capacity 79%. Condition used (very good). Original parts. 30 days warranty. (Waiting for images.)',
+    productTitle:
+      'iPhone 11 Pro Max (256GB) — Gray — Used (Very good) — Battery 79% — 30 days warranty',
+    images: ['iphone-pro.jpg', 'hero-iphone.jpg', 'iphone-se.jpg'],
+  },
+  {
     title: 'iPhone 7 Plus',
     subtitle: 'Black • 128GB • Battery 83% • Good condition • 12‑month warranty • GMD 5,500',
     kind: 'phone',
