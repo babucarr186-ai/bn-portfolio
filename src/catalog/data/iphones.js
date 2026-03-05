@@ -95,12 +95,16 @@ export const iphones = [
   },
   {
     title: 'iPhone 12',
-    subtitle: 'White • GMD 14,500',
+    subtitle: 'White • 64GB • Battery 82% • Clean • GMD 14,500',
     kind: 'phone',
     color: 'White',
     price: 14500,
-    description: 'Photos coming soon.',
-    images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-pro.jpg'],
+    description: 'Battery capacity 82%. Storage 64GB. Condition clean.',
+    images: [
+      'products/iphones/iphone-12-white-64gb/iphone-12-white-64gb-1.jpg',
+      'products/iphones/iphone-12-white-64gb/iphone-12-white-64gb-2.jpg',
+      'products/iphones/iphone-12-white-64gb/iphone-12-white-64gb-3.jpg',
+    ],
   },
   {
     title: 'iPhone 12 Pro',
