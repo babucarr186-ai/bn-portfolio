@@ -248,4 +248,26 @@ export const iphones = [
       'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-3.jpg',
     ],
   },
+  {
+    title: 'iPhone 14',
+    subtitle:
+      'Black • 256GB • Used (Like new) • Battery 82% • Original parts • 30 days warranty • GMD 25,000',
+    kind: 'phone',
+    color: 'Black',
+    storage: '256GB',
+    condition: 'Used — Like new',
+    batteryHealth: '82%',
+    warranty: '30 days warranty',
+    price: 25000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 — Black, 256GB, used (like new), battery 82%, original parts, 30 days warranty. Price GMD 25,000. In The Gambia.',
+    description:
+      'Color Black. Storage 256GB. Condition used (like new). Battery capacity 82%. Original parts. 30 days warranty.',
+    productTitle: 'iPhone 14 (256GB) — Black — Used (Like new) — Battery 82%',
+    images: [
+      'products/iphones/iphone-14-black-256gb/iphone-14-black-256gb-1.jpg',
+      'products/iphones/iphone-14-black-256gb/iphone-14-black-256gb-2.jpg',
+      'products/iphones/iphone-14-black-256gb/iphone-14-black-256gb-3.jpg',
+    ],
+  },
 ];
