@@ -42,6 +42,23 @@ export const iphones = [
     images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-pro.jpg'],
   },
   {
+    title: 'iPhone X',
+    subtitle: 'White • 64GB • Battery 68% • Good condition • GMD 6,000',
+    kind: 'phone',
+    color: 'White',
+    storage: '64GB',
+    condition: 'Used — Good condition',
+    batteryHealth: '68%',
+    price: 6000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone X — White, 64GB, battery 68%, good condition. In The Gambia.',
+    productTitle: 'iPhone X (64GB) — White — Used (Good) — Battery 68%',
+    images: [
+      'products/iphones/iphone-x-white-64gb/iphone-x-white-64gb-1.jpg',
+      'products/iphones/iphone-x-white-64gb/iphone-x-white-64gb-2.jpg',
+    ],
+  },
+  {
     title: 'iPhone XR',
     subtitle: 'White • 128GB',
     kind: 'phone',
