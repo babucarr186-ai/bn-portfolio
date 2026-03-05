@@ -1,5 +1,72 @@
 import { addToCart } from '../cart.js';
 
+const RESPONSIVE_WIDTHS = [300, 600, 900, 1200];
+
+function splitQuery(url) {
+  const raw = String(url || '');
+  const idx = raw.indexOf('?');
+  if (idx === -1) return { path: raw, query: '' };
+  return { path: raw.slice(0, idx), query: raw.slice(idx) };
+}
+
+function fileExt(filePath) {
+  const m = String(filePath || '').toLowerCase().match(/\.([a-z0-9]+)$/);
+  return m ? m[1] : '';
+}
+
+function withoutExt(filePath) {
+  return String(filePath || '').replace(/\.[^.]+$/, '');
+}
+
+function fallbackExtFor(pathNoQuery) {
+  // Always use optimized JPG fallbacks to keep file sizes small.
+  // (Our generator flattens transparent PNGs onto white for visual consistency.)
+  return 'jpg';
+}
+
+function buildVariantPath(pathNoQuery, width, ext) {
+  return `${withoutExt(pathNoQuery)}-${width}.${ext}`;
+}
+
+function buildSrcset(pathNoQuery, query, ext) {
+  const base = withoutExt(pathNoQuery);
+  return RESPONSIVE_WIDTHS.map((w) => `${publicAssetUrl(`${base}-${w}.${ext}${query}`)} ${w}w`).join(', ');
+}
+
+function createResponsivePicture({ src, alt, sizes, className }) {
+  const { path: pathNoQuery, query } = splitQuery(src);
+
+  const picture = document.createElement('picture');
+
+  const webp = document.createElement('source');
+  webp.type = 'image/webp';
+  webp.srcset = buildSrcset(pathNoQuery, query, 'webp');
+  if (sizes) webp.sizes = sizes;
+  picture.appendChild(webp);
+
+  const fallbackExt = fallbackExtFor(pathNoQuery);
+  const fallback = document.createElement('img');
+  if (className) fallback.className = className;
+
+  fallback.loading = 'lazy';
+  fallback.decoding = 'async';
+  try {
+    fallback.fetchPriority = 'low';
+  } catch {
+    // ignore
+  }
+
+  // Reasonable default src so browsers without srcset still get an optimized asset.
+  // Use the original URL as a guaranteed-safe fallback (srcset drives modern browsers to optimized variants).
+  fallback.src = publicAssetUrl(pathNoQuery + query);
+  fallback.srcset = buildSrcset(pathNoQuery, query, fallbackExt);
+  if (sizes) fallback.sizes = sizes;
+  fallback.alt = alt || 'Product';
+
+  picture.appendChild(fallback);
+  return { picture, img: fallback };
+}
+
 function publicAssetUrl(path) {
   const trimmed = String(path || '').replace(/^\/+/, '');
   return `${import.meta.env.BASE_URL}${trimmed}`;
@@ -120,19 +187,14 @@ export function renderCatalog({ mountEl, products }) {
     zoomBtn.className = 'catalog-zoom';
     zoomBtn.setAttribute('aria-label', `Zoom image for ${titleText}`);
 
-    const img = document.createElement('img');
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    try {
-      img.fetchPriority = 'low';
-    } catch {
-      // ignore
-    }
+    const initialPic = createResponsivePicture({
+      src: firstImage,
+      alt: product.alt || titleText || 'Product',
+      sizes: '(max-width: 640px) 100vw, (max-width: 960px) 50vw, (max-width: 1100px) 33vw, 25vw',
+    });
+    let mainImgEl = initialPic.img;
 
-    img.src = publicAssetUrl(firstImage);
-    img.alt = product.alt || titleText || 'Product';
-
-    zoomBtn.appendChild(img);
+    zoomBtn.appendChild(initialPic.picture);
     frame.appendChild(zoomBtn);
     card.appendChild(frame);
 
@@ -141,7 +203,7 @@ export function renderCatalog({ mountEl, products }) {
       if (!activeImage) return;
       ensureCatalogLightbox().open({
         src: activeImage,
-        alt: img.alt || titleText,
+        alt: mainImgEl.alt || titleText,
         focusEl: zoomBtn,
       });
     });
@@ -182,21 +244,27 @@ export function renderCatalog({ mountEl, products }) {
         btn.setAttribute('aria-label', `Photo ${thumbIndex + 1}`);
         btn.setAttribute('aria-current', thumbIndex === 0 ? 'true' : 'false');
 
-        const tImg = document.createElement('img');
-        tImg.loading = 'lazy';
-        tImg.decoding = 'async';
-        try {
-          tImg.fetchPriority = 'low';
-        } catch {
-          // ignore
-        }
-        tImg.src = publicAssetUrl(src);
+        const { picture: tPic, img: tImg } = createResponsivePicture({
+          src,
+          alt: '',
+          sizes: '62px',
+        });
+        // Thumbs are decorative; keep empty alt.
         tImg.alt = '';
 
-        btn.appendChild(tImg);
+        btn.appendChild(tPic);
 
         btn.addEventListener('click', () => {
-          img.src = publicAssetUrl(src);
+          // Swap the responsive image by rebuilding the <picture>.
+          const next = createResponsivePicture({
+            src,
+            alt: mainImgEl.alt || titleText || 'Product',
+            sizes: '(max-width: 640px) 100vw, (max-width: 960px) 50vw, (max-width: 1100px) 33vw, 25vw',
+          });
+          // Replace the existing <picture> inside the zoom button.
+          const current = zoomBtn.querySelector('picture');
+          if (current && current.parentNode) current.parentNode.replaceChild(next.picture, current);
+          mainImgEl = next.img;
           activeImage = src;
           thumbs
             .querySelectorAll('[aria-current="true"]')

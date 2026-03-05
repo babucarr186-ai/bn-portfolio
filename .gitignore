@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated responsive image variants (created by `npm run optimize:images`)
+public/products/**/*-300.*
+public/products/**/*-600.*
+public/products/**/*-900.*
+public/products/**/*-1200.*

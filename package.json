@@ -4,7 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "npm run optimize:images",
     "dev": "vite",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "prebuild": "npm run optimize:images",
     "build": "vite build",
     "lint": "eslint .",
     "test": "vitest run",
@@ -30,6 +33,7 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "jsdom": "^26.1.0",
+    "sharp": "^0.34.3",
     "terser": "^5.44.0",
     "vite": "^7.1.2",
     "vitest": "^3.2.4"
