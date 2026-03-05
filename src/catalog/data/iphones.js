@@ -121,8 +121,13 @@ export const iphones = [
   },
   {
     title: 'iPhone 11 Pro',
-    subtitle: '256GB',
+    subtitle: 'Green • 64GB • Battery 73% • Very clean • Original parts',
     kind: 'phone',
+    color: 'Green',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro — Green, 64GB, battery 73%, very clean condition, original parts. In The Gambia.',
+    description:
+      'Color Green. Storage 64GB. Battery capacity 73%. Condition very clean. Original parts. (Waiting for images.)',
     images: ['iphone-pro.jpg', 'hero-iphone.jpg', 'iphone-se.jpg'],
   },
   {
