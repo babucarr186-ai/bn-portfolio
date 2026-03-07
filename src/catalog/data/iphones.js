@@ -19,6 +19,22 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone 17 Pro Max',
+    subtitle: 'Cosmic Orange • 256GB • Brand new • 30-day warranty • GMD 119,000',
+    kind: 'phone',
+    color: 'Cosmic Orange',
+    storage: '256GB',
+    condition: 'Brand new',
+    warranty: '30-day warranty',
+    price: 119000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro Max — Cosmic Orange, 256GB, brand new, 30-day warranty. Price GMD 119,000. In The Gambia.',
+    description:
+      'Capacity 256GB. Condition brand new. Color Cosmic Orange. Apple product. 30-day warranty. Price GMD 119,000.',
+    productTitle: 'iPhone 17 Pro Max (256GB) — Cosmic Orange — Brand new — 30-day warranty',
+    images: ['products/iphones/iphone-17-pro-max-cosmic-orange-256gb/iphone 17-pro-max.jpg'],
+  },
+  {
     title: 'iPhone 13',
     subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty • GMD 23,000',
     kind: 'phone',
@@ -247,6 +263,21 @@ export const iphones = [
       'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-2.jpg',
       'products/iphones/iphone-14-white-128gb/iphone-14-white-128gb-3.jpg',
     ],
+  },
+  {
+    title: 'iPhone 14 Pro',
+    subtitle: 'Gray • 128GB • Used • Battery 82% • Price on request',
+    kind: 'phone',
+    color: 'Gray',
+    storage: '128GB',
+    condition: 'Used',
+    batteryHealth: '82%',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro — Gray, 128GB, used condition, battery 82%. Price on request. In The Gambia.',
+    description:
+      'Capacity 128GB. Color Gray. Battery health 82%. Condition used. Price on request.',
+    productTitle: 'iPhone 14 Pro (128GB) — Gray — Used — Battery 82%',
+    images: ['products/iphones/iphone-14-pro-gray-128gb/iphone-14-pro.jpg'],
   },
   {
     title: 'iPhone 14',

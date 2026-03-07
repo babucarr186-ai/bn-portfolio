@@ -86,7 +86,7 @@
 
   <script type="module" src="/src/site.js"></script>
   <script type="module">
-    import { formatMoney, loadCart, removeFromCart, updateQuantity, cartSubtotal, cartItemCount } from '/cart.js';
+    import { formatMoney, loadCart, removeFromCart, updateQuantity, cartSubtotal, cartHasUnknownPrices, cartTotal } from '/cart.js';
 
     function assetUrl(path){
       const trimmed = String(path || '').replace(/^\/+/, '');
@@ -146,12 +146,12 @@
 
         const price = document.createElement('div');
         price.className = 'notice';
-        price.textContent = item.price ? `Price: ${formatMoney(item.price)}` : 'Price: —';
+        price.textContent = item.price ? `Price: ${formatMoney(item.price)}` : 'Price: Price on request';
 
         const lineTotal = document.createElement('div');
         lineTotal.className = 'notice';
         const lt = (Number(item.price) || 0) * (Number(item.quantity) || 0);
-        lineTotal.textContent = item.price ? `Total: ${formatMoney(lt)}` : 'Total: —';
+        lineTotal.textContent = item.price ? `Total: ${formatMoney(lt)}` : 'Total: Price on request';
 
         const qty = document.createElement('div');
         qty.className = 'qty';
@@ -196,7 +196,16 @@
 
       const subtotal = cartSubtotal(cart);
       subEl.textContent = formatMoney(subtotal);
-      totalEl.textContent = formatMoney(subtotal);
+
+      const total = cartTotal(cart);
+      totalEl.textContent = total === null ? 'Price on request' : formatMoney(total);
+
+      const canCheckout = !cartHasUnknownPrices(cart);
+      if (!canCheckout) {
+        proceedBtn.setAttribute('aria-disabled', 'true');
+        proceedBtn.style.pointerEvents = 'none';
+        proceedBtn.style.opacity = '0.6';
+      }
     }
 
     render();

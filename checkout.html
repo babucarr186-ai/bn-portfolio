@@ -127,7 +127,7 @@
 
   <script type="module" src="/src/site.js"></script>
   <script type="module">
-    import { buildOrderMessage, cartSubtotal, clearCart, formatMoney, loadCart } from '/cart.js';
+    import { buildOrderMessage, cartHasUnknownPrices, cartTotal, clearCart, formatMoney, loadCart } from '/cart.js';
     import { buildWhatsAppLink } from '/src/site.js';
 
     const form = document.getElementById('checkoutForm');
@@ -136,6 +136,7 @@
     const summaryEl = document.getElementById('checkoutSummary');
     const itemsEl = document.getElementById('checkoutItems');
     const totalEl = document.getElementById('checkoutTotal');
+    const submitBtn = form?.querySelector('button[type="submit"]');
 
     function setEmptyState(isEmpty){
       emptyEl.hidden = !isEmpty;
@@ -182,12 +183,12 @@
 
         const unit = document.createElement('div');
         unit.className = 'checkout-item__unit money-green';
-        unit.textContent = item.price ? formatMoney(item.price, { currency: 'GMD' }) : '—';
+        unit.textContent = item.price ? formatMoney(item.price, { currency: 'GMD' }) : 'Price on request';
 
         const lineTotal = document.createElement('div');
         lineTotal.className = 'checkout-item__line money-green';
         const lineValue = (Number(item.price) || 0) * (Number(item.quantity) || 0);
-        lineTotal.textContent = lineValue ? formatMoney(lineValue, { currency: 'GMD' }) : '—';
+        lineTotal.textContent = item.price ? formatMoney(lineValue, { currency: 'GMD' }) : 'Price on request';
 
         right.appendChild(unit);
         right.appendChild(lineTotal);
@@ -197,7 +198,14 @@
         itemsEl.appendChild(row);
       });
 
-      totalEl.textContent = formatMoney(cartSubtotal(cart), { currency: 'GMD' });
+      const total = cartTotal(cart);
+      totalEl.textContent = total === null ? 'Price on request' : formatMoney(total, { currency: 'GMD' });
+
+      const canCheckout = !cartHasUnknownPrices(cart);
+      if (submitBtn) {
+        submitBtn.disabled = !canCheckout;
+        submitBtn.title = canCheckout ? '' : 'Some items are Price on request.';
+      }
     }
 
     function cartIsEmpty(){
@@ -219,6 +227,12 @@
       const cart = loadCart();
       if (!cart.items || cart.items.length === 0){
         setEmptyState(true);
+        return;
+      }
+
+      if (cartHasUnknownPrices(cart)) {
+        resultEl.hidden = false;
+        resultEl.textContent = 'Some items are Price on request. Please confirm the prices on WhatsApp before checkout.';
         return;
       }
 

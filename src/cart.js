@@ -12,13 +12,19 @@ function isFiniteNumber(value) {
   return typeof value === 'number' && Number.isFinite(value);
 }
 
+function normalizePrice(value) {
+  if (isFiniteNumber(value) && value > 0) return value;
+  const asNumber = Number(value);
+  return Number.isFinite(asNumber) && asNumber > 0 ? asNumber : null;
+}
+
 export function normalizeCartItem(input) {
   const id = String(input?.id || '').trim();
   const name = String(input?.name || '').trim();
   const storage = String(input?.storage || '').trim();
   const image = String(input?.image || '').trim();
 
-  const price = isFiniteNumber(input?.price) ? input.price : 0;
+  const price = normalizePrice(input?.price);
   const quantityRaw = Number(input?.quantity);
   const quantity = Number.isFinite(quantityRaw) && quantityRaw > 0 ? Math.floor(quantityRaw) : 1;
 
@@ -30,6 +36,16 @@ export function normalizeCartItem(input) {
     price,
     quantity,
   };
+}
+
+export function cartHasUnknownPrices(cart) {
+  const items = Array.isArray(cart?.items) ? cart.items : [];
+  return items.some((item) => !isFiniteNumber(item?.price) || item.price <= 0);
+}
+
+export function cartTotal(cart) {
+  if (cartHasUnknownPrices(cart)) return null;
+  return cartSubtotal(cart);
 }
 
 export function loadCart() {
@@ -125,14 +141,14 @@ export function buildOrderMessage({ cart, customer, storeName = 'Uncle Apple Sto
     ? items
         .map((item) => {
           const name = `${item.name}${item.storage ? ` (${item.storage})` : ''}`;
-          const pricePart = item.price ? ` — ${formatMoney(item.price, { currency })}` : '';
+          const pricePart = item.price ? ` — ${formatMoney(item.price, { currency })}` : ' — Price on request';
           return `- ${name} x${item.quantity}${pricePart}`;
         })
         .join('\n')
     : '- (Cart is empty)';
 
-  const total = cartSubtotal({ items });
-  const totalLine = `Total: ${formatMoney(total, { currency })}`;
+  const total = cartTotal({ items });
+  const totalLine = total === null ? 'Total: Price on request' : `Total: ${formatMoney(total, { currency })}`;
 
   const name = String(customer?.fullName || '').trim();
   const phone = String(customer?.phone || '').trim();
