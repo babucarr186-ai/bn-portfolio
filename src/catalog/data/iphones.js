@@ -36,16 +36,16 @@ export const iphones = [
   },
   {
     title: 'iPhone SE (2020)',
-    subtitle: '64GB • 4.7-inch • Used • Battery 87% • GMD 7,500',
+    subtitle: '64GB • 4.7-inch • Used • Battery 87% • GMD 8,000',
     kind: 'phone',
     storage: '64GB',
     condition: 'Used',
     batteryHealth: '87%',
-    price: 7500,
+    price: 8000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone SE (2020) — 64GB, 4.7-inch display, battery 87%, nano‑SIM + eSIM. Price GMD 7,500. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone SE (2020) — 64GB, 4.7-inch display, battery 87%, nano‑SIM + eSIM. Price GMD 8,000. In The Gambia.',
     description:
-      'Storage 64GB. 4.7-inch Retina HD display. Battery health 87%. Touch ID. 12MP camera with 4K video recording. Processor Apple A13 Bionic. Nano‑SIM + eSIM. iOS updates supported (latest compatible version). Price GMD 7,500.',
+      'Storage 64GB. 4.7-inch Retina HD display. Battery health 87%. Touch ID. 12MP camera with 4K video recording. Processor Apple A13 Bionic. Nano‑SIM + eSIM. iOS updates supported (latest compatible version). Price GMD 8,000.',
     productTitle: 'iPhone SE (2020) (64GB) — Used — Battery 87%',
     images: [
       'products/iphones/iphone-se-2020-64gb/iphone-se-2020-1.jpeg',
