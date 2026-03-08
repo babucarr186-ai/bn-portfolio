@@ -207,9 +207,9 @@ export const iphones = [
       'Color Gold. Storage 128GB. Battery health 78%. Condition very clean. Charger cable available. Price GMD 22,200.',
     productTitle: 'iPhone 12 Pro Max (128GB) — Gold — Used (Very clean) — Battery 78%',
     images: [
+      'products/iphones/iphone-12-pro-max-gold-128gb/iphone-12-pro-max-gold-128gb-3.jpg',
       'products/iphones/iphone-12-pro-max-gold-128gb/iphone-12-pro-max-gold-128gb-1.jpg',
       'products/iphones/iphone-12-pro-max-gold-128gb/iphone-12-pro-max-gold-128gb-2.jpg',
-      'products/iphones/iphone-12-pro-max-gold-128gb/iphone-12-pro-max-gold-128gb-3.jpg',
       'products/iphones/iphone-12-pro-max-gold-128gb/iphone-12-pro-max-gold-128gb-4.jpg',
     ],
   },
