@@ -194,17 +194,17 @@ export const iphones = [
   },
   {
     title: 'iPhone 12 Pro Max',
-    subtitle: 'Gold • 128GB • Battery 78% • Very clean • Charger cable available • GMD 21,000',
+    subtitle: 'Gold • 128GB • Battery 78% • Very clean • Charger cable available • GMD 22,200',
     kind: 'phone',
     color: 'Gold',
     storage: '128GB',
     condition: 'Used — Very clean',
     batteryHealth: '78%',
-    price: 21000,
+    price: 22200,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 12 Pro Max — Gold, 128GB, battery 78%, very clean condition, charger cable available. Price GMD 21,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 12 Pro Max — Gold, 128GB, battery 78%, very clean condition, charger cable available. Price GMD 22,200. In The Gambia.',
     description:
-      'Color Gold. Storage 128GB. Battery health 78%. Condition very clean. Charger cable available. Price GMD 21,000.',
+      'Color Gold. Storage 128GB. Battery health 78%. Condition very clean. Charger cable available. Price GMD 22,200.',
     productTitle: 'iPhone 12 Pro Max (128GB) — Gold — Used (Very clean) — Battery 78%',
     images: [
       'products/iphones/iphone-12-pro-max-gold-128gb/iphone-12-pro-max-gold-128gb-1.jpg',
