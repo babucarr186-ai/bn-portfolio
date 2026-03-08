@@ -147,12 +147,23 @@ export const iphones = [
   },
   {
     title: 'iPhone XR',
-    subtitle: 'White • 128GB',
+    subtitle: 'White • 64GB • Battery 89% • Used (Like new) • GMD 9,000',
     kind: 'phone',
+    color: 'White',
+    storage: '64GB',
+    condition: 'Used — Like new',
+    batteryHealth: '89%',
+    price: 9000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone XR — White, 64GB, battery 89%, used (like new). Price GMD 9,000. In The Gambia.',
+    description:
+      'Color White. Storage 64GB. Battery health 89%. Condition used (like new). Price GMD 9,000.',
+    productTitle: 'iPhone XR (64GB) — White — Used (Like new) — Battery 89%',
     images: [
-      'products/iphones/iphone-xr-white-128gb-1.jpg',
-      'products/iphones/iphone-xr-white-128gb-2.jpg',
-      'products/iphones/iphone-xr-white-128gb-3.jpg',
+      'products/iphones/iphone-xr-white-64gb/iphone-xr-white-64gb-1.jpg',
+      'products/iphones/iphone-xr-white-64gb/iphone-xr-white-64gb-2.jpg',
+      'products/iphones/iphone-xr-white-64gb/iphone-xr-white-64gb-3.jpg',
+      'products/iphones/iphone-xr-white-64gb/iphone-xr-white-64gb-4.jpg',
     ],
   },
   {
@@ -182,18 +193,24 @@ export const iphones = [
   },
   {
     title: 'iPhone 11',
-    subtitle: 'White • 64GB • Battery 77% • Clean • Waiting for images • Price on request',
+    subtitle: 'White • 64GB • Battery 77% • Clean • Price on request',
     kind: 'phone',
     color: 'White',
     storage: '64GB',
     condition: 'Used — Clean',
     batteryHealth: '77%',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 64GB, battery 77%, clean condition. Waiting for images. Price on request. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 64GB, battery 77%, clean condition. Price on request. In The Gambia.',
     description:
-      'Color White. Storage 64GB. Battery health 77%. Condition clean. Waiting for images. Price on request.',
+      'Color White. Storage 64GB. Battery health 77%. Condition clean. Price on request.',
     productTitle: 'iPhone 11 (64GB) — White — Used (Clean) — Battery 77%',
-    images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-pro.jpg'],
+    images: [
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-1.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-2.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-3.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-4.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-5.jpg',
+    ],
   },
   {
     title: 'iPhone 12',
