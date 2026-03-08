@@ -214,6 +214,28 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone 12 Pro Max',
+    subtitle: 'Pacific Blue • 128GB • Battery 82% • Very clean • Charger cable available • GMD 23,500',
+    kind: 'phone',
+    color: 'Pacific Blue',
+    storage: '128GB',
+    condition: 'Used — Very clean',
+    batteryHealth: '82%',
+    price: 23500,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 12 Pro Max — Pacific Blue, 128GB, battery 82%, very clean condition, charger cable available. Price GMD 23,500. In The Gambia.',
+    description:
+      'Color Pacific Blue. Storage 128GB. Battery health 82%. Condition very clean. Charger cable available. Price GMD 23,500.',
+    productTitle: 'iPhone 12 Pro Max (128GB) — Pacific Blue — Used (Very clean) — Battery 82%',
+    images: [
+      'products/iphones/iphone-12-pro-max-pacific-blue-128gb/iphone-12-pro-max-pacific-blue-128gb-1.jpg',
+      'products/iphones/iphone-12-pro-max-pacific-blue-128gb/iphone-12-pro-max-pacific-blue-128gb-2.jpg',
+      'products/iphones/iphone-12-pro-max-pacific-blue-128gb/iphone-12-pro-max-pacific-blue-128gb-3.jpg',
+      'products/iphones/iphone-12-pro-max-pacific-blue-128gb/iphone-12-pro-max-pacific-blue-128gb-4.jpg',
+      'products/iphones/iphone-12-pro-max-pacific-blue-128gb/iphone-12-pro-max-pacific-blue-128gb-5.jpg',
+    ],
+  },
+  {
     title: 'iPhone 11 Pro',
     subtitle: 'Green • 64GB • Battery 73% • Very clean • Original parts',
     kind: 'phone',
