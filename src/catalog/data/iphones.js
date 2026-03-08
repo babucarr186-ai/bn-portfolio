@@ -19,6 +19,20 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone 17 Pro',
+    subtitle: '256GB • Brand new • Battery 100% • Nano‑SIM + eSIM • Price on request',
+    kind: 'phone',
+    storage: '256GB',
+    condition: 'Brand new',
+    batteryHealth: '100%',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro — 256GB, brand new, battery 100%, nano‑SIM + eSIM. Price on request. In The Gambia.',
+    description:
+      'Storage 256GB. Condition brand new. Battery health 100%. Nano‑SIM + eSIM. Price on request.',
+    productTitle: 'iPhone 17 Pro (256GB) — Brand new — Battery 100% — Nano‑SIM + eSIM',
+    images: ['products/iphones/iphone-17-pro-256gb/iphone-17-pro-256gb-1.jpg'],
+  },
+  {
     title: 'iPhone 17 Pro Max',
     subtitle: 'Cosmic Orange • 256GB • Brand new • 30-day warranty • GMD 119,000',
     kind: 'phone',
