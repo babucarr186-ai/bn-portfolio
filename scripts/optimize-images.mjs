@@ -101,7 +101,10 @@ async function generateVariants(inputPath) {
 
   const baseNoExt = withoutExt(inputPath);
 
-  const widthsToMake = WIDTHS.filter((w) => (typeof meta.width === 'number' ? w <= meta.width : true));
+  // Always generate all declared responsive widths.
+  // We keep `withoutEnlargement: true` in the resize pipeline, so smaller source images
+  // won't be upscaled, but we still emit the variant filenames that our frontend expects.
+  const widthsToMake = WIDTHS;
   if (!widthsToMake.length) return { rel, made: 0, skipped: 0, warnings: [] };
 
   let made = 0;
