@@ -58,7 +58,7 @@ function createResponsivePicture({ src, alt, sizes, className }) {
 
   // Reasonable default src so browsers without srcset still get an optimized asset.
   // Use the original URL as a guaranteed-safe fallback (srcset drives modern browsers to optimized variants).
-  fallback.src = publicAssetUrl(pathNoQuery + query);
+  fallback.src = publicAssetUrl(`${withoutExt(pathNoQuery)}.${fallbackExt}${query}`);
   fallback.srcset = buildSrcset(pathNoQuery, query, fallbackExt);
   if (sizes) fallback.sizes = sizes;
   fallback.alt = alt || 'Product';
