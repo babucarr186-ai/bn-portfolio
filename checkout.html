@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Uncle Apple Store — Checkout" />
   <meta name="robots" content="noindex,follow" />
-  <meta name="theme-color" content="#0b0f16" />
+  <meta name="theme-color" content="#000000" />
   <title>Uncle Apple Store — Checkout</title>
 
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Apple Store Gambia" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="site.css?v=20260304" />
 </head>
@@ -126,6 +131,7 @@
   </footer>
 
   <script type="module" src="/src/site.js"></script>
+  <script type="module" src="/pwa-register.js"></script>
   <script type="module">
     import { buildOrderMessage, cartHasUnknownPrices, cartTotal, clearCart, formatMoney, loadCart } from '/cart.js';
     import { buildWhatsAppLink } from '/src/site.js';
