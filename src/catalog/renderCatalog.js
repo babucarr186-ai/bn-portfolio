@@ -1,5 +1,3 @@
-import { addToCart } from '../cart.js';
-
 const RESPONSIVE_WIDTHS = [300, 600, 900, 1200];
 
 function splitQuery(url) {
@@ -279,47 +277,17 @@ export function renderCatalog({ mountEl, products }) {
 
     const actions = el('div', 'catalog-actions');
 
-    const waBtn = document.createElement('a');
-    waBtn.className = 'btn btn-primary btn-small';
-    waBtn.href = '#';
-    waBtn.textContent = 'WhatsApp';
+    const buyBtn = document.createElement('a');
+    buyBtn.className = 'btn btn-primary btn-small';
+    buyBtn.href = '#';
+    buyBtn.textContent = 'Buy Now';
 
-    const msg =
-      product.whatsAppMessage ||
-      `Hi Uncle Apple! Please confirm availability for: ${titleText}${subtitleText ? ` (${subtitleText})` : ''} in The Gambia.`;
-
+    const msg = `Hello, I want to buy this product from Uncle Apple Store: ${titleText}${subtitleText ? ` (${subtitleText})` : ''}. Is it available?`;
     if (window.setWhatsAppHref) {
-      window.setWhatsAppHref(waBtn, msg);
+      window.setWhatsAppHref(buyBtn, msg);
     }
 
-    actions.appendChild(waBtn);
-
-    const addBtn = document.createElement('button');
-    addBtn.type = 'button';
-    addBtn.className = 'btn btn-secondary btn-small';
-    addBtn.textContent = 'Add to Cart';
-    addBtn.addEventListener('click', () => {
-      const baseItem = {
-        id: card.id,
-        name: titleText,
-        storage: subtitleText,
-        image: firstImage,
-        price: typeof product.price === 'number' ? product.price : 0,
-        quantity: 1,
-      };
-
-      addToCart(baseItem);
-
-      const prev = addBtn.textContent;
-      addBtn.textContent = 'Added';
-      addBtn.disabled = true;
-      window.setTimeout(() => {
-        addBtn.textContent = prev;
-        addBtn.disabled = false;
-      }, 900);
-    });
-
-    actions.appendChild(addBtn);
+    actions.appendChild(buyBtn);
     card.appendChild(actions);
 
     mountEl.appendChild(card);

@@ -360,6 +360,15 @@ html[data-category='iphones'] #inventory.section{
   max-width: 70ch;
 }
 
+/* Trust card below the iPhones hero */
+.profile-header.trust-card{
+  grid-template-columns: 1fr;
+}
+
+.trust-points{
+  margin-top: 12px;
+}
+
 @media (min-width: 860px){
   .profile-header{
     grid-template-columns: 1.05fr 0.95fr;
@@ -368,6 +377,10 @@ html[data-category='iphones'] #inventory.section{
     padding: 14px;
   }
   .profile-header-img{ height: 220px; }
+
+  .profile-header.trust-card{
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Product sections (vertical storytelling style) */
