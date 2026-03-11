@@ -1,4 +1,5 @@
 import { cartItemCount, loadCart } from './cart.js';
+import './miliChat.js';
 
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
