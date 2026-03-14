@@ -21,7 +21,7 @@ export default function App() {
   function toggleTheme() { setTheme(t => t === 'dark' ? 'light' : 'dark'); }
 
   const STORE_NAME = 'Uncle Apple';
-  const SUPPORT_EMAIL = 'nget@web.de';
+  const SUPPORT_EMAIL = 'support@uncleapplestore.com';
   const STORE_LOCATION = 'The Gambia';
 
   const products = useMemo(

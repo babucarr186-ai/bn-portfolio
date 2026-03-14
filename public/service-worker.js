@@ -12,29 +12,49 @@ const CORE_CACHE = `core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
 
-const CORE_URLS = [
-  '/',
-  '/index.html',
-  '/cart.html',
-  '/checkout.html',
-  '/ipads.html',
-  '/macbook.html',
-  '/apple-watch.html',
-  '/airpods.html',
-  '/gift-cards.html',
-  '/accessories.html',
-  '/apple-tv-home.html',
-  '/uncle-apple-premium.html',
-  '/models/',
-  '/support/',
-  '/site.css',
-  '/styles.css',
-  '/pwa-register.js',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
-  '/favicon.svg',
+const BASE_PATH = (() => {
+  try {
+    const p = new URL(self.registration.scope).pathname;
+    return p.endsWith('/') ? p : p + '/';
+  } catch {
+    return '/';
+  }
+})();
+
+function withBase(path) {
+  if (!path) return BASE_PATH;
+  // Keep absolute URLs intact.
+  if (/^https?:\/\//i.test(path)) return path;
+  if (path.startsWith('/')) return path;
+  return BASE_PATH + path;
+}
+
+const CORE_PATHS = [
+  '',
+  'index.html',
+  'cart.html',
+  'checkout.html',
+  'ipads.html',
+  'macbook.html',
+  'apple-watch.html',
+  'airpods.html',
+  'gift-cards.html',
+  'accessories.html',
+  'apple-tv-home.html',
+  'uncle-apple-premium.html',
+  'sell-device/',
+  'models/',
+  'support/',
+  'site.css',
+  'styles.css',
+  'pwa-register.js',
+  'manifest.json',
+  'icons/icon-192.png',
+  'icons/icon-512.png',
+  'favicon.svg',
 ];
+
+const CORE_URLS = CORE_PATHS.map(withBase);
 
 self.addEventListener('message', (event) => {
   if (event?.data?.type === 'SKIP_WAITING') {
@@ -107,7 +127,7 @@ async function networkFirst(request) {
 
     // If this is a navigation, try a cached homepage as a last resort.
     if (request.mode === 'navigate') {
-      const fallback = await caches.match('/index.html');
+      const fallback = await caches.match(withBase('index.html'));
       if (fallback) return fallback;
     }
 

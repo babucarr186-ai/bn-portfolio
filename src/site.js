@@ -1,11 +1,10 @@
-import { cartItemCount, loadCart } from './cart.js';
-
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
 const WHATSAPP_NUMBER = '4915679652076';
 
 const CART_PAGE_HREF = './cart.html';
 const CHECKOUT_PAGE_HREF = './checkout.html';
+const SELL_DEVICE_HREF = `${import.meta.env.BASE_URL || './'}sell-device/`;
 
 export function buildWhatsAppLink(message) {
   const encoded = encodeURIComponent(message);
@@ -36,63 +35,36 @@ function ensureExtraStyles() {
   document.head.appendChild(link);
 }
 
-function ensureCartIcon() {
-  const existing = document.querySelector('[data-cart-link]');
+function ensureSellDeviceButton() {
+  const existing = document.querySelector('[data-sell-device-link]');
   if (existing) return existing;
 
-  const link = document.createElement('a');
-  link.href = CART_PAGE_HREF;
-  link.className = 'cart-link';
-  link.setAttribute('aria-label', 'Open cart');
-  link.setAttribute('data-cart-link', '');
-
-  const icon = document.createElement('span');
-  icon.className = 'cart-link__icon';
-  icon.setAttribute('aria-hidden', 'true');
-  icon.textContent = 'Cart';
-
-  const badge = document.createElement('span');
-  badge.className = 'cart-link__badge';
-  badge.setAttribute('data-cart-count', '');
-  badge.textContent = '0';
-
-  link.appendChild(icon);
-  link.appendChild(badge);
-
   const navActions = document.querySelector('.nav-actions');
-  if (navActions) {
-    navActions.appendChild(link);
-    return link;
-  }
+  if (!navActions) return null;
 
-  // Fallback (pages without the standard nav)
-  link.classList.add('cart-link--fixed');
-  document.body.appendChild(link);
-  return link;
+  const btn = document.createElement('a');
+  btn.href = SELL_DEVICE_HREF;
+  btn.className = 'btn btn-primary btn-small';
+  btn.setAttribute('data-sell-device-link', '');
+  btn.textContent = 'Sell Your Device';
+
+  // Keep the existing look by placing it alongside the other header actions.
+  navActions.appendChild(btn);
+  return btn;
 }
 
-function updateCartBadge() {
-  const badge = document.querySelector('[data-cart-count]');
-  if (!badge) return;
-  const cart = loadCart();
-  const count = cartItemCount(cart);
-
-  badge.textContent = String(count);
-  if (count > 0) badge.removeAttribute('hidden');
-  else badge.setAttribute('hidden', '');
-}
-
-function initCartUi() {
+function initHeaderActions() {
+  // Some pages rely on this helper for shared styles.
   ensureExtraStyles();
-  ensureCartIcon();
-  updateCartBadge();
 
-  window.addEventListener('cart:changed', updateCartBadge);
-  window.addEventListener('storage', (e) => {
-    if (e.key && e.key.includes('uncle_apple_cart_v1')) updateCartBadge();
-  });
+  // Requirement: remove the Cart button from the header navigation.
+  const existingCart = document.querySelector('[data-cart-link]');
+  if (existingCart) existingCart.remove();
 
-  // Helpful globals for non-module pages (if any)
+  // Requirement: add “Sell Your Device” button.
+  ensureSellDeviceButton();
+
+  // Keep globals for back-compat without injecting any Cart UI.
   window.UA_CART = {
     cartHref: CART_PAGE_HREF,
     checkoutHref: CHECKOUT_PAGE_HREF,
@@ -649,7 +621,7 @@ function initChatWidget() {
 }
 
 initWhatsAppLinks();
-initCartUi();
+initHeaderActions();
 initAvailabilityForm();
 initScrollBgRotation();
 initImageViewer();

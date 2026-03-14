@@ -15,6 +15,34 @@ Build:
 npm run build
 ```
 
+## Deploy (Netlify)
+
+This site is a static Vite build.
+
+### Netlify settings
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+These defaults are also defined in `netlify.toml`.
+
+## Deploy (GitHub Pages)
+
+GitHub Pages hosts the static site.
+
+Note: **Sell Your Device** submits via WhatsApp (no backend required).
+
+### Static hosting
+
+This repo already includes a GitHub Pages workflow at `.github/workflows/deploy.yml`.
+
+Steps:
+
+- Push to `main`
+- GitHub → Settings → Pages → Source: **GitHub Actions**
+- Wait for the workflow to publish the site
+
+
+
 ## Upload / add product photos
 
 All images are served from the `public/` folder.
