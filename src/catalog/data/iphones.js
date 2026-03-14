@@ -287,11 +287,18 @@ export const iphones = [
     subtitle: 'Green • 64GB • Battery 73% • Very clean • Original parts',
     kind: 'phone',
     color: 'Green',
+    storage: '64GB',
+    condition: 'Used — Very clean',
+    batteryHealth: '73%',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro — Green, 64GB, battery 73%, very clean condition, original parts. In The Gambia.',
     description:
-      'Color Green. Storage 64GB. Battery capacity 73%. Condition very clean. Original parts. (Waiting for images.)',
-    images: ['iphone-pro.jpg', 'hero-iphone.jpg', 'iphone-se.jpg'],
+      'Color Green. Storage 64GB. Battery capacity 73%. Condition very clean. Original parts.',
+    images: [
+      'products/iphones/iphone-11-pro-green-64gb/iphone-11-pro-green-64gb-1.jpg',
+      'products/iphones/iphone-11-pro-green-64gb/iphone-11-pro-green-64gb-2.jpg',
+      'products/iphones/iphone-11-pro-green-64gb/iphone-11-pro-green-64gb-3.jpg',
+    ],
   },
   {
     title: 'iPhone 11 Pro Max',
