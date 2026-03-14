@@ -27,6 +27,7 @@ export const watches = [
     title: 'Apple Watch Series 8',
     subtitle: '41mm • Used (Like new) • Fully tested • 12‑month warranty',
     kind: 'square',
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm — used (like new), fully tested, 12-month warranty. In The Gambia.',
     mediaFit: 'contain',
