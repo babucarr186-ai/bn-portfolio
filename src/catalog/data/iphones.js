@@ -122,13 +122,6 @@ export const iphones = [
     ],
   },
   {
-    title: 'iPhone XS',
-    subtitle: '128GB • Waiting for images',
-    kind: 'phone',
-    description: 'Photos coming soon.',
-    images: ['iphone.jpg', 'hero-iphone.jpg', 'iphone-pro.jpg'],
-  },
-  {
     title: 'iPhone X',
     subtitle: 'White • 64GB • Battery 68% • Good condition • GMD 6,000',
     kind: 'phone',
