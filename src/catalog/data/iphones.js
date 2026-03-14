@@ -200,8 +200,8 @@ export const iphones = [
     ],
     productTitle: 'iPhone XR (128GB) — Black — Used (Excellent) — Battery 87%',
     images: [
-      'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-1.jpg',
-      'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-2.jpg',
+      'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-1.jpg?v=20260314-2',
+      'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-2.jpg?v=20260314-2',
     ],
   },
   {
