@@ -285,7 +285,7 @@ export function renderCatalog({ mountEl, products }) {
 
     if (product?.sold) {
       const soldBtn = document.createElement('span');
-      soldBtn.className = 'btn btn-secondary btn-small';
+      soldBtn.className = 'btn btn-secondary btn-small btn-sold';
       soldBtn.textContent = 'Sold';
       soldBtn.setAttribute('aria-disabled', 'true');
       actions.appendChild(soldBtn);

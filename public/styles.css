@@ -51,6 +51,10 @@
 
 .btn-secondary:hover{ background: rgba(255,255,255,0.98); }
 
+.btn-sold{
+  color: #137333;
+}
+
 .catalog-desc{
   margin: 8px 0 0;
   color: rgba(11,15,22,0.78);
