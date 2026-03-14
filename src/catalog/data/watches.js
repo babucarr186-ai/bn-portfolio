@@ -24,6 +24,20 @@ export const watches = [
     images: ['products/watches/watch-se-40mm-2022-1.jpg?v=20260301-1'],
   },
   {
+    title: 'Apple Watch Series 8',
+    subtitle: '41mm • Used (Like new) • Fully tested • 12‑month warranty',
+    kind: 'square',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm — used (like new), fully tested, 12-month warranty. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/watches/apple-watch-series-8-41mm-like-new/apple-watch-series-8-41mm-like-new-1.jpg?v=20260314-1',
+      'products/watches/apple-watch-series-8-41mm-like-new/apple-watch-series-8-41mm-like-new-2.jpg?v=20260314-1',
+      'products/watches/apple-watch-series-8-41mm-like-new/apple-watch-series-8-41mm-like-new-3.jpg?v=20260314-1',
+    ],
+  },
+  {
     title: 'Apple Watch Series 10 (Titanium)',
     subtitle:
       '42mm • Premium titanium case • Fully tested • 12‑month warranty • Very good condition',
