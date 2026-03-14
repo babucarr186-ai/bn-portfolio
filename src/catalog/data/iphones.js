@@ -182,6 +182,29 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone XR',
+    subtitle: 'Black • 128GB • Battery 87% • Excellent • GMD 12,000',
+    kind: 'phone',
+    color: 'Black',
+    storage: '128GB',
+    condition: 'Used — Excellent condition',
+    batteryHealth: '87%',
+    price: 12000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone XR — Black, 128GB, battery 87%, excellent condition. Price GMD 12,000. In The Gambia.',
+    description:
+      'Color Black. Storage 128GB. Battery health 87%. Condition excellent. Price GMD 12,000.',
+    specs: [
+      '6.1-inch Liquid Retina display with Face ID',
+      'A12 Bionic + 12MP camera (Portrait mode, 4K video)',
+    ],
+    productTitle: 'iPhone XR (128GB) — Black — Used (Excellent) — Battery 87%',
+    images: [
+      'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-1.jpg',
+      'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-2.jpg',
+    ],
+  },
+  {
     title: 'iPhone 11',
     subtitle: 'White • 128GB • Clean • Battery 77%',
     kind: 'phone',
