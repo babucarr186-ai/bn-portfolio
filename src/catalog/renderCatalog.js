@@ -196,6 +196,12 @@ export function renderCatalog({ mountEl, products }) {
     frame.appendChild(zoomBtn);
     card.appendChild(frame);
 
+    if (product?.sold) {
+      const soldBadge = el('div', 'catalog-badge catalog-badge-sold');
+      soldBadge.textContent = 'SOLD';
+      card.appendChild(soldBadge);
+    }
+
     let activeImage = firstImage;
     zoomBtn.addEventListener('click', () => {
       if (!activeImage) return;
@@ -277,17 +283,25 @@ export function renderCatalog({ mountEl, products }) {
 
     const actions = el('div', 'catalog-actions');
 
-    const buyBtn = document.createElement('a');
-    buyBtn.className = 'btn btn-primary btn-small';
-    buyBtn.href = '#';
-    buyBtn.textContent = 'Buy Now';
+    if (product?.sold) {
+      const soldBtn = document.createElement('span');
+      soldBtn.className = 'btn btn-secondary btn-small';
+      soldBtn.textContent = 'Sold';
+      soldBtn.setAttribute('aria-disabled', 'true');
+      actions.appendChild(soldBtn);
+    } else {
+      const buyBtn = document.createElement('a');
+      buyBtn.className = 'btn btn-primary btn-small';
+      buyBtn.href = '#';
+      buyBtn.textContent = 'Buy Now';
 
-    const msg = `Hello, I want to buy this product from Uncle Apple Store: ${titleText}${subtitleText ? ` (${subtitleText})` : ''}. Is it available?`;
-    if (window.setWhatsAppHref) {
-      window.setWhatsAppHref(buyBtn, msg);
+      const msg = `Hello, I want to buy this product from Uncle Apple Store: ${titleText}${subtitleText ? ` (${subtitleText})` : ''}. Is it available?`;
+      if (window.setWhatsAppHref) {
+        window.setWhatsAppHref(buyBtn, msg);
+      }
+
+      actions.appendChild(buyBtn);
     }
-
-    actions.appendChild(buyBtn);
     card.appendChild(actions);
 
     mountEl.appendChild(card);

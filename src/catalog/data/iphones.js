@@ -195,6 +195,7 @@ export const iphones = [
     title: 'iPhone 11',
     subtitle: 'White • 64GB • Battery 77% • Clean • Price on request',
     kind: 'phone',
+    sold: true,
     color: 'White',
     storage: '64GB',
     condition: 'Used — Clean',

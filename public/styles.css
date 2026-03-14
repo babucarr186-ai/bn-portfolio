@@ -68,6 +68,18 @@
 
 .catalog-specs li{ margin: 4px 0; }
 
+.catalog-badge{
+  display: inline-flex;
+  align-items: center;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+}
+
+.catalog-badge-sold{
+  color: #137333;
+}
+
 /* Performance: avoid rendering offscreen cards until needed */
 .catalog-card{
   content-visibility: auto;
