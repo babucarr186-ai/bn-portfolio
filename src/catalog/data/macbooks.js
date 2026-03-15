@@ -17,6 +17,7 @@ export const macbooks = [
 		productTitle:
 			'MacBook Pro 13-inch (2017) — i5 • 8GB • 256GB — Used (Like new) — 30 days warranty',
 		images: [
+			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-front.jpg',
 			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-i5-8gb-256gb-2.jpg',
 			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-i5-8gb-256gb-1.jpg?v=20260314-1',
 			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-i5-8gb-256gb-3.jpg',
