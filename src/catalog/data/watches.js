@@ -27,8 +27,6 @@ export const watches = [
     title: 'Apple Watch Series 7',
     subtitle: '45mm • Black • Aluminium case • GPS + Cellular • Images coming soon',
     kind: 'square',
-    description:
-      'Listing created while photos are pending. Message us on WhatsApp to confirm availability and condition details.',
     specs: [
       '45mm aluminium case (black)',
       'Black sport band (fluoroelastomer)',
