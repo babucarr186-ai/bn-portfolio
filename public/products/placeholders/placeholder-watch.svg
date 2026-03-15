@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900" role="img" aria-label="Product image coming soon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3f4f6"/>
+      <stop offset="1" stop-color="#e5e7eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  <rect x="80" y="80" width="1040" height="740" rx="48" fill="#ffffff" fill-opacity="0.72" stroke="#0b0f16" stroke-opacity="0.10"/>
+
+  <g fill="none" stroke="#0b0f16" stroke-opacity="0.22" stroke-width="18">
+    <rect x="470" y="250" width="260" height="380" rx="70"/>
+    <path d="M520 250c0-55 45-100 100-100h-10c55 0 100 45 100 100"/>
+    <path d="M520 630c0 55 45 100 100 100h-10c55 0 100-45 100-100"/>
+  </g>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial" text-anchor="middle">
+    <text x="600" y="520" font-size="46" font-weight="900" fill="#0b0f16" fill-opacity="0.78">Images coming soon</text>
+    <text x="600" y="575" font-size="28" font-weight="700" fill="#0b0f16" fill-opacity="0.55">This listing is ready — photos will be added shortly.</text>
+  </g>
+</svg>

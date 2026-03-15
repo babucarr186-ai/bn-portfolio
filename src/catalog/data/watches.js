@@ -24,6 +24,30 @@ export const watches = [
     images: ['products/watches/watch-se-40mm-2022-1.jpg?v=20260301-1'],
   },
   {
+    title: 'Apple Watch Series 7',
+    subtitle: '45mm • Black • Aluminium case • GPS + Cellular • Images coming soon',
+    kind: 'square',
+    description:
+      'Listing created while photos are pending. Message us on WhatsApp to confirm availability and condition details.',
+    specs: [
+      '45mm aluminium case (black)',
+      'Black sport band (fluoroelastomer)',
+      'watchOS',
+      'Always‑On OLED display',
+      'Heart rate monitor',
+      'ECG',
+      'Blood oxygen sensor',
+      'GPS',
+      'Water resistant',
+      'Bluetooth + Wi‑Fi + Cellular (4G/3G capable)',
+    ],
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45mm (Black) — photos pending. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [],
+  },
+  {
     title: 'Apple Watch Series 8',
     subtitle: '41mm • Used (Like new) • Fully tested • 12‑month warranty',
     kind: 'square',

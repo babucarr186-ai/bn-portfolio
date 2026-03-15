@@ -32,9 +32,27 @@ function buildSrcset(pathNoQuery, query, ext) {
 }
 
 function createResponsivePicture({ src, alt, sizes, className }) {
-  const { path: pathNoQuery, query } = splitQuery(src);
+  const rawSrc = String(src || '').trim();
+  const safeSrc = rawSrc || 'products/placeholders/placeholder-watch.svg';
+  const { path: pathNoQuery, query } = splitQuery(safeSrc);
+
+  const ext = fileExt(pathNoQuery);
+  const isSvg = ext === 'svg';
 
   const picture = document.createElement('picture');
+
+  // SVG (or missing images) should not attempt responsive variants.
+  if (isSvg) {
+    const fallback = document.createElement('img');
+    if (className) fallback.className = className;
+    fallback.loading = 'lazy';
+    fallback.decoding = 'async';
+    fallback.src = publicAssetUrl(`${pathNoQuery}${query}`);
+    if (sizes) fallback.sizes = sizes;
+    fallback.alt = alt || 'Product';
+    picture.appendChild(fallback);
+    return { picture, img: fallback };
+  }
 
   const webp = document.createElement('source');
   webp.type = 'image/webp';
