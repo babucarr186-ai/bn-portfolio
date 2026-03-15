@@ -2,10 +2,11 @@ export const watches = [
   {
     title: 'Apple Watch Ultra 2 (2024)',
     subtitle:
-      'Rugged GPS + Cellular • Fully tested • 12‑month warranty • Excellent condition',
+      'Rugged GPS + Cellular • Fully tested • 12‑month warranty • Excellent condition • GMD 49,200',
     kind: 'square',
+    price: 49200,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Ultra 2 (2024) — fully tested, excellent condition, 12-month warranty. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Ultra 2 (2024) — fully tested, excellent condition, 12-month warranty. Price GMD 49,200. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -15,18 +16,22 @@ export const watches = [
   },
   {
     title: 'Apple Watch SE (2022)',
-    subtitle: '40mm • Great everyday Apple Watch • Fully tested • 12‑month warranty',
+    subtitle:
+      '40mm • Great everyday Apple Watch • Fully tested • 12‑month warranty • GMD 10,620',
     kind: 'square',
+    price: 10620,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch SE (2022) 40mm — fully tested, 12-month warranty. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch SE (2022) 40mm — fully tested, 12-month warranty. Price GMD 10,620. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: ['products/watches/watch-se-40mm-2022-1.jpg?v=20260301-1'],
   },
   {
     title: 'Apple Watch Series 7',
-    subtitle: '45mm • Black • Aluminium case • GPS + Cellular • Images coming soon',
+    subtitle:
+      '45mm • Black • Aluminium case • GPS + Cellular • GMD 9,350 • Images coming soon',
     kind: 'square',
+    price: 9350,
     specs: [
       '45mm aluminium case (black)',
       'Black sport band (fluoroelastomer)',
@@ -40,7 +45,7 @@ export const watches = [
       'Bluetooth + Wi‑Fi + Cellular (4G/3G capable)',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45mm (Black) — photos pending. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45mm (Black) — photos pending. Price GMD 9,350. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [],
@@ -63,10 +68,11 @@ export const watches = [
   {
     title: 'Apple Watch Series 10 (Titanium)',
     subtitle:
-      '42mm • Premium titanium case • Fully tested • 12‑month warranty • Very good condition',
+      '42mm • Premium titanium case • Fully tested • 12‑month warranty • Very good condition • GMD 20,000',
     kind: 'square',
+    price: 20000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 42mm — fully tested, very good condition, 12-month warranty. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 42mm — fully tested, very good condition, 12-month warranty. Price GMD 20,000. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
