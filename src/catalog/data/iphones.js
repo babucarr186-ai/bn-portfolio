@@ -1,15 +1,16 @@
 export const iphones = [
   {
     title: 'iPhone 17',
-    subtitle: 'Lavender • 256GB • Used (Like new) • Original parts • Price on request',
+    subtitle: 'Lavender • 256GB • Used (Like new) • Original parts • GMD 65,750',
     kind: 'phone',
     color: 'Lavender',
     storage: '256GB',
     condition: 'Used — Like new',
+    price: 65750,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 17 — Lavender, 256GB, used (like new), original parts. Price on request. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 17 — Lavender, 256GB, used (like new), original parts. Price GMD 65,750. In The Gambia.',
     description:
-      'Color Lavender. Storage 256GB. Condition used (like new). Original parts. Price on request.',
+      'Color Lavender. Storage 256GB. Condition used (like new). Original parts. Price GMD 65,750.',
     productTitle: 'iPhone 17 (256GB) — Lavender — Used (Like new) — Original parts',
     images: [
       'products/iphones/iphone-17-lavender-256gb/iphone-17-lavender-256gb-2.jpg',
