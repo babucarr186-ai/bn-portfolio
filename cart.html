@@ -58,8 +58,8 @@
           </div>
 
           <div class="cart-panel cart-summary" aria-label="Cart summary">
-            <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal">—</span></div>
-            <div class="summary-line"><span>Total</span><span id="cartTotal">—</span></div>
+            <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal" class="product-price">—</span></div>
+            <div class="summary-line"><span>Total</span><span id="cartTotal" class="product-price">—</span></div>
             <a id="proceedBtn" class="btn btn-primary" href="./checkout.html">Proceed to Checkout</a>
             <div class="notice">Payment method: <strong>Bank Transfer</strong></div>
           </div>
@@ -152,12 +152,32 @@
 
         const price = document.createElement('div');
         price.className = 'notice';
-        price.textContent = item.price ? `Price: ${formatMoney(item.price)}` : 'Price: Price on request';
+        const priceLabel = document.createElement('span');
+        priceLabel.textContent = 'Price: ';
+        price.appendChild(priceLabel);
+        if (item.price) {
+          const priceValue = document.createElement('span');
+          priceValue.className = 'product-price';
+          priceValue.textContent = formatMoney(item.price);
+          price.appendChild(priceValue);
+        } else {
+          price.appendChild(document.createTextNode('Price on request'));
+        }
 
         const lineTotal = document.createElement('div');
         lineTotal.className = 'notice';
         const lt = (Number(item.price) || 0) * (Number(item.quantity) || 0);
-        lineTotal.textContent = item.price ? `Total: ${formatMoney(lt)}` : 'Total: Price on request';
+        const totalLabel = document.createElement('span');
+        totalLabel.textContent = 'Total: ';
+        lineTotal.appendChild(totalLabel);
+        if (item.price) {
+          const totalValue = document.createElement('span');
+          totalValue.className = 'product-price';
+          totalValue.textContent = formatMoney(lt);
+          lineTotal.appendChild(totalValue);
+        } else {
+          lineTotal.appendChild(document.createTextNode('Price on request'));
+        }
 
         const qty = document.createElement('div');
         qty.className = 'qty';

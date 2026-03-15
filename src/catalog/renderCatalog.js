@@ -102,6 +102,36 @@ function el(tag, className) {
   return node;
 }
 
+function appendTextWithPriceSpans(parent, text) {
+  const value = String(text || '');
+  if (!value) return;
+
+  // Match common GMD formats, e.g. "GMD 25,000" or "GMD25,000".
+  const re = /(GMD\s*\d[\d,]*)/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = re.exec(value)) !== null) {
+    const start = match.index;
+    const end = start + match[0].length;
+
+    if (start > lastIndex) {
+      parent.appendChild(document.createTextNode(value.slice(lastIndex, start)));
+    }
+
+    const span = document.createElement('span');
+    span.className = 'product-price';
+    span.textContent = match[0];
+    parent.appendChild(span);
+
+    lastIndex = end;
+  }
+
+  if (lastIndex < value.length) {
+    parent.appendChild(document.createTextNode(value.slice(lastIndex)));
+  }
+}
+
 let catalogLightbox;
 
 function ensureCatalogLightbox() {
@@ -240,13 +270,13 @@ export function renderCatalog({ mountEl, products }) {
 
     if (subtitleText) {
       const sub = el('p', 'catalog-sub');
-      sub.textContent = subtitleText;
+      appendTextWithPriceSpans(sub, subtitleText);
       card.appendChild(sub);
     }
 
     if (product?.description) {
       const desc = el('p', 'catalog-desc');
-      desc.textContent = String(product.description);
+      appendTextWithPriceSpans(desc, String(product.description));
       card.appendChild(desc);
     }
 
@@ -255,7 +285,7 @@ export function renderCatalog({ mountEl, products }) {
       const ul = el('ul', 'catalog-specs');
       specs.slice(0, 10).forEach((line) => {
         const li = document.createElement('li');
-        li.textContent = String(line);
+        appendTextWithPriceSpans(li, String(line));
         ul.appendChild(li);
       });
       card.appendChild(ul);

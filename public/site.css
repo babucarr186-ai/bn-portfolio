@@ -199,6 +199,16 @@ a{ color: inherit; }
 
 .btn-small{ padding: 10px 14px; font-size: 0.92rem; }
 
+/* Price styling (visual only) */
+.product-price{
+  color: #16A34A;
+}
+
+/* Back-compat for existing markup */
+.money-green{
+  color: #16A34A;
+}
+
 /* Hero section (full screen height) */
 .hero{
   min-height: calc(100vh - 64px);

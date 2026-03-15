@@ -87,7 +87,7 @@
               <div id="checkoutItems" class="checkout-items" aria-label="Order items"></div>
               <div class="summary-line checkout-total">
                 <span>Total</span>
-                <span id="checkoutTotal" class="money-green"></span>
+                <span id="checkoutTotal" class="money-green product-price"></span>
               </div>
             </div>
 
@@ -188,11 +188,11 @@
         right.className = 'checkout-item__right';
 
         const unit = document.createElement('div');
-        unit.className = 'checkout-item__unit money-green';
+        unit.className = 'checkout-item__unit money-green product-price';
         unit.textContent = item.price ? formatMoney(item.price, { currency: 'GMD' }) : 'Price on request';
 
         const lineTotal = document.createElement('div');
-        lineTotal.className = 'checkout-item__line money-green';
+        lineTotal.className = 'checkout-item__line money-green product-price';
         const lineValue = (Number(item.price) || 0) * (Number(item.quantity) || 0);
         lineTotal.textContent = item.price ? formatMoney(lineValue, { currency: 'GMD' }) : 'Price on request';
 

@@ -272,16 +272,6 @@ html[data-category="iphones"] .catalog-grid{
   font-weight: 900;
 }
 
-/* Cart totals + per-item price labels */
-.cart-page #cartSubtotal,
-.cart-page #cartTotal{
-  color: #16A34A;
-}
-
-.cart-page .cart-item__row .notice{
-  color: #16A34A;
-}
-
 .checkout-summary{ margin-bottom: 14px; }
 
 .checkout-items{
