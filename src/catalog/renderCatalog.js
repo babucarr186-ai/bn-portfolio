@@ -156,6 +156,10 @@ export function renderCatalog({ mountEl, products }) {
     const card = el('article', 'catalog-card');
     card.dataset.kind = product.kind || 'laptop';
 
+    if (product?.sold) {
+      card.classList.add('is-sold');
+    }
+
     const titleText = product.title || 'Product';
     const subtitleText = product.subtitle || '';
     const idBase = slugify(titleText) || `product-${index + 1}`;
@@ -199,7 +203,7 @@ export function renderCatalog({ mountEl, products }) {
     if (product?.sold) {
       const soldBadge = el('div', 'catalog-badge catalog-badge-sold');
       soldBadge.textContent = 'SOLD';
-      card.appendChild(soldBadge);
+      frame.appendChild(soldBadge);
     }
 
     let activeImage = firstImage;
@@ -286,7 +290,7 @@ export function renderCatalog({ mountEl, products }) {
     if (product?.sold) {
       const soldBtn = document.createElement('span');
       soldBtn.className = 'btn btn-secondary btn-small btn-sold';
-      soldBtn.textContent = 'Sold';
+      soldBtn.textContent = 'Sold Out';
       soldBtn.setAttribute('aria-disabled', 'true');
       actions.appendChild(soldBtn);
     } else {
