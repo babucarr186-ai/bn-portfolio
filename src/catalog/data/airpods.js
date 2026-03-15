@@ -18,10 +18,11 @@ export const airpods = [
   {
     title: 'AirPods Max (2020)',
     subtitle:
-      'Green • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Very good condition',
+      'Green • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Very good condition • GMD 22,500',
     kind: 'square',
+    price: 22500,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2020) — green color, very good condition. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2020) — green color, very good condition. Price GMD 22,500. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 18,
     images: [
