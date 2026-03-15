@@ -43,12 +43,11 @@ export const macbooks = [
 			'RAM: 16GB',
 			'Storage: 256GB SSD',
 			'Battery: Good — 221 cycles',
-			'Images: coming soon',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2016) — Intel Core i5, 16GB RAM, 256GB SSD, 2× Thunderbolt 3 ports, battery good (221 cycles). Images coming soon. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2016) — Intel Core i5, 16GB RAM, 256GB SSD, 2× Thunderbolt 3 ports, battery good (221 cycles). In The Gambia.',
 		description:
-			'MacBook Pro 13-inch (2016). Intel Core i5, 16GB RAM, 256GB SSD. 2× Thunderbolt 3 (USB‑C) ports. Battery good (221 cycles). Images coming soon.',
+			'MacBook Pro 13-inch (2016). Intel Core i5, 16GB RAM, 256GB SSD. 2× Thunderbolt 3 (USB‑C) ports. Battery good (221 cycles).',
 		productTitle:
 			'MacBook Pro 13-inch (2016) — i5 • 16GB • 256GB — 2× Thunderbolt 3 — Battery good (221 cycles)',
 		images: [],
