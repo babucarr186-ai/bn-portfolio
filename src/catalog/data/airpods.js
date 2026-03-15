@@ -33,10 +33,11 @@ export const airpods = [
   {
     title: 'AirPods Pro (2nd generation)',
     subtitle:
-      'In‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Used (Good condition)',
+      'In‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Used (Good condition) • GMD 6,375',
     kind: 'square',
+    price: 6375,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods Pro (2nd generation) — used (good condition). In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: AirPods Pro (2nd generation) — used (good condition). Price GMD 6,375. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
