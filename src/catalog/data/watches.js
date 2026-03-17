@@ -29,20 +29,20 @@ export const watches = [
   {
     title: 'Apple Watch Series 7',
     subtitle:
-      '45mm • GPS + Cellular • Big Always‑On display • Fast charging • GMD 9,350 • Images pending',
+      '41mm • Starlight • Aluminium case • Silicone band • Always‑On display • Fast charging • GMD 9,350 • Images pending',
     kind: 'square',
     price: 9350,
     description:
-      'A premium everyday Apple Watch that feels modern and smooth. Great for calls/notifications, workouts, and health tracking — and the larger screen makes everything easier to read. Photos are pending (images waiting); message us now to reserve.',
+      'A premium everyday Apple Watch that feels modern and smooth. Perfect for fitness, notifications, and health tracking — with an Always‑On display you can glance at anytime. Photos are pending (images waiting); message us now to reserve.',
     specs: [
-      'Large 45mm screen with an edge‑to‑edge Always‑On Retina experience',
-      'Stays connected on the go with Cellular (plus Wi‑Fi + Bluetooth)',
+      '41mm case with an edge‑to‑edge Always‑On Retina experience',
+      'Starlight aluminium case + silicone band',
       'Health tools: ECG, Blood Oxygen, and heart‑rate alerts',
       'Swim‑friendly + strong fitness tracking for everyday training',
       'Fast charging helps you get back to 100% quicker',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45mm (Black) — photos pending. Price GMD 9,350. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 41mm (Starlight) — silicone band — photos pending. Price GMD 9,350. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [],
