@@ -53,9 +53,8 @@ export const watches = [
   {
     title: 'Apple Watch Series 7 (41mm)',
     subtitle:
-      '41mm • Starlight • Aluminium case • Silicone band • Great everyday Apple Watch • GMD 9,350 • Images waiting',
+      '41mm • Starlight • Aluminium case • Silicone band • Great everyday Apple Watch • Images waiting',
     kind: 'square',
-    price: 9350,
     description:
       'Clean, classy, and super comfortable for daily wear. The 41mm size looks great on most wrists, and you still get the smooth Apple Watch experience for workouts, messages, and health tracking. Images are waiting — chat on WhatsApp to reserve now.',
     specs: [
@@ -66,7 +65,7 @@ export const watches = [
       'Water resistant for everyday use',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 (41mm) — Starlight — silicone band — images waiting. Price GMD 9,350. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 (41mm) — Starlight — silicone band — images waiting. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [],
