@@ -29,20 +29,17 @@ export const watches = [
   {
     title: 'Apple Watch Series 7',
     subtitle:
-      '45mm • Black • Aluminium case • GPS + Cellular • GMD 9,350 • Images coming soon',
+      '45mm • GPS + Cellular • Big Always‑On display • Fast charging • GMD 9,350 • Images pending',
     kind: 'square',
     price: 9350,
+    description:
+      'A premium everyday Apple Watch that feels modern and smooth. Great for calls/notifications, workouts, and health tracking — and the larger screen makes everything easier to read. Photos are pending (images waiting); message us now to reserve.',
     specs: [
-      '45mm aluminium case (black)',
-      'Black sport band (fluoroelastomer)',
-      'watchOS',
-      'Always‑On OLED display',
-      'Heart rate monitor',
-      'ECG',
-      'Blood oxygen sensor',
-      'GPS',
-      'Water resistant',
-      'Bluetooth + Wi‑Fi + Cellular (4G/3G capable)',
+      'Large 45mm screen with an edge‑to‑edge Always‑On Retina experience',
+      'Stays connected on the go with Cellular (plus Wi‑Fi + Bluetooth)',
+      'Health tools: ECG, Blood Oxygen, and heart‑rate alerts',
+      'Swim‑friendly + strong fitness tracking for everyday training',
+      'Fast charging helps you get back to 100% quicker',
     ],
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45mm (Black) — photos pending. Price GMD 9,350. In The Gambia.',
