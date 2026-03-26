@@ -131,6 +131,7 @@ export const iphones = [
     condition: 'Used — Good condition',
     batteryHealth: '68%',
     price: 6000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone X — White, 64GB, battery 68%, good condition. In The Gambia.',
     productTitle: 'iPhone X (64GB) — White — Used (Good) — Battery 68%',
