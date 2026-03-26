@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-category="cart">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Uncle Apple Store — Shopping cart" />
+  <meta name="robots" content="noindex,follow" />
+  <meta name="theme-color" content="#000000" />
+  <title>Uncle Apple Store — Cart</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Apple Store Gambia" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="site.css?v=20260304" />
+  <script type="module" crossorigin src="./assets/cart-DR6cFpwF.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-YP0FEG5d.js">
+  <link rel="modulepreload" crossorigin href="./assets/site-GdnQMHN5.js">
+  <link rel="modulepreload" crossorigin href="./assets/cart-DuZnCnjl.js">
+</head>
+
+<body>
+  <header class="nav" aria-label="Primary navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="logo" href="./index.html#top" aria-label="Home">
+          <span class="logo-badge" aria-hidden="true">
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Site links">
+          <a href="./index.html#inventory">iPhones</a>
+          <a href="./ipads.html">iPads</a>
+          <a href="./macbook.html">MacBook</a>
+          <a href="./apple-watch.html">Apple Watch</a>
+          <a href="./airpods.html">AirPods</a>
+          <a href="./gift-cards.html">Gift Cards</a>
+          <a href="./accessories.html">Accessories</a>
+          <a href="./apple-tv-home.html">Apple TV &amp; Home</a>
+        </nav>
+
+        <div class="nav-actions"></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="section cart-page" aria-label="Shopping cart">
+      <div class="container">
+        <h1>Your cart</h1>
+
+        <div class="cart-grid">
+          <div class="cart-panel">
+            <div id="cartEmpty" class="notice" hidden>
+              Your cart is empty. <a href="./index.html#inventory">Browse iPhones</a>.
+            </div>
+
+            <div id="cartList" class="cart-list" aria-live="polite"></div>
+          </div>
+
+          <div class="cart-panel cart-summary" aria-label="Cart summary">
+            <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal" class="product-price">—</span></div>
+            <div class="summary-line"><span>Total</span><span id="cartTotal" class="product-price">—</span></div>
+            <a id="proceedBtn" class="btn btn-primary" href="./checkout.html">Proceed to Checkout</a>
+            <div class="notice">Payment method: <strong>Bank Transfer</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <div class="container">
+      <div class="foot">
+        <div class="foot-left">
+          <div><strong>Located in The Gambia</strong></div>
+          <div class="foot-contact" aria-label="Contact details">
+            <div>Customer Support: <a href="mailto:support@uncleapplestore.com">support@uncleapplestore.com</a></div>
+            <div>Sales Inquiries: <a href="mailto:sales@uncleapplestore.com">sales@uncleapplestore.com</a></div>
+            <div>General Information: <a href="mailto:info@uncleapplestore.com">info@uncleapplestore.com</a></div>
+            <div>WhatsApp: <a id="footWhatsApp" href="#">+49 1567 9652076</a></div>
+          </div>
+        </div>
+
+        <div class="foot-legal">
+          <div>Copyright 2026 Uncle Apple</div>
+          <div class="small">Independent reseller.</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./pwa-register.js"></script>
+</body>
+</html>

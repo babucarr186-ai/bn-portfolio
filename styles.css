@@ -1,0 +1,327 @@
+/* Extra store styles (kept lightweight, layered on top of site.css) */
+
+.cart-link{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,15,22,0.14);
+  background: rgba(255,255,255,0.86);
+  color: rgba(11,15,22,0.95);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.cart-link:hover{ background: rgba(255,255,255,0.95); }
+
+.cart-link__icon{
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+}
+
+.cart-link__badge{
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11,15,22,0.92);
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.cart-link--fixed{
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 60;
+}
+
+.btn-secondary{
+  background: rgba(255,255,255,0.88);
+  color: rgba(11,15,22,0.95);
+  border-color: rgba(11,15,22,0.14);
+}
+
+.btn-secondary:hover{ background: rgba(255,255,255,0.98); }
+
+.btn-sold{
+  background: rgba(11,15,22,0.06);
+  border-color: rgba(11,15,22,0.14);
+  color: rgba(11,15,22,0.50);
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.92;
+}
+
+.btn-sold:hover{ opacity: 0.92; }
+
+.catalog-desc{
+  margin: 8px 0 0;
+  color: rgba(11,15,22,0.78);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.catalog-specs{
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: rgba(11,15,22,0.82);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.catalog-specs li{ margin: 4px 0; }
+
+.catalog-badge{
+  display: inline-flex;
+  align-items: center;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+}
+
+.catalog-badge-sold{
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-12deg);
+  z-index: 2;
+  pointer-events: none;
+  justify-content: center;
+  text-align: center;
+  width: calc(100% - 40px);
+  max-width: 340px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(220, 38, 38, 0.86);
+  color: rgba(255,255,255,0.98);
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.14);
+  font-size: clamp(1.0rem, 2.2vw, 1.25rem);
+  font-weight: 950;
+  letter-spacing: 0.22em;
+}
+
+/* SOLD product styling (visual only; does not change layout) */
+.catalog-frame{ position: relative; }
+
+.catalog-card.is-sold{
+  border-color: rgba(220, 38, 38, 0.26);
+}
+
+.catalog-card.is-sold .catalog-frame img{
+  opacity: 0.56;
+  filter: grayscale(0.72) saturate(0.90);
+}
+
+.catalog-card.is-sold .catalog-thumbs img{
+  opacity: 0.62;
+  filter: grayscale(0.72) saturate(0.90);
+}
+
+.catalog-card.is-sold .catalog-title,
+.catalog-card.is-sold .catalog-sub,
+.catalog-card.is-sold .catalog-desc,
+.catalog-card.is-sold .catalog-specs,
+.catalog-card.is-sold .catalog-actions{
+  opacity: 0.78;
+}
+
+@media (max-width: 640px){
+  .catalog-badge-sold{
+    top: 10px;
+    transform: translateX(-50%) rotate(-10deg);
+    padding: 9px 16px;
+    letter-spacing: 0.20em;
+  }
+}
+
+/* Performance: avoid rendering offscreen cards until needed */
+.catalog-card{
+  content-visibility: auto;
+  contain-intrinsic-size: 520px;
+}
+
+/* iPhones page: cleaner Apple-like white image area */
+html[data-category="iphones"] .catalog-wrap{
+  background: rgba(255,255,255,0.92);
+}
+
+html[data-category="iphones"] .catalog-card{
+  background: rgba(255,255,255,0.92);
+}
+
+html[data-category="iphones"] .catalog-frame,
+html[data-category="iphones"] .catalog-thumb{
+  background: rgba(255,255,255,1);
+}
+
+html[data-category="iphones"] .catalog-frame img{
+  background: rgba(255,255,255,1);
+  object-fit: contain;
+}
+
+/* Avoid the 1:1 square frame for phones on iPhones page */
+html[data-category="iphones"] .catalog-card[data-kind="phone"] .catalog-frame{
+  --frame-aspect: 4 / 3;
+  --media-fit: contain;
+  --media-pad: 0px;
+}
+
+/* iPhones page: responsive grid that adapts to desktop widths */
+html[data-category="iphones"] .catalog-grid{
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+@media (min-width: 1100px){
+  html[data-category="iphones"] .catalog-grid{
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+/* Cart + checkout layout */
+.cart-page h1{
+  font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+  margin: 0 0 12px;
+}
+
+.cart-panel{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+}
+
+.cart-list{ display: grid; gap: 12px; }
+
+.cart-item{
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(11,15,22,0.12);
+  background: rgba(255,255,255,0.9);
+}
+
+.cart-item__img{
+  width: 92px;
+  height: 92px;
+  border-radius: 14px;
+  border: 1px solid rgba(11,15,22,0.12);
+  background: white;
+  object-fit: contain;
+}
+
+.cart-item__title{ font-weight: 900; margin: 0; }
+.cart-item__sub{ margin: 4px 0 8px; color: rgba(11,15,22,0.65); }
+
+.cart-item__row{ display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.qty{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,15,22,0.14);
+  background: rgba(255,255,255,0.86);
+}
+
+.qty input{
+  width: 62px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 800;
+}
+
+.cart-summary{ display: grid; gap: 10px; }
+
+.summary-line{
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-weight: 900;
+}
+
+.notice{
+  border-radius: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(11,15,22,0.14);
+  background: rgba(255,255,255,0.86);
+  color: rgba(11,15,22,0.9);
+}
+
+/* Checkout money styling */
+.product-price{
+  color: #16A34A;
+}
+
+.money-green{
+  color: #16A34A;
+  font-weight: 900;
+}
+
+.checkout-summary{ margin-bottom: 14px; }
+
+.checkout-items{
+  display: grid;
+  gap: 10px;
+  margin: 10px 0 12px;
+}
+
+.checkout-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(11,15,22,0.12);
+  background: rgba(255,255,255,0.9);
+}
+
+.checkout-item__name{ font-weight: 900; }
+.checkout-item__meta{ margin-top: 2px; color: rgba(11,15,22,0.65); font-size: 0.92rem; }
+
+.checkout-item__right{ text-align: right; }
+.checkout-item__unit{ font-size: 0.92rem; }
+.checkout-item__line{ margin-top: 2px; }
+
+.form-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.field label{ display: block; font-weight: 900; margin: 0 0 6px; }
+.field input, .field textarea{
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(11,15,22,0.14);
+  background: rgba(255,255,255,0.92);
+  font: inherit;
+  outline: none;
+}
+
+.field textarea{ min-height: 96px; resize: vertical; }
+
+@media (min-width: 860px){
+  .cart-grid{
+    display: grid;
+    grid-template-columns: 1.5fr 0.9fr;
+    gap: 14px;
+    align-items: start;
+  }
+}

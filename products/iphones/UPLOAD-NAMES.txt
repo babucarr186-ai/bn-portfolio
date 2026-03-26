@@ -1,0 +1,65 @@
+Put your iPhone product photos in this folder using these STRICT filenames.
+You can provide 1–3 images per product; thumbnails will appear automatically when 2–3 images exist.
+
+Naming convention:
+- lowercase
+- hyphen-separated
+- jpg/webp/png are fine (keep consistent per product)
+- use -1, -2, -3 suffixes
+
+Products (requested list):
+
+1) iPhone 13 — 128GB
+- iphone-13-128gb-1.jpg (or .png)
+- iphone-13-128gb-2.jpg (or .png)
+- iphone-13-128gb-3.jpg (or .png)
+
+1b) iPhone 13 — Green — 128GB (new folder)
+- iphone-13-green-128gb/iphone-13-green-128gb-1.jpg
+- iphone-13-green-128gb/iphone-13-green-128gb-2.jpg
+- iphone-13-green-128gb/iphone-13-green-128gb-3.jpg
+
+2) iPhone XS — 128GB
+- iphone-xs-128gb-1.jpg
+- iphone-xs-128gb-2.jpg
+- iphone-xs-128gb-3.jpg
+
+3) iPhone XR — White — 128GB
+- iphone-xr-white-128gb-1.jpg
+- iphone-xr-white-128gb-2.jpg
+- iphone-xr-white-128gb-3.jpg
+
+4) iPhone XR — Red — 128GB
+- iphone-xr-red-128gb-1.jpg
+- iphone-xr-red-128gb-2.jpg
+- iphone-xr-red-128gb-3.jpg
+
+5) iPhone 11 — 128GB
+- iphone-11-128gb-1.jpg
+- iphone-11-128gb-2.jpg
+- iphone-11-128gb-3.jpg
+
+6) iPhone 12 Pro — 128GB
+- iphone-12-pro-128gb-1.jpg
+- iphone-12-pro-128gb-2.jpg
+- iphone-12-pro-128gb-3.jpg
+
+6b) iPhone 12 — White
+- iphone-12-white-1.jpg
+- iphone-12-white-2.jpg
+- iphone-12-white-3.jpg
+
+7) iPhone 11 Pro — 256GB
+- iphone-11-pro-256gb-1.jpg
+- iphone-11-pro-256gb-2.jpg
+- iphone-11-pro-256gb-3.jpg
+
+8) iPhone 7 Plus — 128GB
+- iphone-7-plus-128gb-1.jpg
+- iphone-7-plus-128gb-2.jpg
+- iphone-7-plus-128gb-3.jpg
+
+9) iPhone 14 — White — 128GB
+- iphone-14-white-128gb-1.jpg
+- iphone-14-white-128gb-2.jpg
+- iphone-14-white-128gb-3.jpg

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Sell your device to Uncle Apple Store. Send details and receive an offer within 24 hours." />
+  <meta name="robots" content="index,follow" />
+  <meta name="theme-color" content="#000000" />
+  <title>Sell Your Device | Uncle Apple Store</title>
+
+  <link rel="canonical" href="https://uncleapplestore.com/sell-device" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Apple Store Gambia" />
+
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../site.css?v=20260301" />
+  <link rel="stylesheet" href="../styles.css?v=20260304" />
+</head>
+
+<body>
+  <header class="nav" aria-label="Primary navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a class="logo" href="../index.html" aria-label="Home">
+          <span class="logo-badge" aria-hidden="true">
+            <img class="logo-img" src="../logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Site links">
+          <a href="../index.html#inventory">iPhones</a>
+          <a href="../models/">Models</a>
+          <a href="../ipads.html">iPads</a>
+          <a href="../macbook.html">MacBook</a>
+          <a href="../apple-watch.html">Apple Watch</a>
+          <a href="../airpods.html">AirPods</a>
+          <a href="../gift-cards.html">Gift Cards</a>
+          <a href="../accessories.html">Accessories</a>
+          <a href="../apple-tv-home.html">Apple TV &amp; Home</a>
+          <a href="../support/">Support</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn btn-primary btn-small" href="./">Sell Your Device</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="section" aria-label="Sell your device">
+      <div class="container">
+        <h1 class="section-title">Sell Your Device</h1>
+        <p class="section-lead">Send us the details of your device and we will reply with an offer within 24 hours.</p>
+
+        <form class="form" id="sellDeviceForm" enctype="multipart/form-data" novalidate>
+          <div class="grid" aria-label="Device submission form">
+            <label>
+              Device Type
+              <select name="deviceType" id="deviceType" required>
+                <option value="" selected disabled>Select device type</option>
+                <option value="iPhone">iPhone</option>
+                <option value="MacBook">MacBook</option>
+                <option value="iPad">iPad</option>
+                <option value="Apple Watch">Apple Watch</option>
+                <option value="Other Apple Device">Other Apple Device</option>
+              </select>
+            </label>
+
+            <label>
+              Model
+              <input type="text" name="model" id="model" placeholder="e.g., iPhone 14 Pro" autocomplete="off" required />
+            </label>
+
+            <label>
+              Storage
+              <select name="storage" id="storage" required>
+                <option value="" selected disabled>Select storage</option>
+                <option value="64GB">64GB</option>
+                <option value="128GB">128GB</option>
+                <option value="256GB">256GB</option>
+                <option value="512GB">512GB</option>
+                <option value="1TB">1TB</option>
+              </select>
+            </label>
+
+            <label>
+              Condition
+              <select name="condition" id="condition" required>
+                <option value="" selected disabled>Select condition</option>
+                <option value="Like New">Like New</option>
+                <option value="Good">Good</option>
+                <option value="Used">Used</option>
+                <option value="Needs Repair">Needs Repair</option>
+              </select>
+            </label>
+
+            <label>
+              Battery Health
+              <input type="text" name="batteryHealth" id="batteryHealth" placeholder="e.g., 92%" autocomplete="off" required />
+            </label>
+
+            <label>
+              Customer Name
+              <input type="text" name="customerName" id="customerName" autocomplete="name" required />
+            </label>
+
+            <label>
+              WhatsApp Number
+              <input type="text" name="whatsAppNumber" id="whatsAppNumber" placeholder="e.g., +220 123 4567" autocomplete="tel" required />
+            </label>
+
+            <label>
+              Email Address
+              <input type="email" name="emailAddress" id="emailAddress" placeholder="name@example.com" autocomplete="email" required />
+            </label>
+
+            <label>
+              Upload Photos
+              <input type="file" name="photos" id="photos" accept="image/jpeg,image/png,.jpg,.jpeg,.png" multiple />
+              <span class="small" style="color: rgba(11,15,22,0.66); font-weight: 650;">
+                Optional. JPG, JPEG, PNG only. Max 5 images. Max 5MB per image. You can also send photos directly in WhatsApp.
+              </span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" id="sellDeviceSubmit" type="submit">Send</button>
+          </div>
+
+          <div class="small" id="sellDeviceError" role="alert" aria-live="polite" style="margin-top: 10px; color: rgba(11,15,22,0.86); font-weight: 750;" hidden></div>
+          <div class="small" id="sellDeviceSuccess" role="status" aria-live="polite" style="margin-top: 10px; color: rgba(11,15,22,0.86); font-weight: 750;" hidden></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer aria-label="Footer">
+    <div class="container">
+      <div class="foot">
+        <div class="foot-left">
+          <div><strong>Located in The Gambia</strong></div>
+          <div class="foot-contact" aria-label="Contact details">
+            <div>Customer Support: <a href="mailto:support@uncleapplestore.com">support@uncleapplestore.com</a></div>
+            <div>Sales Inquiries: <a href="mailto:sales@uncleapplestore.com">sales@uncleapplestore.com</a></div>
+            <div>General Information: <a href="mailto:info@uncleapplestore.com">info@uncleapplestore.com</a></div>
+            <div>WhatsApp: <a href="https://wa.me/4915679652076">+49 1567 9652076</a></div>
+          </div>
+        </div>
+
+        <div class="foot-legal">
+          <div>Copyright 2026 Uncle Apple</div>
+          <div class="small">Independent reseller.</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./sell-device.js" defer></script>
+  <script type="module" src="../pwa-register.js"></script>
+</body>
+</html>
