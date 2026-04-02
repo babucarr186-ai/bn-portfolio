@@ -339,8 +339,8 @@ function ensureCatalogLightbox() {
   if (catalogLightbox) return catalogLightbox;
 
   const TRACK_PREV = 0;
-  const TRACK_CENTER = -100 / 3;
-  const TRACK_NEXT = -200 / 3;
+  const TRACK_CENTER = 1;
+  const TRACK_NEXT = 2;
 
   const overlay = el('div', 'catalog-lightbox');
   overlay.setAttribute('role', 'dialog');
@@ -438,8 +438,14 @@ function ensureCatalogLightbox() {
     animationTimer = 0;
   }
 
-  function setTrackPosition(percent, offsetX = 0) {
-    track.style.transform = `translate3d(calc(${percent}% + ${offsetX}px), 0, 0)`;
+  function getTrackWidth() {
+    return viewport.clientWidth || stage.clientWidth || window.innerWidth || 1;
+  }
+
+  function setTrackPosition(slot, offsetX = 0) {
+    const width = getTrackWidth();
+    const baseOffset = -width * slot;
+    track.style.transform = `translate3d(${baseOffset + offsetX}px, 0, 0)`;
   }
 
   function lockBodyScroll() {

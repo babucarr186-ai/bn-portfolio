@@ -344,6 +344,7 @@ function initScrollBgRotation() {
 function initImageViewer() {
   let overlayEl = null;
   let contentEl = null;
+  let viewportEl = null;
   let trackEl = null;
   let dotsEl = null;
   let counterEl = null;
@@ -371,8 +372,8 @@ function initImageViewer() {
   let animationTimer = 0;
 
   const TRACK_PREV = 0;
-  const TRACK_CENTER = -100 / 3;
-  const TRACK_NEXT = -200 / 3;
+  const TRACK_CENTER = 1;
+  const TRACK_NEXT = 2;
 
   function clearAnimationTimer() {
     if (!animationTimer) return;
@@ -380,9 +381,15 @@ function initImageViewer() {
     animationTimer = 0;
   }
 
-  function setTrackPosition(percent, offsetX = 0) {
+  function getTrackWidth() {
+    return viewportEl?.clientWidth || contentEl?.clientWidth || window.innerWidth || 1;
+  }
+
+  function setTrackPosition(slot, offsetX = 0) {
     if (!trackEl) return;
-    trackEl.style.transform = `translate3d(calc(${percent}% + ${offsetX}px), 0, 0)`;
+    const width = getTrackWidth();
+    const baseOffset = -width * slot;
+    trackEl.style.transform = `translate3d(${baseOffset + offsetX}px, 0, 0)`;
   }
 
   function lockBodyScroll() {
@@ -465,7 +472,7 @@ function initImageViewer() {
     counterEl.className = 'image-viewer__counter';
     counterEl.setAttribute('aria-live', 'polite');
 
-    const viewportEl = document.createElement('div');
+    viewportEl = document.createElement('div');
     viewportEl.className = 'image-viewer__viewport';
 
     trackEl = document.createElement('div');
