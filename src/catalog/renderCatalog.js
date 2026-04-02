@@ -334,6 +334,7 @@ export function buildCatalogCardSummary(product) {
 }
 
 let catalogLightbox;
+const GERMANY_SOURCED_COPY = 'We don\'t buy random market phones. All devices are sourced from Germany and tested.';
 
 function ensureCatalogLightbox() {
   if (catalogLightbox) return catalogLightbox;
@@ -864,6 +865,9 @@ export function renderCatalog({ mountEl, products }) {
     const mediaBadge = el('span', 'catalog-media-badge');
     mediaBadge.textContent = imagesToUse.length >= 2 ? 'Swipe photos' : 'Tap to zoom';
 
+    const sourcedBadge = el('span', 'catalog-source-badge');
+    sourcedBadge.textContent = 'Germany Sourced';
+
     const track = el('div', 'catalog-track');
     const dots = [];
     let currentImageIndex = 0;
@@ -942,6 +946,7 @@ export function renderCatalog({ mountEl, products }) {
     zoomBtn.appendChild(track);
     slider.appendChild(zoomBtn);
     slider.appendChild(mediaBadge);
+    slider.appendChild(sourcedBadge);
 
     if (imagesToUse.length >= 2) {
       const prevBtn = document.createElement('button');
@@ -1013,6 +1018,10 @@ export function renderCatalog({ mountEl, products }) {
       note.textContent = display.note;
       card.appendChild(note);
     }
+
+    const trustCopy = el('p', 'catalog-trust-copy');
+    trustCopy.textContent = GERMANY_SOURCED_COPY;
+    card.appendChild(trustCopy);
 
     const actions = el('div', 'catalog-actions');
 
@@ -1117,6 +1126,10 @@ export function renderRecommendationRail({ mountEl, items }) {
       appendTextWithPriceSpans(price, item.priceLabel);
       link.appendChild(price);
     }
+
+    const trustCopy = el('div', 'catalog-rail-trust-copy');
+    trustCopy.textContent = 'Germany sourced and tested';
+    link.appendChild(trustCopy);
 
     if (item.onClick) {
       link.addEventListener('click', item.onClick);
