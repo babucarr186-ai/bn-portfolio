@@ -308,7 +308,7 @@ h1{
 
 /* iPhones page: keep inventory section tighter (no major layout changes) */
 html[data-category='iphones'] #inventory.section{
-  padding: 60px 0;
+  padding: 36px 0 60px;
 }
 
 .section.section-compact{
@@ -423,6 +423,30 @@ html[data-category='iphones'] #inventory.section{
   text-transform: uppercase;
   color: rgba(11,15,22,0.62);
   font-size: 0.80rem;
+}
+
+.kicker-brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kicker-brand-icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(11,15,22,0.08);
+  color: rgba(11,15,22,0.82);
+  flex: 0 0 auto;
+}
+
+.kicker-brand-icon svg{
+  width: 14px;
+  height: 14px;
+  display: block;
 }
 
 .bullets{
@@ -1057,7 +1081,7 @@ body.catalog-lightbox-open{ overflow: hidden; }
   }
 
   html[data-category='iphones'] #inventory.section{
-    padding: 40px 0;
+    padding: 24px 0 40px;
   }
 
   .section-title{ font-size: clamp(1.35rem, 5.6vw, 1.7rem); }

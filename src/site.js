@@ -1,3 +1,11 @@
+import { accessories } from './catalog/data/accessories.js';
+import { airpods } from './catalog/data/airpods.js';
+import { giftCards } from './catalog/data/giftcards.js';
+import { ipads } from './catalog/data/ipads.js';
+import { iphones } from './catalog/data/iphones.js';
+import { macbooks } from './catalog/data/macbooks.js';
+import { watches } from './catalog/data/watches.js';
+
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
 const WHATSAPP_NUMBER = '4915679652076';
@@ -5,6 +13,176 @@ const WHATSAPP_NUMBER = '4915679652076';
 const CART_PAGE_HREF = './cart.html';
 const CHECKOUT_PAGE_HREF = './checkout.html';
 const SELL_DEVICE_HREF = `${import.meta.env.BASE_URL || './'}sell-device/`;
+
+const CHAT_CATEGORY_MAP = {
+  iphones: { label: 'iPhones', href: './index.html', terms: ['iphone', 'iphones', 'ios'] },
+  ipads: { label: 'iPads', href: './ipads.html', terms: ['ipad', 'ipads'] },
+  macbooks: { label: 'MacBooks', href: './macbook.html', terms: ['macbook', 'macbooks', 'mac'] },
+  watches: { label: 'Apple Watches', href: './apple-watch.html', terms: ['watch', 'watches', 'apple watch', 'ultra', 'series', 'se'] },
+  airpods: { label: 'AirPods', href: './airpods.html', terms: ['airpods', 'airpod', 'max', 'pro buds'] },
+  giftcards: { label: 'Gift Cards', href: './gift-cards.html', terms: ['gift card', 'gift cards', 'card', 'cards'] },
+  accessories: { label: 'Accessories', href: './accessories.html', terms: ['accessory', 'accessories', 'pencil', 'keyboard', 'mouse', 'adapter', 'charger', 'magsafe'] },
+};
+
+const CHAT_PRODUCT_SOURCES = {
+  iphones,
+  ipads,
+  macbooks,
+  watches,
+  airpods,
+  giftcards: giftCards,
+  accessories,
+};
+
+const CHAT_STOP_WORDS = new Set([
+  'a', 'an', 'and', 'any', 'are', 'available', 'availability', 'can', 'check', 'confirm', 'current', 'currently',
+  'do', 'for', 'give', 'got', 'have', 'hello', 'hey', 'hi', 'i', 'in', 'is', 'me', 'need', 'of', 'on', 'please',
+  'price', 'prices', 'product', 'products', 'request', 'sell', 'show', 'stock', 'tell', 'the', 'what', 'which', 'with', 'you', 'your',
+]);
+
+function normalizeChatText(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[–—‑]/g, '-')
+    .replace(/[^a-z0-9%+\s-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function slugifyChatValue(value) {
+  return String(value || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+function formatChatPrice(product) {
+  if (Number.isFinite(Number(product?.price))) {
+    return `GMD ${new Intl.NumberFormat('en-US').format(Number(product.price))}`;
+  }
+  const subtitle = String(product?.subtitle || '');
+  const priceMatch = subtitle.match(/GMD\s*\d[\d,]*/i);
+  if (priceMatch) return priceMatch[0].replace(/\s+/g, ' ');
+  if (/price on request/i.test(subtitle) || /price on request/i.test(String(product?.description || ''))) {
+    return 'Price on request';
+  }
+  return '';
+}
+
+function buildChatSummary(product) {
+  const parts = [];
+  const subtitle = String(product?.subtitle || '');
+  const storageMatch = subtitle.match(/\b\d+(?:\.\d+)?\s*(GB|TB)\b/i) || String(product?.storage || '').match(/\b\d+(?:\.\d+)?\s*(GB|TB)\b/i);
+  const conditionMatch = subtitle.match(/brand new|like new|excellent|very clean|clean|good|used/gi) || String(product?.condition || '').match(/brand new|like new|excellent|very clean|clean|good|used/gi);
+  const batteryMatch = subtitle.match(/battery\s*\d{2,3}%/i) || String(product?.batteryHealth || '').match(/\d{2,3}%/);
+
+  if (storageMatch) parts.push(storageMatch[0].replace(/\s+/g, ''));
+  if (conditionMatch?.[0]) parts.push(conditionMatch[0].replace(/^used\s*[-—]\s*/i, '').replace(/\bcondition\b/gi, '').trim().replace(/^./, (x) => x.toUpperCase()));
+  if (batteryMatch?.[0]) parts.push(/battery/i.test(batteryMatch[0]) ? batteryMatch[0].replace(/^./, (x) => x.toUpperCase()) : `Battery ${batteryMatch[0]}`);
+
+  const priceLabel = formatChatPrice(product);
+  if (priceLabel) parts.push(priceLabel);
+  return parts.filter(Boolean).slice(0, 4).join(' • ');
+}
+
+function buildChatInventory() {
+  return Object.entries(CHAT_PRODUCT_SOURCES).flatMap(([categoryKey, list]) => {
+    const meta = CHAT_CATEGORY_MAP[categoryKey];
+    return (Array.isArray(list) ? list : []).map((product, index) => {
+      const title = String(product?.title || 'Product');
+      const idBase = slugifyChatValue(title) || `product-${index + 1}`;
+      const anchor = `product-${idBase}-${index + 1}`;
+      const haystack = normalizeChatText([
+        title,
+        product?.subtitle,
+        product?.description,
+        product?.productTitle,
+        product?.color,
+        product?.storage,
+        product?.condition,
+        product?.warranty,
+        meta?.label,
+      ].filter(Boolean).join(' '));
+
+      return {
+        categoryKey,
+        categoryLabel: meta?.label || categoryKey,
+        href: `${meta?.href || './'}#${anchor}`,
+        title,
+        product,
+        haystack,
+        summary: buildChatSummary(product),
+        sold: Boolean(product?.sold),
+      };
+    });
+  });
+}
+
+const CHAT_INVENTORY = buildChatInventory();
+
+function detectChatCategory(query) {
+  const normalized = normalizeChatText(query);
+  return Object.entries(CHAT_CATEGORY_MAP).find(([, meta]) => meta.terms.some((term) => normalized.includes(term)))?.[0] || null;
+}
+
+function tokenizeChatQuery(query) {
+  return normalizeChatText(query)
+    .split(' ')
+    .filter((token) => token && !CHAT_STOP_WORDS.has(token));
+}
+
+function findChatMatches(query) {
+  const tokens = tokenizeChatQuery(query);
+  const categoryKey = detectChatCategory(query);
+
+  return CHAT_INVENTORY.map((item) => {
+    let score = 0;
+    tokens.forEach((token) => {
+      if (item.title.toLowerCase().includes(token)) score += 4;
+      else if (item.haystack.includes(token)) score += 1;
+    });
+    if (categoryKey && item.categoryKey === categoryKey) score += 3;
+    if (normalizeChatText(query).includes(normalizeChatText(item.title))) score += 8;
+    return { item, score };
+  })
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((entry) => entry.item);
+}
+
+function buildChatProductReply(query) {
+  const normalized = normalizeChatText(query);
+  const categoryKey = detectChatCategory(query);
+  const matches = findChatMatches(query);
+  const availableMatches = matches.filter((item) => !item.sold);
+
+  if (categoryKey && /(what|which|show|have|available|stock|any)/.test(normalized)) {
+    const categoryItems = CHAT_INVENTORY.filter((item) => item.categoryKey === categoryKey && !item.sold).slice(0, 4);
+    if (categoryItems.length) {
+      const list = categoryItems.map((item) => `${item.title}${item.summary ? ` (${item.summary})` : ''}`).join('; ');
+      return `Available ${CHAT_CATEGORY_MAP[categoryKey].label.toLowerCase()} right now: ${list}.`;
+    }
+  }
+
+  if (availableMatches.length) {
+    const top = availableMatches.slice(0, 3);
+    if (top.length === 1) {
+      const item = top[0];
+      return `Yes, ${item.title} is available${item.summary ? `: ${item.summary}` : ''}.`;
+    }
+    return `Here are the closest available matches: ${top.map((item) => `${item.title}${item.summary ? ` (${item.summary})` : ''}`).join('; ')}.`;
+  }
+
+  if (matches.length) {
+    const soldItem = matches[0];
+    if (soldItem.sold) {
+      return `${soldItem.title} is marked sold out right now. I can help you find a similar option if you want.`;
+    }
+  }
+
+  return '';
+}
 
 export function buildWhatsAppLink(message) {
   const encoded = encodeURIComponent(message);
@@ -423,7 +601,7 @@ function initChatWidget() {
   header.className = 'chat-header';
   header.innerHTML =
     '<div class="chat-title">Chat</div>' +
-    `<div class="chat-sub">Ask about availability in ${LOCATION}</div>`;
+    `<div class="chat-sub">Ask about available products in ${LOCATION}</div>`;
 
   const closeBtn = document.createElement('button');
   closeBtn.type = 'button';
@@ -519,11 +697,14 @@ function initChatWidget() {
 
   function botReply(text) {
     const t = String(text || '').toLowerCase();
+    const productReply = buildChatProductReply(text);
+    if (productReply) return productReply;
+
     if (/(hi|hello|hey|salam|salaam)/.test(t)) {
-      return `Hi! Tell me the model + storage you want (example: iPhone XR 128GB).`;
+      return `Hi! Ask for any product you want, for example: iPhone XR 128GB, iPad 10th gen, AirPods Pro 2, or MacBook Pro.`;
     }
     if (/(available|availability|in stock|stock)/.test(t)) {
-      return `Sure — which model, storage, and color should I check?`;
+      return `Sure — tell me the model or category you want, and I’ll check what is currently available.`;
     }
     if (/(delivery|shipping|pickup|pick up|collection)/.test(t)) {
       return `We can arrange delivery or pickup in ${LOCATION}. Which do you prefer?`;
@@ -532,12 +713,12 @@ function initChatWidget() {
       return `Warranty depends on the model. Which iPhone are you interested in?`;
     }
     if (/(price|cost|how much)/.test(t)) {
-      return `We share the latest price on WhatsApp. Tell me the exact model + storage and I’ll prepare your message.`;
+      return `Tell me the exact product name and I’ll share the current listing details if the price is shown.`;
     }
     if (/(battery)/.test(t)) {
-      return `Battery health varies per device. Which iPhone model are you asking about?`;
+      return `Battery health depends on the exact listing. Tell me the exact model and I’ll check the current inventory.`;
     }
-    return `Got it. Please share: model, storage (e.g. 128GB), and preferred color.`;
+    return `Tell me the exact product or category you want, like iPhone 14 Pro, iPads, AirPods, MacBooks, Watches, gift cards, or accessories.`;
   }
 
   function exportToWhatsApp() {
@@ -555,7 +736,7 @@ function initChatWidget() {
       messages.forEach((m) => addMessage(m.from, m.text));
       return;
     }
-    const welcome = `Hi! I’m ${STORE_NAME}. Tell me which iPhone you want and I’ll help you request availability.`;
+    const welcome = `Hi! I’m ${STORE_NAME}. Ask me about any available product and I’ll check the current inventory for you.`;
     messages.push({ from: 'bot', text: welcome });
     addMessage('bot', welcome);
     persist();
