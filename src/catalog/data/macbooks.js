@@ -2,16 +2,16 @@ export const macbooks = [
 	{
 		title: 'MacBook Pro 13-inch (2017)',
 		subtitle:
-			'Intel Core i5 • 8GB RAM • 256GB SSD • Used (Like new) • 30 days warranty • GMD 34,000',
+			'Intel Core i5 • 8GB RAM • 256GB SSD • Used (Like new) • 30 days warranty • GMD 25,000',
 		kind: 'laptop',
 		cpu: 'Intel Core i5',
 		ram: '8GB',
 		storage: '256GB',
 		condition: 'Used — Like new',
 		warranty: '30 days warranty',
-		price: 34000,
+		price: 25000,
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2017) — Intel Core i5, 8GB RAM, 256GB SSD, used (like new), 30 days warranty. Price GMD 34,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2017) — Intel Core i5, 8GB RAM, 256GB SSD, used (like new), 30 days warranty. Price GMD 25,000. In The Gambia.',
 		description:
 			'MacBook Pro 13-inch (2017). Intel Core i5, 8GB RAM, 256GB SSD. Top condition. Used like new. 30 days product warranty.',
 		productTitle:
@@ -28,7 +28,7 @@ export const macbooks = [
 	{
 		title: 'MacBook Pro 13-inch (2016)',
 		subtitle:
-			'Intel Core i5 • 16GB RAM • 256GB SSD • 2× Thunderbolt 3 • Battery good (221 cycles) • Images coming soon',
+			'Intel Core i5 • 16GB RAM • 256GB SSD • 2× Thunderbolt 3 • Battery good (221 cycles) • Used • Neat used condition • GMD 20,000',
 		kind: 'laptop',
 		cpu: 'Intel Core i5',
 		ram: '16GB',
@@ -36,7 +36,8 @@ export const macbooks = [
 		ports: '2× Thunderbolt 3 (USB‑C)',
 		batteryCycles: '221',
 		batteryCondition: 'Good',
-		condition: 'Used',
+		condition: 'Used — Neat condition',
+		price: 20000,
 		specs: [
 			'Model: MacBook Pro 13-inch (2016)',
 			'Ports: 2× Thunderbolt 3 (USB‑C)',
@@ -46,11 +47,16 @@ export const macbooks = [
 			'Battery: Good — 221 cycles',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2016) — Intel Core i5, 16GB RAM, 256GB SSD, 2× Thunderbolt 3 ports, battery good (221 cycles). In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2016) — Intel Core i5, 16GB RAM, 256GB SSD, 2× Thunderbolt 3 ports, battery good (221 cycles), used, neat condition. Price GMD 20,000. In The Gambia.',
 		description:
-			'MacBook Pro 13-inch (2016). Intel Core i5, 16GB RAM, 256GB SSD. 2× Thunderbolt 3 (USB‑C) ports. Battery good (221 cycles).',
+			'MacBook Pro 13-inch (2016). Intel Core i5, 16GB RAM, 256GB SSD. 2× Thunderbolt 3 (USB‑C) ports. Battery good with 221 cycles. Neat used condition.',
 		productTitle:
-			'MacBook Pro 13-inch (2016) — i5 • 16GB • 256GB — 2× Thunderbolt 3 — Battery good (221 cycles)',
-		images: [],
+			'MacBook Pro 13-inch (2016) — i5 • 16GB • 256GB — Used — Neat condition',
+		images: [
+			'products/macbooks/MacBook Pro 13-inches (2016)/front image.jpg',
+			'products/macbooks/MacBook Pro 13-inches (2016)/9602dbd1-a3bd-406e-bea1-92f868092f01.jpg',
+			'products/macbooks/MacBook Pro 13-inches (2016)/ac93d726-e053-442e-85e1-88c91cb34057.jpg',
+			'products/macbooks/MacBook Pro 13-inches (2016)/dd43fc7d-671a-4b3a-819d-dab572c5be70.jpg',
+		],
 	},
 ];
