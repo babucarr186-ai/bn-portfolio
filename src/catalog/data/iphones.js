@@ -85,6 +85,28 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone 13',
+    subtitle: 'Starlight • 128GB • Almost new • Battery 81% • GMD 23,000',
+    kind: 'phone',
+    color: 'Starlight',
+    storage: '128GB',
+    condition: 'Used — Almost new',
+    batteryHealth: '81%',
+    price: 23000,
+      sold: true,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Starlight, 128GB, almost new condition, battery 81%. Price GMD 23,000. In The Gambia.',
+    description:
+      'A very clean iPhone 13 in Starlight with 128GB storage, strong everyday performance, and an almost-new look that feels ready to use straight away. Price GMD 23,000.',
+    productTitle: 'iPhone 13 (128GB) — Starlight — Used (Almost new) — Battery 81%',
+    images: [
+      'products/iphones/iphone-13-starlight-128gb-battery-81/iphone-13-starlight-128gb-battery-81-1.jpg?v=20260402-1',
+      'products/iphones/iphone-13-starlight-128gb-battery-81/iphone-13-starlight-128gb-battery-81-2.jpg?v=20260402-1',
+      'products/iphones/iphone-13-starlight-128gb-battery-81/iphone-13-starlight-128gb-battery-81-3.jpg?v=20260402-1',
+      'products/iphones/iphone-13-starlight-128gb-battery-81/iphone-13-starlight-128gb-battery-81-4.jpg?v=20260402-1',
+    ],
+  },
+  {
     title: 'iPhone 13 Pro Max',
     subtitle: 'Gold • 128GB • Battery 82% • Used • Back glass broken • Price on request',
     kind: 'phone',
@@ -138,6 +160,26 @@ export const iphones = [
     images: [
       'products/iphones/iphone-x-white-64gb/iphone-x-white-64gb-1.jpg',
       'products/iphones/iphone-x-white-64gb/iphone-x-white-64gb-2.jpg',
+    ],
+  },
+  {
+    title: 'iPhone X',
+    subtitle: 'Gray • 256GB • Battery 90% • Very clean • GMD 9,000',
+    kind: 'phone',
+    color: 'Gray',
+    storage: '256GB',
+    condition: 'Used — Very clean',
+    batteryHealth: '90%',
+    price: 9000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone X — Gray, 256GB, battery 90%, very clean condition. Price GMD 9,000. In The Gambia.',
+    description:
+      'A strong iPhone X option with 256GB storage, clean gray finish, and a healthy 90% battery for buyers who want more room at a smart GMD 9,000 price.',
+    productTitle: 'iPhone X (256GB) — Gray — Used (Very clean) — Battery 90%',
+    images: [
+      'products/iphones/iphone-x-gray-256gb/iphone-x-gray-256gb-1.jpg?v=20260402-2',
+      'products/iphones/iphone-x-gray-256gb/iphone-x-gray-256gb-2.jpg?v=20260402-2',
+      'products/iphones/iphone-x-gray-256gb/iphone-x-gray-256gb-3.jpg?v=20260402-2',
     ],
   },
   {
