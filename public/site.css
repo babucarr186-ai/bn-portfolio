@@ -519,6 +519,102 @@ html[data-category='iphones'] #inventory.section{
   color: rgba(11,15,22,0.82);
 }
 
+/* Support page policies */
+.support-heading{
+  display: grid;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.support-policy-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.support-policy-card{
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(11,15,22,0.08);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.07);
+}
+
+.support-policy-card-wide{
+  grid-column: span 2;
+}
+
+.support-policy-card-accent{
+  background: rgba(11,15,22,0.92);
+  color: rgba(255,255,255,0.96);
+}
+
+.support-policy-card-accent .support-policy-copy{
+  color: rgba(255,255,255,0.80);
+}
+
+.support-policy-card-accent .btn{
+  justify-self: start;
+}
+
+.support-policy-title{
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.support-policy-copy{
+  margin: 0;
+  color: rgba(11,15,22,0.68);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.support-policy-list,
+.support-check-list{
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  color: rgba(11,15,22,0.78);
+  font-weight: 650;
+}
+
+.support-check-list{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-left: 0;
+  list-style: none;
+}
+
+.support-check-list li{
+  position: relative;
+  padding-left: 18px;
+}
+
+.support-check-list li::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.48em;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(11,15,22,0.82);
+}
+
+.support-policy-card-accent .support-check-list,
+.support-policy-card-accent .support-policy-list{
+  color: rgba(255,255,255,0.86);
+}
+
+.support-policy-card-accent .support-check-list li::before{
+  background: rgba(255,255,255,0.92);
+}
+
 /* Authenticity section icons */
 .icon-grid{
   margin-top: 26px;
@@ -1004,6 +1100,16 @@ body.catalog-lightbox-open{
 }
 
 .catalog-lightbox-dot:focus{ outline: 2px solid rgba(255,255,255,0.7); outline-offset: 2px; }
+
+@media (max-width: 760px){
+  .support-policy-card-wide{
+    grid-column: auto;
+  }
+
+  .support-check-list{
+    grid-template-columns: 1fr;
+  }
+}
 
 .catalog-card[data-kind="phone"] .catalog-frame{
   --frame-aspect: 1 / 1;
