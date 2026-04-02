@@ -132,6 +132,198 @@ function appendTextWithPriceSpans(parent, text) {
   }
 }
 
+function normalizeSpace(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+function toTitleCase(value) {
+  return normalizeSpace(value)
+    .toLowerCase()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function formatPrice(price) {
+  const amount = Number(price);
+  if (!Number.isFinite(amount)) return '';
+  return `GMD ${new Intl.NumberFormat('en-US').format(amount)}`;
+}
+
+function splitSubtitleTokens(text) {
+  return normalizeSpace(text)
+    .split(/\s*•\s*/)
+    .map((part) => normalizeSpace(part))
+    .filter(Boolean);
+}
+
+function parseBatteryPercent(value) {
+  const match = normalizeSpace(value).match(/(\d{2,3})\s*%/);
+  return match ? Number(match[1]) : null;
+}
+
+function normalizeStorage(value) {
+  const match = normalizeSpace(value).match(/(\d+(?:\.\d+)?)\s*(gb|tb)\b/i);
+  if (!match) return '';
+  return `${match[1]}${match[2].toUpperCase()}`;
+}
+
+function normalizeCondition(value) {
+  const text = normalizeSpace(value)
+    .replace(/^used\s*[—-]\s*/i, '')
+    .replace(/^condition\s*[-:]/i, '')
+    .replace(/\bcondition\b/gi, '')
+    .trim();
+
+  if (!text) return '';
+  if (/brand new|sealed/i.test(text)) return 'Brand new';
+  if (/like new/i.test(text)) return 'Like new';
+  if (/excellent/i.test(text)) return 'Excellent';
+  if (/very clean/i.test(text)) return 'Very clean';
+  if (/clean/i.test(text)) return 'Clean';
+  if (/good/i.test(text)) return 'Good';
+  if (/used/i.test(text)) return 'Used';
+  return toTitleCase(text);
+}
+
+function normalizeBattery(value) {
+  const battery = parseBatteryPercent(value);
+  return battery ? `Battery ${battery}%` : '';
+}
+
+function isPriceToken(value) {
+  return /gmd\s*\d|price on request/i.test(value);
+}
+
+function isStorageToken(value) {
+  return /\b\d+(?:\.\d+)?\s*(gb|tb)\b/i.test(value);
+}
+
+function isBatteryToken(value) {
+  return /battery/i.test(value) && /%/.test(value);
+}
+
+function isConditionToken(value) {
+  return /brand new|like new|excellent|very clean|clean|good|used/i.test(value);
+}
+
+function humanizeExtra(value) {
+  const text = normalizeSpace(value);
+  if (!text) return '';
+  if (/original parts/i.test(text)) return 'Original parts';
+  if (/warranty/i.test(text)) return 'Warranty included';
+  if (/nano.?sim|esim/i.test(text)) return 'SIM ready';
+  if (/clear camera/i.test(text)) return 'Camera is clear';
+  if (/back glass/i.test(text)) return 'Back glass has a crack';
+  if (/touch id/i.test(text)) return 'Touch ID ready';
+  if (/face id/i.test(text)) return 'Face ID ready';
+  return text;
+}
+
+function createSalesNote({ conditionLabel, batteryPercent, extras }) {
+  const noteParts = [];
+
+  if (/brand new/i.test(conditionLabel)) noteParts.push('Fresh condition');
+  else if (/like new/i.test(conditionLabel)) noteParts.push('Clean condition');
+  else if (/excellent|very clean/i.test(conditionLabel)) noteParts.push('Very clean condition');
+  else if (/clean/i.test(conditionLabel)) noteParts.push('Clean condition');
+  else if (/good/i.test(conditionLabel)) noteParts.push('Good everyday condition');
+  else if (/used/i.test(conditionLabel)) noteParts.push('Neat used condition');
+
+  if (Number.isFinite(batteryPercent)) {
+    if (batteryPercent >= 85) noteParts.push('strong battery');
+    else if (batteryPercent >= 80) noteParts.push('good battery');
+    else noteParts.push(`battery at ${batteryPercent}%`);
+  }
+
+  const firstSentence = noteParts.length
+    ? `${noteParts[0].charAt(0).toUpperCase()}${noteParts[0].slice(1)}${noteParts[1] ? `, ${noteParts[1]}` : ''}.`
+    : '';
+
+  const extra = extras.find(Boolean);
+  let secondSentence = '';
+  if (/warranty/i.test(extra || '')) secondSentence = 'Warranty included.';
+  else if (/original parts/i.test(extra || '')) secondSentence = 'Original parts.';
+  else if (/back glass/i.test(extra || '')) secondSentence = 'Back glass has a crack.';
+  else if (/camera/i.test(extra || '')) secondSentence = 'Camera is clear.';
+  else if (/sim ready/i.test(extra || '')) secondSentence = 'Ready to use.';
+  else if (/touch id|face id/i.test(extra || '')) secondSentence = `${extra}.`;
+
+  if (!firstSentence && !secondSentence) return 'Ready to use.';
+  return [firstSentence, secondSentence].filter(Boolean).join(' ');
+}
+
+function buildDisplayContent(product) {
+  const subtitleTokens = splitSubtitleTokens(product?.subtitle);
+  const extras = [];
+  const primary = [];
+  let storageLabel = normalizeStorage(product?.storage);
+  let conditionLabel = normalizeCondition(product?.condition);
+  let batteryLabel = normalizeBattery(product?.batteryHealth);
+  let priceLabel = '';
+
+  function pushUnique(target, value) {
+    const normalized = normalizeSpace(value);
+    if (!normalized || target.includes(normalized)) return;
+    target.push(normalized);
+  }
+
+  subtitleTokens.forEach((token) => {
+    if (isPriceToken(token)) {
+      if (!priceLabel) priceLabel = token;
+      return;
+    }
+
+    if (!storageLabel && isStorageToken(token)) {
+      storageLabel = normalizeStorage(token);
+      return;
+    }
+
+    if (!batteryLabel && isBatteryToken(token)) {
+      batteryLabel = normalizeBattery(token);
+      return;
+    }
+
+    if (!conditionLabel && isConditionToken(token)) {
+      conditionLabel = normalizeCondition(token);
+      return;
+    }
+
+    pushUnique(extras, humanizeExtra(token));
+  });
+
+  if (!priceLabel && Number.isFinite(Number(product?.price))) {
+    priceLabel = formatPrice(product.price);
+  }
+
+  pushUnique(primary, storageLabel);
+  pushUnique(primary, conditionLabel);
+  pushUnique(primary, batteryLabel);
+
+  if (primary.length < 3 && product?.color) {
+    pushUnique(primary, toTitleCase(product.color));
+  }
+
+  pushUnique(extras, humanizeExtra(product?.warranty));
+
+  const descriptionText = normalizeSpace(product?.description);
+  if (/original parts/i.test(descriptionText)) pushUnique(extras, 'Original parts');
+  if (/warranty/i.test(descriptionText)) pushUnique(extras, 'Warranty included');
+  if (/back glass/i.test(descriptionText)) pushUnique(extras, 'Back glass has a crack');
+  if (/camera/i.test(descriptionText)) pushUnique(extras, 'Camera is clear');
+  if (/touch id/i.test(descriptionText)) pushUnique(extras, 'Touch ID ready');
+  if (/face id/i.test(descriptionText)) pushUnique(extras, 'Face ID ready');
+  if (/nano.?sim|esim/i.test(descriptionText)) pushUnique(extras, 'SIM ready');
+
+  const batteryPercent = parseBatteryPercent(batteryLabel || product?.batteryHealth);
+  const summary = primary.slice(0, 3).join(' • ');
+  const note = createSalesNote({ conditionLabel, batteryPercent, extras });
+
+  return {
+    summary,
+    note,
+    priceLabel,
+  };
+}
+
 let catalogLightbox;
 
 function ensureCatalogLightbox() {
@@ -228,24 +420,132 @@ export function renderCatalog({ mountEl, products }) {
       frame.style.setProperty('--media-pad', padValue);
     }
 
+    const display = buildDisplayContent(product);
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
-    const imagesToUse = images;
-    const firstImage = imagesToUse[0] || product.image || '';
+    const imagesToUse = images.length ? images : [product.image].filter(Boolean);
+    const firstImage = imagesToUse[0] || '';
 
+    const slider = el('div', 'catalog-slider');
     const zoomBtn = document.createElement('button');
     zoomBtn.type = 'button';
     zoomBtn.className = 'catalog-zoom';
-    zoomBtn.setAttribute('aria-label', `Zoom image for ${titleText}`);
+    zoomBtn.setAttribute('aria-label', `Open photos for ${titleText}`);
 
-    const initialPic = createResponsivePicture({
-      src: firstImage,
-      alt: product.alt || titleText || 'Product',
-      sizes: '(max-width: 640px) 100vw, (max-width: 960px) 50vw, (max-width: 1100px) 33vw, 25vw',
+    const mediaBadge = el('span', 'catalog-media-badge');
+    mediaBadge.textContent = imagesToUse.length >= 2 ? 'Swipe photos' : 'Tap to zoom';
+
+    const track = el('div', 'catalog-track');
+    const dots = [];
+    let currentImageIndex = 0;
+    let activeImage = firstImage;
+    let mainImgEl = null;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerMoved = false;
+
+    imagesToUse.forEach((src, imageIndex) => {
+      const slide = el('div', 'catalog-slide');
+      const pictureData = createResponsivePicture({
+        src,
+        alt: product.alt || titleText || 'Product',
+        sizes: '(max-width: 640px) 46vw, (max-width: 960px) 31vw, (max-width: 1100px) 23vw, 22vw',
+      });
+
+      if (!mainImgEl && imageIndex === 0) mainImgEl = pictureData.img;
+      slide.appendChild(pictureData.picture);
+      track.appendChild(slide);
     });
-    let mainImgEl = initialPic.img;
 
-    zoomBtn.appendChild(initialPic.picture);
-    frame.appendChild(zoomBtn);
+    function updateSlider(nextIndex) {
+      if (!imagesToUse.length) return;
+      currentImageIndex = (nextIndex + imagesToUse.length) % imagesToUse.length;
+      activeImage = imagesToUse[currentImageIndex];
+      track.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+      dots.forEach((dot, dotIndex) => {
+        dot.setAttribute('aria-current', dotIndex === currentImageIndex ? 'true' : 'false');
+      });
+    }
+
+    zoomBtn.addEventListener('pointerdown', (event) => {
+      pointerStartX = event.clientX;
+      pointerStartY = event.clientY;
+      pointerMoved = false;
+    });
+
+    zoomBtn.addEventListener('pointermove', (event) => {
+      if (!pointerStartX && !pointerStartY) return;
+      if (Math.abs(event.clientX - pointerStartX) > 18 || Math.abs(event.clientY - pointerStartY) > 18) {
+        pointerMoved = true;
+      }
+    });
+
+    zoomBtn.addEventListener('pointerup', (event) => {
+      const deltaX = event.clientX - pointerStartX;
+      const deltaY = event.clientY - pointerStartY;
+
+      if (Math.abs(deltaX) > 34 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        updateSlider(currentImageIndex + (deltaX < 0 ? 1 : -1));
+        pointerMoved = true;
+      }
+
+      pointerStartX = 0;
+      pointerStartY = 0;
+    });
+
+    zoomBtn.addEventListener('click', (event) => {
+      if (pointerMoved) {
+        event.preventDefault();
+        pointerMoved = false;
+        return;
+      }
+
+      if (!activeImage) return;
+      ensureCatalogLightbox().open({
+        src: activeImage,
+        alt: mainImgEl?.alt || titleText,
+        focusEl: zoomBtn,
+      });
+    });
+
+    zoomBtn.appendChild(track);
+    slider.appendChild(zoomBtn);
+    slider.appendChild(mediaBadge);
+
+    if (imagesToUse.length >= 2) {
+      const prevBtn = document.createElement('button');
+      prevBtn.type = 'button';
+      prevBtn.className = 'catalog-nav catalog-nav-prev';
+      prevBtn.setAttribute('aria-label', `Previous photo for ${titleText}`);
+      prevBtn.textContent = '‹';
+
+      const nextBtn = document.createElement('button');
+      nextBtn.type = 'button';
+      nextBtn.className = 'catalog-nav catalog-nav-next';
+      nextBtn.setAttribute('aria-label', `Next photo for ${titleText}`);
+      nextBtn.textContent = '›';
+
+      prevBtn.addEventListener('click', () => updateSlider(currentImageIndex - 1));
+      nextBtn.addEventListener('click', () => updateSlider(currentImageIndex + 1));
+
+      slider.appendChild(prevBtn);
+      slider.appendChild(nextBtn);
+
+      const dotsWrap = el('div', 'catalog-dots');
+      imagesToUse.forEach((_, dotIndex) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'catalog-dot';
+        dot.setAttribute('aria-label', `Go to photo ${dotIndex + 1}`);
+        dot.setAttribute('aria-current', dotIndex === 0 ? 'true' : 'false');
+        dot.addEventListener('click', () => updateSlider(dotIndex));
+        dots.push(dot);
+        dotsWrap.appendChild(dot);
+      });
+
+      slider.appendChild(dotsWrap);
+    }
+
+    frame.appendChild(slider);
     card.appendChild(frame);
 
     if (product?.sold) {
@@ -254,83 +554,32 @@ export function renderCatalog({ mountEl, products }) {
       frame.appendChild(soldBadge);
     }
 
-    let activeImage = firstImage;
-    zoomBtn.addEventListener('click', () => {
-      if (!activeImage) return;
-      ensureCatalogLightbox().open({
-        src: activeImage,
-        alt: mainImgEl.alt || titleText,
-        focusEl: zoomBtn,
-      });
-    });
-
     const title = el('h3', 'catalog-title');
     title.textContent = titleText;
     card.appendChild(title);
 
-    if (subtitleText) {
-      const sub = el('p', 'catalog-sub');
-      appendTextWithPriceSpans(sub, subtitleText);
-      card.appendChild(sub);
+    if (display.summary || display.priceLabel) {
+      const metaRow = el('div', 'catalog-meta-row');
+
+      if (display.summary) {
+        const meta = el('p', 'catalog-meta');
+        meta.textContent = display.summary;
+        metaRow.appendChild(meta);
+      }
+
+      if (display.priceLabel) {
+        const price = el('p', 'catalog-price');
+        appendTextWithPriceSpans(price, display.priceLabel);
+        metaRow.appendChild(price);
+      }
+
+      card.appendChild(metaRow);
     }
 
-    if (product?.description) {
-      const desc = el('p', 'catalog-desc');
-      appendTextWithPriceSpans(desc, String(product.description));
-      card.appendChild(desc);
-    }
-
-    const specs = Array.isArray(product?.specs) ? product.specs.filter(Boolean) : [];
-    if (specs.length) {
-      const ul = el('ul', 'catalog-specs');
-      specs.slice(0, 10).forEach((line) => {
-        const li = document.createElement('li');
-        appendTextWithPriceSpans(li, String(line));
-        ul.appendChild(li);
-      });
-      card.appendChild(ul);
-    }
-
-    if (imagesToUse.length >= 2) {
-      const thumbs = el('div', 'catalog-thumbs');
-      imagesToUse.forEach((src, thumbIndex) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'catalog-thumb';
-        btn.setAttribute('aria-label', `Photo ${thumbIndex + 1}`);
-        btn.setAttribute('aria-current', thumbIndex === 0 ? 'true' : 'false');
-
-        const { picture: tPic, img: tImg } = createResponsivePicture({
-          src,
-          alt: '',
-          sizes: '62px',
-        });
-        // Thumbs are decorative; keep empty alt.
-        tImg.alt = '';
-
-        btn.appendChild(tPic);
-
-        btn.addEventListener('click', () => {
-          // Swap the responsive image by rebuilding the <picture>.
-          const next = createResponsivePicture({
-            src,
-            alt: mainImgEl.alt || titleText || 'Product',
-            sizes: '(max-width: 640px) 100vw, (max-width: 960px) 50vw, (max-width: 1100px) 33vw, 25vw',
-          });
-          // Replace the existing <picture> inside the zoom button.
-          const current = zoomBtn.querySelector('picture');
-          if (current && current.parentNode) current.parentNode.replaceChild(next.picture, current);
-          mainImgEl = next.img;
-          activeImage = src;
-          thumbs
-            .querySelectorAll('[aria-current="true"]')
-            .forEach((node) => node.setAttribute('aria-current', 'false'));
-          btn.setAttribute('aria-current', 'true');
-        });
-
-        thumbs.appendChild(btn);
-      });
-      card.appendChild(thumbs);
+    if (display.note) {
+      const note = el('p', 'catalog-note');
+      note.textContent = display.note;
+      card.appendChild(note);
     }
 
     const actions = el('div', 'catalog-actions');
@@ -362,8 +611,84 @@ export function renderCatalog({ mountEl, products }) {
       id: card.id,
       title: titleText,
       subtitle: subtitleText,
+      summary: display.summary,
+      note: display.note,
+      priceLabel: display.priceLabel,
+      product,
     });
   });
 
   return rendered;
+}
+
+export function renderRecommendationRail({ mountEl, items }) {
+  if (!mountEl) return;
+
+  const sourceItems = Array.isArray(items) ? items.filter((item) => item?.id && item?.product) : [];
+  const picks = sourceItems.filter((item) => !item.product?.sold).slice(0, 8);
+
+  if (!picks.length) {
+    mountEl.textContent = '';
+    return;
+  }
+
+  mountEl.textContent = '';
+
+  const wrap = el('section', 'catalog-recommendations');
+  const heading = el('h3', 'catalog-recommendations-title');
+  heading.textContent = 'Other Products You May Like';
+  wrap.appendChild(heading);
+
+  const intro = el('p', 'catalog-recommendations-copy');
+  intro.textContent = 'More clean picks from the current collection.';
+  wrap.appendChild(intro);
+
+  const rail = el('div', 'catalog-rail');
+  picks.forEach((item) => {
+    const link = document.createElement('a');
+    link.className = 'catalog-rail-card';
+    link.href = `#${item.id}`;
+
+    const media = el('div', 'catalog-rail-media');
+    const image = Array.isArray(item.product?.images) ? item.product.images[0] : item.product?.image;
+    if (image) {
+      const { picture } = createResponsivePicture({
+        src: image,
+        alt: item.title,
+        sizes: '(max-width: 640px) 40vw, 180px',
+      });
+      media.appendChild(picture);
+    }
+    link.appendChild(media);
+
+    const title = el('div', 'catalog-rail-name');
+    title.textContent = item.title;
+    link.appendChild(title);
+
+    if (item.summary) {
+      const meta = el('div', 'catalog-rail-meta');
+      meta.textContent = item.summary;
+      link.appendChild(meta);
+    }
+
+    if (item.priceLabel) {
+      const price = el('div', 'catalog-rail-price');
+      appendTextWithPriceSpans(price, item.priceLabel);
+      link.appendChild(price);
+    }
+
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const target = document.getElementById(item.id);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.classList.add('is-highlight');
+      window.setTimeout(() => target.classList.remove('is-highlight'), 1400);
+    });
+
+    rail.appendChild(link);
+  });
+
+  wrap.appendChild(rail);
+  mountEl.appendChild(wrap);
 }

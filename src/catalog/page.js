@@ -1,4 +1,4 @@
-import { renderCatalog } from './renderCatalog.js';
+import { renderCatalog, renderRecommendationRail } from './renderCatalog.js';
 import { iphones } from './data/iphones.js';
 import { macbooks } from './data/macbooks.js';
 import { watches } from './data/watches.js';
@@ -27,6 +27,40 @@ const rendered = renderCatalog({
   mountEl: document.getElementById('catalogGrid'),
   products,
 });
+
+function initRecommendations(items) {
+  const grid = document.getElementById('catalogGrid');
+  const wrap = grid?.closest('.catalog-wrap');
+  if (!wrap || !Array.isArray(items) || !items.length) return;
+
+  const mount = document.createElement('div');
+  renderRecommendationRail({ mountEl: mount, items });
+  if (!mount.childElementCount) return;
+
+  wrap.insertAdjacentElement('afterend', mount);
+}
+
+function initBackToTop() {
+  if (document.querySelector('.back-to-top')) return;
+
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'back-to-top';
+  button.setAttribute('aria-label', 'Back to top');
+  button.textContent = 'Back to Top';
+
+  function syncVisibility() {
+    button.classList.toggle('is-visible', window.scrollY > 520);
+  }
+
+  button.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', syncVisibility, { passive: true });
+  syncVisibility();
+  document.body.appendChild(button);
+}
 
 function initCatalogSearch(items) {
   const input = document.getElementById('navSearch');
@@ -82,3 +116,5 @@ function initCatalogSearch(items) {
 }
 
 initCatalogSearch(rendered);
+initRecommendations(rendered);
+initBackToTop();
