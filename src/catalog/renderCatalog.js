@@ -324,6 +324,15 @@ function buildDisplayContent(product) {
   };
 }
 
+export function buildCatalogCardSummary(product) {
+  const display = buildDisplayContent(product);
+  return {
+    summary: display.summary,
+    note: display.note,
+    priceLabel: display.priceLabel,
+  };
+}
+
 let catalogLightbox;
 
 function ensureCatalogLightbox() {
@@ -420,7 +429,7 @@ export function renderCatalog({ mountEl, products }) {
       frame.style.setProperty('--media-pad', padValue);
     }
 
-    const display = buildDisplayContent(product);
+    const display = buildCatalogCardSummary(product);
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
     const imagesToUse = images.length ? images : [product.image].filter(Boolean);
     const firstImage = imagesToUse[0] || '';
@@ -624,8 +633,9 @@ export function renderCatalog({ mountEl, products }) {
 export function renderRecommendationRail({ mountEl, items }) {
   if (!mountEl) return;
 
-  const sourceItems = Array.isArray(items) ? items.filter((item) => item?.id && item?.product) : [];
+  const sourceItems = Array.isArray(items) ? items.filter((item) => item?.href && item?.title) : [];
   const picks = sourceItems.filter((item) => !item.product?.sold).slice(0, 8);
+  const loopItems = picks.length > 1 ? [...picks, ...picks] : picks;
 
   if (!picks.length) {
     mountEl.textContent = '';
@@ -640,14 +650,16 @@ export function renderRecommendationRail({ mountEl, items }) {
   wrap.appendChild(heading);
 
   const intro = el('p', 'catalog-recommendations-copy');
-  intro.textContent = 'More clean picks from the current collection.';
+  intro.textContent = 'Mixed across iPhones, iPads, MacBooks, Watches, AirPods, gift cards, and accessories.';
   wrap.appendChild(intro);
 
   const rail = el('div', 'catalog-rail');
-  picks.forEach((item) => {
+  rail.setAttribute('aria-label', 'Recommended products');
+  loopItems.forEach((item, index) => {
     const link = document.createElement('a');
     link.className = 'catalog-rail-card';
-    link.href = `#${item.id}`;
+    link.href = item.href;
+    if (index >= picks.length) link.setAttribute('data-loop-clone', 'true');
 
     const media = el('div', 'catalog-rail-media');
     const image = Array.isArray(item.product?.images) ? item.product.images[0] : item.product?.image;
@@ -665,6 +677,12 @@ export function renderRecommendationRail({ mountEl, items }) {
     title.textContent = item.title;
     link.appendChild(title);
 
+    if (item.categoryLabel) {
+      const category = el('div', 'catalog-rail-category');
+      category.textContent = item.categoryLabel;
+      link.appendChild(category);
+    }
+
     if (item.summary) {
       const meta = el('div', 'catalog-rail-meta');
       meta.textContent = item.summary;
@@ -677,17 +695,76 @@ export function renderRecommendationRail({ mountEl, items }) {
       link.appendChild(price);
     }
 
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      const target = document.getElementById(item.id);
-      if (!target) return;
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      target.classList.add('is-highlight');
-      window.setTimeout(() => target.classList.remove('is-highlight'), 1400);
-    });
+    if (item.onClick) {
+      link.addEventListener('click', item.onClick);
+    }
 
     rail.appendChild(link);
   });
+
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  if (!reduceMotion) {
+    let autoSlideTimer = 0;
+    let normalizeRaf = 0;
+
+    function getCycleWidth() {
+      if (picks.length <= 1) return 0;
+      return rail.scrollWidth / 2;
+    }
+
+    function normalizeLoopPosition() {
+      normalizeRaf = 0;
+      const cycleWidth = getCycleWidth();
+      if (!cycleWidth) return;
+
+      if (rail.scrollLeft >= cycleWidth) {
+        rail.scrollLeft -= cycleWidth;
+      }
+    }
+
+    function getStep() {
+      const firstCard = rail.querySelector('.catalog-rail-card');
+      if (!(firstCard instanceof HTMLElement)) return 220;
+      const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap || window.getComputedStyle(rail).gap || '12');
+      return firstCard.offsetWidth + (Number.isFinite(gap) ? gap : 12);
+    }
+
+    function tick() {
+      const maxScroll = rail.scrollWidth - rail.clientWidth;
+      if (maxScroll <= 0) return;
+
+      normalizeLoopPosition();
+
+      const step = getStep();
+      const nextLeft = rail.scrollLeft + step;
+      rail.scrollTo({ left: nextLeft, behavior: 'smooth' });
+    }
+
+    function startAutoSlide() {
+      if (autoSlideTimer) return;
+      autoSlideTimer = window.setInterval(tick, 3200);
+    }
+
+    function stopAutoSlide() {
+      if (!autoSlideTimer) return;
+      window.clearInterval(autoSlideTimer);
+      autoSlideTimer = 0;
+    }
+
+    rail.addEventListener('pointerenter', stopAutoSlide);
+    rail.addEventListener('pointerleave', startAutoSlide);
+    rail.addEventListener('focusin', stopAutoSlide);
+    rail.addEventListener('focusout', startAutoSlide);
+    rail.addEventListener('pointerdown', stopAutoSlide);
+    rail.addEventListener('touchstart', stopAutoSlide, { passive: true });
+    rail.addEventListener('touchend', startAutoSlide, { passive: true });
+    rail.addEventListener('scroll', () => {
+      if (normalizeRaf) return;
+      normalizeRaf = window.requestAnimationFrame(normalizeLoopPosition);
+    }, { passive: true });
+
+    startAutoSlide();
+  }
 
   wrap.appendChild(rail);
   mountEl.appendChild(wrap);

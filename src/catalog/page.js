@@ -1,4 +1,4 @@
-import { renderCatalog, renderRecommendationRail } from './renderCatalog.js';
+import { buildCatalogCardSummary, renderCatalog, renderRecommendationRail } from './renderCatalog.js';
 import { iphones } from './data/iphones.js';
 import { macbooks } from './data/macbooks.js';
 import { watches } from './data/watches.js';
@@ -21,6 +21,16 @@ const map = {
   appletvhome: appleTvHome,
 };
 
+const pageMeta = {
+  iphones: { label: 'iPhone', href: './index.html' },
+  ipads: { label: 'iPad', href: './ipads.html' },
+  macbooks: { label: 'MacBook', href: './macbook.html' },
+  watches: { label: 'Watch', href: './apple-watch.html' },
+  airpods: { label: 'AirPods', href: './airpods.html' },
+  giftcards: { label: 'Gift Card', href: './gift-cards.html' },
+  accessories: { label: 'Accessory', href: './accessories.html' },
+};
+
 const products = map[category] || iphones;
 
 const rendered = renderCatalog({
@@ -33,8 +43,66 @@ function initRecommendations(items) {
   const wrap = grid?.closest('.catalog-wrap');
   if (!wrap || !Array.isArray(items) || !items.length) return;
 
+  const categoryOrder = ['iphones', 'ipads', 'macbooks', 'watches', 'airpods', 'giftcards', 'accessories'];
+  const pools = categoryOrder
+    .filter((key) => Array.isArray(map[key]))
+    .map((key) => {
+      const meta = pageMeta[key];
+      const productItems = map[key]
+        .filter((product) => !product?.sold)
+        .map((product, index) => {
+          const title = product.title || 'Product';
+          const samePage = key === category;
+          const samePageMatch = samePage
+            ? items.find((item) => item?.product === product)
+            : null;
+          const fallbackId = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'product'}-${index + 1}`;
+          const targetId = samePageMatch?.id || `product-${fallbackId}`;
+          const summary = buildCatalogCardSummary(product);
+
+          return {
+            title,
+            product,
+            summary: summary.summary,
+            note: summary.note,
+            priceLabel: summary.priceLabel,
+            categoryLabel: meta?.label || key,
+            href: samePage ? `#${targetId}` : `${meta?.href || './'}#${targetId}`,
+            onClick: samePage
+              ? (event) => {
+                  event.preventDefault();
+                  const target = document.getElementById(targetId);
+                  if (!target) return;
+                  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  target.classList.add('is-highlight');
+                  window.setTimeout(() => target.classList.remove('is-highlight'), 1400);
+                }
+              : null,
+          };
+        });
+
+      return {
+        key,
+        items: productItems,
+      };
+    });
+
+  const mixed = [];
+  let added = true;
+  while (added && mixed.length < 12) {
+    added = false;
+    pools.forEach((pool) => {
+      const nextItem = pool.items.shift();
+      if (!nextItem) return;
+      mixed.push(nextItem);
+      added = true;
+    });
+  }
+
+  if (!mixed.length) return;
+
   const mount = document.createElement('div');
-  renderRecommendationRail({ mountEl: mount, items });
+  renderRecommendationRail({ mountEl: mount, items: mixed });
   if (!mount.childElementCount) return;
 
   wrap.insertAdjacentElement('afterend', mount);
