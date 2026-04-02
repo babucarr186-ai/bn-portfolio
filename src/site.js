@@ -342,12 +342,18 @@ function initScrollBgRotation() {
 }
 
 function initImageViewer() {
-  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-
   let overlayEl = null;
-  let imgEl = null;
+  let contentEl = null;
+  let trackEl = null;
+  let dotsEl = null;
+  let counterEl = null;
+  let closeBtnEl = null;
+  let prevBtnEl = null;
+  let nextBtnEl = null;
+  let slideImages = [];
   let isOpen = false;
-  let prevOverflow = '';
+  let lockedScrollY = 0;
+  let bodyInlineStyles = null;
 
   let gallerySources = [];
   let galleryIndex = 0;
@@ -356,7 +362,70 @@ function initImageViewer() {
   let pointerId = null;
   let startX = 0;
   let startY = 0;
+  let startTime = 0;
+  let dragOffsetX = 0;
+  let gestureAxis = '';
   let isTracking = false;
+  let isAnimating = false;
+  let gestureFrame = 0;
+  let animationTimer = 0;
+
+  const TRACK_PREV = 0;
+  const TRACK_CENTER = -100 / 3;
+  const TRACK_NEXT = -200 / 3;
+
+  function clearAnimationTimer() {
+    if (!animationTimer) return;
+    window.clearTimeout(animationTimer);
+    animationTimer = 0;
+  }
+
+  function setTrackPosition(percent, offsetX = 0) {
+    if (!trackEl) return;
+    trackEl.style.transform = `translate3d(calc(${percent}% + ${offsetX}px), 0, 0)`;
+  }
+
+  function lockBodyScroll() {
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    bodyInlineStyles = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      overflow: document.body.style.overflow,
+    };
+
+    document.body.classList.add('image-viewer-open');
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function unlockBodyScroll() {
+    document.body.classList.remove('image-viewer-open');
+
+    if (bodyInlineStyles) {
+      document.body.style.position = bodyInlineStyles.position;
+      document.body.style.top = bodyInlineStyles.top;
+      document.body.style.width = bodyInlineStyles.width;
+      document.body.style.left = bodyInlineStyles.left;
+      document.body.style.right = bodyInlineStyles.right;
+      document.body.style.overflow = bodyInlineStyles.overflow;
+    } else {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
+    }
+
+    window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
+  }
 
   function ensureOverlay() {
     if (overlayEl) return;
@@ -371,85 +440,294 @@ function initImageViewer() {
     const backdrop = document.createElement('div');
     backdrop.className = 'image-viewer__backdrop';
 
-    const content = document.createElement('div');
-    content.className = 'image-viewer__content';
+    contentEl = document.createElement('div');
+    contentEl.className = 'image-viewer__content';
 
-    imgEl = document.createElement('img');
-    imgEl.className = 'image-viewer__img';
-    imgEl.loading = 'eager';
-    imgEl.decoding = 'async';
-    imgEl.alt = '';
+    closeBtnEl = document.createElement('button');
+    closeBtnEl.type = 'button';
+    closeBtnEl.className = 'image-viewer__close';
+    closeBtnEl.setAttribute('aria-label', 'Close image');
+    closeBtnEl.textContent = 'Close';
 
-    content.appendChild(imgEl);
+    prevBtnEl = document.createElement('button');
+    prevBtnEl.type = 'button';
+    prevBtnEl.className = 'image-viewer__nav image-viewer__nav--prev';
+    prevBtnEl.setAttribute('aria-label', 'Previous image');
+    prevBtnEl.textContent = '‹';
+
+    nextBtnEl = document.createElement('button');
+    nextBtnEl.type = 'button';
+    nextBtnEl.className = 'image-viewer__nav image-viewer__nav--next';
+    nextBtnEl.setAttribute('aria-label', 'Next image');
+    nextBtnEl.textContent = '›';
+
+    counterEl = document.createElement('div');
+    counterEl.className = 'image-viewer__counter';
+    counterEl.setAttribute('aria-live', 'polite');
+
+    const viewportEl = document.createElement('div');
+    viewportEl.className = 'image-viewer__viewport';
+
+    trackEl = document.createElement('div');
+    trackEl.className = 'image-viewer__track';
+
+    slideImages = [-1, 0, 1].map(() => {
+      const slideEl = document.createElement('div');
+      slideEl.className = 'image-viewer__slide';
+      const imgEl = document.createElement('img');
+      imgEl.className = 'image-viewer__img';
+      imgEl.loading = 'lazy';
+      imgEl.decoding = 'async';
+      imgEl.alt = '';
+      imgEl.draggable = false;
+      slideEl.appendChild(imgEl);
+      trackEl.appendChild(slideEl);
+      return imgEl;
+    });
+
+    dotsEl = document.createElement('div');
+    dotsEl.className = 'image-viewer__dots';
+    dotsEl.setAttribute('role', 'tablist');
+    dotsEl.setAttribute('aria-label', 'Image navigation');
+
+    viewportEl.appendChild(trackEl);
+    contentEl.appendChild(closeBtnEl);
+    contentEl.appendChild(counterEl);
+    contentEl.appendChild(prevBtnEl);
+    contentEl.appendChild(nextBtnEl);
+    contentEl.appendChild(viewportEl);
+    contentEl.appendChild(dotsEl);
     overlayEl.appendChild(backdrop);
-    overlayEl.appendChild(content);
+    overlayEl.appendChild(contentEl);
     document.body.appendChild(overlayEl);
 
     backdrop.addEventListener('click', () => close());
-    content.addEventListener('click', (e) => {
-      if (e.target !== content) return;
-      close();
-    });
     overlayEl.addEventListener('click', (e) => {
       if (e.target === overlayEl) close();
     });
 
-    // Swipe navigation (touch + pen + mouse drag)
-    content.addEventListener(
-      'pointerdown',
-      (e) => {
-        if (!isOpen) return;
-        if (!(e instanceof PointerEvent)) return;
-        if (e.pointerType === 'mouse' && e.button !== 0) return;
+    closeBtnEl.addEventListener('click', close);
+    prevBtnEl.addEventListener('click', prev);
+    nextBtnEl.addEventListener('click', next);
 
-        pointerId = e.pointerId;
-        startX = e.clientX;
-        startY = e.clientY;
-        isTracking = true;
-        try {
-          content.setPointerCapture(pointerId);
-        } catch {
-          // ignore
-        }
-      },
-      { passive: true },
-    );
+    contentEl.addEventListener('pointerdown', (e) => {
+      if (!isOpen || gallerySources.length <= 1 || isAnimating) return;
+      if (!(e instanceof PointerEvent)) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
 
-    content.addEventListener(
-      'pointerup',
-      (e) => {
-        if (!isOpen || !isTracking) return;
-        if (pointerId !== null && e.pointerId !== pointerId) return;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startY = e.clientY;
+      startTime = window.performance.now();
+      dragOffsetX = 0;
+      gestureAxis = '';
+      isTracking = true;
+      if (trackEl) trackEl.style.transition = 'none';
 
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
+      try {
+        contentEl.setPointerCapture(pointerId);
+      } catch {
+        // ignore
+      }
+    });
 
-        // Horizontal swipe threshold
-        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-          if (dx < 0) next();
-          else prev();
-        }
+    contentEl.addEventListener('pointermove', (e) => {
+      if (!isOpen || !isTracking || pointerId !== e.pointerId || isAnimating) return;
 
-        isTracking = false;
-        pointerId = null;
-      },
-      { passive: true },
-    );
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
 
-    content.addEventListener(
-      'pointercancel',
-      (e) => {
-        if (pointerId !== null && e.pointerId !== pointerId) return;
-        isTracking = false;
-        pointerId = null;
-      },
-      { passive: true },
-    );
+      if (!gestureAxis && (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8)) {
+        gestureAxis = Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+      }
+
+      if (gestureAxis === 'y') return;
+      if (gestureAxis !== 'x') return;
+
+      e.preventDefault();
+      dragOffsetX = deltaX;
+      applyDragOffset(deltaX);
+    });
+
+    contentEl.addEventListener('pointerup', finishSwipe);
+    contentEl.addEventListener('pointercancel', finishSwipe);
+    contentEl.addEventListener('pointerleave', (e) => {
+      if (!isTracking || e.pointerType === 'mouse') return;
+      finishSwipe(e);
+    });
   }
 
   function clampIndex(nextIndex) {
     const max = Math.max(0, gallerySources.length - 1);
     return Math.max(0, Math.min(max, nextIndex));
+  }
+
+  function clearSlides() {
+    slideImages.forEach((imgEl) => {
+      imgEl.removeAttribute('src');
+      imgEl.removeAttribute('data-src');
+      imgEl.alt = '';
+    });
+  }
+
+  function syncDots() {
+    if (!dotsEl) return;
+    Array.from(dotsEl.children).forEach((dotEl, dotIndex) => {
+      const active = dotIndex === galleryIndex;
+      dotEl.setAttribute('aria-current', active ? 'true' : 'false');
+      dotEl.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+
+  function syncCounter() {
+    if (!counterEl) return;
+    counterEl.hidden = !gallerySources.length;
+    counterEl.textContent = gallerySources.length ? `${galleryIndex + 1} / ${gallerySources.length}` : '';
+  }
+
+  function syncControls() {
+    const multiple = gallerySources.length > 1;
+    const atFirst = galleryIndex <= 0;
+    const atLast = galleryIndex >= gallerySources.length - 1;
+
+    if (prevBtnEl) {
+      prevBtnEl.hidden = !multiple;
+      prevBtnEl.disabled = !multiple || atFirst;
+    }
+
+    if (nextBtnEl) {
+      nextBtnEl.hidden = !multiple;
+      nextBtnEl.disabled = !multiple || atLast;
+    }
+
+    if (dotsEl) dotsEl.hidden = !multiple;
+  }
+
+  function renderDots() {
+    if (!dotsEl) return;
+    dotsEl.textContent = '';
+
+    if (gallerySources.length <= 1) {
+      dotsEl.hidden = true;
+      return;
+    }
+
+    dotsEl.hidden = false;
+    gallerySources.forEach((_, dotIndex) => {
+      const dotEl = document.createElement('button');
+      dotEl.type = 'button';
+      dotEl.className = 'image-viewer__dot';
+      dotEl.setAttribute('role', 'tab');
+      dotEl.setAttribute('aria-label', `View image ${dotIndex + 1}`);
+      dotEl.addEventListener('click', () => setImage(dotIndex));
+      dotsEl.appendChild(dotEl);
+    });
+  }
+
+  function renderTrackImages() {
+    if (!slideImages.length || !gallerySources.length) return;
+
+    slideImages.forEach((imgEl, slotIndex) => {
+      const relativeOffset = slotIndex - 1;
+      const sourceIndex = galleryIndex + relativeOffset;
+      const src = gallerySources[sourceIndex] || '';
+
+      if (!src) {
+        imgEl.removeAttribute('src');
+        imgEl.removeAttribute('data-src');
+        imgEl.alt = '';
+        return;
+      }
+
+      if (imgEl.dataset.src !== src) {
+        imgEl.src = src;
+        imgEl.dataset.src = src;
+      }
+
+      imgEl.loading = slotIndex === 1 ? 'eager' : 'lazy';
+      imgEl.alt = `${galleryAlt || 'Product photo'} (${sourceIndex + 1} of ${gallerySources.length})`;
+    });
+
+    if (trackEl) {
+      trackEl.style.transition = 'none';
+      setTrackPosition(TRACK_CENTER, 0);
+      window.requestAnimationFrame(() => {
+        if (trackEl && isOpen) trackEl.style.transition = '';
+      });
+    }
+
+    syncDots();
+    syncCounter();
+    syncControls();
+    preloadAround(galleryIndex);
+  }
+
+  function resetTrackPosition() {
+    dragOffsetX = 0;
+    clearAnimationTimer();
+
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
+
+    if (trackEl) {
+      trackEl.style.transition = '';
+      setTrackPosition(TRACK_CENTER, 0);
+    }
+  }
+
+  function applyDragOffset(offsetX) {
+    if (gestureFrame) return;
+
+    gestureFrame = window.requestAnimationFrame(() => {
+      gestureFrame = 0;
+      const width = contentEl?.clientWidth || window.innerWidth || 1;
+      const limitedOffset = Math.max(-width * 0.9, Math.min(width * 0.9, offsetX));
+      if (!trackEl) return;
+      trackEl.style.transition = 'none';
+      setTrackPosition(TRACK_CENTER, limitedOffset);
+    });
+  }
+
+  function snapBack() {
+    if (!trackEl) return;
+    trackEl.style.transition = 'transform 200ms ease';
+    setTrackPosition(TRACK_CENTER, 0);
+    clearAnimationTimer();
+    animationTimer = window.setTimeout(() => {
+      animationTimer = 0;
+      if (trackEl && isOpen) trackEl.style.transition = '';
+    }, 200);
+  }
+
+  function animateToImage(direction) {
+    if (!trackEl || !gallerySources.length || gallerySources.length <= 1 || isAnimating) return;
+
+    const targetIndex = clampIndex(galleryIndex + direction);
+    if (targetIndex === galleryIndex) {
+      snapBack();
+      return;
+    }
+
+    isAnimating = true;
+    isTracking = false;
+    dragOffsetX = 0;
+    clearAnimationTimer();
+    trackEl.style.transition = 'transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1)';
+    setTrackPosition(direction > 0 ? TRACK_NEXT : TRACK_PREV, 0);
+
+    animationTimer = window.setTimeout(() => {
+      animationTimer = 0;
+      if (!isOpen) {
+        isAnimating = false;
+        return;
+      }
+
+      galleryIndex = targetIndex;
+      renderTrackImages();
+      isAnimating = false;
+    }, 220);
   }
 
   function preloadAround(index) {
@@ -465,27 +743,8 @@ function initImageViewer() {
   }
 
   function setImage(index) {
-    if (!imgEl) return;
     galleryIndex = clampIndex(index);
-    const src = gallerySources[galleryIndex];
-    if (!src) return;
-
-    imgEl.alt = galleryAlt;
-
-    if (reduceMotion) {
-      imgEl.src = src;
-      preloadAround(galleryIndex);
-      return;
-    }
-
-    imgEl.style.transition = 'opacity 120ms ease';
-    imgEl.style.opacity = '0';
-    window.setTimeout(() => {
-      if (!imgEl || !isOpen) return;
-      imgEl.src = src;
-      imgEl.style.opacity = '1';
-      preloadAround(galleryIndex);
-    }, 110);
+    renderTrackImages();
   }
 
   function openGallery({ sources, index, alt }) {
@@ -496,28 +755,25 @@ function initImageViewer() {
 
     gallerySources = Array.from(new Set(cleaned));
     galleryAlt = alt || 'Product photo';
+    galleryIndex = clampIndex(typeof index === 'number' ? index : 0);
+
+    renderDots();
 
     overlayEl.removeAttribute('hidden');
-    prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    lockBodyScroll();
     isOpen = true;
-
-    if (!reduceMotion) {
-      overlayEl.classList.add('is-open');
-      window.setTimeout(() => overlayEl && overlayEl.classList.add('is-ready'), 0);
-    }
-
-    setImage(typeof index === 'number' ? index : 0);
+    setImage(galleryIndex);
+    if (closeBtnEl) closeBtnEl.focus();
   }
 
   function next() {
     if (!isOpen) return;
-    setImage(galleryIndex + 1);
+    animateToImage(1);
   }
 
   function prev() {
     if (!isOpen) return;
-    setImage(galleryIndex - 1);
+    animateToImage(-1);
   }
 
   function open(payload) {
@@ -534,18 +790,59 @@ function initImageViewer() {
   function close() {
     if (!overlayEl || !isOpen) return;
     overlayEl.setAttribute('hidden', '');
-    overlayEl.classList.remove('is-open', 'is-ready');
-    document.body.style.overflow = prevOverflow;
     isOpen = false;
+    isTracking = false;
+    isAnimating = false;
+    pointerId = null;
+    gestureAxis = '';
+    resetTrackPosition();
+    unlockBodyScroll();
 
     gallerySources = [];
     galleryIndex = 0;
     galleryAlt = 'Product photo';
-
-    if (imgEl) {
-      imgEl.src = '';
-      imgEl.alt = '';
+    if (dotsEl) dotsEl.textContent = '';
+    if (counterEl) {
+      counterEl.textContent = '';
+      counterEl.hidden = true;
     }
+    clearSlides();
+  }
+
+  function finishSwipe(e) {
+    if (!isTracking || (e && pointerId !== null && e.pointerId !== pointerId)) return;
+
+    const clientX = e?.clientX ?? startX + dragOffsetX;
+    const width = contentEl?.clientWidth || window.innerWidth || 1;
+    const elapsed = Math.max((window.performance.now() - startTime) || 1, 1);
+    const velocityX = dragOffsetX / elapsed;
+    const shouldNavigate =
+      gestureAxis === 'x' &&
+      (Math.abs(dragOffsetX) > Math.max(56, width * 0.14) ||
+        (Math.abs(velocityX) > 0.55 && Math.abs(dragOffsetX) > 18));
+
+    try {
+      if (pointerId !== null && contentEl) contentEl.releasePointerCapture(pointerId);
+    } catch {
+      // ignore
+    }
+
+    isTracking = false;
+    pointerId = null;
+    gestureAxis = '';
+    dragOffsetX = clientX - startX;
+
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
+
+    if (shouldNavigate) {
+      animateToImage(dragOffsetX < 0 ? 1 : -1);
+      return;
+    }
+
+    snapBack();
   }
 
   window.openImageViewer = open;

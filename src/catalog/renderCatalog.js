@@ -338,12 +338,20 @@ let catalogLightbox;
 function ensureCatalogLightbox() {
   if (catalogLightbox) return catalogLightbox;
 
+  const TRACK_PREV = 0;
+  const TRACK_CENTER = -100 / 3;
+  const TRACK_NEXT = -200 / 3;
+
   const overlay = el('div', 'catalog-lightbox');
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Product image viewer');
   overlay.setAttribute('aria-hidden', 'true');
 
   const inner = el('div', 'catalog-lightbox-inner');
+  const stage = el('div', 'catalog-lightbox-stage');
+  const viewport = el('div', 'catalog-lightbox-viewport');
+  const track = el('div', 'catalog-lightbox-track');
 
   const closeBtn = document.createElement('button');
   closeBtn.type = 'button';
@@ -351,46 +359,453 @@ function ensureCatalogLightbox() {
   closeBtn.setAttribute('aria-label', 'Close image');
   closeBtn.textContent = 'Close';
 
-  const img = document.createElement('img');
-  img.className = 'catalog-lightbox-img';
-  img.alt = '';
-  img.decoding = 'async';
+  const prevBtn = document.createElement('button');
+  prevBtn.type = 'button';
+  prevBtn.className = 'catalog-lightbox-nav catalog-lightbox-nav-prev';
+  prevBtn.setAttribute('aria-label', 'Previous image');
+  prevBtn.textContent = '‹';
 
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'catalog-lightbox-nav catalog-lightbox-nav-next';
+  nextBtn.setAttribute('aria-label', 'Next image');
+  nextBtn.textContent = '›';
+
+  const dotsWrap = el('div', 'catalog-lightbox-dots');
+  dotsWrap.setAttribute('role', 'tablist');
+  dotsWrap.setAttribute('aria-label', 'Image navigation');
+
+  const counter = el('div', 'catalog-lightbox-counter');
+  counter.setAttribute('aria-live', 'polite');
+  counter.hidden = true;
+
+  const slideImages = [-1, 0, 1].map(() => {
+    const slide = el('div', 'catalog-lightbox-slide');
+    const img = document.createElement('img');
+    img.className = 'catalog-lightbox-img';
+    img.alt = '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.draggable = false;
+    slide.appendChild(img);
+    track.appendChild(slide);
+    return img;
+  });
+
+  viewport.appendChild(track);
+  stage.appendChild(viewport);
   inner.appendChild(closeBtn);
-  inner.appendChild(img);
+  inner.appendChild(counter);
+  inner.appendChild(prevBtn);
+  inner.appendChild(nextBtn);
+  inner.appendChild(stage);
+  inner.appendChild(dotsWrap);
   overlay.appendChild(inner);
   document.body.appendChild(overlay);
 
   let lastFocus;
+  let isOpen = false;
+  let gallerySources = [];
+  let galleryIndex = 0;
+  let galleryAlt = 'Product image';
+  let indicatorDots = [];
+  let lockedScrollY = 0;
+  let bodyInlineStyles = null;
+  let pointerId = null;
+  let startX = 0;
+  let startY = 0;
+  let startTime = 0;
+  let gestureAxis = '';
+  let dragOffsetX = 0;
+  let isTracking = false;
+  let isAnimating = false;
+  let gestureFrame = 0;
+  let animationTimer = 0;
+
+  function normalizeIndex(nextIndex) {
+    const total = gallerySources.length;
+    if (!total) return 0;
+    return (nextIndex % total + total) % total;
+  }
+
+  function publicSources() {
+    return gallerySources.map((src) => publicAssetUrl(src));
+  }
+
+  function clearAnimationTimer() {
+    if (!animationTimer) return;
+    window.clearTimeout(animationTimer);
+    animationTimer = 0;
+  }
+
+  function setTrackPosition(percent, offsetX = 0) {
+    track.style.transform = `translate3d(calc(${percent}% + ${offsetX}px), 0, 0)`;
+  }
+
+  function lockBodyScroll() {
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    bodyInlineStyles = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      overflow: document.body.style.overflow,
+    };
+
+    document.body.classList.add('catalog-lightbox-open');
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function unlockBodyScroll() {
+    document.body.classList.remove('catalog-lightbox-open');
+    if (bodyInlineStyles) {
+      document.body.style.position = bodyInlineStyles.position;
+      document.body.style.top = bodyInlineStyles.top;
+      document.body.style.width = bodyInlineStyles.width;
+      document.body.style.left = bodyInlineStyles.left;
+      document.body.style.right = bodyInlineStyles.right;
+      document.body.style.overflow = bodyInlineStyles.overflow;
+    } else {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.overflow = '';
+    }
+    window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
+  }
+
+  function preloadAround(index) {
+    if (gallerySources.length <= 1) return;
+
+    const sources = publicSources();
+    [normalizeIndex(index - 1), normalizeIndex(index + 1)].forEach((sourceIndex) => {
+      const src = sources[sourceIndex];
+      if (!src) return;
+      const preloaded = new Image();
+      preloaded.decoding = 'async';
+      preloaded.src = src;
+    });
+  }
+
+  function clearSlides() {
+    slideImages.forEach((slideImg) => {
+      slideImg.removeAttribute('src');
+      slideImg.removeAttribute('data-src');
+      slideImg.alt = '';
+    });
+  }
+
+  function renderIndicators() {
+    dotsWrap.textContent = '';
+    indicatorDots = [];
+
+    if (gallerySources.length <= 1) {
+      dotsWrap.hidden = true;
+      return;
+    }
+
+    dotsWrap.hidden = false;
+
+    gallerySources.forEach((_, dotIndex) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'catalog-lightbox-dot';
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', `View image ${dotIndex + 1}`);
+      dot.setAttribute('aria-selected', dotIndex === galleryIndex ? 'true' : 'false');
+      dot.setAttribute('aria-current', dotIndex === galleryIndex ? 'true' : 'false');
+      dot.addEventListener('click', () => setImage(dotIndex));
+      indicatorDots.push(dot);
+      dotsWrap.appendChild(dot);
+    });
+  }
+
+  function syncIndicators() {
+    indicatorDots.forEach((dot, dotIndex) => {
+      const isActive = dotIndex === galleryIndex;
+      dot.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+    });
+  }
+
+  function syncControls() {
+    const multiple = gallerySources.length > 1;
+    prevBtn.hidden = !multiple;
+    nextBtn.hidden = !multiple;
+    prevBtn.disabled = !multiple;
+    nextBtn.disabled = !multiple;
+    counter.hidden = !gallerySources.length;
+  }
+
+  function syncCounter() {
+    if (!gallerySources.length) {
+      counter.textContent = '';
+      counter.hidden = true;
+      return;
+    }
+
+    counter.hidden = false;
+    counter.textContent = `${galleryIndex + 1} / ${gallerySources.length}`;
+  }
+
+  function resetTrackPosition() {
+    dragOffsetX = 0;
+    clearAnimationTimer();
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
+    track.style.transition = '';
+    setTrackPosition(TRACK_CENTER, 0);
+  }
+
+  function applyDragOffset(offsetX) {
+    if (gestureFrame) return;
+
+    gestureFrame = window.requestAnimationFrame(() => {
+      gestureFrame = 0;
+      const width = stage.clientWidth || window.innerWidth || 1;
+      const limitedOffset = Math.max(-width * 0.9, Math.min(width * 0.9, offsetX));
+      track.style.transition = 'none';
+      setTrackPosition(TRACK_CENTER, limitedOffset);
+    });
+  }
+
+  function renderTrackImages() {
+    if (!gallerySources.length) return;
+
+    const sources = publicSources();
+    slideImages.forEach((slideImg, slotIndex) => {
+      const relativeOffset = slotIndex - 1;
+      const sourceIndex = gallerySources.length <= 1 && relativeOffset !== 0
+        ? -1
+        : normalizeIndex(galleryIndex + relativeOffset);
+      const src = sourceIndex >= 0 ? sources[sourceIndex] : '';
+
+      if (!src) {
+        slideImg.removeAttribute('src');
+        slideImg.removeAttribute('data-src');
+        slideImg.alt = '';
+        return;
+      }
+
+      if (slideImg.dataset.src !== src) {
+        slideImg.src = src;
+        slideImg.dataset.src = src;
+      }
+
+      slideImg.alt = `${galleryAlt || 'Product image'} (${sourceIndex + 1} of ${gallerySources.length})`;
+      slideImg.loading = slotIndex === 1 ? 'eager' : 'lazy';
+    });
+
+    track.style.transition = 'none';
+    setTrackPosition(TRACK_CENTER, 0);
+    syncControls();
+    syncCounter();
+    syncIndicators();
+    preloadAround(galleryIndex);
+
+    window.requestAnimationFrame(() => {
+      if (!isOpen) return;
+      track.style.transition = '';
+    });
+  }
+
+  function setImage(nextIndex) {
+    if (!gallerySources.length) return;
+    galleryIndex = normalizeIndex(nextIndex);
+    renderTrackImages();
+  }
+
+  function snapBack() {
+    track.style.transition = 'transform 200ms ease';
+    setTrackPosition(TRACK_CENTER, 0);
+    clearAnimationTimer();
+    animationTimer = window.setTimeout(() => {
+      animationTimer = 0;
+      if (!isOpen) return;
+      track.style.transition = '';
+    }, 200);
+  }
+
+  function animateToImage(direction) {
+    if (!gallerySources.length || gallerySources.length <= 1 || isAnimating) return;
+
+    isAnimating = true;
+    isTracking = false;
+    dragOffsetX = 0;
+    clearAnimationTimer();
+    track.style.transition = 'transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1)';
+    setTrackPosition(direction > 0 ? TRACK_NEXT : TRACK_PREV, 0);
+
+    animationTimer = window.setTimeout(() => {
+      animationTimer = 0;
+      if (!isOpen) {
+        isAnimating = false;
+        return;
+      }
+
+      galleryIndex = normalizeIndex(galleryIndex + direction);
+      renderTrackImages();
+      isAnimating = false;
+    }, 220);
+  }
+
+  function next() {
+    animateToImage(1);
+  }
+
+  function prev() {
+    animateToImage(-1);
+  }
 
   function close() {
+    if (!isOpen) return;
     overlay.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('catalog-lightbox-open');
+    isOpen = false;
+    isAnimating = false;
+    isTracking = false;
+    pointerId = null;
+    gestureAxis = '';
+    resetTrackPosition();
+    unlockBodyScroll();
+    gallerySources = [];
+    galleryIndex = 0;
+    galleryAlt = 'Product image';
+    indicatorDots = [];
+    dotsWrap.textContent = '';
+    prevBtn.hidden = true;
+    nextBtn.hidden = true;
+    counter.textContent = '';
+    counter.hidden = true;
+    clearSlides();
     if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
     lastFocus = null;
   }
 
-  function open({ src, alt, focusEl }) {
+  function open({ src, sources, index, alt, focusEl }) {
+    const providedSources = Array.isArray(sources) ? sources.filter(Boolean) : [];
+    const uniqueSources = Array.from(new Set(providedSources.length ? providedSources : [src].filter(Boolean)));
+    if (!uniqueSources.length) return;
+
     lastFocus = focusEl || document.activeElement;
-    img.src = publicAssetUrl(src);
-    img.alt = alt || 'Product image';
+    gallerySources = uniqueSources;
+    galleryAlt = alt || 'Product image';
+    galleryIndex = normalizeIndex(typeof index === 'number' ? index : 0);
+    renderIndicators();
     overlay.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('catalog-lightbox-open');
+    lockBodyScroll();
+    isOpen = true;
+    setImage(galleryIndex);
     closeBtn.focus();
   }
 
   closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
 
   overlay.addEventListener('click', (event) => {
     if (event.target === overlay) close();
   });
 
-  document.addEventListener('keydown', (event) => {
-    if (overlay.getAttribute('aria-hidden') === 'true') return;
-    if (event.key === 'Escape') close();
+  stage.addEventListener('pointerdown', (event) => {
+    if (!isOpen || gallerySources.length <= 1 || isAnimating) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+    startTime = window.performance.now();
+    gestureAxis = '';
+    dragOffsetX = 0;
+    isTracking = true;
+    track.style.transition = 'none';
+
+    try {
+      stage.setPointerCapture(pointerId);
+    } catch {
+      // Ignore capture failures.
+    }
   });
 
-  catalogLightbox = { open, close, overlay, img, closeBtn };
+  stage.addEventListener('pointermove', (event) => {
+    if (!isTracking || pointerId !== event.pointerId || isAnimating) return;
+
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+
+    if (!gestureAxis && (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8)) {
+      gestureAxis = Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+    }
+
+    if (gestureAxis === 'y') return;
+    if (gestureAxis !== 'x') return;
+
+    event.preventDefault();
+    dragOffsetX = deltaX;
+    applyDragOffset(deltaX);
+  });
+
+  function finishSwipe(event) {
+    if (!isTracking || (event && pointerId !== null && event.pointerId !== pointerId)) return;
+
+    const clientX = event?.clientX ?? startX + dragOffsetX;
+    const width = stage.clientWidth || window.innerWidth || 1;
+    const elapsed = Math.max((window.performance.now() - startTime) || 1, 1);
+    const velocityX = dragOffsetX / elapsed;
+    const shouldNavigate =
+      gestureAxis === 'x' &&
+      (Math.abs(dragOffsetX) > Math.max(56, width * 0.14) ||
+        (Math.abs(velocityX) > 0.55 && Math.abs(dragOffsetX) > 18));
+    const direction = dragOffsetX < 0 ? 1 : -1;
+
+    try {
+      if (pointerId !== null) stage.releasePointerCapture(pointerId);
+    } catch {
+      // Ignore capture release failures.
+    }
+
+    isTracking = false;
+    pointerId = null;
+    gestureAxis = '';
+    dragOffsetX = clientX - startX;
+
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
+
+    if (shouldNavigate) {
+      animateToImage(direction);
+      return;
+    }
+
+    snapBack();
+  }
+
+  stage.addEventListener('pointerup', finishSwipe);
+  stage.addEventListener('pointercancel', finishSwipe);
+  stage.addEventListener('pointerleave', (event) => {
+    if (!isTracking || event.pointerType === 'mouse') return;
+    finishSwipe(event);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (!isOpen) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') prev();
+    if (event.key === 'ArrowRight') next();
+  });
+
+  catalogLightbox = { open, close, overlay, closeBtn };
   return catalogLightbox;
 }
 
@@ -511,6 +926,8 @@ export function renderCatalog({ mountEl, products }) {
       if (!activeImage) return;
       ensureCatalogLightbox().open({
         src: activeImage,
+        sources: imagesToUse,
+        index: currentImageIndex,
         alt: mainImgEl?.alt || titleText,
         focusEl: zoomBtn,
       });
