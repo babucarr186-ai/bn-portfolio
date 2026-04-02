@@ -333,6 +333,50 @@ html[data-category='iphones'] #inventory.section{
   overflow-wrap: break-word;
 }
 
+.seo-link-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.seo-link-card{
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  background: rgba(255,255,255,0.76);
+  border: 1px solid rgba(11,15,22,0.08);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.seo-link-card:hover{
+  transform: translateY(-2px);
+  border-color: rgba(11,15,22,0.16);
+  box-shadow: 0 20px 44px rgba(0,0,0,0.1);
+}
+
+.seo-link-eyebrow{
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(11,15,22,0.46);
+}
+
+.seo-link-card strong{
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.seo-link-text{
+  color: var(--muted);
+  font-weight: 600;
+  line-height: 1.42;
+}
+
 /* iPhones page profile header */
 .profile-header{
   display: grid;
