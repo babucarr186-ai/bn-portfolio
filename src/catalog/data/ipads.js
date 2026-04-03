@@ -1,5 +1,14 @@
 export const ipads = [
   {
+    title: 'iPad (5th generation)',
+    subtitle: 'Strong used • Good condition • Box and charger',
+    kind: 'square',
+    description:
+      'Strong used iPad (5th generation) in good condition. Comes with box and charger. Suitable for browsing, videos, schoolwork, and everyday use.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability and price for iPad (5th generation), strong used, good condition, with box and charger. In The Gambia.',
+  },
+  {
     title: 'iPad (10th generation) — 64GB — Silver (Wi‑Fi)',
     subtitle: 'Used • 64GB • Wi‑Fi • Silver • GMD 25,000',
     kind: 'square',

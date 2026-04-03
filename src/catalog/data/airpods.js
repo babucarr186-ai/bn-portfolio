@@ -1,5 +1,23 @@
 export const airpods = [
   {
+    title: 'AirPods (2nd generation)',
+    subtitle:
+      'Used (Like new) • Ready to use • GMD 4,250',
+    kind: 'square',
+    price: 4250,
+    description:
+      'Clean used AirPods in like-new condition, ready to use for calls, music, and everyday listening.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: AirPods (2nd generation) — used (like new), ready to use. Price GMD 4,250. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/airpods/airpods-2nd-gen-1.jpg?v=20260403-1',
+      'products/airpods/airpods-2nd-gen-2.jpg?v=20260403-1',
+      'products/airpods/airpods-2nd-gen-3.jpg?v=20260403-1',
+    ],
+  },
+  {
     title: 'AirPods Max (2024)',
     subtitle:
       'Beige • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Excellent condition • GMD 36,550',
