@@ -63,3 +63,13 @@ Products (requested list):
 - iphone-14-white-128gb-1.jpg
 - iphone-14-white-128gb-2.jpg
 - iphone-14-white-128gb-3.jpg
+
+10) iPhone 13 — Pink — 128GB
+- iphone-13-pink-128gb/iphone-13-pink-128gb-1.jpg
+- iphone-13-pink-128gb/iphone-13-pink-128gb-2.jpg
+- iphone-13-pink-128gb/iphone-13-pink-128gb-3.jpg
+
+11) iPhone 13 Pro — Gray — 128GB
+- iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-1.jpg
+- iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-2.jpg
+- iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-3.jpg

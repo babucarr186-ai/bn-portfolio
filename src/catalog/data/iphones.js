@@ -98,6 +98,12 @@ export const iphones = [
     description:
       'Color Gray. Storage 128GB. Condition used. Battery health 86%. Sourced from Germany. Price GMD 25,500.',
     productTitle: 'iPhone 13 Pro (128GB) — Gray — Used — Battery 86% — Germany sourced',
+    images: [
+      'products/iphones/iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-1.jpg',
+      'products/iphones/iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-2.jpg',
+      'products/iphones/iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-3.jpg',
+      'products/iphones/iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-4.jpg',
+    ],
   },
   {
     title: 'iPhone 13',
@@ -113,6 +119,11 @@ export const iphones = [
     description:
       'Color Pink. Storage 128GB. Condition used (like new). Battery health 87%. Sourced from Germany. Price GMD 24,000.',
     productTitle: 'iPhone 13 (128GB) — Pink — Used (Like new) — Battery 87% — Germany sourced',
+    images: [
+      'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-1.jpg',
+      'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-2.jpg',
+      'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-3.jpg',
+    ],
   },
   {
     title: 'iPhone 13',
