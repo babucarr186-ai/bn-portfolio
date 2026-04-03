@@ -4,6 +4,7 @@ export const airpods = [
     subtitle:
       'Used (Like new) • Ready to use • GMD 4,250',
     kind: 'square',
+    sold: true,
     price: 4250,
     description:
       'Clean used AirPods in like-new condition, ready to use for calls, music, and everyday listening.',

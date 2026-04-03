@@ -1,12 +1,16 @@
 export const ipads = [
   {
-    title: 'iPad (5th generation)',
-    subtitle: 'Strong used • Good condition • Box and charger',
+    title: 'iPad Pro — Space Gray',
+    subtitle: 'Strong used • Good condition • Box included',
     kind: 'square',
+    images: [
+      'products/ipads/ipad-5th-gen-box/ipad-5th-gen-1.jpg?v=20260403-1',
+      'products/ipads/ipad-5th-gen-box/ipad-5th-gen-2.jpg?v=20260403-1',
+    ],
     description:
-      'Strong used iPad (5th generation) in good condition. Comes with box and charger. Suitable for browsing, videos, schoolwork, and everyday use.',
+      'Strong used iPad Pro in good condition. Comes with box. Suitable for browsing, videos, schoolwork, and everyday use.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability and price for iPad (5th generation), strong used, good condition, with box and charger. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability and price for iPad Pro in Space Gray, strong used, good condition, with box. In The Gambia.',
   },
   {
     title: 'iPad (10th generation) — 64GB — Silver (Wi‑Fi)',
@@ -21,14 +25,6 @@ export const ipads = [
     ],
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for iPad (10th generation) — 64GB, Silver (Wi‑Fi), used. Price GMD 25,000. In The Gambia.',
-  },
-  {
-    title: 'iPad Pro (2020) — 256GB — Space Gray',
-    subtitle: 'Used • Tested • 12-month warranty',
-    kind: 'square',
-    images: ['products/ipads/ipad-pro-12-9-2022-1.jpg?v=20260301-1'],
-    whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability and price for iPad Pro (2020) 256GB Space Gray (used) in The Gambia.',
   },
   {
     title: 'iPad Air (2020) — 64GB — Space Gray',
