@@ -6,6 +6,21 @@ import { iphones } from './catalog/data/iphones.js';
 import { macbooks } from './catalog/data/macbooks.js';
 import { watches } from './catalog/data/watches.js';
 
+// Global safety net: catch uncaught errors and unhandled promise rejections on
+// non-React pages so a single runtime error doesn't silently freeze the UI.
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', (event) => {
+    if (import.meta.env.DEV) {
+      console.error('[site] Uncaught error:', event.error || event.message);
+    }
+  });
+  window.addEventListener('unhandledrejection', (event) => {
+    if (import.meta.env.DEV) {
+      console.error('[site] Unhandled promise rejection:', event.reason);
+    }
+  });
+}
+
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
 const WHATSAPP_NUMBER = '4915679652076';
@@ -1105,9 +1120,18 @@ function initChatWidget() {
   renderInitial();
 }
 
-initWhatsAppLinks();
-initHeaderActions();
-initAvailabilityForm();
-initScrollBgRotation();
-initImageViewer();
-initChatWidget();
+// Guard each init so one failure does not prevent the rest from running.
+[
+  ['initWhatsAppLinks', initWhatsAppLinks],
+  ['initHeaderActions', initHeaderActions],
+  ['initAvailabilityForm', initAvailabilityForm],
+  ['initScrollBgRotation', initScrollBgRotation],
+  ['initImageViewer', initImageViewer],
+  ['initChatWidget', initChatWidget],
+].forEach(([name, fn]) => {
+  try {
+    fn();
+  } catch (e) {
+    if (import.meta.env.DEV) console.error(`[site] ${name} failed:`, e);
+  }
+});

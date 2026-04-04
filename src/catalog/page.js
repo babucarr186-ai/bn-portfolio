@@ -183,6 +183,14 @@ function initCatalogSearch(items) {
   });
 }
 
-initCatalogSearch(rendered);
-initRecommendations(rendered);
-initBackToTop();
+[
+  ['initCatalogSearch', () => initCatalogSearch(rendered)],
+  ['initRecommendations', () => initRecommendations(rendered)],
+  ['initBackToTop', initBackToTop],
+].forEach(([name, fn]) => {
+  try {
+    fn();
+  } catch (e) {
+    if (import.meta.env.DEV) console.error(`[catalog/page] ${name} failed:`, e);
+  }
+});
