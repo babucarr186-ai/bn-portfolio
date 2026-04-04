@@ -822,6 +822,10 @@ export function renderCatalog({ mountEl, products }) {
   mountEl.textContent = '';
 
   const rendered = [];
+  if (!Array.isArray(products)) {
+    if (import.meta.env.DEV) console.warn('[renderCatalog] products is not an array:', products);
+    return rendered;
+  }
 
   products.forEach((product, index) => {
     const card = el('article', 'catalog-card');
