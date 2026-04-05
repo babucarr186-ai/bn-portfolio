@@ -121,44 +121,9 @@ function getVisibleProducts(products) {
   return (Array.isArray(products) ? products : []).filter((product) => !product?.sold).slice(0, 12);
 }
 
-function buildHref(index, product, file) {
-  const id = `product-${slugify(product?.title || `product-${index + 1}`)}-${index + 1}`;
-  return file === 'index.html' ? `#${id}` : `#${id}`;
-}
-
 function buildAbsoluteHref(index, product, absoluteUrl) {
   const id = `product-${slugify(product?.title || `product-${index + 1}`)}-${index + 1}`;
   return `${absoluteUrl}#${id}`;
-}
-
-function buildLine(product) {
-  const summary = buildCatalogCardSummary(product);
-  const lineParts = [summary.summary, summary.priceLabel].filter(Boolean);
-  return lineParts.join(' — ');
-}
-
-function buildSectionMarkup(config) {
-  const items = getVisibleProducts(config.products);
-  const listMarkup = items
-    .map((product, index) => {
-      const href = buildHref(index, product, config.file);
-      const line = buildLine(product);
-      return `          <li><a href="${href}">${escapeHtml(product.title || 'Product')}</a>${line ? ` — ${escapeHtml(line)}` : ''}</li>`;
-    })
-    .join('\n');
-
-  return `<!-- SEO-GENERATED:START ${config.file} -->
-    <section class="section section-compact" aria-label="Current ${escapeHtml(config.pageLabel)} in The Gambia">
-      <div class="container">
-        <h2 class="section-title">Current ${escapeHtml(config.pageLabel)} in The Gambia</h2>
-        <p class="section-lead">${escapeHtml(config.introCopy)}</p>
-        <div class="notice"><strong>Service areas:</strong> ${escapeHtml(config.locationCopy)}</div>
-        <ul class="bullets">
-${listMarkup}
-        </ul>
-      </div>
-    </section>
-<!-- SEO-GENERATED:END ${config.file} -->`;
 }
 
 function buildSchemaMarkup(config) {
@@ -226,19 +191,9 @@ async function updatePage(config) {
   const raw = await readFile(filePath, 'utf8');
   const cleaned = stripGeneratedBlocks(raw, config.file);
 
-  const sectionMarkup = buildSectionMarkup(config);
   const schemaMarkup = buildSchemaMarkup(config);
 
-  const withSection = cleaned.replace(
-    /(<div class="catalog-grid" id="catalogGrid"><\/div>\s*<\/div>\s*<\/div>\s*<\/section>)/,
-    `$1\n\n${sectionMarkup}`,
-  );
-
-  if (withSection === cleaned) {
-    throw new Error(`Could not inject SEO section into ${config.file}`);
-  }
-
-  const withSchema = withSection.replace('</head>', `${schemaMarkup}\n</head>`);
+  const withSchema = cleaned.replace('</head>', `${schemaMarkup}\n</head>`);
   await writeFile(filePath, withSchema, 'utf8');
 }
 
