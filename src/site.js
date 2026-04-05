@@ -424,6 +424,7 @@ function initImageViewer() {
       document.body.style.left = bodyInlineStyles.left;
       document.body.style.right = bodyInlineStyles.right;
       document.body.style.overflow = bodyInlineStyles.overflow;
+      bodyInlineStyles = null;
     } else {
       document.body.style.position = '';
       document.body.style.top = '';
