@@ -951,6 +951,11 @@ footer{
 
 /* In-page image zoom (lightbox) */
 body.catalog-lightbox-open{
+  position: fixed;
+  top: calc(-1 * var(--cl-scroll-y, 0px));
+  left: 0;
+  right: 0;
+  width: 100%;
   overflow: hidden;
   overscroll-behavior: contain;
   touch-action: none;
@@ -968,6 +973,7 @@ body.catalog-lightbox-open{
   pointer-events: none;
   transition: opacity 160ms ease;
   z-index: 1000;
+  contain: layout style;
 }
 
 .catalog-lightbox[aria-hidden="false"]{
@@ -1551,6 +1557,11 @@ body.catalog-lightbox-open{
 
 /* Full-screen image viewer (tap inventory image to enlarge) */
 body.image-viewer-open{
+  position: fixed;
+  top: calc(-1 * var(--iv-scroll-y, 0px));
+  left: 0;
+  right: 0;
+  width: 100%;
   overflow: hidden;
   overscroll-behavior: contain;
   touch-action: none;
@@ -1560,6 +1571,7 @@ body.image-viewer-open{
   position: fixed;
   inset: 0;
   z-index: 1000;
+  contain: layout style;
 }
 
 .image-viewer[hidden]{

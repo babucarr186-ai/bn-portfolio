@@ -428,7 +428,6 @@ function ensureCatalogLightbox() {
   let galleryAlt = 'Product image';
   let indicatorDots = [];
   let lockedScrollY = 0;
-  let bodyInlineStyles = null;
   let activeGestureType = '';
   let pointerId = null;
   let touchId = null;
@@ -540,42 +539,14 @@ function ensureCatalogLightbox() {
 
   function lockBodyScroll() {
     lockedScrollY = window.scrollY || window.pageYOffset || 0;
-    bodyInlineStyles = {
-      position: document.body.style.position,
-      top: document.body.style.top,
-      width: document.body.style.width,
-      left: document.body.style.left,
-      right: document.body.style.right,
-      overflow: document.body.style.overflow,
-    };
-
+    document.documentElement.style.setProperty('--cl-scroll-y', `${lockedScrollY}px`);
     document.body.classList.add('catalog-lightbox-open');
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${lockedScrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
-    document.body.style.overflow = 'hidden';
   }
 
   function unlockBodyScroll() {
     document.body.classList.remove('catalog-lightbox-open');
-    if (bodyInlineStyles) {
-      document.body.style.position = bodyInlineStyles.position;
-      document.body.style.top = bodyInlineStyles.top;
-      document.body.style.width = bodyInlineStyles.width;
-      document.body.style.left = bodyInlineStyles.left;
-      document.body.style.right = bodyInlineStyles.right;
-      document.body.style.overflow = bodyInlineStyles.overflow;
-    } else {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.overflow = '';
-    }
-    window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
+    document.documentElement.style.removeProperty('--cl-scroll-y');
+    window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
   }
 
   function preloadAround(index) {
@@ -1334,4 +1305,12 @@ export function renderRecommendationRail({ mountEl, items }) {
 
   wrap.appendChild(rail);
   mountEl.appendChild(wrap);
+}
+
+export function prewarmCatalogLightbox() {
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(() => ensureCatalogLightbox(), { timeout: 2000 });
+  } else {
+    setTimeout(() => ensureCatalogLightbox(), 300);
+  }
 }

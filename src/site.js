@@ -354,7 +354,6 @@ function initImageViewer() {
   let slideImages = [];
   let isOpen = false;
   let lockedScrollY = 0;
-  let bodyInlineStyles = null;
 
   let gallerySources = [];
   let galleryIndex = 0;
@@ -396,44 +395,14 @@ function initImageViewer() {
 
   function lockBodyScroll() {
     lockedScrollY = window.scrollY || window.pageYOffset || 0;
-    bodyInlineStyles = {
-      position: document.body.style.position,
-      top: document.body.style.top,
-      width: document.body.style.width,
-      left: document.body.style.left,
-      right: document.body.style.right,
-      overflow: document.body.style.overflow,
-    };
-
+    document.documentElement.style.setProperty('--iv-scroll-y', `${lockedScrollY}px`);
     document.body.classList.add('image-viewer-open');
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${lockedScrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
-    document.body.style.overflow = 'hidden';
   }
 
   function unlockBodyScroll() {
     document.body.classList.remove('image-viewer-open');
-
-    if (bodyInlineStyles) {
-      document.body.style.position = bodyInlineStyles.position;
-      document.body.style.top = bodyInlineStyles.top;
-      document.body.style.width = bodyInlineStyles.width;
-      document.body.style.left = bodyInlineStyles.left;
-      document.body.style.right = bodyInlineStyles.right;
-      document.body.style.overflow = bodyInlineStyles.overflow;
-    } else {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.overflow = '';
-    }
-
-    window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
+    document.documentElement.style.removeProperty('--iv-scroll-y');
+    window.scrollTo({ top: lockedScrollY, behavior: 'instant' });
   }
 
   function ensureOverlay() {
@@ -962,6 +931,13 @@ function initImageViewer() {
 
   window.openImageViewer = open;
   window.closeImageViewer = close;
+
+  // Pre-warm overlay DOM during idle time so the first open has no DOM creation cost.
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(() => ensureOverlay(), { timeout: 2000 });
+  } else {
+    setTimeout(() => ensureOverlay(), 300);
+  }
 
   document.addEventListener('keydown', (e) => {
     if (!isOpen) return;
