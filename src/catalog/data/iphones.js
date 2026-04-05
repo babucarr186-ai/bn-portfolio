@@ -340,6 +340,17 @@ export const iphones = [
   },
   {
     title: 'iPhone 12 Pro',
+    subtitle: '128GB • GMD 19,500',
+    kind: 'phone',
+    price: 19500,
+    images: [
+      'products/iphones/iphone-12-pro-128gb-1.jpg',
+      'products/iphones/iphone-12-pro-128gb-2.jpg',
+      'products/iphones/iphone-12-pro-128gb-3.jpg',
+    ],
+  },
+  {
+    title: 'iPhone 12 Pro',
     subtitle: 'Gold • 256GB • Battery 83% • Used • Price on request',
     kind: 'phone',
     color: 'Gold',
