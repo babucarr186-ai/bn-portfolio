@@ -351,16 +351,17 @@ export const iphones = [
   },
   {
     title: 'iPhone 12 Pro',
-    subtitle: 'Gold • 256GB • Battery 83% • Used • Price on request',
+    subtitle: 'Gold • 256GB • Battery 83% • Used • GMD 21,000',
     kind: 'phone',
     color: 'Gold',
     storage: '256GB',
     condition: 'Used',
     batteryHealth: '83%',
+    price: 21000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 12 Pro — Gold, 256GB, battery 83%, used condition, factory unlocked, dual SIM (SIM + eSIM), no SIM lock. Price on request. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 12 Pro — Gold, 256GB, battery 83%, used condition, factory unlocked, dual SIM (SIM + eSIM), no SIM lock. Price GMD 21,000. In The Gambia.',
     description:
-      `Color Gold. Storage 256GB. Battery health 83%. Condition used. ${ESIM_UNLOCKED_DETAILS} Price on request.`,
+      `Color Gold. Storage 256GB. Battery health 83%. Condition used. ${ESIM_UNLOCKED_DETAILS} Price GMD 21,000.`,
     productTitle: 'iPhone 12 Pro (256GB) — Gold — Used — Battery 83% — Factory unlocked',
     images: [
       'products/iphones/iphone-12-pro-gold-256gb/iphone-12-pro-gold-256gb-1.jpg',
