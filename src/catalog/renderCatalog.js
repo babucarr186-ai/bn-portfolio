@@ -412,7 +412,9 @@ function ensureCatalogLightbox() {
   let indicatorDots = [];
   let lockedScrollY = 0;
   let bodyInlineStyles = null;
+  let activeGestureType = '';
   let pointerId = null;
+  let touchId = null;
   let startX = 0;
   let startY = 0;
   let startTime = 0;
@@ -437,6 +439,70 @@ function ensureCatalogLightbox() {
     if (!animationTimer) return;
     window.clearTimeout(animationTimer);
     animationTimer = 0;
+  }
+
+  function shouldAutoFocusViewerControl() {
+    return !((navigator.maxTouchPoints || 0) > 0 || window.matchMedia?.('(pointer: coarse)').matches);
+  }
+
+  function getSwipeThresholds(width) {
+    const isCoarsePointer = (navigator.maxTouchPoints || 0) > 0 || window.matchMedia?.('(pointer: coarse)').matches;
+    return isCoarsePointer
+      ? { distance: Math.max(40, width * 0.1), velocity: 0.4, minFlickDistance: 12 }
+      : { distance: Math.max(56, width * 0.14), velocity: 0.55, minFlickDistance: 18 };
+  }
+
+  function findTouch(touchList, identifier) {
+    if (identifier === null || identifier === undefined) return null;
+    for (const touch of touchList) {
+      if (touch.identifier === identifier) return touch;
+    }
+    return null;
+  }
+
+  function resetGestureState() {
+    activeGestureType = '';
+    pointerId = null;
+    touchId = null;
+    isTracking = false;
+    gestureAxis = '';
+  }
+
+  function beginSwipe({ clientX, clientY, gestureType, identifier }) {
+    if (!isOpen || gallerySources.length <= 1 || isAnimating) return false;
+    if (isTracking && activeGestureType && activeGestureType !== gestureType) return false;
+
+    activeGestureType = gestureType;
+    pointerId = gestureType === 'pointer' ? identifier : null;
+    touchId = gestureType === 'touch' ? identifier : null;
+    startX = clientX;
+    startY = clientY;
+    startTime = window.performance.now();
+    gestureAxis = '';
+    dragOffsetX = 0;
+    isTracking = true;
+    track.style.transition = 'none';
+    return true;
+  }
+
+  function updateSwipe({ clientX, clientY, gestureType, identifier, preventDefault }) {
+    if (!isTracking || isAnimating || activeGestureType !== gestureType) return;
+    if (gestureType === 'pointer' && pointerId !== identifier) return;
+    if (gestureType === 'touch' && touchId !== identifier) return;
+
+    const deltaX = clientX - startX;
+    const deltaY = clientY - startY;
+
+    if (!gestureAxis && (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8)) {
+      gestureAxis = Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
+    }
+
+    if (gestureAxis === 'y') return;
+    if (gestureAxis !== 'x') return;
+
+    preventDefault?.();
+    dragOffsetX = deltaX;
+    applyDragOffset(deltaX);
   }
 
   function getTrackWidth() {
@@ -679,9 +745,7 @@ function ensureCatalogLightbox() {
     overlay.setAttribute('aria-hidden', 'true');
     isOpen = false;
     isAnimating = false;
-    isTracking = false;
-    pointerId = null;
-    gestureAxis = '';
+    resetGestureState();
     resetTrackPosition();
     unlockBodyScroll();
     gallerySources = [];
@@ -712,7 +776,9 @@ function ensureCatalogLightbox() {
     lockBodyScroll();
     isOpen = true;
     setImage(galleryIndex);
-    closeBtn.focus();
+    if (shouldAutoFocusViewerControl()) {
+      closeBtn.focus({ preventScroll: true });
+    }
   }
 
   closeBtn.addEventListener('click', close);
@@ -723,67 +789,40 @@ function ensureCatalogLightbox() {
     if (event.target === overlay) close();
   });
 
-  stage.addEventListener('pointerdown', (event) => {
-    if (!isOpen || gallerySources.length <= 1 || isAnimating) return;
+  viewport.addEventListener('pointerdown', (event) => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
-
-    pointerId = event.pointerId;
-    startX = event.clientX;
-    startY = event.clientY;
-    startTime = window.performance.now();
-    gestureAxis = '';
-    dragOffsetX = 0;
-    isTracking = true;
-    track.style.transition = 'none';
+    if (!beginSwipe({ clientX: event.clientX, clientY: event.clientY, gestureType: 'pointer', identifier: event.pointerId })) return;
 
     try {
-      stage.setPointerCapture(pointerId);
+      viewport.setPointerCapture(event.pointerId);
     } catch {
       // Ignore capture failures.
     }
   });
 
-  stage.addEventListener('pointermove', (event) => {
-    if (!isTracking || pointerId !== event.pointerId || isAnimating) return;
-
-    const deltaX = event.clientX - startX;
-    const deltaY = event.clientY - startY;
-
-    if (!gestureAxis && (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8)) {
-      gestureAxis = Math.abs(deltaX) > Math.abs(deltaY) ? 'x' : 'y';
-    }
-
-    if (gestureAxis === 'y') return;
-    if (gestureAxis !== 'x') return;
-
-    event.preventDefault();
-    dragOffsetX = deltaX;
-    applyDragOffset(deltaX);
+  viewport.addEventListener('pointermove', (event) => {
+    updateSwipe({ clientX: event.clientX, clientY: event.clientY, gestureType: 'pointer', identifier: event.pointerId, preventDefault: () => event.preventDefault() });
   });
 
-  function finishSwipe(event) {
-    if (!isTracking || (event && pointerId !== null && event.pointerId !== pointerId)) return;
+  function finishSwipe({ clientX, gestureType, identifier } = {}) {
+    if (!isTracking) return;
+    if (gestureType && activeGestureType && gestureType !== activeGestureType) return;
+    if (gestureType === 'pointer' && pointerId !== null && identifier !== pointerId) return;
+    if (gestureType === 'touch' && touchId !== null && identifier !== touchId) return;
 
-    const clientX = event?.clientX ?? startX + dragOffsetX;
+    const resolvedClientX = clientX ?? startX + dragOffsetX;
     const width = stage.clientWidth || window.innerWidth || 1;
     const elapsed = Math.max((window.performance.now() - startTime) || 1, 1);
     const velocityX = dragOffsetX / elapsed;
+    const thresholds = getSwipeThresholds(width);
     const shouldNavigate =
       gestureAxis === 'x' &&
-      (Math.abs(dragOffsetX) > Math.max(56, width * 0.14) ||
-        (Math.abs(velocityX) > 0.55 && Math.abs(dragOffsetX) > 18));
+      (Math.abs(dragOffsetX) > thresholds.distance ||
+        (Math.abs(velocityX) > thresholds.velocity && Math.abs(dragOffsetX) > thresholds.minFlickDistance));
     const direction = dragOffsetX < 0 ? 1 : -1;
 
-    try {
-      if (pointerId !== null) stage.releasePointerCapture(pointerId);
-    } catch {
-      // Ignore capture release failures.
-    }
-
-    isTracking = false;
-    pointerId = null;
-    gestureAxis = '';
-    dragOffsetX = clientX - startX;
+    dragOffsetX = resolvedClientX - startX;
+    resetGestureState();
 
     if (gestureFrame) {
       window.cancelAnimationFrame(gestureFrame);
@@ -798,12 +837,61 @@ function ensureCatalogLightbox() {
     snapBack();
   }
 
-  stage.addEventListener('pointerup', finishSwipe);
-  stage.addEventListener('pointercancel', finishSwipe);
-  stage.addEventListener('pointerleave', (event) => {
-    if (!isTracking || event.pointerType === 'mouse') return;
-    finishSwipe(event);
+  viewport.addEventListener('pointerup', (event) => {
+    finishSwipe({ clientX: event.clientX, gestureType: 'pointer', identifier: event.pointerId });
+    try {
+      viewport.releasePointerCapture(event.pointerId);
+    } catch {
+      // Ignore capture release failures.
+    }
   });
+
+  viewport.addEventListener('pointercancel', (event) => {
+    finishSwipe({ clientX: event.clientX, gestureType: 'pointer', identifier: event.pointerId });
+    try {
+      viewport.releasePointerCapture(event.pointerId);
+    } catch {
+      // Ignore capture release failures.
+    }
+  });
+
+  viewport.addEventListener('pointerleave', (event) => {
+    if (event.pointerType === 'mouse') return;
+    finishSwipe({ clientX: event.clientX, gestureType: 'pointer', identifier: event.pointerId });
+    try {
+      viewport.releasePointerCapture(event.pointerId);
+    } catch {
+      // Ignore capture release failures.
+    }
+  });
+
+  viewport.addEventListener('touchstart', (event) => {
+    if (event.touches.length !== 1) return;
+    const touch = event.changedTouches[0];
+    beginSwipe({ clientX: touch.clientX, clientY: touch.clientY, gestureType: 'touch', identifier: touch.identifier });
+  }, { passive: true });
+
+  viewport.addEventListener('touchmove', (event) => {
+    const touch = findTouch(event.changedTouches, touchId);
+    if (!touch) return;
+    updateSwipe({ clientX: touch.clientX, clientY: touch.clientY, gestureType: 'touch', identifier: touch.identifier, preventDefault: () => event.preventDefault() });
+  }, { passive: false });
+
+  viewport.addEventListener('touchend', (event) => {
+    const touch = findTouch(event.changedTouches, touchId);
+    if (!touch) return;
+    finishSwipe({ clientX: touch.clientX, gestureType: 'touch', identifier: touch.identifier });
+  }, { passive: true });
+
+  viewport.addEventListener('touchcancel', (event) => {
+    const touch = findTouch(event.changedTouches, touchId);
+    if (!touch) {
+      resetGestureState();
+      snapBack();
+      return;
+    }
+    finishSwipe({ clientX: touch.clientX, gestureType: 'touch', identifier: touch.identifier });
+  }, { passive: true });
 
   document.addEventListener('keydown', (event) => {
     if (!isOpen) return;
