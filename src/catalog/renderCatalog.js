@@ -210,6 +210,9 @@ function humanizeExtra(value) {
   if (!text) return '';
   if (/original parts/i.test(text)) return 'Original parts';
   if (/warranty/i.test(text)) return 'Warranty included';
+  if (/factory unlocked|frei ab werk/i.test(text)) return 'Factory unlocked';
+  if (/no sim lock|ohne simlock|without simlock/i.test(text)) return 'No SIM lock';
+  if (/dual sim|sim\s*\+\s*esim|nano.?sim\s*\+\s*esim/i.test(text)) return 'Dual SIM (SIM + eSIM)';
   if (/nano.?sim|esim/i.test(text)) return 'SIM ready';
   if (/clear camera/i.test(text)) return 'Camera is clear';
   if (/back glass/i.test(text)) return 'Back glass has a crack';
@@ -238,14 +241,22 @@ function createSalesNote({ conditionLabel, batteryPercent, extras }) {
     ? `${noteParts[0].charAt(0).toUpperCase()}${noteParts[0].slice(1)}${noteParts[1] ? `, ${noteParts[1]}` : ''}.`
     : '';
 
-  const extra = extras.find(Boolean);
+  const featuredExtras = [];
+  if (extras.includes('Factory unlocked')) featuredExtras.push('Factory unlocked');
+  else if (extras.includes('No SIM lock')) featuredExtras.push('No SIM lock');
+  if (extras.includes('Dual SIM (SIM + eSIM)')) featuredExtras.push('Dual SIM (SIM + eSIM)');
+
   let secondSentence = '';
-  if (/warranty/i.test(extra || '')) secondSentence = 'Warranty included.';
-  else if (/original parts/i.test(extra || '')) secondSentence = 'Original parts.';
-  else if (/back glass/i.test(extra || '')) secondSentence = 'Back glass has a crack.';
-  else if (/camera/i.test(extra || '')) secondSentence = 'Camera is clear.';
-  else if (/sim ready/i.test(extra || '')) secondSentence = 'Ready to use.';
-  else if (/touch id|face id/i.test(extra || '')) secondSentence = `${extra}.`;
+  if (featuredExtras.length) secondSentence = `${featuredExtras.join('. ')}.`;
+  else {
+    const extra = extras.find(Boolean);
+    if (/warranty/i.test(extra || '')) secondSentence = 'Warranty included.';
+    else if (/original parts/i.test(extra || '')) secondSentence = 'Original parts.';
+    else if (/back glass/i.test(extra || '')) secondSentence = 'Back glass has a crack.';
+    else if (/camera/i.test(extra || '')) secondSentence = 'Camera is clear.';
+    else if (/sim ready/i.test(extra || '')) secondSentence = 'Ready to use.';
+    else if (/touch id|face id/i.test(extra || '')) secondSentence = `${extra}.`;
+  }
 
   if (!firstSentence && !secondSentence) return 'Ready to use.';
   return [firstSentence, secondSentence].filter(Boolean).join(' ');
@@ -311,7 +322,13 @@ function buildDisplayContent(product) {
   if (/camera/i.test(descriptionText)) pushUnique(extras, 'Camera is clear');
   if (/touch id/i.test(descriptionText)) pushUnique(extras, 'Touch ID ready');
   if (/face id/i.test(descriptionText)) pushUnique(extras, 'Face ID ready');
-  if (/nano.?sim|esim/i.test(descriptionText)) pushUnique(extras, 'SIM ready');
+  if (/factory unlocked|frei ab werk/i.test(descriptionText)) pushUnique(extras, 'Factory unlocked');
+  if (/no sim lock|ohne simlock|without simlock/i.test(descriptionText)) pushUnique(extras, 'No SIM lock');
+  if (/dual sim|sim\s*\+\s*esim|nano.?sim\s*\+\s*esim/i.test(descriptionText)) {
+    pushUnique(extras, 'Dual SIM (SIM + eSIM)');
+  } else if (/nano.?sim|esim/i.test(descriptionText)) {
+    pushUnique(extras, 'SIM ready');
+  }
 
   const batteryPercent = parseBatteryPercent(batteryLabel || product?.batteryHealth);
   const summary = primary.slice(0, 3).join(' • ');
