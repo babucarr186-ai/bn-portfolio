@@ -1245,36 +1245,47 @@ export function renderRecommendationRail({ mountEl, items }) {
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
   if (!reduceMotion && picks.length > 1) {
-    let autoSlideTimer = 0;
+    let autoSlideFrame = 0;
+    let lastTimestamp = 0;
 
-    function getStep() {
-      const firstCard = rail.querySelector('.catalog-rail-card');
-      if (!(firstCard instanceof HTMLElement)) return 240;
-      const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap || window.getComputedStyle(rail).gap || '14');
-      return firstCard.offsetWidth + (Number.isFinite(gap) ? gap : 14);
+    function getMaxScroll() {
+      const maxScroll = rail.scrollWidth - rail.clientWidth;
+      return maxScroll > 0 ? maxScroll : 0;
     }
 
-    function tick() {
-      const maxScroll = rail.scrollWidth - rail.clientWidth;
-      if (maxScroll <= 0) return;
+    function tick(timestamp) {
+      const maxScroll = getMaxScroll();
+      if (!maxScroll) {
+        autoSlideFrame = 0;
+        lastTimestamp = 0;
+        return;
+      }
 
-      const step = getStep();
-      const nearEnd = rail.scrollLeft + step >= maxScroll - 8;
-      rail.scrollTo({
-        left: nearEnd ? 0 : rail.scrollLeft + step,
-        behavior: 'smooth',
-      });
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+      }
+
+      const elapsed = timestamp - lastTimestamp;
+      lastTimestamp = timestamp;
+      const isCoarsePointer = (navigator.maxTouchPoints || 0) > 0 || window.matchMedia?.('(pointer: coarse)').matches;
+      const pixelsPerMs = isCoarsePointer ? 0.05 : 0.08;
+      const nextLeft = rail.scrollLeft + elapsed * pixelsPerMs;
+
+      rail.scrollLeft = nextLeft >= maxScroll ? 0 : nextLeft;
+      autoSlideFrame = window.requestAnimationFrame(tick);
     }
 
     function startAutoSlide() {
-      if (autoSlideTimer) return;
-      autoSlideTimer = window.setInterval(tick, 3200);
+      if (autoSlideFrame) return;
+      lastTimestamp = 0;
+      autoSlideFrame = window.requestAnimationFrame(tick);
     }
 
     function stopAutoSlide() {
-      if (!autoSlideTimer) return;
-      window.clearInterval(autoSlideTimer);
-      autoSlideTimer = 0;
+      if (!autoSlideFrame) return;
+      window.cancelAnimationFrame(autoSlideFrame);
+      autoSlideFrame = 0;
+      lastTimestamp = 0;
     }
 
     rail.addEventListener('pointerenter', stopAutoSlide);
@@ -1285,6 +1296,11 @@ export function renderRecommendationRail({ mountEl, items }) {
     rail.addEventListener('touchstart', stopAutoSlide, { passive: true });
     rail.addEventListener('touchend', startAutoSlide, { passive: true });
     rail.addEventListener('touchcancel', startAutoSlide, { passive: true });
+    window.addEventListener('resize', () => {
+      if (!autoSlideFrame) return;
+      stopAutoSlide();
+      startAutoSlide();
+    });
 
     startAutoSlide();
   }
