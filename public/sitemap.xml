@@ -46,4 +46,24 @@
     <lastmod>2026-03-09</lastmod>
     <priority>0.5</priority>
   </url>
+  <url>
+    <loc>https://uncleapplestore.com/about/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://uncleapplestore.com/contact/</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://uncleapplestore.com/refund-policy/</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://uncleapplestore.com/privacy-policy/</loc>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://uncleapplestore.com/terms-of-service/</loc>
+    <priority>0.4</priority>
+  </url>
 </urlset>
