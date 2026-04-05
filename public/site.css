@@ -1553,7 +1553,6 @@ body.catalog-lightbox-open{
 body.image-viewer-open{
   overflow: hidden;
   overscroll-behavior: contain;
-  touch-action: none;
 }
 
 .image-viewer{
