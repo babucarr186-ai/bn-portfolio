@@ -725,6 +725,10 @@ footer{
 .foot-legal{
   display: grid;
   gap: 6px;
+  background: #000;
+  color: rgba(255,255,255,0.94);
+  padding: 14px 16px;
+  border-radius: 16px;
 }
 
 .foot-links{
@@ -736,10 +740,16 @@ footer{
 .foot a{ color: rgba(11,15,22,0.86); text-decoration: none; }
 .foot a:hover{ text-decoration: underline; }
 
+.foot-legal a{ color: rgba(255,255,255,0.94); }
+
 .small{
   font-size: 0.92rem;
   color: rgba(11,15,22,0.58);
   max-width: 70ch;
+}
+
+.foot-legal .small{
+  color: rgba(255,255,255,0.72);
 }
 
 /* Catalog / category product grid */
