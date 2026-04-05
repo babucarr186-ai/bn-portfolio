@@ -29,6 +29,7 @@ const pageMeta = {
   airpods: { label: 'AirPods', href: './airpods.html' },
   giftcards: { label: 'Gift Card', href: './gift-cards.html' },
   accessories: { label: 'Accessory', href: './accessories.html' },
+  appletvhome: { label: 'Apple TV & Home', href: './apple-tv-home.html' },
 };
 
 const products = map[category] || iphones;
@@ -43,8 +44,9 @@ function initRecommendations(items) {
   const wrap = grid?.closest('.catalog-wrap');
   if (!wrap || !Array.isArray(items) || !items.length) return;
 
-  const categoryOrder = ['iphones', 'ipads', 'macbooks', 'watches', 'airpods', 'giftcards', 'accessories'];
+  const categoryOrder = ['iphones', 'ipads', 'macbooks', 'watches', 'airpods', 'giftcards', 'accessories', 'appletvhome'];
   const pools = categoryOrder
+    .filter((key) => key !== category)
     .filter((key) => Array.isArray(map[key]))
     .map((key) => {
       const meta = pageMeta[key];
@@ -52,12 +54,8 @@ function initRecommendations(items) {
         .filter((product) => !product?.sold)
         .map((product, index) => {
           const title = product.title || 'Product';
-          const samePage = key === category;
-          const samePageMatch = samePage
-            ? items.find((item) => item?.product === product)
-            : null;
           const fallbackId = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'product'}-${index + 1}`;
-          const targetId = samePageMatch?.id || `product-${fallbackId}`;
+          const targetId = `product-${fallbackId}`;
           const summary = buildCatalogCardSummary(product);
 
           return {
@@ -67,17 +65,8 @@ function initRecommendations(items) {
             note: summary.note,
             priceLabel: summary.priceLabel,
             categoryLabel: meta?.label || key,
-            href: samePage ? `#${targetId}` : `${meta?.href || './'}#${targetId}`,
-            onClick: samePage
-              ? (event) => {
-                  event.preventDefault();
-                  const target = document.getElementById(targetId);
-                  if (!target) return;
-                  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  target.classList.add('is-highlight');
-                  window.setTimeout(() => target.classList.remove('is-highlight'), 1400);
-                }
-              : null,
+            href: `${meta?.href || './'}#${targetId}`,
+            onClick: null,
           };
         });
 
@@ -89,7 +78,7 @@ function initRecommendations(items) {
 
   const mixed = [];
   let added = true;
-  while (added && mixed.length < 12) {
+  while (added && mixed.length < 6) {
     added = false;
     pools.forEach((pool) => {
       const nextItem = pool.items.shift();

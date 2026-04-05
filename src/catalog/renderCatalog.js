@@ -1177,8 +1177,7 @@ export function renderRecommendationRail({ mountEl, items }) {
   if (!mountEl) return;
 
   const sourceItems = Array.isArray(items) ? items.filter((item) => item?.href && item?.title) : [];
-  const picks = sourceItems.filter((item) => !item.product?.sold).slice(0, 8);
-  const loopItems = picks.length > 1 ? [...picks, ...picks] : picks;
+  const picks = sourceItems.filter((item) => !item.product?.sold).slice(0, 6);
 
   if (!picks.length) {
     mountEl.textContent = '';
@@ -1193,16 +1192,15 @@ export function renderRecommendationRail({ mountEl, items }) {
   wrap.appendChild(heading);
 
   const intro = el('p', 'catalog-recommendations-copy');
-  intro.textContent = 'Mixed across iPhones, iPads, MacBooks, Watches, AirPods, gift cards, and accessories.';
+  intro.textContent = 'A few cleaner alternatives from other Apple categories if you are still comparing before you buy.';
   wrap.appendChild(intro);
 
   const rail = el('div', 'catalog-rail');
   rail.setAttribute('aria-label', 'Recommended products');
-  loopItems.forEach((item, index) => {
+  picks.forEach((item) => {
     const link = document.createElement('a');
     link.className = 'catalog-rail-card';
     link.href = item.href;
-    if (index >= picks.length) link.setAttribute('data-loop-clone', 'true');
 
     const media = el('div', 'catalog-rail-media');
     const image = Array.isArray(item.product?.images) ? item.product.images[0] : item.product?.image;
@@ -1216,15 +1214,15 @@ export function renderRecommendationRail({ mountEl, items }) {
     }
     link.appendChild(media);
 
-    const title = el('div', 'catalog-rail-name');
-    title.textContent = item.title;
-    link.appendChild(title);
-
     if (item.categoryLabel) {
       const category = el('div', 'catalog-rail-category');
       category.textContent = item.categoryLabel;
       link.appendChild(category);
     }
+
+    const title = el('div', 'catalog-rail-name');
+    title.textContent = item.title;
+    link.appendChild(title);
 
     if (item.summary) {
       const meta = el('div', 'catalog-rail-meta');
@@ -1238,10 +1236,6 @@ export function renderRecommendationRail({ mountEl, items }) {
       link.appendChild(price);
     }
 
-    const trustCopy = el('div', 'catalog-rail-trust-copy');
-    trustCopy.textContent = 'Germany sourced and tested';
-    link.appendChild(trustCopy);
-
     if (item.onClick) {
       link.addEventListener('click', item.onClick);
     }
@@ -1250,41 +1244,26 @@ export function renderRecommendationRail({ mountEl, items }) {
   });
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-  if (!reduceMotion) {
+  if (!reduceMotion && picks.length > 1) {
     let autoSlideTimer = 0;
-    let normalizeRaf = 0;
-
-    function getCycleWidth() {
-      if (picks.length <= 1) return 0;
-      return rail.scrollWidth / 2;
-    }
-
-    function normalizeLoopPosition() {
-      normalizeRaf = 0;
-      const cycleWidth = getCycleWidth();
-      if (!cycleWidth) return;
-
-      if (rail.scrollLeft >= cycleWidth) {
-        rail.scrollLeft -= cycleWidth;
-      }
-    }
 
     function getStep() {
       const firstCard = rail.querySelector('.catalog-rail-card');
-      if (!(firstCard instanceof HTMLElement)) return 220;
-      const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap || window.getComputedStyle(rail).gap || '12');
-      return firstCard.offsetWidth + (Number.isFinite(gap) ? gap : 12);
+      if (!(firstCard instanceof HTMLElement)) return 240;
+      const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap || window.getComputedStyle(rail).gap || '14');
+      return firstCard.offsetWidth + (Number.isFinite(gap) ? gap : 14);
     }
 
     function tick() {
       const maxScroll = rail.scrollWidth - rail.clientWidth;
       if (maxScroll <= 0) return;
 
-      normalizeLoopPosition();
-
       const step = getStep();
-      const nextLeft = rail.scrollLeft + step;
-      rail.scrollTo({ left: nextLeft, behavior: 'smooth' });
+      const nearEnd = rail.scrollLeft + step >= maxScroll - 8;
+      rail.scrollTo({
+        left: nearEnd ? 0 : rail.scrollLeft + step,
+        behavior: 'smooth',
+      });
     }
 
     function startAutoSlide() {
@@ -1305,10 +1284,7 @@ export function renderRecommendationRail({ mountEl, items }) {
     rail.addEventListener('pointerdown', stopAutoSlide);
     rail.addEventListener('touchstart', stopAutoSlide, { passive: true });
     rail.addEventListener('touchend', startAutoSlide, { passive: true });
-    rail.addEventListener('scroll', () => {
-      if (normalizeRaf) return;
-      normalizeRaf = window.requestAnimationFrame(normalizeLoopPosition);
-    }, { passive: true });
+    rail.addEventListener('touchcancel', startAutoSlide, { passive: true });
 
     startAutoSlide();
   }
