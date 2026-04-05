@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "npm run optimize:images && npm run pwa:icons",
+    "predev": "node scripts/generate-seo-snippets.mjs && npm run optimize:images && npm run pwa:icons",
     "dev": "vite",
     "optimize:images": "node scripts/optimize-images.mjs",
     "pwa:icons": "node scripts/generate-pwa-icons.mjs",
-    "prebuild": "npm run optimize:images && npm run pwa:icons",
+    "prebuild": "node scripts/generate-seo-snippets.mjs && npm run optimize:images && npm run pwa:icons",
     "build": "vite build",
     "lint": "eslint .",
     "test": "vitest run",
