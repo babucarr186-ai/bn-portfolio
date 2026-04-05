@@ -472,6 +472,12 @@ function ensureCatalogLightbox() {
     if (!isOpen || gallerySources.length <= 1 || isAnimating) return false;
     if (isTracking && activeGestureType && activeGestureType !== gestureType) return false;
 
+    clearAnimationTimer();
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
+
     activeGestureType = gestureType;
     pointerId = gestureType === 'pointer' ? identifier : null;
     touchId = gestureType === 'touch' ? identifier : null;
@@ -687,7 +693,7 @@ function ensureCatalogLightbox() {
     preloadAround(galleryIndex);
 
     window.requestAnimationFrame(() => {
-      if (!isOpen) return;
+      if (!isOpen || isTracking) return;
       track.style.transition = '';
     });
   }

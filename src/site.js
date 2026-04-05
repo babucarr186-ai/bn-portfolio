@@ -623,6 +623,12 @@ function initImageViewer() {
     if (!isOpen || gallerySources.length <= 1 || isAnimating) return false;
     if (isTracking && activeGestureType && activeGestureType !== gestureType) return false;
 
+    clearAnimationTimer();
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
+
     activeGestureType = gestureType;
     pointerId = gestureType === 'pointer' ? identifier : null;
     touchId = gestureType === 'touch' ? identifier : null;
@@ -751,7 +757,8 @@ function initImageViewer() {
       trackEl.style.transition = 'none';
       setTrackPosition(TRACK_CENTER, 0);
       window.requestAnimationFrame(() => {
-        if (trackEl && isOpen) trackEl.style.transition = '';
+        if (!trackEl || !isOpen || isTracking) return;
+        trackEl.style.transition = '';
       });
     }
 
@@ -782,11 +789,24 @@ function initImageViewer() {
     gestureFrame = window.requestAnimationFrame(() => {
       gestureFrame = 0;
       const width = contentEl?.clientWidth || window.innerWidth || 1;
-      const limitedOffset = Math.max(-width * 0.9, Math.min(width * 0.9, offsetX));
+      const limitedOffset = Math.max(-width * 0.9, Math.min(width * 0.9, applyEdgeResistance(offsetX, width)));
       if (!trackEl) return;
       trackEl.style.transition = 'none';
       setTrackPosition(TRACK_CENTER, limitedOffset);
     });
+  }
+
+  function applyEdgeResistance(offsetX, width) {
+    const atFirst = galleryIndex <= 0;
+    const atLast = galleryIndex >= gallerySources.length - 1;
+    const isPullingPastFirst = atFirst && offsetX > 0;
+    const isPullingPastLast = atLast && offsetX < 0;
+
+    if (!isPullingPastFirst && !isPullingPastLast) return offsetX;
+
+    const distance = Math.abs(offsetX);
+    const resistedDistance = Math.min(width * 0.22, distance * 0.38);
+    return Math.sign(offsetX) * resistedDistance;
   }
 
   function snapBack() {
