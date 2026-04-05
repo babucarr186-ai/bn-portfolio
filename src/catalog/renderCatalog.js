@@ -1247,6 +1247,7 @@ export function renderRecommendationRail({ mountEl, items }) {
   if (!reduceMotion && picks.length > 1) {
     let autoSlideFrame = 0;
     let lastTimestamp = 0;
+    let isInteracting = false;
 
     function getMaxScroll() {
       const maxScroll = rail.scrollWidth - rail.clientWidth;
@@ -1254,30 +1255,39 @@ export function renderRecommendationRail({ mountEl, items }) {
     }
 
     function tick(timestamp) {
+      autoSlideFrame = 0;
+
+      if (isInteracting || document.hidden) {
+        lastTimestamp = 0;
+        startAutoSlide();
+        return;
+      }
+
       const maxScroll = getMaxScroll();
       if (!maxScroll) {
-        autoSlideFrame = 0;
         lastTimestamp = 0;
+        startAutoSlide();
         return;
       }
 
       if (!lastTimestamp) {
         lastTimestamp = timestamp;
+        startAutoSlide();
+        return;
       }
 
-      const elapsed = timestamp - lastTimestamp;
+      const elapsed = Math.min(32, timestamp - lastTimestamp);
       lastTimestamp = timestamp;
       const isCoarsePointer = (navigator.maxTouchPoints || 0) > 0 || window.matchMedia?.('(pointer: coarse)').matches;
-      const pixelsPerMs = isCoarsePointer ? 0.05 : 0.08;
+      const pixelsPerMs = isCoarsePointer ? 0.035 : 0.045;
       const nextLeft = rail.scrollLeft + elapsed * pixelsPerMs;
 
       rail.scrollLeft = nextLeft >= maxScroll ? 0 : nextLeft;
-      autoSlideFrame = window.requestAnimationFrame(tick);
+      startAutoSlide();
     }
 
     function startAutoSlide() {
       if (autoSlideFrame) return;
-      lastTimestamp = 0;
       autoSlideFrame = window.requestAnimationFrame(tick);
     }
 
@@ -1288,18 +1298,35 @@ export function renderRecommendationRail({ mountEl, items }) {
       lastTimestamp = 0;
     }
 
-    rail.addEventListener('pointerenter', stopAutoSlide);
-    rail.addEventListener('pointerleave', startAutoSlide);
-    rail.addEventListener('focusin', stopAutoSlide);
-    rail.addEventListener('focusout', startAutoSlide);
-    rail.addEventListener('pointerdown', stopAutoSlide);
-    rail.addEventListener('touchstart', stopAutoSlide, { passive: true });
-    rail.addEventListener('touchend', startAutoSlide, { passive: true });
-    rail.addEventListener('touchcancel', startAutoSlide, { passive: true });
-    window.addEventListener('resize', () => {
-      if (!autoSlideFrame) return;
+    function pauseAutoSlide() {
+      isInteracting = true;
       stopAutoSlide();
+    }
+
+    function resumeAutoSlide() {
+      isInteracting = false;
       startAutoSlide();
+    }
+
+    rail.addEventListener('focusin', pauseAutoSlide);
+    rail.addEventListener('focusout', resumeAutoSlide);
+    rail.addEventListener('pointerdown', pauseAutoSlide);
+    rail.addEventListener('pointerup', resumeAutoSlide);
+    rail.addEventListener('pointercancel', resumeAutoSlide);
+    rail.addEventListener('touchstart', pauseAutoSlide, { passive: true });
+    rail.addEventListener('touchend', resumeAutoSlide, { passive: true });
+    rail.addEventListener('touchcancel', resumeAutoSlide, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stopAutoSlide();
+        return;
+      }
+
+      resumeAutoSlide();
+    });
+    window.addEventListener('resize', () => {
+      stopAutoSlide();
+      if (!isInteracting) startAutoSlide();
     });
 
     startAutoSlide();
