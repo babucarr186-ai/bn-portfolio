@@ -13,7 +13,7 @@ import { macbooks } from '../src/catalog/data/macbooks.js';
 import { watches } from '../src/catalog/data/watches.js';
 
 const scriptPath = fileURLToPath(import.meta.url);
-const projectRoot = dirname(scriptPath);
+const projectRoot = dirname(dirname(scriptPath));
 const storeId = 'https://uncleapplestore.com/#store';
 
 const pageConfigs = [
