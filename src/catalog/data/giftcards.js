@@ -4,6 +4,8 @@ export const giftCards = [
     subtitle:
       'A simple gift for everyone • Digital or physical • Choose your amount • Fast WhatsApp response',
     kind: 'laptop',
+    description:
+      'Apple Gift Card available in digital or physical form with flexible amounts. A simple Apple gift option for App Store purchases, subscriptions, accessories, and Apple device users.',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Gift Card — please share available denominations and whether it is digital or physical. In The Gambia.',
     mediaFit: 'contain',

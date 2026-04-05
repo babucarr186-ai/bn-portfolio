@@ -13,7 +13,7 @@ export const macbooks = [
 		whatsAppMessage:
 			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2017) — Intel Core i5, 8GB RAM, 256GB SSD, used (like new), 30 days warranty. Price GMD 25,000. In The Gambia.',
 		description:
-			'MacBook Pro 13-inch (2017). Intel Core i5, 8GB RAM, 256GB SSD. Top condition. Used like new. 30 days product warranty.',
+			'Apple MacBook Pro 13-inch (2017) with Intel Core i5, 8GB RAM, and 256GB SSD. A clean Apple laptop for office work, school, browsing, and everyday productivity with a like-new finish and 30-day warranty.',
 		productTitle:
 			'MacBook Pro 13-inch (2017) — i5 • 8GB • 256GB — Used (Like new) — 30 days warranty',
 		images: [
@@ -49,7 +49,7 @@ export const macbooks = [
 		whatsAppMessage:
 			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2016) — Intel Core i5, 16GB RAM, 256GB SSD, 2× Thunderbolt 3 ports, battery good (221 cycles), used, neat condition. Price GMD 20,000. In The Gambia.',
 		description:
-			'MacBook Pro 13-inch (2016). Intel Core i5, 16GB RAM, 256GB SSD. 2× Thunderbolt 3 (USB‑C) ports. Battery good with 221 cycles. Neat used condition.',
+			'Apple MacBook Pro 13-inch (2016) with Intel Core i5, 16GB RAM, and 256GB SSD. A solid Apple laptop for multitasking, office work, study, and everyday use, with good battery health and neat used condition.',
 		productTitle:
 			'MacBook Pro 13-inch (2016) — i5 • 16GB • 256GB — Used — Neat condition',
 		images: [

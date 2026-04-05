@@ -6,7 +6,7 @@ export const watches = [
     kind: 'square',
     price: 49200,
     description:
-      'Built for big days, hard workouts, and buyers who want the toughest Apple Watch with a premium feel. Stay connected, track your health, and manage your day from your wrist.',
+      'Apple Watch Ultra 2 (2024) for buyers who want the toughest Apple Watch with a premium finish, GPS + Cellular, and strong everyday performance. A high-end Apple Watch for workouts, outdoor use, and staying connected from your wrist.',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Watch Ultra 2 (2024) — fully tested, excellent condition, 12-month warranty. Price GMD 49,200. In The Gambia.',
     mediaFit: 'contain',
@@ -23,7 +23,7 @@ export const watches = [
     kind: 'square',
     price: 10620,
     description:
-      'A smart, budget-friendly Apple Watch that covers calls, fitness, and daily use without overpaying. Stay connected, track your health, and manage your day from your wrist.',
+      'Apple Watch SE (2022) 40mm is a smart budget-friendly Apple Watch for calls, fitness, notifications, and daily use without overpaying. A practical Apple Watch choice for buyers who want the core Apple experience at a lower price.',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Watch SE (2022) 40mm — fully tested, 12-month warranty. Price GMD 10,620. In The Gambia.',
     mediaFit: 'contain',
@@ -37,7 +37,7 @@ export const watches = [
     kind: 'square',
     price: 12900,
     description:
-      'Big screen, sharp black finish, and GPS + Cellular make this a strong everyday upgrade with real presence on the wrist. Ready to use. 2 in stock. Stay connected, track your health, and manage your day from your wrist.',
+      'Apple Watch Series 7 45MM in Black with a bigger screen, GPS + Cellular, and a sharp everyday look. A strong Apple Watch upgrade for calls, health tracking, workouts, and daily wear, ready to use with 2 currently in stock.',
     specs: [
       '45mm aluminium case (black)',
       'Black sport band (fluoroelastomer)',
@@ -68,7 +68,7 @@ export const watches = [
     kind: 'square',
     price: 10000,
     description:
-      'Clean, classy, and super comfortable for daily wear. The 41mm size looks great on most wrists, and you still get the smooth Apple Watch experience for workouts, messages, and health tracking. Photos are now available, so you can review the condition before messaging to reserve it. Stay connected, track your health, and manage your day from your wrist.',
+      'Apple Watch Series 7 (41mm) in Starlight with a clean look, comfortable fit, and smooth everyday Apple Watch experience. A balanced Apple Watch choice for workouts, messages, and health tracking, with photos available so buyers can review the condition before reserving.',
     specs: [
       '41mm Starlight aluminium case (Polarstern / Starlight)',
       'Silicone band — soft and easy to clean',
@@ -95,7 +95,7 @@ export const watches = [
     kind: 'square',
     sold: true,
     description:
-      'A clean, modern Apple Watch choice with a polished look and a smooth everyday experience. Stay connected, track your health, and manage your day from your wrist.',
+      'Apple Watch Series 8 41mm with a clean modern look and a smooth everyday Apple Watch experience. A polished Apple Watch option for buyers who want health tracking, notifications, and daily convenience in a newer model.',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm — used (like new), fully tested, 12-month warranty. In The Gambia.',
     mediaFit: 'contain',
@@ -113,7 +113,7 @@ export const watches = [
     kind: 'square',
     price: 20000,
     description:
-      'Lightweight titanium, premium finish, and a refined look for buyers who want something newer and sharper. Stay connected, track your health, and manage your day from your wrist.',
+      'Apple Watch Series 10 (Titanium) 42mm with a lightweight titanium case, premium finish, and refined modern look. A newer Apple Watch choice for buyers who want something sharper for daily wear, health tracking, and staying connected.',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 42mm — fully tested, very good condition, 12-month warranty. Price GMD 20,000. In The Gambia.',
     mediaFit: 'contain',
