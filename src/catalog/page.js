@@ -1,4 +1,4 @@
-import { buildCatalogCardSummary, renderCatalog, renderRecommendationRail } from './renderCatalog.js';
+import { buildCatalogCardSummary, renderCatalog, renderRecommendationRail, prewarmCatalogLightbox } from './renderCatalog.js';
 import { iphones } from './data/iphones.js';
 import { macbooks } from './data/macbooks.js';
 import { watches } from './data/watches.js';
@@ -175,3 +175,4 @@ function initCatalogSearch(items) {
 initCatalogSearch(rendered);
 initRecommendations(rendered);
 initBackToTop();
+prewarmCatalogLightbox();
