@@ -64,6 +64,7 @@ const CORE_PATHS = [
 ];
 
 const CORE_URLS = CORE_PATHS.map(withBase);
+const PRODUCTS_PATH_PREFIX = withBase('products/').replace(/\/$/, '');
 
 self.addEventListener('message', (event) => {
   if (event?.data?.type === 'SKIP_WAITING') {
@@ -192,7 +193,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // Images (including product photos): cache-first.
-  if (isImageRequest(request) || url.pathname.startsWith('/products/')) {
+  if (isImageRequest(request) || url.pathname.startsWith(PRODUCTS_PATH_PREFIX)) {
     event.respondWith(cacheFirstImage(request));
     return;
   }

@@ -1,5 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildCatalogCardSummary } from '../src/catalog/renderCatalog.js';
@@ -12,7 +12,8 @@ import { ipads } from '../src/catalog/data/ipads.js';
 import { macbooks } from '../src/catalog/data/macbooks.js';
 import { watches } from '../src/catalog/data/watches.js';
 
-const projectRoot = fileURLToPath(new URL('..', import.meta.url));
+const scriptPath = fileURLToPath(import.meta.url);
+const projectRoot = dirname(scriptPath);
 const storeId = 'https://uncleapplestore.com/#store';
 
 const pageConfigs = [
@@ -111,6 +112,55 @@ function normalizeSpace(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
+function splitSentences(value) {
+  return String(value || '')
+    .split(/(?<=[.!?])\s+/)
+    .map((part) => normalizeSpace(part))
+    .filter(Boolean);
+}
+
+function canonicalizeDescriptionPart(value) {
+  return normalizeSpace(value)
+    .toLowerCase()
+    .replace(/[.!?]+$/g, '')
+    .replace(/\bgood\s+good\b/g, 'good')
+    .replace(/\bexcellent\s+very clean\b/g, 'very clean')
+    .replace(/\bclean\s+clean\b/g, 'clean')
+    .replace(/\bready to use\s+ready to use\b/g, 'ready to use');
+}
+
+export function cleanDescriptionText(value) {
+  return normalizeSpace(value)
+    .replace(/\bGood\s+Good\b/g, 'Good')
+    .replace(/\bExcellent\s+Very clean\b/g, 'Very clean')
+    .replace(/\bClean\s+Clean\b/g, 'Clean')
+    .replace(/\bReady to use\.\s+Ready to use\./g, 'Ready to use.');
+}
+
+export function buildSchemaDescription(product, summary) {
+  const parts = [];
+  const seen = new Set();
+
+  splitSentences(cleanDescriptionText(product?.description)).forEach((part) => {
+    const key = canonicalizeDescriptionPart(part);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    parts.push(part);
+  });
+
+  if (!parts.length) {
+    [summary?.summary, summary?.note].forEach((part) => {
+      const cleanedPart = cleanDescriptionText(part);
+      const key = canonicalizeDescriptionPart(cleanedPart);
+      if (!key || seen.has(key)) return;
+      seen.add(key);
+      parts.push(cleanedPart);
+    });
+  }
+
+  return normalizeSpace(parts.join(' '));
+}
+
 function schemaConditionUrl(product) {
   const condition = normalizeSpace(product?.condition || product?.subtitle || '').toLowerCase();
   if (condition.includes('brand new') || condition.includes('sealed')) return 'https://schema.org/NewCondition';
@@ -129,7 +179,7 @@ function buildAbsoluteHref(index, product, absoluteUrl) {
 function buildSchemaMarkup(config) {
   const items = getVisibleProducts(config.products).map((product, index) => {
     const summary = buildCatalogCardSummary(product);
-    const description = normalizeSpace([product.description, summary.summary, summary.note].filter(Boolean).join(' '));
+    const description = buildSchemaDescription(product, summary);
     const offer = Number.isFinite(Number(product?.price))
       ? {
           '@type': 'Offer',
@@ -197,6 +247,12 @@ async function updatePage(config) {
   await writeFile(filePath, withSchema, 'utf8');
 }
 
-for (const config of pageConfigs) {
-  await updatePage(config);
+export async function generateSeoSnippets() {
+  for (const config of pageConfigs) {
+    await updatePage(config);
+  }
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === scriptPath) {
+  await generateSeoSnippets();
 }
