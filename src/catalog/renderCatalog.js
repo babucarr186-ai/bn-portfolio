@@ -1295,6 +1295,9 @@ export function renderRecommendationRail({ mountEl, items }) {
     rail.appendChild(link);
   });
 
+  wrap.appendChild(rail);
+  mountEl.appendChild(wrap);
+
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const allowAutoSlide = !reduceMotion?.matches && picks.length > 1;
 
@@ -1425,7 +1428,4 @@ export function renderRecommendationRail({ mountEl, items }) {
 
     resumeAutoSlide(180);
   }
-
-  wrap.appendChild(rail);
-  mountEl.appendChild(wrap);
 }
