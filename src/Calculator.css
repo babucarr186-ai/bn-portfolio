@@ -1,5 +1,5 @@
 .calculator-container {
-  width: 320px;
+  width: min(320px, calc(100% - 32px));
   margin: 40px auto;
   padding: 24px;
   background: linear-gradient(135deg, #ce1126 0%, #ffffff 30%, #3a7728 70%, #0c1c8c 100%);

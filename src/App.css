@@ -181,7 +181,7 @@ body {
   grid-template-columns: 1fr;
   justify-items: center;
   gap: 10px;
-  max-width: 520px;
+  max-width: min(520px, 100%);
 }
 
 @media (min-width: 560px) {
@@ -507,6 +507,11 @@ main {
 
 .avail-notes .avail-control { resize: vertical; min-height: 92px; }
 
+@media (max-width: 420px) {
+  .avail-notes .avail-control { min-height: 72px; }
+  .card { padding: 14px; }
+}
+
 .availability-submit {
   width: 100%;
   margin-top: 4px;
@@ -559,9 +564,10 @@ main {
 .contact-actions .btn { flex:1 1 auto; min-width:140px; justify-content:center; }
 
 /* Floating CTA (optional) */
-.floating-cta { position:fixed; left:calc(18px + env(safe-area-inset-left)); bottom:calc(18px + env(safe-area-inset-bottom)); z-index:3500; background:linear-gradient(135deg,#0072e0,#00b4d8); color:#fff; padding:10px 18px; border-radius:30px; font-size:.7rem; font-weight:600; letter-spacing:.5px; text-decoration:none; box-shadow:0 6px 18px -4px rgba(0,0,0,0.35); display:flex; align-items:center; gap:6px; }
+.floating-cta { position:fixed; left:calc(18px + env(safe-area-inset-left)); bottom:calc(18px + env(safe-area-inset-bottom)); z-index:3500; background:linear-gradient(135deg,#0072e0,#00b4d8); color:#fff; padding:10px 18px; border-radius:30px; font-size:.7rem; font-weight:600; letter-spacing:.5px; text-decoration:none; box-shadow:0 6px 18px -4px rgba(0,0,0,0.35); display:flex; align-items:center; gap:6px; max-width:calc(100vw - 40px); }
 .floating-cta:hover { box-shadow:0 8px 24px -6px rgba(0,0,0,0.40); }
 @media (max-width:640px){ .floating-cta { font-size:.65rem; padding:9px 16px; } }
+@media (max-width:420px){ .floating-cta { left:calc(14px + env(safe-area-inset-left)); bottom:calc(14px + env(safe-area-inset-bottom)); padding:8px 14px; font-size:.62rem; } }
 
 @media (prefers-reduced-motion: reduce) { .floating-cta, .btn { transition:none; } }
 
@@ -584,7 +590,8 @@ main {
 
 .card h2 {
   margin: 0 0 8px;
-  font-size: 22px;
+  font-size: clamp(18px, 4.5vw, 22px);
+  overflow-wrap: break-word;
 }
 
 .card p {
@@ -729,7 +736,7 @@ main {
 
 /* iPhone Preview Frame */
 .iphone-frame {
-  width: 390px; /* iPhone 14 logical width */
+  width: min(390px, calc(100vw - 32px)); /* iPhone 14 logical width, responsive */
   height: 844px; /* iPhone 14 logical height */
   border: 14px solid #111;
   border-bottom: 18px solid #111;
@@ -746,7 +753,7 @@ main {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 210px;
+  width: min(210px, 54%);
   height: 30px;
   background: #000;
   border-bottom-left-radius: 20px;
@@ -778,7 +785,7 @@ main {
 }
 
 @media (max-width: 420px) {
-  .iphone-frame { width: 100%; height: 100vh; margin: 0; border-radius: 0; }
+  .iphone-frame { width: 100%; height: 100vh; margin: 0; border-radius: 0; border-width: 0; }
   .iphone-notch { display: none; }
 }
 
@@ -957,6 +964,14 @@ main {
   }
   .chat-messages { flex:1 1 auto; }
   .chat-input-row { position:relative; }
+}
+
+@media (max-width: 420px) {
+  .chat-root { right: calc(10px + env(safe-area-inset-right)); bottom: calc(14px + env(safe-area-inset-bottom)); }
+  .chat-panel { width: calc(100vw - 20px); max-height: min(68vh, 460px); }
+  .msg { font-size: .7rem; max-width: 86%; }
+  .chat-input { font-size: .68rem; }
+  .chat-send { padding: 7px 12px; font-size: .68rem; }
 }
 
 /* Quick reply chips */
