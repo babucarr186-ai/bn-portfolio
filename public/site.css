@@ -1256,12 +1256,13 @@ body.catalog-lightbox-open{
 .catalog-rail{
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(190px, 72vw);
-  gap: 14px;
+  grid-auto-columns: minmax(196px, 68vw);
+  gap: 16px;
   overflow-x: auto;
-  padding-bottom: 6px;
+  padding: 6px 4px 10px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
 }
 
 .catalog-rail::-webkit-scrollbar{ display: none; }
@@ -1271,7 +1272,7 @@ body.catalog-lightbox-open{
   align-content: start;
   gap: 10px;
   min-width: 0;
-  padding: 12px;
+  padding: 14px;
   border-radius: 20px;
   border: 1px solid rgba(11,15,22,0.08);
   background: rgba(255,255,255,0.84);
@@ -1337,6 +1338,7 @@ body.catalog-lightbox-open{
   font-weight: 800;
   font-size: 0.86rem;
 }
+
 
 /* Responsive catalog grid sizing:
    - Mobile: 2 columns

@@ -88,6 +88,11 @@ function publicAssetUrl(path) {
   return `${import.meta.env.BASE_URL}${trimmed}`;
 }
 
+export function buildCatalogProductId(title, index) {
+  const idBase = slugify(title) || 'product';
+  return `product-${idBase}-${Number(index) + 1}`;
+}
+
 function slugify(value) {
   return String(value || '')
     .toLowerCase()
@@ -347,6 +352,38 @@ export function buildCatalogCardSummary(product) {
     summary: display.summary,
     note: display.note,
     priceLabel: display.priceLabel,
+  };
+}
+
+function buildCatalogCardDetails(product) {
+  const subtitleTokens = splitSubtitleTokens(product?.subtitle);
+  const conditionToken = normalizeCondition(product?.condition) || normalizeCondition(subtitleTokens.find(isConditionToken));
+  const conditionLabel = conditionToken || 'Ready to use';
+
+  const detailTokens = [];
+  const storageLabel = normalizeStorage(product?.storage) || normalizeStorage(subtitleTokens.find(isStorageToken));
+  const batteryLabel = normalizeBattery(product?.batteryHealth) || normalizeBattery(subtitleTokens.find(isBatteryToken));
+  const colorLabel = product?.color ? toTitleCase(product.color) : '';
+
+  [storageLabel, batteryLabel, colorLabel].forEach((value) => {
+    const normalized = normalizeSpace(value);
+    if (!normalized || detailTokens.includes(normalized)) return;
+    detailTokens.push(normalized);
+  });
+
+  if (detailTokens.length < 3) {
+    subtitleTokens.forEach((token) => {
+      if (detailTokens.length >= 3) return;
+      if (isPriceToken(token) || isConditionToken(token) || isStorageToken(token) || isBatteryToken(token)) return;
+      const normalized = humanizeExtra(token);
+      if (!normalized || detailTokens.includes(normalized)) return;
+      detailTokens.push(normalized);
+    });
+  }
+
+  return {
+    conditionLabel,
+    detailLine: detailTokens.slice(0, 3).join(' • '),
   };
 }
 
@@ -927,7 +964,7 @@ function ensureCatalogLightbox() {
   return catalogLightbox;
 }
 
-export function renderCatalog({ mountEl, products }) {
+export function renderCatalog({ mountEl, products, startIndex = 0 }) {
   if (!mountEl) return [];
 
   mountEl.textContent = '';
@@ -944,11 +981,12 @@ export function renderCatalog({ mountEl, products }) {
 
     const titleText = product.title || 'Product';
     const subtitleText = product.subtitle || '';
-    const idBase = slugify(titleText) || `product-${index + 1}`;
-    card.id = `product-${idBase}-${index + 1}`;
+  const absoluteIndex = startIndex + index;
+  card.id = buildCatalogProductId(titleText, absoluteIndex);
     card.dataset.title = titleText;
     if (subtitleText) card.dataset.subtitle = subtitleText;
     card.dataset.search = `${titleText} ${subtitleText}`.toLowerCase();
+  card.dataset.index = String(absoluteIndex);
 
     const frame = el('div', 'catalog-frame');
 
@@ -963,6 +1001,7 @@ export function renderCatalog({ mountEl, products }) {
     }
 
     const display = buildCatalogCardSummary(product);
+  const details = buildCatalogCardDetails(product);
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
     const imagesToUse = images.length ? images : [product.image].filter(Boolean);
     const firstImage = imagesToUse[0] || '';
@@ -993,7 +1032,7 @@ export function renderCatalog({ mountEl, products }) {
       const pictureData = createResponsivePicture({
         src,
         alt: product.alt || titleText || 'Product',
-        sizes: '(max-width: 640px) 46vw, (max-width: 960px) 31vw, (max-width: 1100px) 23vw, 22vw',
+        sizes: '(max-width: 640px) 43vw, (max-width: 960px) 31vw, (max-width: 1280px) 24vw, 22vw',
       });
 
       if (!mainImgEl && imageIndex === 0) mainImgEl = pictureData.img;
@@ -1102,37 +1141,40 @@ export function renderCatalog({ mountEl, products }) {
       frame.appendChild(soldBadge);
     }
 
+    const body = el('div', 'catalog-card-body');
+
     const title = el('h3', 'catalog-title');
     title.textContent = titleText;
-    card.appendChild(title);
+    body.appendChild(title);
 
-    if (display.summary || display.priceLabel) {
-      const metaRow = el('div', 'catalog-meta-row');
+    const overview = el('div', 'catalog-overview');
 
-      if (display.summary) {
-        const meta = el('p', 'catalog-meta');
-        meta.textContent = display.summary;
-        metaRow.appendChild(meta);
-      }
+    const condition = el('p', 'catalog-condition');
+    condition.textContent = details.conditionLabel;
+    overview.appendChild(condition);
 
-      if (display.priceLabel) {
-        const price = el('p', 'catalog-price');
-        appendTextWithPriceSpans(price, display.priceLabel);
-        metaRow.appendChild(price);
-      }
-
-      card.appendChild(metaRow);
+    const detailLine = details.detailLine || display.summary;
+    if (detailLine) {
+      const meta = el('p', 'catalog-detail-line');
+      meta.textContent = detailLine;
+      overview.appendChild(meta);
     }
 
-    if (display.note) {
-      const note = el('p', 'catalog-note');
-      note.textContent = display.note;
-      card.appendChild(note);
+    if (display.priceLabel) {
+      const price = el('p', 'catalog-price');
+      appendTextWithPriceSpans(price, display.priceLabel);
+      overview.appendChild(price);
     }
+
+    body.appendChild(overview);
+
+    const description = el('p', 'catalog-description');
+    description.textContent = display.note || 'Ready to use.';
+    body.appendChild(description);
 
     const trustCopy = el('p', 'catalog-trust-copy');
     trustCopy.textContent = GERMANY_SOURCED_COPY;
-    card.appendChild(trustCopy);
+    body.appendChild(trustCopy);
 
     const actions = el('div', 'catalog-actions');
 
@@ -1155,12 +1197,15 @@ export function renderCatalog({ mountEl, products }) {
 
       actions.appendChild(buyBtn);
     }
-    card.appendChild(actions);
+
+    body.appendChild(actions);
+    card.appendChild(body);
 
     mountEl.appendChild(card);
 
     rendered.push({
       id: card.id,
+      index: absoluteIndex,
       title: titleText,
       subtitle: subtitleText,
       summary: display.summary,
@@ -1177,7 +1222,7 @@ export function renderRecommendationRail({ mountEl, items }) {
   if (!mountEl) return;
 
   const sourceItems = Array.isArray(items) ? items.filter((item) => item?.href && item?.title) : [];
-  const picks = sourceItems.filter((item) => !item.product?.sold).slice(0, 6);
+  const picks = sourceItems.filter((item) => !item.product?.sold).slice(0, 14);
 
   if (!picks.length) {
     mountEl.textContent = '';
@@ -1242,95 +1287,6 @@ export function renderRecommendationRail({ mountEl, items }) {
 
     rail.appendChild(link);
   });
-
-  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-  if (!reduceMotion && picks.length > 1) {
-    let autoSlideFrame = 0;
-    let lastTimestamp = 0;
-    let isInteracting = false;
-
-    function getMaxScroll() {
-      const maxScroll = rail.scrollWidth - rail.clientWidth;
-      return maxScroll > 0 ? maxScroll : 0;
-    }
-
-    function tick(timestamp) {
-      autoSlideFrame = 0;
-
-      if (isInteracting || document.hidden) {
-        lastTimestamp = 0;
-        startAutoSlide();
-        return;
-      }
-
-      const maxScroll = getMaxScroll();
-      if (!maxScroll) {
-        lastTimestamp = 0;
-        startAutoSlide();
-        return;
-      }
-
-      if (!lastTimestamp) {
-        lastTimestamp = timestamp;
-        startAutoSlide();
-        return;
-      }
-
-      const elapsed = Math.min(32, timestamp - lastTimestamp);
-      lastTimestamp = timestamp;
-      const isCoarsePointer = (navigator.maxTouchPoints || 0) > 0 || window.matchMedia?.('(pointer: coarse)').matches;
-      const pixelsPerMs = isCoarsePointer ? 0.035 : 0.045;
-      const nextLeft = rail.scrollLeft + elapsed * pixelsPerMs;
-
-      rail.scrollLeft = nextLeft >= maxScroll ? 0 : nextLeft;
-      startAutoSlide();
-    }
-
-    function startAutoSlide() {
-      if (autoSlideFrame) return;
-      autoSlideFrame = window.requestAnimationFrame(tick);
-    }
-
-    function stopAutoSlide() {
-      if (!autoSlideFrame) return;
-      window.cancelAnimationFrame(autoSlideFrame);
-      autoSlideFrame = 0;
-      lastTimestamp = 0;
-    }
-
-    function pauseAutoSlide() {
-      isInteracting = true;
-      stopAutoSlide();
-    }
-
-    function resumeAutoSlide() {
-      isInteracting = false;
-      startAutoSlide();
-    }
-
-    rail.addEventListener('focusin', pauseAutoSlide);
-    rail.addEventListener('focusout', resumeAutoSlide);
-    rail.addEventListener('pointerdown', pauseAutoSlide);
-    rail.addEventListener('pointerup', resumeAutoSlide);
-    rail.addEventListener('pointercancel', resumeAutoSlide);
-    rail.addEventListener('touchstart', pauseAutoSlide, { passive: true });
-    rail.addEventListener('touchend', resumeAutoSlide, { passive: true });
-    rail.addEventListener('touchcancel', resumeAutoSlide, { passive: true });
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        stopAutoSlide();
-        return;
-      }
-
-      resumeAutoSlide();
-    });
-    window.addEventListener('resize', () => {
-      stopAutoSlide();
-      if (!isInteracting) startAutoSlide();
-    });
-
-    startAutoSlide();
-  }
 
   wrap.appendChild(rail);
   mountEl.appendChild(wrap);
