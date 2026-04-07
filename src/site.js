@@ -412,6 +412,7 @@ function initImageViewer() {
     document.body.style.right = '0';
     document.body.style.width = '100%';
     document.body.style.overflow = 'hidden';
+    document.body.style.overflowX = 'hidden';
   }
 
   function unlockBodyScroll() {
@@ -423,14 +424,16 @@ function initImageViewer() {
       document.body.style.width = bodyInlineStyles.width;
       document.body.style.left = bodyInlineStyles.left;
       document.body.style.right = bodyInlineStyles.right;
-      document.body.style.overflow = bodyInlineStyles.overflow;
+      document.body.style.overflow = 'auto';
+      document.body.style.overflowX = 'hidden';
     } else {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       document.body.style.left = '';
       document.body.style.right = '';
-      document.body.style.overflow = '';
+      document.body.style.overflow = 'auto';
+      document.body.style.overflowX = 'hidden';
     }
 
     window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
@@ -521,6 +524,7 @@ function initImageViewer() {
 
     viewportEl.addEventListener('pointerdown', (e) => {
       if (!(e instanceof PointerEvent)) return;
+      if (e.pointerType === 'touch') return;
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       if (!beginSwipe({ clientX: e.clientX, clientY: e.clientY, gestureType: 'pointer', identifier: e.pointerId })) return;
 
@@ -532,10 +536,12 @@ function initImageViewer() {
     });
 
     viewportEl.addEventListener('pointermove', (e) => {
-      updateSwipe({ clientX: e.clientX, clientY: e.clientY, gestureType: 'pointer', identifier: e.pointerId, preventDefault: () => e.preventDefault() });
+      if (!(e instanceof PointerEvent) || e.pointerType === 'touch') return;
+      updateSwipe({ clientX: e.clientX, clientY: e.clientY, gestureType: 'pointer', identifier: e.pointerId });
     });
 
     viewportEl.addEventListener('pointerup', (e) => {
+      if (!(e instanceof PointerEvent) || e.pointerType === 'touch') return;
       finishSwipe({ clientX: e.clientX, gestureType: 'pointer', identifier: e.pointerId });
       try {
         viewportEl.releasePointerCapture(e.pointerId);
@@ -545,6 +551,7 @@ function initImageViewer() {
     });
 
     viewportEl.addEventListener('pointercancel', (e) => {
+      if (!(e instanceof PointerEvent) || e.pointerType === 'touch') return;
       finishSwipe({ clientX: e.clientX, gestureType: 'pointer', identifier: e.pointerId });
       try {
         viewportEl.releasePointerCapture(e.pointerId);
@@ -554,6 +561,7 @@ function initImageViewer() {
     });
 
     viewportEl.addEventListener('pointerleave', (e) => {
+      if (!(e instanceof PointerEvent) || e.pointerType === 'touch') return;
       if (e.pointerType === 'mouse') return;
       finishSwipe({ clientX: e.clientX, gestureType: 'pointer', identifier: e.pointerId });
       try {

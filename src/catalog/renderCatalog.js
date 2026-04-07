@@ -597,6 +597,7 @@ function ensureCatalogLightbox() {
     document.body.style.right = '0';
     document.body.style.width = '100%';
     document.body.style.overflow = 'hidden';
+    document.body.style.overflowX = 'hidden';
   }
 
   function unlockBodyScroll() {
@@ -607,14 +608,16 @@ function ensureCatalogLightbox() {
       document.body.style.width = bodyInlineStyles.width;
       document.body.style.left = bodyInlineStyles.left;
       document.body.style.right = bodyInlineStyles.right;
-      document.body.style.overflow = bodyInlineStyles.overflow;
+      document.body.style.overflow = 'auto';
+      document.body.style.overflowX = 'hidden';
     } else {
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       document.body.style.left = '';
       document.body.style.right = '';
-      document.body.style.overflow = '';
+      document.body.style.overflow = 'auto';
+      document.body.style.overflowX = 'hidden';
     }
     window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
   }
@@ -854,6 +857,7 @@ function ensureCatalogLightbox() {
   });
 
   viewport.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'touch') return;
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     if (!beginSwipe({ clientX: event.clientX, clientY: event.clientY, gestureType: 'pointer', identifier: event.pointerId })) return;
 
@@ -865,7 +869,8 @@ function ensureCatalogLightbox() {
   });
 
   viewport.addEventListener('pointermove', (event) => {
-    updateSwipe({ clientX: event.clientX, clientY: event.clientY, gestureType: 'pointer', identifier: event.pointerId, preventDefault: () => event.preventDefault() });
+    if (event.pointerType === 'touch') return;
+    updateSwipe({ clientX: event.clientX, clientY: event.clientY, gestureType: 'pointer', identifier: event.pointerId });
   });
 
   function finishSwipe({ clientX, gestureType, identifier } = {}) {
@@ -902,6 +907,7 @@ function ensureCatalogLightbox() {
   }
 
   viewport.addEventListener('pointerup', (event) => {
+    if (event.pointerType === 'touch') return;
     finishSwipe({ clientX: event.clientX, gestureType: 'pointer', identifier: event.pointerId });
     try {
       viewport.releasePointerCapture(event.pointerId);
@@ -911,6 +917,7 @@ function ensureCatalogLightbox() {
   });
 
   viewport.addEventListener('pointercancel', (event) => {
+    if (event.pointerType === 'touch') return;
     finishSwipe({ clientX: event.clientX, gestureType: 'pointer', identifier: event.pointerId });
     try {
       viewport.releasePointerCapture(event.pointerId);
@@ -920,7 +927,7 @@ function ensureCatalogLightbox() {
   });
 
   viewport.addEventListener('pointerleave', (event) => {
-    if (event.pointerType === 'mouse') return;
+    if (event.pointerType === 'touch' || event.pointerType === 'mouse') return;
     finishSwipe({ clientX: event.clientX, gestureType: 'pointer', identifier: event.pointerId });
     try {
       viewport.releasePointerCapture(event.pointerId);
@@ -1017,23 +1024,12 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     zoomBtn.setAttribute('aria-label', `Open photos for ${titleText}`);
 
     const mediaBadge = el('span', 'catalog-media-badge');
-    mediaBadge.textContent = imagesToUse.length >= 2 ? 'Swipe' : 'Zoom';
+    mediaBadge.textContent = imagesToUse.length >= 2 ? 'Photos' : 'Zoom';
 
     const track = el('div', 'catalog-track');
     let currentImageIndex = 0;
     let activeImage = firstImage;
     let mainImgEl = null;
-    let pointerStartX = 0;
-    let pointerStartY = 0;
-    let pointerMoved = false;
-
-    function shouldSuppressGestureClick(event) {
-      if (!pointerMoved) return false;
-      event?.preventDefault?.();
-      event?.stopPropagation?.();
-      pointerMoved = false;
-      return true;
-    }
 
     imagesToUse.forEach((src, imageIndex) => {
       const slide = el('div', 'catalog-slide');
@@ -1055,44 +1051,7 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       track.style.transform = `translateX(-${currentImageIndex * 100}%)`;
     }
 
-    zoomBtn.addEventListener('pointerdown', (event) => {
-      pointerStartX = event.clientX;
-      pointerStartY = event.clientY;
-      pointerMoved = false;
-    });
-
-    zoomBtn.addEventListener('pointermove', (event) => {
-      if (!pointerStartX && !pointerStartY) return;
-      const deltaX = event.clientX - pointerStartX;
-      const deltaY = event.clientY - pointerStartY;
-      if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY)) {
-        event.preventDefault();
-      }
-      if (Math.abs(deltaX) > 18 || Math.abs(deltaY) > 18) {
-        pointerMoved = true;
-      }
-    });
-
-    zoomBtn.addEventListener('pointerup', (event) => {
-      const deltaX = event.clientX - pointerStartX;
-      const deltaY = event.clientY - pointerStartY;
-
-      if (Math.abs(deltaX) > 34 && Math.abs(deltaX) > Math.abs(deltaY)) {
-        updateSlider(currentImageIndex + (deltaX < 0 ? 1 : -1));
-        pointerMoved = true;
-      }
-
-      pointerStartX = 0;
-      pointerStartY = 0;
-    });
-
-    zoomBtn.addEventListener('click', (event) => {
-      if (pointerMoved) {
-        event.preventDefault();
-        pointerMoved = false;
-        return;
-      }
-
+    zoomBtn.addEventListener('click', () => {
       if (!activeImage) return;
       ensureCatalogLightbox().open({
         src: activeImage,
@@ -1121,11 +1080,9 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       nextBtn.textContent = '›';
 
       prevBtn.addEventListener('click', (event) => {
-        if (shouldSuppressGestureClick(event)) return;
         updateSlider(currentImageIndex - 1);
       });
       nextBtn.addEventListener('click', (event) => {
-        if (shouldSuppressGestureClick(event)) return;
         updateSlider(currentImageIndex + 1);
       });
 

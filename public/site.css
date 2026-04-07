@@ -859,7 +859,7 @@ footer{
   border-radius: inherit;
   cursor: zoom-in;
   overflow: hidden;
-  touch-action: pan-y pinch-zoom;
+  touch-action: manipulation;
 }
 
 .catalog-track{
