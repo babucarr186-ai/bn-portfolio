@@ -388,7 +388,7 @@ function buildCatalogCardDetails(product) {
 }
 
 let catalogLightbox;
-const GERMANY_SOURCED_COPY = 'We don\'t buy random market phones. All devices are sourced from Germany and tested.';
+const GERMANY_SOURCED_COPY = 'Germany sourced • Tested';
 
 function ensureCatalogLightbox() {
   if (catalogLightbox) return catalogLightbox;
@@ -1013,10 +1013,7 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     zoomBtn.setAttribute('aria-label', `Open photos for ${titleText}`);
 
     const mediaBadge = el('span', 'catalog-media-badge');
-    mediaBadge.textContent = imagesToUse.length >= 2 ? 'Swipe photos' : 'Tap to zoom';
-
-    const sourcedBadge = el('span', 'catalog-source-badge');
-    sourcedBadge.textContent = 'Germany Sourced';
+    mediaBadge.textContent = imagesToUse.length >= 2 ? 'Swipe' : 'Zoom';
 
     const track = el('div', 'catalog-track');
     const dots = [];
@@ -1096,7 +1093,6 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     zoomBtn.appendChild(track);
     slider.appendChild(zoomBtn);
     slider.appendChild(mediaBadge);
-    slider.appendChild(sourcedBadge);
 
     if (imagesToUse.length >= 2) {
       const prevBtn = document.createElement('button');
@@ -1146,6 +1142,10 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     const title = el('h3', 'catalog-title');
     title.textContent = titleText;
     body.appendChild(title);
+
+    const originBadge = el('p', 'catalog-origin-badge');
+    originBadge.textContent = 'Germany Sourced';
+    body.appendChild(originBadge);
 
     const overview = el('div', 'catalog-overview');
 

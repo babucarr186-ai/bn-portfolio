@@ -134,6 +134,13 @@
   opacity: 0.78;
 }
 
+.catalog-card.is-sold .catalog-price,
+.catalog-card.is-sold .catalog-price .product-price,
+html[data-category="iphones"] .catalog-card.is-sold .catalog-price,
+html[data-category="iphones"] .catalog-card.is-sold .catalog-price .product-price{
+  color: rgba(100,116,139,0.92);
+}
+
 @media (max-width: 640px){
   .catalog-badge-sold{
     top: 10px;
@@ -272,14 +279,15 @@
 .catalog-media-badge{
   left: 12px;
   bottom: 12px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 999px;
   background: rgba(255,255,255,0.92);
   color: rgba(15,23,42,0.72);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  box-shadow: 0 8px 20px rgba(15,23,42,0.10);
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 16px rgba(15,23,42,0.08);
 }
 
 .catalog-dots{
@@ -317,10 +325,25 @@
 
 .catalog-title{
   margin: 0;
-  font-size: clamp(1rem, 2vw, 1.22rem);
-  line-height: 1.12;
+  font-size: clamp(1.02rem, 2vw, 1.24rem);
+  line-height: 1.08;
   font-weight: 900;
   letter-spacing: -0.03em;
+}
+
+.catalog-origin-badge{
+  margin: -2px 0 0;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(15,23,42,0.07);
+  border: 1px solid rgba(15,23,42,0.08);
+  color: rgba(15,23,42,0.82);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
 }
 
 .catalog-overview{
@@ -339,7 +362,7 @@
 .catalog-detail-line{
   margin: 0;
   color: rgba(71,85,105,0.88);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   line-height: 1.45;
 }
@@ -347,7 +370,7 @@
 .catalog-price{
   margin: 2px 0 0;
   color: #16934f;
-  font-size: clamp(1rem, 2vw, 1.16rem);
+  font-size: clamp(1.08rem, 2.1vw, 1.24rem);
   font-weight: 950;
   letter-spacing: -0.03em;
 }
@@ -367,10 +390,10 @@
 
 .catalog-trust-copy{
   margin: 0;
-  color: rgba(100,116,139,0.96);
-  font-size: 0.74rem;
-  font-weight: 700;
-  line-height: 1.42;
+  color: rgba(100,116,139,0.9);
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1.35;
 }
 
 .catalog-actions{
@@ -617,13 +640,18 @@ html[data-category="iphones"] .catalog-source-badge{
 html[data-category="iphones"] .catalog-media-badge{
   background: rgba(255,255,255,0.94);
   color: rgba(17,24,39,0.68);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
 }
 
 html[data-category="iphones"] .catalog-title{
   font-size: clamp(1.02rem, 1.8vw, 1.28rem);
   letter-spacing: -0.04em;
   line-height: 1.04;
+}
+
+html[data-category="iphones"] .catalog-origin-badge{
+  background: rgba(15,23,42,0.06);
+  color: rgba(15,23,42,0.82);
 }
 
 html[data-category="iphones"] .catalog-condition{
@@ -641,7 +669,7 @@ html[data-category="iphones"] .catalog-detail-line{
 
 html[data-category="iphones"] .catalog-price{
   color: #17924f;
-  font-size: clamp(1.06rem, 2vw, 1.24rem);
+  font-size: clamp(1.12rem, 2.2vw, 1.3rem);
   letter-spacing: -0.04em;
 }
 
@@ -653,7 +681,7 @@ html[data-category="iphones"] .catalog-description{
 
 html[data-category="iphones"] .catalog-trust-copy{
   color: rgba(71,85,105,0.92);
-  font-size: 0.73rem;
+  font-size: 0.71rem;
   letter-spacing: -0.01em;
 }
 
@@ -877,6 +905,11 @@ html[data-category="iphones"] .catalog-frame img{
 
   .catalog-title{
     font-size: 0.95rem;
+  }
+
+  .catalog-origin-badge{
+    font-size: 0.64rem;
+    padding: 4px 8px;
   }
 
   .catalog-condition{
