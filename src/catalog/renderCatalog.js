@@ -1020,7 +1020,6 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     mediaBadge.textContent = imagesToUse.length >= 2 ? 'Swipe' : 'Zoom';
 
     const track = el('div', 'catalog-track');
-    const dots = [];
     let currentImageIndex = 0;
     let activeImage = firstImage;
     let mainImgEl = null;
@@ -1054,9 +1053,6 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       currentImageIndex = (nextIndex + imagesToUse.length) % imagesToUse.length;
       activeImage = imagesToUse[currentImageIndex];
       track.style.transform = `translateX(-${currentImageIndex * 100}%)`;
-      dots.forEach((dot, dotIndex) => {
-        dot.setAttribute('aria-current', dotIndex === currentImageIndex ? 'true' : 'false');
-      });
     }
 
     zoomBtn.addEventListener('pointerdown', (event) => {
@@ -1135,23 +1131,6 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
 
       slider.appendChild(prevBtn);
       slider.appendChild(nextBtn);
-
-      const dotsWrap = el('div', 'catalog-dots');
-      imagesToUse.forEach((_, dotIndex) => {
-        const dot = document.createElement('button');
-        dot.type = 'button';
-        dot.className = 'catalog-dot';
-        dot.setAttribute('aria-label', `Go to photo ${dotIndex + 1}`);
-        dot.setAttribute('aria-current', dotIndex === 0 ? 'true' : 'false');
-        dot.addEventListener('click', (event) => {
-          if (shouldSuppressGestureClick(event)) return;
-          updateSlider(dotIndex);
-        });
-        dots.push(dot);
-        dotsWrap.appendChild(dot);
-      });
-
-      slider.appendChild(dotsWrap);
     }
 
     frame.appendChild(slider);
