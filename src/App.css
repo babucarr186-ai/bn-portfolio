@@ -29,6 +29,7 @@
 }
 
 html, body, #root { height: 100%; }
+html { overflow-x: hidden; }
 
 /* Wavy background pattern */
 @keyframes waveMove {
@@ -83,7 +84,7 @@ body {
   position: absolute;
   left: 50%;
   top: 52%;
-  width: min(700px, 120vw);
+  width: min(700px, 100vw);
   height: auto;
   opacity: 0.30;
   filter: contrast(1.03) drop-shadow(0 26px 66px rgba(0,0,0,0.26));
@@ -99,7 +100,7 @@ body {
 @media (max-width: 640px) {
   .air-phone {
     top: 58%;
-    width: 150vw;
+    width: 95vw;
     opacity: 0.24;
   }
   [data-theme='dark'] .air-phone { opacity: 0.19; }
