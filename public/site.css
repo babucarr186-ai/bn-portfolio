@@ -1025,7 +1025,7 @@ body.catalog-lightbox-open{
   padding: 0 10px;
 }
 
-.catalog-lightbox-slide picture{
+.catalog-lightbox-slide picture {
   display: flex;
   align-items: center;
   justify-content: center;
