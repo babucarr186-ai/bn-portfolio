@@ -1240,6 +1240,13 @@ export function renderRecommendationRail({ mountEl, items }) {
   intro.textContent = 'A few cleaner alternatives from other Apple categories if you are still comparing before you buy.';
   wrap.appendChild(intro);
 
+  const indicator = el('div', 'catalog-rail-indicator');
+  indicator.setAttribute('aria-hidden', 'true');
+  for (let index = 0; index < 3; index += 1) {
+    indicator.appendChild(el('span', 'catalog-rail-indicator-dot'));
+  }
+  wrap.appendChild(indicator);
+
   const rail = el('div', 'catalog-rail');
   rail.setAttribute('aria-label', 'Recommended products');
   picks.forEach((item) => {
@@ -1287,6 +1294,137 @@ export function renderRecommendationRail({ mountEl, items }) {
 
     rail.appendChild(link);
   });
+
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  const allowAutoSlide = !reduceMotion?.matches && picks.length > 1;
+
+  if (allowAutoSlide) {
+    indicator.classList.add('is-playing');
+
+    const originalCards = Array.from(rail.children);
+    originalCards.forEach((node) => {
+      const clone = node.cloneNode(true);
+      clone.classList.add('catalog-rail-card-clone');
+      clone.setAttribute('aria-hidden', 'true');
+      clone.setAttribute('tabindex', '-1');
+      rail.appendChild(clone);
+    });
+
+    let autoSlideFrame = 0;
+    let lastTimestamp = 0;
+    let paused = false;
+    let resumeTimer = 0;
+    let lastAutoScrollAt = 0;
+
+    function getLoopWidth() {
+      return rail.scrollWidth / 2;
+    }
+
+    function isCoarsePointer() {
+      return (navigator.maxTouchPoints || 0) > 0 || window.matchMedia?.('(pointer: coarse)').matches;
+    }
+
+    function cancelResumeTimer() {
+      if (!resumeTimer) return;
+      window.clearTimeout(resumeTimer);
+      resumeTimer = 0;
+    }
+
+    function pauseAutoSlide() {
+      paused = true;
+      cancelResumeTimer();
+      lastTimestamp = 0;
+      indicator.classList.remove('is-playing');
+    }
+
+    function resumeAutoSlide(delay = 0) {
+      cancelResumeTimer();
+      resumeTimer = window.setTimeout(() => {
+        paused = false;
+        lastTimestamp = 0;
+        indicator.classList.add('is-playing');
+        if (!autoSlideFrame) autoSlideFrame = window.requestAnimationFrame(tick);
+      }, delay);
+    }
+
+    function tick(timestamp) {
+      autoSlideFrame = 0;
+
+      if (paused || document.hidden) {
+        if (!paused) indicator.classList.remove('is-playing');
+        if (!autoSlideFrame) autoSlideFrame = window.requestAnimationFrame(tick);
+        return;
+      }
+
+      const loopWidth = getLoopWidth();
+      if (!loopWidth || loopWidth <= rail.clientWidth) {
+        if (!autoSlideFrame) autoSlideFrame = window.requestAnimationFrame(tick);
+        return;
+      }
+
+      if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+        autoSlideFrame = window.requestAnimationFrame(tick);
+        return;
+      }
+
+      const elapsed = Math.min(32, timestamp - lastTimestamp);
+      lastTimestamp = timestamp;
+      const pixelsPerMs = isCoarsePointer() ? 0.024 : 0.032;
+      let nextLeft = rail.scrollLeft + elapsed * pixelsPerMs;
+
+      if (nextLeft >= loopWidth) nextLeft -= loopWidth;
+
+      lastAutoScrollAt = window.performance.now();
+      rail.scrollLeft = nextLeft;
+      autoSlideFrame = window.requestAnimationFrame(tick);
+    }
+
+    rail.addEventListener('mouseenter', pauseAutoSlide);
+    rail.addEventListener('mouseleave', () => resumeAutoSlide(220));
+    rail.addEventListener('focusin', pauseAutoSlide);
+    rail.addEventListener('focusout', () => resumeAutoSlide(220));
+    rail.addEventListener('pointerdown', pauseAutoSlide, { passive: true });
+    rail.addEventListener('pointerup', () => resumeAutoSlide(900), { passive: true });
+    rail.addEventListener('pointercancel', () => resumeAutoSlide(900), { passive: true });
+    rail.addEventListener('touchstart', pauseAutoSlide, { passive: true });
+    rail.addEventListener('touchend', () => resumeAutoSlide(1200), { passive: true });
+    rail.addEventListener('touchcancel', () => resumeAutoSlide(1200), { passive: true });
+    rail.addEventListener('scroll', () => {
+      if (window.performance.now() - lastAutoScrollAt < 80) return;
+      pauseAutoSlide();
+      resumeAutoSlide(1200);
+    }, { passive: true });
+
+    reduceMotion?.addEventListener?.('change', (event) => {
+      if (event.matches) {
+        pauseAutoSlide();
+        return;
+      }
+
+      resumeAutoSlide(160);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        pauseAutoSlide();
+        return;
+      }
+
+      resumeAutoSlide(180);
+    });
+
+    window.addEventListener('resize', () => {
+      const loopWidth = getLoopWidth();
+      if (loopWidth && rail.scrollLeft >= loopWidth) {
+        rail.scrollLeft -= loopWidth;
+      }
+      pauseAutoSlide();
+      resumeAutoSlide(220);
+    });
+
+    resumeAutoSlide(180);
+  }
 
   wrap.appendChild(rail);
   mountEl.appendChild(wrap);

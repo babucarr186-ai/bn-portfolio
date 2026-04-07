@@ -1263,9 +1263,51 @@ body.catalog-lightbox-open{
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .catalog-rail::-webkit-scrollbar{ display: none; }
+
+.catalog-rail-indicator{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: -2px 0 2px;
+}
+
+.catalog-rail-indicator-dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(11,15,22,0.18);
+  transition: transform 220ms ease, background-color 220ms ease, opacity 220ms ease;
+}
+
+.catalog-rail-indicator.is-playing .catalog-rail-indicator-dot:nth-child(1){
+  animation: catalogRailPulse 1.6s infinite ease-in-out;
+}
+
+.catalog-rail-indicator.is-playing .catalog-rail-indicator-dot:nth-child(2){
+  animation: catalogRailPulse 1.6s 0.18s infinite ease-in-out;
+}
+
+.catalog-rail-indicator.is-playing .catalog-rail-indicator-dot:nth-child(3){
+  animation: catalogRailPulse 1.6s 0.36s infinite ease-in-out;
+}
+
+@keyframes catalogRailPulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.55;
+    background: rgba(11,15,22,0.18);
+  }
+
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+    background: rgba(11,15,22,0.48);
+  }
+}
 
 .catalog-rail-card{
   display: grid;
