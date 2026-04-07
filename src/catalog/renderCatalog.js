@@ -602,23 +602,14 @@ function ensureCatalogLightbox() {
 
   function unlockBodyScroll() {
     document.body.classList.remove('catalog-lightbox-open');
-    if (bodyInlineStyles) {
-      document.body.style.position = bodyInlineStyles.position;
-      document.body.style.top = bodyInlineStyles.top;
-      document.body.style.width = bodyInlineStyles.width;
-      document.body.style.left = bodyInlineStyles.left;
-      document.body.style.right = bodyInlineStyles.right;
-      document.body.style.overflow = 'auto';
-      document.body.style.overflowX = 'hidden';
-    } else {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.overflow = 'auto';
-      document.body.style.overflowX = 'hidden';
-    }
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflow = '';
+    document.body.style.overflowX = '';
+    bodyInlineStyles = null;
     window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
   }
 
@@ -1051,7 +1042,8 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       track.style.transform = `translateX(-${currentImageIndex * 100}%)`;
     }
 
-    zoomBtn.addEventListener('click', () => {
+    zoomBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (!activeImage) return;
       ensureCatalogLightbox().open({
         src: activeImage,

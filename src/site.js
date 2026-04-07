@@ -417,25 +417,14 @@ function initImageViewer() {
 
   function unlockBodyScroll() {
     document.body.classList.remove('image-viewer-open');
-
-    if (bodyInlineStyles) {
-      document.body.style.position = bodyInlineStyles.position;
-      document.body.style.top = bodyInlineStyles.top;
-      document.body.style.width = bodyInlineStyles.width;
-      document.body.style.left = bodyInlineStyles.left;
-      document.body.style.right = bodyInlineStyles.right;
-      document.body.style.overflow = 'auto';
-      document.body.style.overflowX = 'hidden';
-    } else {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.overflow = 'auto';
-      document.body.style.overflowX = 'hidden';
-    }
-
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflow = '';
+    document.body.style.overflowX = '';
+    bodyInlineStyles = null;
     window.scrollTo({ top: lockedScrollY, behavior: 'auto' });
   }
 
@@ -981,6 +970,9 @@ function initImageViewer() {
   document.addEventListener('click', (e) => {
     const target = e.target;
     if (!(target instanceof Element)) return;
+
+    // Skip clicks handled by the catalog lightbox's own zoom button
+    if (target.closest('.catalog-zoom')) return;
 
     const img = target.closest('.catalog-frame img');
     if (!img) return;
