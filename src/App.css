@@ -585,7 +585,7 @@ main {
 
 .card h2 {
   margin: 0 0 8px;
-  font-size: 22px;
+  font-size: clamp(1.15rem, 4.8vw, 1.375rem);
 }
 
 .card p {
@@ -710,7 +710,7 @@ main {
   text-align: center;
   color: var(--muted);
   margin-top: 28px;
-  font-size: 14px;
+  font-size: clamp(0.8rem, 3.4vw, 0.875rem);
   padding: 14px 0 8px;
 }
 
@@ -730,8 +730,10 @@ main {
 
 /* iPhone Preview Frame */
 .iphone-frame {
-  width: 390px; /* iPhone 14 logical width */
-  height: 844px; /* iPhone 14 logical height */
+  width: 100%;
+  max-width: 390px;
+  aspect-ratio: 390 / 844;
+  height: auto;
   border: 14px solid #111;
   border-bottom: 18px solid #111;
   border-radius: 46px;
@@ -747,7 +749,7 @@ main {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 210px;
+  width: min(210px, 54vw);
   height: 30px;
   background: #000;
   border-bottom-left-radius: 20px;
@@ -781,6 +783,51 @@ main {
 @media (max-width: 420px) {
   .iphone-frame { width: 100%; height: 100vh; margin: 0; border-radius: 0; }
   .iphone-notch { display: none; }
+}
+
+@media (max-width: 320px) {
+  .site {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .hero {
+    padding: 60px 12px 150px;
+  }
+
+  .card,
+  .project-card,
+  .progress-block {
+    padding: 12px;
+  }
+
+  .projects-grid,
+  .social,
+  .availability-form {
+    gap: 10px;
+  }
+
+  .project-card h3 {
+    font-size: clamp(1rem, 4.8vw, 1.125rem);
+  }
+
+  .contact-actions .btn {
+    min-width: 100%;
+  }
+
+  .avail-control {
+    padding: 8px 12px;
+    font-size: clamp(0.78rem, 3.6vw, 0.82rem);
+  }
+
+  .avail-notes .avail-control {
+    min-height: 80px;
+  }
+
+  .chat-panel {
+    width: calc(100vw - 16px);
+    max-height: min(70vh, 460px);
+  }
 }
 
 /* Under Construction Ribbon */

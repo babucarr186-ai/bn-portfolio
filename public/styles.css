@@ -1063,8 +1063,10 @@ html[data-category="iphones"] .catalog-frame img{
 }
 
 .cart-item__img{
-  width: 92px;
-  height: 92px;
+  width: 100%;
+  max-width: 92px;
+  height: auto;
+  aspect-ratio: 1 / 1;
   border-radius: 14px;
   border: 1px solid rgba(11,15,22,0.12);
   background: white;
@@ -1087,7 +1089,8 @@ html[data-category="iphones"] .catalog-frame img{
 }
 
 .qty input{
-  width: 62px;
+  width: 100%;
+  max-width: 62px;
   border: none;
   outline: none;
   background: transparent;
@@ -1166,6 +1169,58 @@ html[data-category="iphones"] .catalog-frame img{
 }
 
 .field textarea{ min-height: 96px; resize: vertical; }
+
+@media (max-width: 320px){
+  .cart-panel,
+  .checkout-item,
+  .notice{
+    padding: 12px;
+  }
+
+  .cart-list,
+  .checkout-items,
+  .form-grid{
+    gap: 10px;
+  }
+
+  .cart-item{
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .cart-item__img{
+    max-width: 72px;
+  }
+
+  .qty{
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .qty input{
+    max-width: 48px;
+  }
+
+  .checkout-item{
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .checkout-item__right{
+    text-align: left;
+  }
+
+  .field input,
+  .field textarea{
+    padding: 8px 12px;
+    max-width: 100%;
+  }
+
+  .field textarea{
+    min-height: 80px;
+  }
+}
 
 @media (min-width: 860px){
   .cart-grid{
