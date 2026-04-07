@@ -1418,11 +1418,15 @@ body.catalog-lightbox-open{
   .logo-img{ height: 38px; }
 
   .nav-links{
-    gap: 12px;
-    font-size: 0.86rem;
+    gap: 8px;
+    font-size: 0.82rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
   }
 
-  .nav-links a{ padding: 6px 8px; }
+  .nav-links a{ padding: 6px 8px; white-space: nowrap; }
 
   .nav-actions{ gap: 8px; }
 
@@ -1899,4 +1903,35 @@ body.image-viewer-open{
 
 @media (max-width: 420px){
   #uaChatWidget{ right: 14px; bottom: 14px; }
+  #uaChatWidget .chat-panel{ width: calc(100vw - 28px); max-height: min(68vh, 460px); }
+
+  .container{ width: min(1100px, calc(100% - 20px)); }
+
+  .nav-links{ gap: 8px; font-size: 0.82rem; }
+  .nav-links a{ padding: 5px 6px; }
+
+  .hero{ padding: 28px 0 22px; }
+  h1{ font-size: clamp(1.6rem, 7vw, 2.05rem); }
+  .sub{ font-size: 0.92rem; }
+
+  .section{ padding: 32px 0; }
+  .section-title{ font-size: clamp(1.2rem, 5.2vw, 1.55rem); }
+
+  .icon-card{ padding: 12px; gap: 10px; }
+  .icon{ width: 28px; height: 28px; border-radius: 10px; }
+  .icon svg{ width: 15px; height: 15px; }
+
+  .phone-frame{ width: min(280px, 76vw); border-radius: 30px; }
+  .story-media .phone-frame{ width: min(300px, 80vw); border-radius: 32px; }
+
+  .catalog-card{ padding: 8px; border-radius: 14px; }
+  .catalog-frame{ border-radius: 12px; }
+  .catalog-title{ font-size: 0.88rem; }
+  .catalog-meta{ font-size: 0.76rem; }
+  .catalog-note{ font-size: 0.72rem; }
+
+  .form{ padding: 14px; border-radius: 18px; }
+
+  .support-policy-grid{ grid-template-columns: 1fr; }
+  .support-policy-card-wide{ grid-column: auto; }
 }

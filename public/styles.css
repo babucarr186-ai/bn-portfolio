@@ -1175,3 +1175,33 @@ html[data-category="iphones"] .catalog-frame img{
     align-items: start;
   }
 }
+
+@media (max-width: 420px){
+  .catalog-badge-sold{
+    padding: 8px 14px;
+    font-size: clamp(0.82rem, 2vw, 1.0rem);
+    letter-spacing: 0.16em;
+    max-width: calc(100% - 24px);
+  }
+
+  .cart-item{
+    grid-template-columns: 72px 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .cart-item__img{
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+  }
+
+  .cart-panel{ padding: 12px; border-radius: 14px; }
+
+  .form-grid{ gap: 10px; }
+  .field input, .field textarea{ padding: 10px 12px; border-radius: 12px; }
+
+  html[data-category="iphones"] .catalog-card{ border-radius: 18px; padding: 8px; }
+  html[data-category="iphones"] .catalog-frame{ border-radius: 14px; }
+  html[data-category="iphones"] .catalog-wrap{ border-radius: 20px; }
+}
