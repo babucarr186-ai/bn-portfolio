@@ -66,6 +66,10 @@
   opacity: 0.92;
 }
 
+img{
+  max-width: 100%;
+}
+
 .catalog-desc{
   margin: 8px 0 0;
   color: rgba(11,15,22,0.78);
@@ -1033,6 +1037,29 @@ html[data-category="iphones"] .catalog-frame img{
     bottom: 82px;
     padding: 10px 12px;
     font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 420px){
+  .catalog-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-wrap{
+    padding: 8px;
+  }
+
+  .catalog-card{
+    gap: 10px;
+  }
+
+  .catalog-actions{
+    gap: 10px;
+  }
+
+  .catalog-actions .btn,
+  .catalog-pagination-btn{
+    width: 100%;
   }
 }
 

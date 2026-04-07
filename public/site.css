@@ -33,6 +33,10 @@ body{
   overflow-x: hidden;
 }
 
+img{
+  max-width: 100%;
+}
+
 /* Fixed background photo (non-animated) */
 body::before{
   content:"";
@@ -1527,6 +1531,23 @@ body.catalog-lightbox-open{
   .small{ font-size: 0.88rem; }
 }
 
+@media (max-width: 420px){
+  .catalog-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions,
+  .form-actions{
+    gap: 10px;
+  }
+
+  .hero-actions .btn,
+  .form-actions .btn,
+  .support-policy-card-accent .btn{
+    width: 100%;
+  }
+}
+
 @media (max-width: 320px){
   .container{
     width: calc(100% - 16px);
@@ -1566,6 +1587,12 @@ body.catalog-lightbox-open{
   .seo-link-grid,
   .support-policy-grid{
     gap: 10px;
+  }
+
+  .catalog-grid,
+  .seo-link-grid,
+  .support-policy-grid{
+    grid-template-columns: 1fr;
   }
 
   .catalog-card,
@@ -1977,4 +2004,29 @@ body.image-viewer-open{
 
 @media (max-width: 420px){
   #uaChatWidget{ right: 14px; bottom: 14px; }
+  #uaChatWidget .chat-panel{
+    width: calc(100vw - 20px);
+    max-height: min(72vh, calc(100vh - 96px));
+  }
+  #uaChatWidget .chat-footer{
+    grid-template-columns: 1fr;
+  }
+  #uaChatWidget .chat-footer > *{
+    width: 100%;
+  }
+  #uaChatWidget .chat-input{
+    min-width: 0;
+    height: 38px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 320px){
+  #uaChatWidget .chat-list{
+    padding: 10px 12px;
+  }
+  #uaChatWidget .chat-msg{
+    max-width: 100%;
+    font-size: 13px;
+  }
 }
