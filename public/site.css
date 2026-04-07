@@ -1262,7 +1262,9 @@ body.catalog-lightbox-open{
   padding: 6px 4px 10px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
+  overscroll-behavior: contain;
   overscroll-behavior-x: contain;
+  touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -1321,6 +1323,8 @@ body.catalog-lightbox-open{
   color: inherit;
   text-decoration: none;
   scroll-snap-align: start;
+  touch-action: manipulation;
+  user-select: none;
   box-shadow: 0 16px 36px rgba(0,0,0,0.06);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }

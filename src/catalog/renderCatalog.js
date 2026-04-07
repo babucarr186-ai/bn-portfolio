@@ -389,6 +389,11 @@ function buildCatalogCardDetails(product) {
 
 let catalogLightbox;
 const GERMANY_SOURCED_COPY = 'Germany sourced • Tested';
+const WHATSAPP_NUMBER = '4915679652076';
+
+function buildWhatsAppHref(message) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
 
 function ensureCatalogLightbox() {
   if (catalogLightbox) return catalogLightbox;
@@ -1024,6 +1029,14 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     let pointerStartY = 0;
     let pointerMoved = false;
 
+    function shouldSuppressGestureClick(event) {
+      if (!pointerMoved) return false;
+      event?.preventDefault?.();
+      event?.stopPropagation?.();
+      pointerMoved = false;
+      return true;
+    }
+
     imagesToUse.forEach((src, imageIndex) => {
       const slide = el('div', 'catalog-slide');
       const pictureData = createResponsivePicture({
@@ -1055,7 +1068,12 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
 
     zoomBtn.addEventListener('pointermove', (event) => {
       if (!pointerStartX && !pointerStartY) return;
-      if (Math.abs(event.clientX - pointerStartX) > 18 || Math.abs(event.clientY - pointerStartY) > 18) {
+      const deltaX = event.clientX - pointerStartX;
+      const deltaY = event.clientY - pointerStartY;
+      if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        event.preventDefault();
+      }
+      if (Math.abs(deltaX) > 18 || Math.abs(deltaY) > 18) {
         pointerMoved = true;
       }
     });
@@ -1107,8 +1125,14 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       nextBtn.setAttribute('aria-label', `Next photo for ${titleText}`);
       nextBtn.textContent = '›';
 
-      prevBtn.addEventListener('click', () => updateSlider(currentImageIndex - 1));
-      nextBtn.addEventListener('click', () => updateSlider(currentImageIndex + 1));
+      prevBtn.addEventListener('click', (event) => {
+        if (shouldSuppressGestureClick(event)) return;
+        updateSlider(currentImageIndex - 1);
+      });
+      nextBtn.addEventListener('click', (event) => {
+        if (shouldSuppressGestureClick(event)) return;
+        updateSlider(currentImageIndex + 1);
+      });
 
       slider.appendChild(prevBtn);
       slider.appendChild(nextBtn);
@@ -1120,7 +1144,10 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
         dot.className = 'catalog-dot';
         dot.setAttribute('aria-label', `Go to photo ${dotIndex + 1}`);
         dot.setAttribute('aria-current', dotIndex === 0 ? 'true' : 'false');
-        dot.addEventListener('click', () => updateSlider(dotIndex));
+        dot.addEventListener('click', (event) => {
+          if (shouldSuppressGestureClick(event)) return;
+          updateSlider(dotIndex);
+        });
         dots.push(dot);
         dotsWrap.appendChild(dot);
       });
@@ -1179,18 +1206,21 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     const actions = el('div', 'catalog-actions');
 
     if (product?.sold) {
-      const soldBtn = document.createElement('span');
+      const soldBtn = document.createElement('button');
+      soldBtn.type = 'button';
       soldBtn.className = 'btn btn-secondary btn-small btn-sold';
-        soldBtn.textContent = 'Sold';
-      soldBtn.setAttribute('aria-disabled', 'true');
+      soldBtn.textContent = 'Sold';
+      soldBtn.disabled = true;
       actions.appendChild(soldBtn);
     } else {
       const buyBtn = document.createElement('a');
       buyBtn.className = 'btn btn-primary btn-small';
-      buyBtn.href = '#';
+      const msg = `Hello, I want to buy this product from Uncle Apple Store: ${titleText}${subtitleText ? ` (${subtitleText})` : ''}. Is it available?`;
+      buyBtn.href = buildWhatsAppHref(msg);
+      buyBtn.target = '_blank';
+      buyBtn.rel = 'noopener noreferrer';
       buyBtn.textContent = 'Buy Now';
 
-      const msg = `Hello, I want to buy this product from Uncle Apple Store: ${titleText}${subtitleText ? ` (${subtitleText})` : ''}. Is it available?`;
       if (window.setWhatsAppHref) {
         window.setWhatsAppHref(buyBtn, msg);
       }
@@ -1300,6 +1330,40 @@ export function renderRecommendationRail({ mountEl, items }) {
 
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const allowAutoSlide = !reduceMotion?.matches && picks.length > 1;
+  let railPointerStartX = 0;
+  let railPointerStartY = 0;
+  let suppressRailClickUntil = 0;
+
+  rail.addEventListener('pointerdown', (event) => {
+    railPointerStartX = event.clientX;
+    railPointerStartY = event.clientY;
+  }, { passive: true });
+
+  rail.addEventListener('pointermove', (event) => {
+    if (!railPointerStartX && !railPointerStartY) return;
+    const deltaX = event.clientX - railPointerStartX;
+    const deltaY = event.clientY - railPointerStartY;
+    if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      suppressRailClickUntil = window.performance.now() + 360;
+    }
+  }, { passive: true });
+
+  rail.addEventListener('pointerup', () => {
+    railPointerStartX = 0;
+    railPointerStartY = 0;
+  }, { passive: true });
+
+  rail.addEventListener('pointercancel', () => {
+    railPointerStartX = 0;
+    railPointerStartY = 0;
+  }, { passive: true });
+
+  rail.addEventListener('click', (event) => {
+    if (window.performance.now() > suppressRailClickUntil) return;
+    const link = event.target instanceof Element ? event.target.closest('.catalog-rail-card') : null;
+    if (!link) return;
+    event.preventDefault();
+  }, true);
 
   if (allowAutoSlide) {
     indicator.classList.add('is-playing');

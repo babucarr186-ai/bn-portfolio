@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildCatalogCardSummary, renderRecommendationRail } from './renderCatalog.js';
+import { buildCatalogCardSummary, renderCatalog, renderRecommendationRail } from './renderCatalog.js';
 
 describe('buildCatalogCardSummary', () => {
   it('surfaces dual-SIM unlock details without duplicating them', () => {
@@ -65,6 +65,39 @@ describe('renderRecommendationRail', () => {
     expect(rail?.querySelectorAll('.catalog-rail-card').length).toBe(4);
     expect(rail?.querySelectorAll('.catalog-rail-card-clone').length).toBe(2);
 
+    mountEl.remove();
+  });
+});
+
+describe('renderCatalog', () => {
+  it('gives Buy Now a direct WhatsApp href even without the helper', () => {
+    const previousHelper = window.setWhatsAppHref;
+    const mountEl = document.createElement('div');
+    document.body.appendChild(mountEl);
+    delete window.setWhatsAppHref;
+
+    renderCatalog({
+      mountEl,
+      products: [
+        {
+          title: 'iPhone 12',
+          subtitle: '128GB • Very clean • Battery 84%',
+          price: 24500,
+          description: 'Factory unlocked. Dual SIM (SIM + eSIM).',
+          images: ['/products/placeholders/placeholder-phone.svg'],
+        },
+      ],
+    });
+
+    const buyNow = mountEl.querySelector('.catalog-actions a.btn-primary');
+
+    expect(buyNow).toBeInTheDocument();
+    expect(buyNow?.getAttribute('href')).toContain('https://wa.me/4915679652076?text=');
+    expect(buyNow?.getAttribute('target')).toBe('_blank');
+
+    if (previousHelper) {
+      window.setWhatsAppHref = previousHelper;
+    }
     mountEl.remove();
   });
 });
