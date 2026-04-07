@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" role="img" aria-labelledby="title desc">
+  <title id="title">Phone placeholder</title>
+  <desc id="desc">Neutral smartphone illustration used when a product listing has no photos yet.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f3ee"/>
+      <stop offset="100%" stop-color="#ddd7cf"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d2430"/>
+      <stop offset="100%" stop-color="#3b4658"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1200" fill="url(#bg)" rx="72"/>
+  <g transform="translate(180 90)">
+    <rect x="0" y="0" width="440" height="1020" rx="58" fill="#11161f"/>
+    <rect x="18" y="18" width="404" height="984" rx="46" fill="url(#screen)"/>
+    <rect x="138" y="34" width="164" height="26" rx="13" fill="#0b0f15"/>
+    <circle cx="338" cy="47" r="8" fill="#202b39"/>
+    <g opacity="0.92">
+      <rect x="74" y="244" width="292" height="292" rx="42" fill="#eef2f7" fill-opacity="0.1" stroke="#d7dde7" stroke-opacity="0.24"/>
+      <path d="M220 298c-58 0-106 47-106 106 0 56 43 102 98 106h16c58 0 106-47 106-106 0-59-48-106-106-106h-8z" fill="#f2f5f9" fill-opacity="0.12"/>
+      <path d="M218 330c-42 0-76 34-76 75 0 39 30 71 68 75h12c42 0 76-34 76-75 0-42-34-75-76-75h-4z" fill="#cfd7e3" fill-opacity="0.25"/>
+    </g>
+    <text x="220" y="650" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="44" fill="#f5f7fa">New listing</text>
+    <text x="220" y="710" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" fill="#dbe2ec">Photos coming soon</text>
+  </g>
+</svg>

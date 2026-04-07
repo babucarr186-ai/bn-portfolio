@@ -414,6 +414,23 @@ export const iphones = [
     ],
   },
   {
+    title: 'iPhone 12 Pro Max',
+    subtitle: '128GB • Very clean • Battery 84% • GMD 24,500',
+    kind: 'phone',
+    storage: '128GB',
+    condition: 'Used — Very clean',
+    batteryHealth: '84%',
+    price: 24500,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 12 Pro Max — 128GB, very clean condition, battery 84%, factory unlocked, dual SIM (SIM + eSIM). Price GMD 24,500. In The Gambia.',
+    description:
+      `Storage 128GB. Condition very clean. Battery health 84%. Good battery. ${ESIM_UNLOCKED_DETAILS} We don't buy random market phones. All devices are sourced from Germany and tested. Price GMD 24,500.`,
+    productTitle: 'iPhone 12 Pro Max (128GB) — Used (Very clean) — Battery 84%',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: ['products/placeholders/placeholder-phone.svg'],
+  },
+  {
     title: 'iPhone 11 Pro',
     subtitle: 'Green • 64GB • Battery 73% • Very clean • Original parts',
     kind: 'phone',
