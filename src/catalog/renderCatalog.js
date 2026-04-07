@@ -388,7 +388,6 @@ function buildCatalogCardDetails(product) {
 }
 
 let catalogLightbox;
-const GERMANY_SOURCED_COPY = 'Germany sourced • Tested';
 const WHATSAPP_NUMBER = '4915679652076';
 
 function buildWhatsAppHref(message) {
@@ -1198,10 +1197,6 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     const description = el('p', 'catalog-description');
     description.textContent = display.note || 'Ready to use.';
     body.appendChild(description);
-
-    const trustCopy = el('p', 'catalog-trust-copy');
-    trustCopy.textContent = GERMANY_SOURCED_COPY;
-    body.appendChild(trustCopy);
 
     const actions = el('div', 'catalog-actions');
 
