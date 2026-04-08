@@ -828,39 +828,6 @@ footer{
   height: 100%;
 }
 
-.catalog-media-badge{
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.88);
-  color: rgba(11,15,22,0.70);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.catalog-source-badge{
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.9);
-  color: rgba(11,15,22,0.64);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 .catalog-zoom{
   appearance: none;
   display: flex;
@@ -941,49 +908,6 @@ footer{
 
 .catalog-nav-prev{ left: 8px; }
 .catalog-nav-next{ right: 8px; }
-
-.catalog-dots{
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 8px;
-  border-radius: 999px;
-  background: rgba(11,15,22,0.28);
-  backdrop-filter: blur(6px);
-}
-
-.catalog-dot{
-  width: 7px;
-  height: 7px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.48);
-  cursor: pointer;
-}
-
-.catalog-dot[aria-current="true"]{
-  width: 18px;
-  background: rgba(255,255,255,0.96);
-}
-
-.catalog-swipe-hint{
-  position: absolute;
-  left: 10px;
-  bottom: 12px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.84);
-  color: rgba(11,15,22,0.68);
-  font-size: 0.72rem;
-  font-weight: 750;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
 
 /* In-page image zoom (lightbox) */
 body.catalog-lightbox-open{
@@ -1512,7 +1436,7 @@ body.catalog-lightbox-open{
 
   .catalog-wrap{
     margin-top: 18px;
-    padding: 10px;
+    padding: 0;
   }
 
   .catalog-grid{ gap: 10px; }
@@ -1524,8 +1448,6 @@ body.catalog-lightbox-open{
   .catalog-note{ font-size: 0.75rem; }
   .catalog-trust-copy{ font-size: 0.72rem; }
   .catalog-nav{ width: 28px; height: 28px; font-size: 1.05rem; }
-  .catalog-media-badge{ left: 8px; bottom: 8px; font-size: 0.66rem; }
-  .catalog-source-badge{ top: 8px; right: 8px; font-size: 0.62rem; }
   .catalog-rail{ grid-auto-columns: minmax(168px, 58vw); }
   .catalog-recommendations{ margin-top: 22px; }
 
@@ -1686,8 +1608,8 @@ body.catalog-lightbox-open{
 
 .back-to-top{
   position: fixed;
-  right: 18px;
-  bottom: 86px;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px) + 56px);
   z-index: 70;
   border: 1px solid rgba(11,15,22,0.12);
   background: rgba(255,255,255,0.92);
@@ -1712,8 +1634,8 @@ body.catalog-lightbox-open{
 
 @media (max-width: 640px){
   .back-to-top{
-    right: 14px;
-    bottom: 78px;
+    right: calc(14px + env(safe-area-inset-right, 0px));
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px) + 56px);
     padding: 10px 12px;
     font-size: 0.86rem;
   }
@@ -1904,8 +1826,8 @@ body.image-viewer-open{
 /* Chat widget */
 #uaChatWidget{
   position: fixed;
-  right: 18px;
-  bottom: 18px;
+  right: calc(18px + env(safe-area-inset-right, 0px));
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   z-index: 960;
   pointer-events: none;
 }
@@ -2021,7 +1943,7 @@ body.image-viewer-open{
 }
 
 @media (max-width: 420px){
-  #uaChatWidget{ right: 14px; bottom: 14px; }
+  #uaChatWidget{ right: calc(14px + env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
   #uaChatWidget .chat-panel{
     width: calc(100% - 20px);
     max-height: min(72vh, calc(100vh - 96px));

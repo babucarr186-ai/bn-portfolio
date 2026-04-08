@@ -1011,9 +1011,6 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     zoomBtn.className = 'catalog-zoom';
     zoomBtn.setAttribute('aria-label', `Open photos for ${titleText}`);
 
-    const mediaBadge = el('span', 'catalog-media-badge');
-    mediaBadge.textContent = imagesToUse.length >= 2 ? 'Photos' : 'Zoom';
-
     const track = el('div', 'catalog-track');
     let currentImageIndex = 0;
     let activeImage = firstImage;
@@ -1024,7 +1021,7 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       const pictureData = createResponsivePicture({
         src,
         alt: product.alt || titleText || 'Product',
-        sizes: '(max-width: 640px) 43vw, (max-width: 960px) 31vw, (max-width: 1280px) 24vw, 22vw',
+        sizes: '(max-width: 640px) 92vw, (max-width: 960px) 45vw, (max-width: 1280px) 30vw, 22vw',
       });
 
       if (!mainImgEl && imageIndex === 0) mainImgEl = pictureData.img;
@@ -1039,8 +1036,28 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       track.style.transform = `translateX(-${currentImageIndex * 100}%)`;
     }
 
+    let swipeStartX = 0;
+    let swipeStartY = 0;
+    let swipeDeltaX = 0;
+    let isSwiping = false;
+    let suppressClickUntil = 0;
+
+    function resetSwipe() {
+      swipeStartX = 0;
+      swipeStartY = 0;
+      swipeDeltaX = 0;
+      isSwiping = false;
+    }
+
+    function shouldSuppressClick() {
+      return window.performance && window.performance.now
+        ? window.performance.now() < suppressClickUntil
+        : false;
+    }
+
     zoomBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      if (shouldSuppressClick()) return;
       if (!activeImage) return;
       ensureCatalogLightbox().open({
         src: activeImage,
@@ -1051,9 +1068,53 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       });
     });
 
+    if (imagesToUse.length >= 2) {
+      zoomBtn.addEventListener('touchstart', (event) => {
+        if (event.touches.length !== 1) return;
+        const touch = event.touches[0];
+        swipeStartX = touch.clientX;
+        swipeStartY = touch.clientY;
+        swipeDeltaX = 0;
+        isSwiping = false;
+      }, { passive: true });
+
+      zoomBtn.addEventListener('touchmove', (event) => {
+        if (!swipeStartX && !swipeStartY) return;
+        const touch = event.touches[0];
+        swipeDeltaX = touch.clientX - swipeStartX;
+        const deltaY = touch.clientY - swipeStartY;
+
+        if (!isSwiping) {
+          if (Math.abs(swipeDeltaX) < 12 || Math.abs(swipeDeltaX) < Math.abs(deltaY)) return;
+          isSwiping = true;
+        }
+
+        // Prevent the page from scrolling while swiping between images.
+        event.preventDefault();
+      }, { passive: false });
+
+      zoomBtn.addEventListener('touchend', () => {
+        if (!isSwiping) {
+          resetSwipe();
+          return;
+        }
+
+        const threshold = 38;
+        if (Math.abs(swipeDeltaX) >= threshold) {
+          updateSlider(swipeDeltaX < 0 ? currentImageIndex + 1 : currentImageIndex - 1);
+          suppressClickUntil = (window.performance?.now?.() || Date.now()) + 420;
+        }
+
+        resetSwipe();
+      }, { passive: true });
+
+      zoomBtn.addEventListener('touchcancel', () => {
+        resetSwipe();
+      }, { passive: true });
+    }
+
     zoomBtn.appendChild(track);
     slider.appendChild(zoomBtn);
-    slider.appendChild(mediaBadge);
 
     if (imagesToUse.length >= 2) {
       const prevBtn = document.createElement('button');
@@ -1082,46 +1143,41 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
     frame.appendChild(slider);
     card.appendChild(frame);
 
-    if (product?.sold) {
-      const soldBadge = el('div', 'catalog-badge catalog-badge-sold');
-      soldBadge.textContent = 'SOLD';
-      frame.appendChild(soldBadge);
+    const body = el('div', 'catalog-card-body');
+
+    const tags = el('div', 'catalog-tags');
+    const statusTag = el('span', `catalog-tag ${product?.sold ? 'catalog-tag--sold' : 'catalog-tag--available'}`);
+    statusTag.textContent = product?.sold ? 'Sold' : 'Available';
+    tags.appendChild(statusTag);
+
+    if (details.conditionLabel) {
+      const conditionTag = el('span', 'catalog-tag catalog-tag--neutral');
+      conditionTag.textContent = details.conditionLabel;
+      tags.appendChild(conditionTag);
     }
 
-    const body = el('div', 'catalog-card-body');
+    body.appendChild(tags);
 
     const title = el('h3', 'catalog-title');
     title.textContent = titleText;
     body.appendChild(title);
 
-    const originBadge = el('p', 'catalog-origin-badge');
-    originBadge.textContent = 'Germany Sourced';
-    body.appendChild(originBadge);
-
-    const overview = el('div', 'catalog-overview');
-
-    const condition = el('p', 'catalog-condition');
-    condition.textContent = details.conditionLabel;
-    overview.appendChild(condition);
-
     const detailLine = details.detailLine || display.summary;
     if (detailLine) {
       const meta = el('p', 'catalog-detail-line');
       meta.textContent = detailLine;
-      overview.appendChild(meta);
+      body.appendChild(meta);
     }
+
+    const condition = el('p', 'catalog-condition');
+    condition.textContent = details.conditionLabel;
+    body.appendChild(condition);
 
     if (display.priceLabel) {
       const price = el('p', 'catalog-price');
       appendTextWithPriceSpans(price, display.priceLabel);
-      overview.appendChild(price);
+      body.appendChild(price);
     }
-
-    body.appendChild(overview);
-
-    const description = el('p', 'catalog-description');
-    description.textContent = display.note || 'Ready to use.';
-    body.appendChild(description);
 
     const actions = el('div', 'catalog-actions');
 
