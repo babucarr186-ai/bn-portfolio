@@ -876,6 +876,7 @@ function initImageViewer() {
     renderDots();
 
     overlayEl.removeAttribute('hidden');
+    document.addEventListener('keydown', onDocumentKeydown);
     lockBodyScroll();
     isOpen = true;
     setImage(galleryIndex);
@@ -905,24 +906,39 @@ function initImageViewer() {
     }
   }
 
+  function onDocumentKeydown(e) {
+    if (!isOpen) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  }
+
   function close() {
     if (!overlayEl || !isOpen) return;
-    overlayEl.setAttribute('hidden', '');
     isOpen = false;
     isAnimating = false;
     resetGestureState();
-    resetTrackPosition();
+    clearAnimationTimer();
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
     unlockBodyScroll();
-
+    document.removeEventListener('keydown', onDocumentKeydown);
+    overlayEl.remove();
+    overlayEl = null;
+    contentEl = null;
+    viewportEl = null;
+    trackEl = null;
+    dotsEl = null;
+    counterEl = null;
+    closeBtnEl = null;
+    prevBtnEl = null;
+    nextBtnEl = null;
+    slideImages = [];
     gallerySources = [];
     galleryIndex = 0;
     galleryAlt = 'Product photo';
-    if (dotsEl) dotsEl.textContent = '';
-    if (counterEl) {
-      counterEl.textContent = '';
-      counterEl.hidden = true;
-    }
-    clearSlides();
   }
 
   function finishSwipe({ clientX, gestureType, identifier } = {}) {
@@ -959,13 +975,6 @@ function initImageViewer() {
 
   window.openImageViewer = open;
   window.closeImageViewer = close;
-
-  document.addEventListener('keydown', (e) => {
-    if (!isOpen) return;
-    if (e.key === 'Escape') close();
-    if (e.key === 'ArrowLeft') prev();
-    if (e.key === 'ArrowRight') next();
-  });
 
   document.addEventListener('click', (e) => {
     const target = e.target;

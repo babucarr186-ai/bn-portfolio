@@ -798,24 +798,27 @@ function ensureCatalogLightbox() {
     animateToImage(-1);
   }
 
+  function onDocumentKeydown(event) {
+    if (!isOpen) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') prev();
+    if (event.key === 'ArrowRight') next();
+  }
+
   function close() {
     if (!isOpen) return;
-    overlay.setAttribute('aria-hidden', 'true');
     isOpen = false;
     isAnimating = false;
     resetGestureState();
-    resetTrackPosition();
+    clearAnimationTimer();
+    if (gestureFrame) {
+      window.cancelAnimationFrame(gestureFrame);
+      gestureFrame = 0;
+    }
     unlockBodyScroll();
-    gallerySources = [];
-    galleryIndex = 0;
-    galleryAlt = 'Product image';
-    indicatorDots = [];
-    dotsWrap.textContent = '';
-    prevBtn.hidden = true;
-    nextBtn.hidden = true;
-    counter.textContent = '';
-    counter.hidden = true;
-    clearSlides();
+    document.removeEventListener('keydown', onDocumentKeydown);
+    overlay.remove();
+    catalogLightbox = null;
     if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
     lastFocus = null;
   }
@@ -831,6 +834,7 @@ function ensureCatalogLightbox() {
     galleryIndex = normalizeIndex(typeof index === 'number' ? index : 0);
     renderIndicators();
     overlay.setAttribute('aria-hidden', 'false');
+    document.addEventListener('keydown', onDocumentKeydown);
     lockBodyScroll();
     isOpen = true;
     setImage(galleryIndex);
@@ -954,13 +958,6 @@ function ensureCatalogLightbox() {
     }
     finishSwipe({ clientX: touch.clientX, gestureType: 'touch', identifier: touch.identifier });
   }, { passive: true });
-
-  document.addEventListener('keydown', (event) => {
-    if (!isOpen) return;
-    if (event.key === 'Escape') close();
-    if (event.key === 'ArrowLeft') prev();
-    if (event.key === 'ArrowRight') next();
-  });
 
   catalogLightbox = { open, close, overlay, closeBtn };
   return catalogLightbox;
