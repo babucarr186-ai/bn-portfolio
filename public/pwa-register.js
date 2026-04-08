@@ -6,6 +6,27 @@
 (function registerPWA() {
   if (!('serviceWorker' in navigator)) return;
 
+  const localhostNames = new Set(['localhost', '127.0.0.1', '[::1]', '::1']);
+  const isLocalDev = localhostNames.has(window.location.hostname);
+
+  if (isLocalDev) {
+    void (async () => {
+      try {
+        const registrations = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(registrations.map((registration) => registration.unregister()));
+
+        if ('caches' in window) {
+          const cacheKeys = await caches.keys();
+          await Promise.all(cacheKeys.map((cacheKey) => caches.delete(cacheKey)));
+        }
+      } catch {
+        // ignore
+      }
+    })();
+
+    return;
+  }
+
   window.addEventListener('load', async () => {
     try {
       // Resolve URLs relative to where this file is served from.
