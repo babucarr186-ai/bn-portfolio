@@ -27,6 +27,8 @@ export const appleTvHome = [
       'Apple HomePod (2018) in White with rich room-filling sound, Siri voice control, and AirPlay support. A premium Apple speaker choice for music, smart-home control, and everyday listening.',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: HomePod (2018) — white color, Wi‑Fi, Siri, AirPlay, excellent condition, with 1-year guarantee. Price GMD 9,500. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
     images: [
       'products/apple-tv-home/homepod-1.jpg?v=20260301-1',
       'products/apple-tv-home/homepod-2.jpg?v=20260301-1',
@@ -43,6 +45,8 @@ export const appleTvHome = [
       'Apple HomePod mini in White with Siri, Wi-Fi, and a compact fabric design that fits easily into any room. A neat Apple speaker for music, voice control, and simple smart-home use.',
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: Apple HomePod mini — white color, very good condition, Bluetooth + Wi‑Fi connectivity, Siri smart home compatibility, fabric finish, 345g. 12-month dealer warranty. Price GMD 8,500. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
     images: [
       'products/apple-tv-home/homepod-mini-1.webp?v=20260301-1',
       'products/apple-tv-home/homepod-mini-2.webp?v=20260301-1',
