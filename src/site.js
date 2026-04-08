@@ -295,51 +295,6 @@ function initAvailabilityForm() {
   });
 }
 
-function initScrollBgRotation() {
-  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-  if (reduceMotion) return;
-
-  const rootStyle = document.documentElement.style;
-
-  const EASE = 0.05;
-  const MAX_DEG = 80;
-  const STOP_EPS = 0.03;
-
-  let rafId = 0;
-  let current = 0;
-
-  function targetAngle() {
-    const y = window.scrollY || 0;
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress = Math.max(0, Math.min(1, y / maxScroll));
-    return progress * MAX_DEG;
-  }
-
-  function tick() {
-    rafId = 0;
-    const target = targetAngle();
-    current = current + (target - current) * EASE;
-
-    if (Math.abs(target - current) < STOP_EPS) {
-      current = target;
-    }
-
-    rootStyle.setProperty('--bg-rot', current.toFixed(2) + 'deg');
-
-    if (Math.abs(target - current) >= STOP_EPS) {
-      rafId = window.requestAnimationFrame(tick);
-    }
-  }
-
-  function onScroll() {
-    if (rafId) return;
-    rafId = window.requestAnimationFrame(tick);
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll();
-}
 
 function initImageViewer() {
   let overlayEl = null;
@@ -1225,6 +1180,5 @@ function initChatWidget() {
 initWhatsAppLinks();
 initHeaderActions();
 initAvailabilityForm();
-initScrollBgRotation();
 initImageViewer();
 initChatWidget();

@@ -76,9 +76,6 @@
       --radius: 18px;
       --max: 1100px;
 
-      /* Background image source (replace with your own photo) */
-      --bg-image: url('/iphone-air.webp');
-
       /* Brand button (kept simple, premium, not flashy) */
       --btn: #0b0f16;
       --btnText: #ffffff;
@@ -94,31 +91,6 @@
       background: var(--bg);
       line-height: 1.45;
       overflow-x: hidden;
-    }
-
-    /* Fixed background photo (non-animated) */
-    body::before{
-      content:"";
-      position: fixed;
-      inset: 0;
-      background-image: var(--bg-image);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      opacity: 0.22; /* visibility: adjust if you want stronger */
-      filter: saturate(1.02) contrast(1.02);
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    /* Soft white veil to keep text readable */
-    body::after{
-      content:"";
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(1200px 700px at 50% 0%, rgba(255,255,255,0.70), rgba(255,255,255,0.92) 55%, rgba(255,255,255,0.98));
-      pointer-events: none;
-      z-index: -1;
     }
 
     a{ color: inherit; }
