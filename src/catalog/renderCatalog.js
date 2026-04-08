@@ -438,18 +438,25 @@ function ensureCatalogLightbox() {
   counter.setAttribute('aria-live', 'polite');
   counter.hidden = true;
 
-  const slideImages = [-1, 0, 1].map(() => {
+  const slideData = [-1, 0, 1].map(() => {
     const slide = el('div', 'catalog-lightbox-slide');
+    const picture = document.createElement('picture');
+    const webpSource = document.createElement('source');
+    webpSource.type = 'image/webp';
     const img = document.createElement('img');
     img.className = 'catalog-lightbox-img';
     img.alt = '';
     img.loading = 'lazy';
     img.decoding = 'async';
     img.draggable = false;
-    slide.appendChild(img);
+    picture.appendChild(webpSource);
+    picture.appendChild(img);
+    slide.appendChild(picture);
     track.appendChild(slide);
-    return img;
+    return { img, webpSource };
   });
+  const slideImages = slideData.map((d) => d.img);
+  const slideWebpSources = slideData.map((d) => d.webpSource);
 
   viewport.appendChild(track);
   stage.appendChild(viewport);
@@ -487,10 +494,6 @@ function ensureCatalogLightbox() {
     const total = gallerySources.length;
     if (!total) return 0;
     return (nextIndex % total + total) % total;
-  }
-
-  function publicSources() {
-    return gallerySources.map((src) => publicAssetUrl(src));
   }
 
   function clearAnimationTimer() {
@@ -616,21 +619,29 @@ function ensureCatalogLightbox() {
   function preloadAround(index) {
     if (gallerySources.length <= 1) return;
 
-    const sources = publicSources();
     [normalizeIndex(index - 1), normalizeIndex(index + 1)].forEach((sourceIndex) => {
-      const src = sources[sourceIndex];
-      if (!src) return;
+      const rawSrc = gallerySources[sourceIndex];
+      if (!rawSrc) return;
+      const { path: pathNoQuery, query } = splitQuery(rawSrc);
+      const ext = fileExt(pathNoQuery);
       const preloaded = new Image();
       preloaded.decoding = 'async';
-      preloaded.src = src;
+      // Preload the optimized 900w webp variant (≤300 KB) instead of the original file.
+      preloaded.src = ext === 'svg'
+        ? publicAssetUrl(rawSrc)
+        : publicAssetUrl(`${withoutExt(pathNoQuery)}-900.webp${query}`);
     });
   }
 
   function clearSlides() {
-    slideImages.forEach((slideImg) => {
+    slideImages.forEach((slideImg, i) => {
       slideImg.removeAttribute('src');
+      slideImg.removeAttribute('srcset');
+      slideImg.removeAttribute('sizes');
       slideImg.removeAttribute('data-src');
       slideImg.alt = '';
+      slideWebpSources[i].removeAttribute('srcset');
+      slideWebpSources[i].removeAttribute('sizes');
     });
   }
 
@@ -713,24 +724,46 @@ function ensureCatalogLightbox() {
   function renderTrackImages() {
     if (!gallerySources.length) return;
 
-    const sources = publicSources();
+    const LIGHTBOX_SIZES = '(max-width: 640px) 100vw, (max-width: 960px) 90vw, 80vw';
+
     slideImages.forEach((slideImg, slotIndex) => {
       const relativeOffset = slotIndex - 1;
       const sourceIndex = gallerySources.length <= 1 && relativeOffset !== 0
         ? -1
         : normalizeIndex(galleryIndex + relativeOffset);
-      const src = sourceIndex >= 0 ? sources[sourceIndex] : '';
+      const rawSrc = sourceIndex >= 0 ? gallerySources[sourceIndex] : '';
 
-      if (!src) {
+      if (!rawSrc) {
         slideImg.removeAttribute('src');
+        slideImg.removeAttribute('srcset');
+        slideImg.removeAttribute('sizes');
         slideImg.removeAttribute('data-src');
         slideImg.alt = '';
+        slideWebpSources[slotIndex].removeAttribute('srcset');
+        slideWebpSources[slotIndex].removeAttribute('sizes');
         return;
       }
 
-      if (slideImg.dataset.src !== src) {
-        slideImg.src = src;
-        slideImg.dataset.src = src;
+      if (slideImg.dataset.src !== rawSrc) {
+        const { path: pathNoQuery, query } = splitQuery(rawSrc);
+        const ext = fileExt(pathNoQuery);
+        if (ext === 'svg') {
+          // SVGs have no optimized variants — load directly.
+          slideWebpSources[slotIndex].removeAttribute('srcset');
+          slideWebpSources[slotIndex].removeAttribute('sizes');
+          slideImg.removeAttribute('srcset');
+          slideImg.removeAttribute('sizes');
+          slideImg.src = publicAssetUrl(`${pathNoQuery}${query}`);
+        } else {
+          const fallbackExt = fallbackExtFor(pathNoQuery);
+          slideWebpSources[slotIndex].srcset = buildSrcset(pathNoQuery, query, 'webp');
+          slideWebpSources[slotIndex].sizes = LIGHTBOX_SIZES;
+          slideImg.srcset = buildSrcset(pathNoQuery, query, fallbackExt);
+          slideImg.sizes = LIGHTBOX_SIZES;
+          // Fallback src for browsers without srcset support.
+          slideImg.src = publicAssetUrl(`${withoutExt(pathNoQuery)}.${fallbackExt}${query}`);
+        }
+        slideImg.dataset.src = rawSrc;
       }
 
       slideImg.alt = `${galleryAlt || 'Product image'} (${sourceIndex + 1} of ${gallerySources.length})`;
