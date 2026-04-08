@@ -135,6 +135,73 @@ a{ color: inherit; }
   color: rgba(11,15,22,1);
 }
 
+/* Mobile category bar enhancement (safe: desktop remains unchanged) */
+.nav-links--catbar .nav-catbar__icon{ display: none; }
+.nav-links--catbar .nav-catbar__label{ display: inline; }
+
+@media (max-width: 860px){
+  .nav-links.nav-links--catbar{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 6px 2px 2px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links.nav-links--catbar a{
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 74px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    text-align: center;
+  }
+
+  .nav-links--catbar .nav-catbar__icon{
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    color: rgba(11,15,22,0.78);
+  }
+  .nav-links--catbar .nav-catbar__icon svg{ width: 22px; height: 22px; }
+
+  .nav-links--catbar .nav-catbar__label{
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    color: rgba(11,15,22,0.72);
+    white-space: nowrap;
+    max-width: 96px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav-links.nav-links--catbar a:hover{
+    background: rgba(255,255,255,0.6);
+  }
+
+  .nav-links.nav-links--catbar a:active{
+    background: rgba(255,255,255,0.78);
+  }
+
+  .nav-links.nav-links--catbar a[aria-current='page']{
+    background: rgba(255,255,255,0.75);
+    color: rgba(11,15,22,1);
+  }
+  .nav-links.nav-links--catbar a[aria-current='page'] .nav-catbar__label{
+    color: rgba(11,15,22,0.92);
+  }
+}
+
 .nav-actions{
   display: inline-flex;
   align-items: center;

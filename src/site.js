@@ -249,6 +249,93 @@ function initHeaderActions() {
   };
 }
 
+function initMobileCategoryNav() {
+  const navLinks = document.querySelector('.nav-links');
+  if (!navLinks) return;
+
+  navLinks.classList.add('nav-links--catbar');
+
+  const iconSvgs = {
+    iphones: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="8" y="2.5" width="8" height="19" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M10 5.5h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    models: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M5 6.5h6v6H5zM13 6.5h6v6h-6zM5 14.5h6v6H5zM13 14.5h6v6h-6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+    ipads: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="6" y="3.5" width="12" height="17" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="18" r="0.9" fill="currentColor"/></svg>`,
+    macbook: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M7 6.5h10a2 2 0 0 1 2 2v6H5v-6a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 16.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    watch: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="8" y="7" width="8" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.3 7 10 3.5h4L14.7 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.3 17 10 20.5h4l.7-3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`,
+    airpods: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M8.2 6.2a2.7 2.7 0 1 1 3.2 2.7v7.1a2.2 2.2 0 1 1-4.4 0v-5.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.8 6.2a2.7 2.7 0 1 0-3.2 2.7v7.1a2.2 2.2 0 1 0 4.4 0v-5.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    giftcards: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="4.5" y="7" width="15" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 10h15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9.5 7c-.8-1.4-.2-2.8 1.2-2.8 1.5 0 1.9 1.7 1.9 2.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M14.5 7c.8-1.4.2-2.8-1.2-2.8-1.5 0-1.9 1.7-1.9 2.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    accessories: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M7.5 8.5h9a2 2 0 0 1 2 2v3a4.5 4.5 0 0 1-4.5 4.5h-4A4.5 4.5 0 0 1 5.5 13.5v-3a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.5V6.5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    tvhome: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><rect x="5" y="7" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 19h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+    support: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M12 4a7 7 0 0 1 7 7v2.5a2 2 0 0 1-2 2h-1v-5h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 4a7 7 0 0 0-7 7v2.5a2 2 0 0 0 2 2h1v-5H5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 19.5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>`,
+    fallback: `<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><circle cx="12" cy="12" r="6.2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>`,
+  };
+
+  const pickKey = (label, href) => {
+    const text = String(label || '').toLowerCase();
+    const url = String(href || '').toLowerCase();
+    if (url.includes('#inventory') || text.includes('iphone')) return 'iphones';
+    if (text.includes('models') || url.includes('/models')) return 'models';
+    if (text.includes('ipad') || url.includes('ipads')) return 'ipads';
+    if (text.includes('macbook') || url.includes('macbook')) return 'macbook';
+    if (text.includes('watch') || url.includes('apple-watch')) return 'watch';
+    if (text.includes('airpods') || url.includes('airpods')) return 'airpods';
+    if (text.includes('gift') || url.includes('gift-cards')) return 'giftcards';
+    if (text.includes('accessories') || url.includes('accessories')) return 'accessories';
+    if (text.includes('tv') || text.includes('home') || url.includes('apple-tv-home')) return 'tvhome';
+    if (text.includes('support') || url.includes('/support')) return 'support';
+    return 'fallback';
+  };
+
+  const current = new URL(window.location.href);
+  const normalizePath = (pathname) => {
+    if (!pathname) return '/';
+    return pathname.endsWith('/index.html') ? pathname.slice(0, -'/index.html'.length) + '/' : pathname;
+  };
+  const currentPath = normalizePath(current.pathname);
+
+  const anchors = Array.from(navLinks.querySelectorAll('a'));
+  anchors.forEach((a) => {
+    if (!(a instanceof HTMLAnchorElement)) return;
+    if (a.querySelector('.nav-catbar__label')) return;
+
+    const label = a.textContent?.trim() || '';
+    const key = pickKey(label, a.getAttribute('href'));
+    const svg = iconSvgs[key] || iconSvgs.fallback;
+
+    a.textContent = '';
+
+    const iconEl = document.createElement('span');
+    iconEl.className = 'nav-catbar__icon';
+    iconEl.innerHTML = svg;
+
+    const labelEl = document.createElement('span');
+    labelEl.className = 'nav-catbar__label';
+    labelEl.textContent = label;
+
+    a.appendChild(iconEl);
+    a.appendChild(labelEl);
+
+    let linkUrl = null;
+    try {
+      linkUrl = new URL(a.getAttribute('href') || '', current);
+    } catch {
+      linkUrl = null;
+    }
+
+    if (linkUrl) {
+      const linkPath = normalizePath(linkUrl.pathname);
+
+      const isSamePage = linkPath === currentPath;
+      const isInventoryLink = String(linkUrl.hash || '') === '#inventory';
+      const isInventoryPage = currentPath.endsWith('/') || currentPath.endsWith('/index.html') || currentPath.endsWith('/index');
+      const isActive =
+        (isSamePage && (!linkUrl.hash || linkUrl.hash === current.hash)) || (isInventoryLink && isInventoryPage);
+
+      if (isActive) a.setAttribute('aria-current', 'page');
+    }
+  });
+}
+
 function initWhatsAppLinks() {
   const customDefaultMsg = document.documentElement?.getAttribute('data-wa-default')?.trim();
   const defaultMsg =
@@ -1179,6 +1266,7 @@ function initChatWidget() {
 
 initWhatsAppLinks();
 initHeaderActions();
+initMobileCategoryNav();
 initAvailabilityForm();
 initImageViewer();
 initChatWidget();
