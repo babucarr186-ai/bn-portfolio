@@ -31,6 +31,7 @@
 html, body, #root { height: 100%; }
 html {
   overflow-x: hidden;
+  overflow-x: clip;
   overscroll-behavior-x: none;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -56,6 +57,7 @@ body {
   background: var(--bg);
   line-height: 1.6;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 [data-theme='dark'] body {
@@ -89,7 +91,7 @@ body {
   position: absolute;
   left: 50%;
   top: 52%;
-  width: min(700px, 100vw);
+  width: min(700px, 100%);
   height: auto;
   opacity: 0.30;
   filter: contrast(1.03) drop-shadow(0 26px 66px rgba(0,0,0,0.26));
@@ -830,7 +832,7 @@ main {
   }
 
   .chat-panel {
-    width: calc(100vw - 16px);
+    width: calc(100% - 16px);
     max-height: min(70vh, 460px);
   }
 }
@@ -977,7 +979,7 @@ main {
 }
 .chat-fab:hover { background:#111; }
 .chat-panel {
-  width: min(320px, calc(100vw - 36px));
+  width: min(320px, calc(100% - 36px));
   max-height: 460px;
   background:#fff;
   border-radius:18px;
@@ -1004,7 +1006,7 @@ main {
 @media (max-width: 560px) { 
   .hero { padding: 70px 14px 170px; }
   .chat-panel { 
-    width: min(100vw - 10px, 360px); 
+    width: min(100% - 10px, 360px); 
     max-height: min(72vh, 520px); 
     bottom:0; 
   }

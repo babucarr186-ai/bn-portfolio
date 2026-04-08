@@ -66,8 +66,9 @@
   opacity: 0.92;
 }
 
-img{
+img, video{
   max-width: 100%;
+  height: auto;
 }
 
 .catalog-desc{
