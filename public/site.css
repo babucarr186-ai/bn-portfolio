@@ -1473,6 +1473,8 @@ body.catalog-lightbox-open{
     gap: 8px;
     font-size: 0.82rem;
     overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     white-space: nowrap;
     scrollbar-width: none;
   }
