@@ -12,6 +12,7 @@ import { giftCards } from './data/giftcards.js';
 import { accessories } from './data/accessories.js';
 import { ipads } from './data/ipads.js';
 import { appleTvHome } from './data/appleTvHome.js';
+import { debounce } from '../utils.js';
 
 const category = document.documentElement.dataset.category || 'iphones';
 
@@ -306,7 +307,7 @@ function initCatalogSearch(items) {
 
   setSuggestions('');
 
-  input.addEventListener('input', () => setSuggestions(input.value));
+  input.addEventListener('input', debounce(() => setSuggestions(input.value), 200));
 
   input.addEventListener('change', () => {
     goToSelection(input.value);
