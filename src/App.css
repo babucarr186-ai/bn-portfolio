@@ -29,7 +29,12 @@
 }
 
 html, body, #root { height: 100%; }
-html { overflow-x: hidden; }
+html {
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 /* Wavy background pattern */
 @keyframes waveMove {
@@ -988,7 +993,7 @@ main {
 .msg.bot { background:#ffffff; align-self:flex-start; }
 .msg.user { background:#111; color:#fff; align-self:flex-end; }
 .chat-input-row { display:flex; gap:6px; padding:10px 10px 8px; border-top:1px solid #e1e1e1; background:#fafafa; }
-.chat-input { flex:1; resize:none; font-family:inherit; font-size:.7rem; padding:8px 10px; border:1px solid #ccc; border-radius:10px; line-height:1.2; }
+.chat-input { flex:1; resize:none; font-family:inherit; font-size:16px; padding:8px 10px; border:1px solid #ccc; border-radius:10px; line-height:1.2; }
 .chat-input:focus { outline:2px solid #000; outline-offset:2px; }
 .chat-send { background:#000; color:#fff; border:none; border-radius:10px; padding:8px 14px; font-size:.7rem; font-weight:600; cursor:pointer; }
 .chat-send:hover { background:#111; }
