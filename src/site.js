@@ -5,6 +5,7 @@ import { ipads } from './catalog/data/ipads.js';
 import { iphones } from './catalog/data/iphones.js';
 import { macbooks } from './catalog/data/macbooks.js';
 import { watches } from './catalog/data/watches.js';
+import { debounce } from './utils.js';
 
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
@@ -337,7 +338,7 @@ function initScrollBgRotation() {
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', debounce(onScroll, 150), { passive: true });
   onScroll();
 }
 
