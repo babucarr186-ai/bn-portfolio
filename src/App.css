@@ -407,8 +407,9 @@ main {
   background: linear-gradient(135deg,#e8edf3,#ffffff);
   box-shadow: 0 4px 14px rgba(0,0,0,0.10);
   overflow: hidden;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 [data-theme='dark'] .product-image {
   background: #242c33;
@@ -416,10 +417,13 @@ main {
 }
 
 .product-image-img {
-  width: 62px;
-  height: 62px;
-  object-fit: cover;
-  transform: translateY(2px);
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin: 0 auto;
 }
 
 .product-name {
