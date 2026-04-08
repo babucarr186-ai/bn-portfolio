@@ -113,7 +113,6 @@ function initInventoryCarousel() {
   renderSlides(track, items);
 
   let index = 0;
-  let timerId = 0;
 
   function update() {
     const n = items.length;
@@ -133,24 +132,12 @@ function initInventoryCarousel() {
     if (index < 0) index = n - 1;
 
     update();
-    restart();
-  }
-
-  function restart() {
-    if (timerId) window.clearInterval(timerId);
-    timerId = window.setInterval(() => {
-      const n = items.length;
-      if (n <= 1) return;
-      index = (index + 1) % n;
-      update();
-    }, 4000);
   }
 
   prevBtn.addEventListener('click', () => go(-1));
   nextBtn.addEventListener('click', () => go(1));
 
   update();
-  restart();
 }
 
 initInventoryCarousel();
