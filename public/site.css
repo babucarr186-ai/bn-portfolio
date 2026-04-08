@@ -307,12 +307,12 @@ h1{
   width: min(420px, 82vw);
   aspect-ratio: 9 / 19.5;
   border-radius: 44px;
-  background: linear-gradient(180deg, rgba(11,15,22,0.92), rgba(11,15,22,0.80));
-  box-shadow: var(--shadow);
+  background: var(--phone-frame-bg, linear-gradient(180deg, rgba(11,15,22,0.92), rgba(11,15,22,0.80)));
+  box-shadow: var(--phone-frame-shadow, var(--shadow));
   position: relative;
   overflow: hidden;
   padding: var(--media-pad, 0);
-  border: 1px solid rgba(255,255,255,0.24);
+  border: 1px solid var(--phone-frame-border, rgba(255,255,255,0.24));
 }
 
 .phone-frame img{
