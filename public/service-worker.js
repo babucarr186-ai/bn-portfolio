@@ -7,7 +7,7 @@
   - Network-first for HTML navigations
 */
 
-const CACHE_VERSION = 'v2-20260402';
+const CACHE_VERSION = 'v2-20260409';
 const CORE_CACHE = `core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
@@ -126,7 +126,9 @@ async function cachePut(cacheName, request, response) {
 
 async function networkFirst(request) {
   try {
-    const response = await fetch(request);
+    // Avoid HTTP cache when fetching HTML so updates appear quickly.
+    const fetchRequest = new Request(request, { cache: 'no-store' });
+    const response = await fetch(fetchRequest);
     if (response && response.ok) {
       await cachePut(RUNTIME_CACHE, request, response.clone());
     }
@@ -185,6 +187,13 @@ self.addEventListener('fetch', (event) => {
 
   // Only handle same-origin requests.
   if (url.origin !== self.location.origin) return;
+
+  // Always bypass SW caching for the SW script + registration helper.
+  // This prevents the "old pwa-register.js keeps the old SW alive" loop.
+  if (url.pathname.endsWith('/service-worker.js') || url.pathname.endsWith('/pwa-register.js')) {
+    event.respondWith(fetch(new Request(request, { cache: 'no-store' })));
+    return;
+  }
 
   // HTML: network-first so content updates are picked up.
   if (isHtmlRequest(request)) {

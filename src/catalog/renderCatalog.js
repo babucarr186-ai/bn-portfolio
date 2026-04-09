@@ -79,6 +79,20 @@ function createResponsivePicture({ src, alt, sizes, className }) {
   if (sizes) fallback.sizes = sizes;
   fallback.alt = alt || 'Product';
 
+  // Some inventory folders may be missing a generated variant (edge cases / manual uploads).
+  // If that happens, fall back to the original asset path so the image still shows.
+  fallback.addEventListener(
+    'error',
+    () => {
+      const original = publicAssetUrl(`${pathNoQuery}${query}`);
+      if (fallback.src === original) return;
+      fallback.removeAttribute('srcset');
+      fallback.removeAttribute('sizes');
+      fallback.src = original;
+    },
+    { once: true },
+  );
+
   picture.appendChild(fallback);
   return { picture, img: fallback };
 }

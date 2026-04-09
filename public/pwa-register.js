@@ -12,12 +12,22 @@
   if (isLocalDev) {
     void (async () => {
       try {
+        const hadController = Boolean(navigator.serviceWorker.controller);
         const registrations = await navigator.serviceWorker.getRegistrations();
+        const hadRegistrations = registrations.length > 0;
         await Promise.all(registrations.map((registration) => registration.unregister()));
 
         if ('caches' in window) {
           const cacheKeys = await caches.keys();
           await Promise.all(cacheKeys.map((cacheKey) => caches.delete(cacheKey)));
+        }
+
+        // If an old SW was controlling the page, it can keep serving stale cached responses
+        // until the next navigation. Reload once after cleanup to fully detach it.
+        const reloadKey = '__ua_sw_cleared__';
+        if ((hadController || hadRegistrations) && sessionStorage.getItem(reloadKey) !== '1') {
+          sessionStorage.setItem(reloadKey, '1');
+          window.location.reload();
         }
       } catch {
         // ignore
