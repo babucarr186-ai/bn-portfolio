@@ -3,6 +3,10 @@ name: Deploy static content to Pages
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  # Rerunning a workflow does not delete prior artifacts. If we always name the
+  # Pages artifact "github-pages", reruns can produce duplicates and deploy-pages
+  # fails with "Multiple artifacts named github-pages".
+  PAGES_ARTIFACT_NAME: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
 
 on:
   # Runs on pushes targeting the default branch
@@ -47,7 +51,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: './dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
