@@ -42,6 +42,30 @@ const PAGE_SIZE = 12;
 const grid = document.getElementById('catalogGrid');
 const wrap = grid?.closest('.catalog-wrap');
 
+function initTrendingSection() {
+  const mountEl = document.getElementById('trendingGrid');
+  if (!mountEl) return;
+
+  const pool = Array.isArray(products) ? products : [];
+  const picks = pool.filter((product) => !product?.sold).slice(0, 10);
+  if (!picks.length) {
+    mountEl.textContent = '';
+    return;
+  }
+
+  const rendered = renderCatalog({
+    mountEl,
+    products: picks,
+    startIndex: 100000,
+    imageSizes: '(max-width: 640px) 78vw, 320px',
+  });
+
+  // Avoid duplicate #product-* ids on the homepage (inventory section uses those for hash navigation).
+  rendered.forEach((card) => {
+    card.removeAttribute('id');
+  });
+}
+
 function buildSearchIndex(items) {
   return items.map((product, index) => ({
     id: buildCatalogProductId(product.title || 'Product', index),
@@ -192,6 +216,7 @@ function showProductById(targetId) {
 }
 
 renderPage();
+initTrendingSection();
 
 function initRecommendations(items) {
   if (!wrap || !Array.isArray(items) || !items.length) return;

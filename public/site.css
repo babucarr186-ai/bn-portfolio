@@ -329,6 +329,100 @@ h1{
   margin-top: 6px;
 }
 
+/* Storefront hero (index.html) */
+.storefront-hero{
+  padding: 28px 0 8px;
+}
+
+.storefront-hero-inner{
+  display: grid;
+  gap: 12px;
+  text-align: center;
+  justify-items: center;
+}
+
+.storefront-kicker{
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(11,15,22,0.52);
+}
+
+.storefront-title{
+  margin: 0;
+  font-size: clamp(2.05rem, 5.2vw, 3.25rem);
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+}
+
+.storefront-sub{
+  margin: 0;
+  color: var(--muted);
+  font-weight: 650;
+  max-width: 56ch;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.storefront-actions{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.storefront-chips{
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: rgba(11,15,22,0.74);
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.storefront-chips li{
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(11,15,22,0.08);
+}
+
+.storefront-section-head{
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+/* Trending rail (mobile-first, no slider JS) */
+@media (max-width: 860px){
+  .storefront-hero{
+    padding: 18px 0 6px;
+  }
+
+  .catalog-grid.catalog-grid--rail{
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 12px;
+    padding: 2px 2px 12px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .catalog-grid--rail .catalog-card{
+    flex: 0 0 auto;
+    width: min(280px, 78vw);
+    scroll-snap-align: start;
+  }
+}
+
 /* Large centered iPhone product image */
 .hero-media{
   display: grid;

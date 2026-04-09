@@ -963,7 +963,7 @@ function ensureCatalogLightbox() {
   return catalogLightbox;
 }
 
-export function renderCatalog({ mountEl, products, startIndex = 0 }) {
+export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } = {}) {
   if (!mountEl) return [];
 
   mountEl.textContent = '';
@@ -1021,7 +1021,7 @@ export function renderCatalog({ mountEl, products, startIndex = 0 }) {
       const pictureData = createResponsivePicture({
         src,
         alt: product.alt || titleText || 'Product',
-        sizes: '(max-width: 640px) 92vw, (max-width: 960px) 45vw, (max-width: 1280px) 30vw, 22vw',
+        sizes: imageSizes || '(max-width: 640px) 92vw, (max-width: 960px) 45vw, (max-width: 1280px) 30vw, 22vw',
       });
 
       if (!mainImgEl && imageIndex === 0) mainImgEl = pictureData.img;
