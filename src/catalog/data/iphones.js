@@ -428,7 +428,10 @@ export const iphones = [
     productTitle: 'iPhone 12 Pro Max (128GB) — Used (Very clean) — Battery 84%',
     mediaFit: 'contain',
     mediaPad: 14,
-    images: ['products/placeholders/placeholder-phone.svg'],
+    images: [
+      'products/iphones/iphone-12-pro-max-128gb-battery-84/iphone-12-pro-max-128gb-battery-84-1.jpg',
+      'products/iphones/iphone-12-pro-max-128gb-battery-84/iphone-12-pro-max-128gb-battery-84-2.jpg',
+    ],
   },
   {
     title: 'iPhone 11 Pro',
