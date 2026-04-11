@@ -73,3 +73,8 @@ Products (requested list):
 - iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-1.jpg
 - iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-2.jpg
 - iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-3.jpg
+
+12) iPhone 12 Pro Max — 128GB — Battery 84% (new folder)
+- iphone-12-pro-max-128gb-battery-84/iphone-12-pro-max-128gb-battery-84-1.jpg
+- iphone-12-pro-max-128gb-battery-84/iphone-12-pro-max-128gb-battery-84-2.jpg
+- iphone-12-pro-max-128gb-battery-84/iphone-12-pro-max-128gb-battery-84-3.jpg

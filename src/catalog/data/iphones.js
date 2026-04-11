@@ -415,7 +415,7 @@ export const iphones = [
   },
   {
     title: 'iPhone 12 Pro Max',
-    subtitle: '128GB • Very clean • Battery 84% • GMD 24,500',
+    subtitle: '128GB • Battery 84% • Very clean • GMD 24,500',
     kind: 'phone',
     storage: '128GB',
     condition: 'Used — Very clean',
