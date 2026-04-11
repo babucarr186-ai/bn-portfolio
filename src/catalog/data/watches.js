@@ -33,14 +33,16 @@ export const watches = [
   {
     title: 'Apple Watch Series 7 45MM',
     subtitle:
-      '45mm • Black • Aluminium case • GPS + Cellular • Ready to use • 2 in stock • GMD 12,900',
+      '45mm • Midnight Blue • Aluminium case • GPS + Cellular',
     kind: 'square',
     price: 12900,
     description:
-      'Apple Watch Series 7 45MM in Black with a bigger screen, GPS + Cellular, and a sharp everyday look. A strong Apple Watch upgrade for calls, health tracking, workouts, and daily wear, ready to use with 2 currently in stock.',
+      'Apple Watch Series 7 45MM in Midnight Blue with a bigger screen, GPS + Cellular, and a sharp everyday look. A strong Apple Watch upgrade for calls, health tracking, workouts, and daily wear, ready to use with 1 remaining in stock.',
+    stockRemaining: 1,
+    lowStockText: 'Only 1 left',
     specs: [
-      '45mm aluminium case (black)',
-      'Black sport band (fluoroelastomer)',
+      '45mm aluminium case (midnight blue)',
+      'Midnight Blue sport band (fluoroelastomer)',
       'watchOS',
       'Always‑On OLED display',
       'Heart rate monitor',
@@ -51,7 +53,7 @@ export const watches = [
       'Bluetooth + Wi‑Fi + Cellular (4G/3G capable)',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45MM (Black) — 45mm aluminium case with GPS + Cellular, ready to use. We currently have 2 in stock. Price GMD 12,900. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45MM (Midnight Blue) — 45mm aluminium case with GPS + Cellular, ready to use. We currently have 1 remaining in stock. Price GMD 12,900. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [

@@ -360,6 +360,31 @@ html[data-category="iphones"] .catalog-card.is-sold .catalog-price .product-pric
   letter-spacing: -0.03em;
 }
 
+.catalog-stock{
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(11,15,22,0.12);
+  background: rgba(11,15,22,0.03);
+  color: rgba(11,15,22,0.74);
+  font-size: 0.74rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.catalog-stock::before{
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(11,15,22,0.32);
+}
+
 .catalog-trust-copy{
   margin: 0;
   color: rgba(100,116,139,0.9);

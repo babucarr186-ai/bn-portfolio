@@ -1193,6 +1193,19 @@ export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } 
       body.appendChild(price);
     }
 
+    if (!product?.sold) {
+      const remaining = Number(product?.stockRemaining);
+      const lowStockText = String(product?.lowStockText || '').trim();
+      const shouldShowLowStock = (Number.isFinite(remaining) && remaining === 1) || Boolean(lowStockText);
+
+      if (shouldShowLowStock) {
+        const stock = el('p', 'catalog-stock');
+        stock.textContent = lowStockText || 'Only 1 left';
+        stock.setAttribute('aria-label', '1 remaining in stock');
+        body.appendChild(stock);
+      }
+    }
+
     const actions = el('div', 'catalog-actions');
 
     if (product?.sold) {
