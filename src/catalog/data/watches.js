@@ -93,13 +93,17 @@ export const watches = [
   },
   {
     title: 'Apple Watch Series 8',
-    subtitle: '41mm • Used (Like new) • Fully tested • 12‑month warranty',
+    subtitle: '41mm • Fully tested • Warranty included',
     kind: 'square',
-    sold: true,
+    condition: 'Like new',
+    batteryHealth: '98%',
+    price: 11500,
+    stockRemaining: 1,
+    lowStockText: 'Only 1 left',
     description:
-      'Apple Watch Series 8 41mm with a clean modern look and a smooth everyday Apple Watch experience. A polished Apple Watch option for buyers who want health tracking, notifications, and daily convenience in a newer model.',
+      'Apple Watch Series 8 41mm in like-new condition, fully tested and ready for daily use. Battery health is 98%, with warranty included for extra peace of mind.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm — used (like new), fully tested, 12-month warranty. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm — like new, battery 98%, fully tested, warranty included. Price GMD 11,500. We have 1 available. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
