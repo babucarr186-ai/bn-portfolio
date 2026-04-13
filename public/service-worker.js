@@ -73,15 +73,25 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('install', (event) => {
+  // Activate the updated worker ASAP so users don't have to fully close/reopen.
+  self.skipWaiting();
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CORE_CACHE);
-      // Use addAll for best-effort precache; ignore failures so install doesn't brick.
-      try {
-        await cache.addAll(CORE_URLS);
-      } catch {
-        // ignore (some hosts might not serve all URLs at install time)
-      }
+      // Best-effort precache; bypass HTTP cache so new deploys are fetched.
+      await Promise.all(
+        CORE_URLS.map(async (url) => {
+          try {
+            const request = new Request(url, { cache: 'reload' });
+            const response = await fetch(request);
+            if (response && response.ok) {
+              await cache.put(url, response);
+            }
+          } catch {
+            // ignore (some hosts might not serve all URLs at install time)
+          }
+        }),
+      );
     })(),
   );
 });
