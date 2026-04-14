@@ -930,6 +930,13 @@ footer{
   opacity: 0.88;
 }
 
+.foot-social{ margin-top: 10px; display: grid; gap: 8px; }
+.foot-social__label{ font-weight: 650; }
+.foot-social__icons{ display: flex; align-items: center; gap: 12px; }
+.foot-social__icons a{ display: inline-flex; color: #ccc; text-decoration: none; }
+.foot-social__icons a:hover{ color: #e6e6e6; text-decoration: none; opacity: 1; }
+.foot-social__icons svg{ width: 18px; height: 18px; display: block; }
+
 .foot-legal{
   display: grid;
   gap: 6px;
