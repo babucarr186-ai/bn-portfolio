@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
 import IPhonePreview from './IPhonePreview';
 import ChatWidget from './ChatWidget';
@@ -62,125 +62,6 @@ export default function App() {
     []
   );
 
-  const airPhoneRef = useRef(null);
-  const heroRef = useRef(null);
-  const heroCopyRef = useRef(null);
-  const heroGalleryRef = useRef(null);
-
-  useEffect(() => {
-    const el = airPhoneRef.current;
-    if (!el) return;
-
-    const heroEl = heroRef.current;
-    const heroCopyEl = heroCopyRef.current;
-    const heroGalleryEl = heroGalleryRef.current;
-
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReducedMotion) return;
-
-    let rafId = 0;
-    let animating = false;
-    let currentDeg = -18;
-    let targetDeg = -18;
-    let currentOffset = 0;
-    let targetOffset = 0;
-
-    // Fade copy out as user scrolls down the hero.
-    let copyOpacity = 1;
-    let targetCopyOpacity = 1;
-    let galleryOpacity = 1;
-    let targetGalleryOpacity = 1;
-    let bgOpacity = theme === 'dark' ? 0.24 : 0.30;
-    let targetBgOpacity = bgOpacity;
-
-    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-    function updateHeroTargets() {
-      if (!heroEl || !heroCopyEl) {
-        targetCopyOpacity = 1;
-        targetGalleryOpacity = 1;
-        targetBgOpacity = bgOpacity;
-        return;
-      }
-
-      const rect = heroEl.getBoundingClientRect();
-      const h = Math.max(1, rect.height);
-
-      // progress: 0 at top, 1 when hero is mostly scrolled past
-      const progress = clamp((-rect.top) / (h * 0.70), 0, 1);
-
-      // Keep it gentle and readable; only fade the copy.
-      targetCopyOpacity = clamp(1 - progress * 1.08, 0, 1);
-
-      // Slightly dim the hero gallery for the same "luxury" feel.
-      targetGalleryOpacity = clamp(1 - progress * 0.18, 0.82, 1);
-
-      // As text fades, let the background iPhone become slightly clearer.
-      targetBgOpacity = clamp(bgOpacity + progress * 0.10, 0, 0.52);
-    }
-
-    function updateTargets() {
-      const y = window.scrollY || 0;
-      targetDeg = clamp(-18 + y * 0.06, -18, 32);
-      targetOffset = clamp(y * 0.03, -18, 54);
-      updateHeroTargets();
-    }
-
-    function tick() {
-      // Ease toward target values (lower = less "animated")
-      const ease = 0.065;
-      currentDeg += (targetDeg - currentDeg) * ease;
-      currentOffset += (targetOffset - currentOffset) * ease;
-
-      copyOpacity += (targetCopyOpacity - copyOpacity) * ease;
-      galleryOpacity += (targetGalleryOpacity - galleryOpacity) * ease;
-      bgOpacity += (targetBgOpacity - bgOpacity) * ease;
-
-      el.style.transform = `translate3d(-50%, -50%, 0) translate3d(0, ${currentOffset}px, 0) rotateX(12deg) rotateY(-16deg) rotateZ(${currentDeg}deg)`;
-      el.style.opacity = `${bgOpacity}`;
-
-      if (heroCopyEl) {
-        heroCopyEl.style.opacity = `${copyOpacity}`;
-        heroCopyEl.style.transform = `translate3d(0, ${(-1 + (1 - copyOpacity)) * 8}px, 0)`;
-        heroCopyEl.style.pointerEvents = copyOpacity < 0.15 ? 'none' : 'auto';
-      }
-
-      if (heroGalleryEl) {
-        heroGalleryEl.style.opacity = `${galleryOpacity}`;
-      }
-
-      const degDone = Math.abs(targetDeg - currentDeg) < 0.03;
-      const offsetDone = Math.abs(targetOffset - currentOffset) < 0.06;
-      const copyDone = Math.abs(targetCopyOpacity - copyOpacity) < 0.01;
-      const galleryDone = Math.abs(targetGalleryOpacity - galleryOpacity) < 0.01;
-      const bgDone = Math.abs(targetBgOpacity - bgOpacity) < 0.01;
-      if (degDone && offsetDone && copyDone && galleryDone && bgDone) {
-        animating = false;
-        rafId = 0;
-        return;
-      }
-      rafId = requestAnimationFrame(tick);
-    }
-
-    const onScroll = () => {
-      updateTargets();
-      if (!animating) {
-        animating = true;
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-    updateTargets();
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
-  }, [theme]);
 
   const [reqModel, setReqModel] = useState('');
   const [reqStorage, setReqStorage] = useState('');
@@ -215,7 +96,6 @@ export default function App() {
     <div className="site">
       <div className="air-phone-bg" aria-hidden="true">
         <img
-          ref={airPhoneRef}
           className="air-phone"
           src={import.meta.env.BASE_URL + 'iphone-air.svg'}
           alt=""
@@ -247,8 +127,8 @@ export default function App() {
         </button>
       </div>
 
-      <header ref={heroRef} className="hero shop-hero" aria-labelledby="site-title">
-        <div ref={heroCopyRef} className="hero-copy">
+      <header className="hero shop-hero" aria-labelledby="site-title">
+        <div className="hero-copy">
           <h1 id="site-title" className="shop-hero-title">Original Apple products, only.</h1>
           <p className="shop-hero-sub">
             Located in {STORE_LOCATION}. Request iPhone availability and we’ll confirm what’s in stock.
@@ -274,7 +154,7 @@ export default function App() {
           </div>
         </div>
 
-        <div ref={heroGalleryRef} className="hero-gallery" aria-label="iPhone previews">
+        <div className="hero-gallery" aria-label="iPhone previews">
           <img className="hero-phone" src={import.meta.env.BASE_URL + 'iphone-pro.svg'} alt="iPhone Pro" loading="lazy" />
           <img className="hero-phone hero-phone-back" src={import.meta.env.BASE_URL + 'iphone.svg'} alt="iPhone" loading="lazy" />
         </div>
