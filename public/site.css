@@ -932,10 +932,56 @@ footer{
 
 .foot-social{ margin-top: 10px; display: grid; gap: 8px; }
 .foot-social__label{ font-weight: 650; }
-.foot-social__icons{ display: flex; align-items: center; gap: 12px; }
-.foot-social__icons a{ display: inline-flex; color: #ccc; text-decoration: none; }
-.foot-social__icons a:hover{ color: #e6e6e6; text-decoration: none; opacity: 1; }
-.foot-social__icons svg{ width: 18px; height: 18px; display: block; }
+
+.foot-social__row{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 240px;
+}
+
+.foot-social__btn{
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-decoration: none;
+  line-height: 0;
+  color: rgba(11,15,22,0.72);
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(11,15,22,0.12);
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.foot-social__btn:hover{
+  text-decoration: none;
+  background: rgba(255,255,255,1);
+  border-color: rgba(11,15,22,0.18);
+  color: rgba(11,15,22,0.86);
+  transform: translateY(-1px);
+  opacity: 1;
+}
+
+.foot-social__btn:active{ transform: translateY(0); }
+
+.foot-social__icon{
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex: 0 0 20px;
+}
+
+/* Backward compatibility: if any legacy page still has the old container, keep it stable. */
+.foot-social__icons{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 240px; }
+.foot-social__icons a{ width: 46px; height: 46px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; box-sizing: border-box; overflow: hidden; text-decoration: none; line-height: 0; color: rgba(11,15,22,0.72); background: rgba(255,255,255,0.9); border: 1px solid rgba(11,15,22,0.12); transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease; }
+.foot-social__icons a:hover{ text-decoration: none; background: rgba(255,255,255,1); border-color: rgba(11,15,22,0.18); color: rgba(11,15,22,0.86); transform: translateY(-1px); opacity: 1; }
+.foot-social__icons a:active{ transform: translateY(0); }
+.foot-social__icons svg{ width: 20px; height: 20px; display: block; flex: 0 0 20px; }
 
 .foot-legal{
   display: grid;
