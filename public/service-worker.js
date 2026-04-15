@@ -7,7 +7,7 @@
   - Network-first for HTML navigations
 */
 
-const CACHE_VERSION = 'v2-20260409';
+const CACHE_VERSION = 'v2-20260415';
 const CORE_CACHE = `core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
@@ -125,6 +125,14 @@ function isStaticAssetRequest(request) {
   return ['style', 'script', 'worker', 'font'].includes(request.destination);
 }
 
+function isLikelyImagePath(pathname) {
+  return /\.(png|jpe?g|webp|gif|svg|avif)$/i.test(pathname || '');
+}
+
+function isDataFilePath(pathname) {
+  return /\.(json|txt|csv)$/i.test(pathname || '');
+}
+
 async function cachePut(cacheName, request, response) {
   try {
     const cache = await caches.open(cacheName);
@@ -205,14 +213,32 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // PWA metadata (manifest/icons) should update quickly after deploy.
+  if (url.pathname.endsWith('/manifest.json')) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+  if (url.pathname.includes('/icons/') || url.pathname.endsWith('/favicon.svg')) {
+    event.respondWith(staleWhileRevalidate(request));
+    return;
+  }
+
   // HTML: network-first so content updates are picked up.
   if (isHtmlRequest(request)) {
     event.respondWith(networkFirst(request));
     return;
   }
 
+  const isProductsPath = url.pathname.startsWith(PRODUCTS_PATH_PREFIX);
+
+  // Product data files: network-first so updates show quickly (but still work offline).
+  if (isProductsPath && isDataFilePath(url.pathname)) {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
   // Images (including product photos): cache-first.
-  if (isImageRequest(request) || url.pathname.startsWith(PRODUCTS_PATH_PREFIX)) {
+  if (isImageRequest(request) || (isProductsPath && isLikelyImagePath(url.pathname))) {
     event.respondWith(cacheFirstImage(request));
     return;
   }

@@ -1,7 +1,239 @@
 // Minimal PWA registration (static file served from /public)
 // - Registers on load
-// - Checks for updates on each page load
+// - Checks for updates on each page load / resume
 // - Activates updated SW and refreshes the page safely
+// - Adds a clean install CTA where supported + iOS/Safari fallback
+
+const UA_INSTALL_DISMISS_UNTIL_KEY = '__ua_install_dismissed_until__';
+const UA_INSTALL_BANNER_ID = 'ua-install-banner';
+
+let deferredInstallPrompt = null;
+
+const UA_SCRIPT_BASE_URL = (() => {
+  try {
+    const src = document.currentScript && document.currentScript.src ? document.currentScript.src : '';
+    const scriptUrl = src ? new URL(src, window.location.href) : new URL(window.location.href);
+    return new URL('.', scriptUrl);
+  } catch {
+    return new URL('.', window.location.href);
+  }
+})();
+
+function uaNow() {
+  return Date.now();
+}
+
+function uaIsStandalone() {
+  try {
+    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+  } catch {
+    // ignore
+  }
+  // iOS Safari legacy
+  // eslint-disable-next-line no-undef
+  return Boolean(window.navigator && window.navigator.standalone);
+}
+
+function uaIsIOS() {
+  const ua = navigator.userAgent || '';
+  return /iPad|iPhone|iPod/i.test(ua);
+}
+
+function uaIsSafari() {
+  const ua = navigator.userAgent || '';
+  const isWebKit = /AppleWebKit/i.test(ua);
+  const isSafari = /Safari/i.test(ua);
+  const isOther = /CriOS|FxiOS|EdgiOS|OPiOS|Chrome|Edg|OPR/i.test(ua);
+  return isWebKit && isSafari && !isOther;
+}
+
+function uaDismissedUntil() {
+  try {
+    const raw = localStorage.getItem(UA_INSTALL_DISMISS_UNTIL_KEY);
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function uaDismissForDays(days) {
+  try {
+    const until = uaNow() + days * 24 * 60 * 60 * 1000;
+    localStorage.setItem(UA_INSTALL_DISMISS_UNTIL_KEY, String(until));
+  } catch {
+    // ignore
+  }
+}
+
+function uaShouldShowInstallUI() {
+  if (uaIsStandalone()) return false;
+  if (uaNow() < uaDismissedUntil()) return false;
+  return true;
+}
+
+function uaRemoveBanner() {
+  const el = document.getElementById(UA_INSTALL_BANNER_ID);
+  if (el) el.remove();
+}
+
+function uaEnsureBanner({ mode }) {
+  if (!uaShouldShowInstallUI()) return null;
+  if (document.getElementById(UA_INSTALL_BANNER_ID)) return document.getElementById(UA_INSTALL_BANNER_ID);
+
+  if (!document.getElementById('ua-install-banner-style')) {
+    const style = document.createElement('style');
+    style.id = 'ua-install-banner-style';
+    style.textContent = `
+#${UA_INSTALL_BANNER_ID} {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2147483647;
+  background: rgba(10, 10, 10, 0.92);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+}
+#${UA_INSTALL_BANNER_ID} .ua-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#${UA_INSTALL_BANNER_ID} .ua-copy {
+  flex: 1;
+  min-width: 0;
+}
+#${UA_INSTALL_BANNER_ID} .ua-title {
+  font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  margin: 0;
+}
+#${UA_INSTALL_BANNER_ID} .ua-sub {
+  font: 400 12px/1.25 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  opacity: 0.9;
+  margin: 2px 0 0;
+}
+#${UA_INSTALL_BANNER_ID} .ua-btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font: 600 13px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  cursor: pointer;
+  background: #fff;
+  color: #000;
+  white-space: nowrap;
+}
+#${UA_INSTALL_BANNER_ID} .ua-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  font: 600 18px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+@media (min-width: 900px) {
+  #${UA_INSTALL_BANNER_ID} { left: auto; right: 16px; bottom: 16px; width: 360px; }
+}
+`;
+    document.head.appendChild(style);
+  }
+
+  const banner = document.createElement('div');
+  banner.id = UA_INSTALL_BANNER_ID;
+  banner.setAttribute('role', 'region');
+  banner.setAttribute('aria-label', 'Install app');
+
+  const title = 'Uncle Apple Store';
+
+  let sub = 'Install this app for faster access.';
+  let ctaLabel = 'Install';
+
+  if (mode === 'ios') {
+    sub = 'To install this app on iPhone, tap Share, then Add to Home Screen.';
+    ctaLabel = '';
+  }
+
+  banner.innerHTML = `
+  <div class="ua-row">
+    <div class="ua-copy">
+      <p class="ua-title">${title}</p>
+      <p class="ua-sub">${sub}</p>
+    </div>
+    ${mode === 'prompt' ? '<button class="ua-btn" type="button">Install</button>' : ''}
+    <button class="ua-close" type="button" aria-label="Dismiss">×</button>
+  </div>
+  `;
+
+  banner.querySelector('.ua-close')?.addEventListener('click', () => {
+    uaDismissForDays(14);
+    uaRemoveBanner();
+  });
+
+  if (mode === 'prompt') {
+    banner.querySelector('.ua-btn')?.addEventListener('click', async () => {
+      if (!deferredInstallPrompt) return;
+      try {
+        deferredInstallPrompt.prompt();
+        const choice = await deferredInstallPrompt.userChoice;
+        deferredInstallPrompt = null;
+        if (choice && choice.outcome === 'accepted') {
+          uaRemoveBanner();
+        } else {
+          // If they dismiss the browser prompt, back off for a while.
+          uaDismissForDays(14);
+          uaRemoveBanner();
+        }
+      } catch {
+        // ignore
+      }
+    });
+  }
+
+  document.body.appendChild(banner);
+  return banner;
+}
+
+// Install prompt: supported Chromium browsers
+window.addEventListener('beforeinstallprompt', (event) => {
+  // If we don't preventDefault(), Chrome shows its own mini-infobar.
+  event.preventDefault();
+  deferredInstallPrompt = event;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => uaEnsureBanner({ mode: 'prompt' }), { once: true });
+  } else {
+    uaEnsureBanner({ mode: 'prompt' });
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  uaRemoveBanner();
+});
+
+// iPhone/Safari fallback
+(function uaMaybeShowIosFallback() {
+  if (!uaIsIOS() || !uaIsSafari()) return;
+  if (!uaShouldShowInstallUI()) return;
+
+  const show = () => {
+    // If the install prompt became available, prefer that.
+    if (deferredInstallPrompt) return;
+    uaEnsureBanner({ mode: 'ios' });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(show, 1500), { once: true });
+  } else {
+    setTimeout(show, 1500);
+  }
+})();
 
 (function registerPWA() {
   if (!('serviceWorker' in navigator)) return;
@@ -49,25 +281,32 @@
 
       // Resolve URLs relative to where this file is served from.
       // This keeps GitHub Pages project sites (served under /<repo>/) working.
-      const baseUrl = new URL('.', import.meta.url);
+      const baseUrl = UA_SCRIPT_BASE_URL;
       const swUrl = new URL('service-worker.js', baseUrl).toString();
-      const scopePath = new URL('.', baseUrl).pathname;
+      const scopePath = baseUrl.pathname;
 
       // Normalize PWA asset links (some pages are copied verbatim from /public).
       try {
         const manifestUrl = new URL('manifest.json', baseUrl).toString();
-        const touchIconUrl = new URL('icons/icon-192.png', baseUrl).toString();
+        const touchIconUrl = new URL('icons/icon-180.png', baseUrl).toString();
 
         const manifestLink = document.querySelector('link[rel="manifest"]');
         if (manifestLink) manifestLink.setAttribute('href', manifestUrl);
 
         const touchIconLink = document.querySelector('link[rel="apple-touch-icon"]');
-        if (touchIconLink) touchIconLink.setAttribute('href', touchIconUrl);
+        if (touchIconLink) {
+          touchIconLink.setAttribute('href', touchIconUrl);
+          touchIconLink.setAttribute('sizes', '180x180');
+        }
       } catch {
         // ignore
       }
 
-      const registration = await navigator.serviceWorker.register(swUrl, { scope: scopePath });
+      const registration = await navigator.serviceWorker.register(swUrl, {
+        scope: scopePath,
+        // Ask browsers to bypass HTTP cache for SW update checks (supported browsers only).
+        updateViaCache: 'none',
+      });
 
       const reloadOnce = () => {
         if (sessionStorage.getItem(reloadKey) === '1') return;
@@ -117,7 +356,7 @@
       // trigger update checks when the tab becomes visible / focused / online.
       let lastUpdateCheck = 0;
       const maybeCheckForUpdates = async () => {
-        const now = Date.now();
+        const now = uaNow();
         if (now - lastUpdateCheck < 60_000) return; // throttle
         lastUpdateCheck = now;
         try {
