@@ -266,3 +266,70 @@ self.addEventListener('fetch', (event) => {
     })(),
   );
 });
+
+self.addEventListener('push', (event) => {
+  event.waitUntil(
+    (async () => {
+      let payload = {};
+      try {
+        if (event.data) payload = event.data.json();
+      } catch {
+        try {
+          const text = event.data ? event.data.text() : '';
+          payload = text ? { body: text } : {};
+        } catch {
+          payload = {};
+        }
+      }
+
+      const title = typeof payload.title === 'string' && payload.title.trim() ? payload.title.trim() : 'Uncle Apple Store';
+      const body = typeof payload.body === 'string' && payload.body.trim() ? payload.body.trim() : 'New arrivals are available.';
+
+      let targetUrl = withBase('');
+      if (typeof payload.url === 'string' && payload.url) {
+        try {
+          const u = new URL(payload.url, self.location.origin);
+          if (u.origin === self.location.origin) targetUrl = u.toString();
+        } catch {
+          // ignore
+        }
+      }
+
+      await self.registration.showNotification(title, {
+        body,
+        icon: withBase('icons/icon-192.png'),
+        badge: withBase('icons/icon-192.png'),
+        data: { url: targetUrl },
+      });
+    })(),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  event.waitUntil(
+    (async () => {
+      const url = event.notification?.data?.url || withBase('');
+      const allClients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+
+      for (const client of allClients) {
+        try {
+          const clientUrl = new URL(client.url);
+          const targetUrl = new URL(url);
+          if (clientUrl.origin === targetUrl.origin) {
+            await client.focus();
+            if ('navigate' in client) {
+              await client.navigate(targetUrl.toString());
+            }
+            return;
+          }
+        } catch {
+          // ignore
+        }
+      }
+
+      await self.clients.openWindow(url);
+    })(),
+  );
+});

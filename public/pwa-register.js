@@ -235,6 +235,341 @@ window.addEventListener('appinstalled', () => {
   }
 })();
 
+// Push notification subscription (new arrivals)
+const UA_NOTIFY_DISMISS_UNTIL_KEY = '__ua_notify_dismissed_until__';
+const UA_NOTIFY_PENDING_SUB_KEY = '__ua_notify_pending_push_subscription__';
+const UA_NOTIFY_BANNER_ID = 'ua-notify-banner';
+
+function uaIsSecureEnoughForPush() {
+  if (window.isSecureContext) return true;
+  const host = window.location.hostname;
+  return host === 'localhost' || host === '127.0.0.1';
+}
+
+function uaSupportsPush() {
+  return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+}
+
+function uaNotifyDismissedUntil() {
+  try {
+    const raw = localStorage.getItem(UA_NOTIFY_DISMISS_UNTIL_KEY);
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function uaDismissNotifyForDays(days) {
+  try {
+    const until = uaNow() + days * 24 * 60 * 60 * 1000;
+    localStorage.setItem(UA_NOTIFY_DISMISS_UNTIL_KEY, String(until));
+  } catch {
+    // ignore
+  }
+}
+
+function uaGetPendingPushSubscription() {
+  try {
+    const raw = localStorage.getItem(UA_NOTIFY_PENDING_SUB_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    return data && typeof data === 'object' ? data : null;
+  } catch {
+    return null;
+  }
+}
+
+function uaSetPendingPushSubscription(subscriptionJson) {
+  try {
+    localStorage.setItem(UA_NOTIFY_PENDING_SUB_KEY, JSON.stringify(subscriptionJson));
+  } catch {
+    // ignore
+  }
+}
+
+function uaClearPendingPushSubscription() {
+  try {
+    localStorage.removeItem(UA_NOTIFY_PENDING_SUB_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+function uaBase64UrlToUint8Array(base64Url) {
+  const input = String(base64Url || '').replace(/-/g, '+').replace(/_/g, '/');
+  const pad = '='.repeat((4 - (input.length % 4)) % 4);
+  const base64 = input + pad;
+  const raw = atob(base64);
+  const out = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i += 1) out[i] = raw.charCodeAt(i);
+  return out;
+}
+
+async function uaFetchVapidPublicKey() {
+  const url = new URL('/.netlify/functions/push-vapid-key', window.location.origin).toString();
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) return null;
+  const data = await res.json().catch(() => null);
+  const key = data && typeof data.publicKey === 'string' ? data.publicKey.trim() : '';
+  return key || null;
+}
+
+async function uaSendSubscriptionToBackend(payload) {
+  const url = new URL('/.netlify/functions/push-subscribe', window.location.origin).toString();
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) return { ok: false, stored: false };
+
+    const data = await res.json().catch(() => null);
+    const stored = Boolean(data && data.stored === true);
+    return { ok: true, stored };
+  } catch {
+    return { ok: false, stored: false };
+  }
+}
+
+function uaRemoveNotifyBanner() {
+  const el = document.getElementById(UA_NOTIFY_BANNER_ID);
+  if (el) el.remove();
+}
+
+function uaSetNotifyBannerMessage(message) {
+  const el = document.getElementById(UA_NOTIFY_BANNER_ID);
+  const msgEl = el ? el.querySelector('.ua-sub') : null;
+  if (msgEl && typeof message === 'string') msgEl.textContent = message;
+}
+
+function uaEnsureNotifyBanner() {
+  if (document.getElementById(UA_NOTIFY_BANNER_ID)) return document.getElementById(UA_NOTIFY_BANNER_ID);
+
+  if (!document.getElementById('ua-notify-banner-style')) {
+    const style = document.createElement('style');
+    style.id = 'ua-notify-banner-style';
+    style.textContent = `
+#${UA_NOTIFY_BANNER_ID} {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2147483646;
+  background: rgba(10, 10, 10, 0.92);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+}
+#${UA_NOTIFY_BANNER_ID} .ua-row { display: flex; align-items: center; gap: 10px; }
+#${UA_NOTIFY_BANNER_ID} .ua-copy { flex: 1; min-width: 0; }
+#${UA_NOTIFY_BANNER_ID} .ua-title { font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
+#${UA_NOTIFY_BANNER_ID} .ua-sub { font: 400 12px/1.25 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; opacity: 0.9; margin: 2px 0 0; }
+#${UA_NOTIFY_BANNER_ID} .ua-btn { appearance: none; border: 0; border-radius: 999px; padding: 8px 12px; font: 600 13px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; cursor: pointer; background: #fff; color: #000; white-space: nowrap; }
+#${UA_NOTIFY_BANNER_ID} .ua-close { appearance: none; border: 0; background: transparent; color: rgba(255,255,255,0.85); font: 600 18px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 6px 8px; cursor: pointer; }
+@media (min-width: 900px) { #${UA_NOTIFY_BANNER_ID} { left: 16px; right: auto; bottom: 16px; width: 360px; } }
+`;
+    document.head.appendChild(style);
+  }
+
+  const banner = document.createElement('div');
+  banner.id = UA_NOTIFY_BANNER_ID;
+  banner.setAttribute('role', 'region');
+  banner.setAttribute('aria-label', 'Notifications');
+
+  banner.innerHTML = `
+  <div class="ua-row">
+    <div class="ua-copy">
+      <p class="ua-title">Notify me about new arrivals</p>
+      <p class="ua-sub">Get a notification when new products are added.</p>
+    </div>
+    <button class="ua-btn" type="button">Enable</button>
+    <button class="ua-close" type="button" aria-label="Dismiss">×</button>
+  </div>
+  `;
+
+  banner.querySelector('.ua-close')?.addEventListener('click', () => {
+    uaDismissNotifyForDays(30);
+    uaRemoveNotifyBanner();
+  });
+
+  banner.querySelector('.ua-btn')?.addEventListener('click', async () => {
+    // Respectful: never request permission without a user click.
+    try {
+      if (!uaSupportsPush() || !uaIsSecureEnoughForPush()) {
+        uaSetNotifyBannerMessage('Notifications are not supported in this browser.');
+        return;
+      }
+
+      // iOS: push works only for installed Home Screen apps (iOS 16.4+).
+      if (uaIsIOS() && !uaIsStandalone()) {
+        uaSetNotifyBannerMessage('On iPhone, add to Home Screen first to enable notifications.');
+        return;
+      }
+
+      const baseUrl = UA_SCRIPT_BASE_URL;
+      const swUrl = new URL('service-worker.js', baseUrl).toString();
+      const scopePath = baseUrl.pathname;
+
+      const registration = await navigator.serviceWorker.register(swUrl, {
+        scope: scopePath,
+        updateViaCache: 'none',
+      });
+
+      const permission = Notification.permission;
+      if (permission === 'denied') {
+        uaSetNotifyBannerMessage('Notifications are blocked in your browser settings.');
+        return;
+      }
+
+      if (permission === 'default') {
+        const result = await Notification.requestPermission();
+        if (result !== 'granted') {
+          uaSetNotifyBannerMessage('No problem — you can enable this later.');
+          uaDismissNotifyForDays(30);
+          uaRemoveNotifyBanner();
+          return;
+        }
+      }
+
+      const existing = await registration.pushManager.getSubscription();
+      if (existing) {
+        const subscriptionJson = typeof existing.toJSON === 'function' ? existing.toJSON() : existing;
+        uaSetPendingPushSubscription(subscriptionJson);
+
+        const res = await uaSendSubscriptionToBackend({
+          action: 'subscribe',
+          subscription: subscriptionJson,
+          createdAt: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+        });
+
+        if (res.stored) {
+          uaClearPendingPushSubscription();
+          uaSetNotifyBannerMessage('You are subscribed to new arrivals.');
+          uaDismissNotifyForDays(180);
+          uaRemoveNotifyBanner();
+        } else {
+          uaSetNotifyBannerMessage('Enabled on this device — server setup pending.');
+        }
+
+        return;
+      }
+
+      const publicKey = await uaFetchVapidPublicKey();
+      if (!publicKey) {
+        uaSetNotifyBannerMessage('Notifications are not configured yet.');
+        return;
+      }
+
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: uaBase64UrlToUint8Array(publicKey),
+      });
+
+      const subscriptionJson = typeof subscription.toJSON === 'function' ? subscription.toJSON() : subscription;
+      uaSetPendingPushSubscription(subscriptionJson);
+
+      const res = await uaSendSubscriptionToBackend({
+        action: 'subscribe',
+        subscription: subscriptionJson,
+        createdAt: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+      });
+
+      if (res.stored) {
+        uaClearPendingPushSubscription();
+        uaSetNotifyBannerMessage('Subscribed — we will notify you about new arrivals.');
+        uaDismissNotifyForDays(180);
+        uaRemoveNotifyBanner();
+      } else {
+        uaSetNotifyBannerMessage('Enabled on this device — server setup pending.');
+      }
+    } catch {
+      uaSetNotifyBannerMessage('Could not enable notifications right now.');
+    }
+  });
+
+  document.body.appendChild(banner);
+  return banner;
+}
+
+(function uaMaybeFlushPendingPushSubscription() {
+  if (!uaSupportsPush() || !uaIsSecureEnoughForPush()) return;
+  if (uaIsIOS() && !uaIsStandalone()) return;
+
+  const pending = uaGetPendingPushSubscription();
+  if (!pending) return;
+
+  const run = async () => {
+    try {
+      const baseUrl = UA_SCRIPT_BASE_URL;
+      const swUrl = new URL('service-worker.js', baseUrl).toString();
+      const scopePath = baseUrl.pathname;
+      const registration = await navigator.serviceWorker.register(swUrl, { scope: scopePath, updateViaCache: 'none' });
+
+      const existing = await registration.pushManager.getSubscription();
+      if (!existing) {
+        uaClearPendingPushSubscription();
+        return;
+      }
+
+      const subscriptionJson = typeof existing.toJSON === 'function' ? existing.toJSON() : existing;
+      const res = await uaSendSubscriptionToBackend({
+        action: 'subscribe',
+        subscription: subscriptionJson,
+        createdAt: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+      });
+
+      if (res.stored) uaClearPendingPushSubscription();
+    } catch {
+      // ignore
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => void run(), { once: true });
+  } else {
+    void run();
+  }
+})();
+
+(function uaMaybeShowNotifyBanner() {
+  if (uaNow() < uaNotifyDismissedUntil()) return;
+  if (!uaSupportsPush() || !uaIsSecureEnoughForPush()) return;
+  if (Notification.permission === 'denied') return;
+
+  // On iPhone, only show in Safari when the app is installed.
+  if (uaIsIOS() && !uaIsStandalone()) return;
+
+  const show = async () => {
+    try {
+      const baseUrl = UA_SCRIPT_BASE_URL;
+      const swUrl = new URL('service-worker.js', baseUrl).toString();
+      const scopePath = baseUrl.pathname;
+      const registration = await navigator.serviceWorker.register(swUrl, { scope: scopePath, updateViaCache: 'none' });
+      const existing = await registration.pushManager.getSubscription();
+      if (existing) return;
+    } catch {
+      // ignore
+    }
+
+    uaEnsureNotifyBanner();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(show, 4000), { once: true });
+  } else {
+    setTimeout(show, 4000);
+  }
+})();
+
 (function registerPWA() {
   if (!('serviceWorker' in navigator)) return;
 
