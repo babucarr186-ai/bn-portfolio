@@ -77,15 +77,13 @@ function uaRemoveBanner() {
   if (el) el.remove();
 }
 
-function uaEnsureBanner({ mode }) {
-  if (!uaShouldShowInstallUI()) return null;
-  if (document.getElementById(UA_INSTALL_BANNER_ID)) return document.getElementById(UA_INSTALL_BANNER_ID);
+function uaEnsureCommonBannerStyle() {
+  if (document.getElementById('ua-banner-style')) return;
 
-  if (!document.getElementById('ua-install-banner-style')) {
-    const style = document.createElement('style');
-    style.id = 'ua-install-banner-style';
-    style.textContent = `
-#${UA_INSTALL_BANNER_ID} {
+  const style = document.createElement('style');
+  style.id = 'ua-banner-style';
+  style.textContent = `
+.ua-banner {
   position: fixed;
   left: 12px;
   right: 12px;
@@ -99,25 +97,25 @@ function uaEnsureBanner({ mode }) {
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
   backdrop-filter: blur(8px);
 }
-#${UA_INSTALL_BANNER_ID} .ua-row {
+.ua-banner .ua-row {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-#${UA_INSTALL_BANNER_ID} .ua-copy {
+.ua-banner .ua-copy {
   flex: 1;
   min-width: 0;
 }
-#${UA_INSTALL_BANNER_ID} .ua-title {
+.ua-banner .ua-title {
   font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   margin: 0;
 }
-#${UA_INSTALL_BANNER_ID} .ua-sub {
+.ua-banner .ua-sub {
   font: 400 12px/1.25 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   opacity: 0.9;
   margin: 2px 0 0;
 }
-#${UA_INSTALL_BANNER_ID} .ua-btn {
+.ua-banner .ua-btn {
   appearance: none;
   border: 0;
   border-radius: 999px;
@@ -128,7 +126,7 @@ function uaEnsureBanner({ mode }) {
   color: #000;
   white-space: nowrap;
 }
-#${UA_INSTALL_BANNER_ID} .ua-close {
+.ua-banner .ua-close {
   appearance: none;
   border: 0;
   background: transparent;
@@ -138,13 +136,21 @@ function uaEnsureBanner({ mode }) {
   cursor: pointer;
 }
 @media (min-width: 900px) {
-  #${UA_INSTALL_BANNER_ID} { left: auto; right: 16px; bottom: 16px; width: 360px; }
+  .ua-banner.ua-banner--right { left: auto; right: 16px; bottom: 16px; width: 360px; }
+  .ua-banner.ua-banner--left { left: 16px; right: auto; bottom: 16px; width: 360px; }
 }
 `;
-    document.head.appendChild(style);
-  }
+  document.head.appendChild(style);
+}
+
+function uaEnsureBanner({ mode }) {
+  if (!uaShouldShowInstallUI()) return null;
+  if (document.getElementById(UA_INSTALL_BANNER_ID)) return document.getElementById(UA_INSTALL_BANNER_ID);
+
+  uaEnsureCommonBannerStyle();
 
   const banner = document.createElement('div');
+  banner.className = 'ua-banner ua-banner--right';
   banner.id = UA_INSTALL_BANNER_ID;
   banner.setAttribute('role', 'region');
   banner.setAttribute('aria-label', 'Install app');
@@ -237,7 +243,6 @@ window.addEventListener('appinstalled', () => {
 
 // Push notification subscription (new arrivals)
 const UA_NOTIFY_DISMISS_UNTIL_KEY = '__ua_notify_dismissed_until__';
-const UA_NOTIFY_PENDING_SUB_KEY = '__ua_notify_pending_push_subscription__';
 const UA_NOTIFY_BANNER_ID = 'ua-notify-banner';
 
 function uaIsSecureEnoughForPush() {
@@ -264,33 +269,6 @@ function uaDismissNotifyForDays(days) {
   try {
     const until = uaNow() + days * 24 * 60 * 60 * 1000;
     localStorage.setItem(UA_NOTIFY_DISMISS_UNTIL_KEY, String(until));
-  } catch {
-    // ignore
-  }
-}
-
-function uaGetPendingPushSubscription() {
-  try {
-    const raw = localStorage.getItem(UA_NOTIFY_PENDING_SUB_KEY);
-    if (!raw) return null;
-    const data = JSON.parse(raw);
-    return data && typeof data === 'object' ? data : null;
-  } catch {
-    return null;
-  }
-}
-
-function uaSetPendingPushSubscription(subscriptionJson) {
-  try {
-    localStorage.setItem(UA_NOTIFY_PENDING_SUB_KEY, JSON.stringify(subscriptionJson));
-  } catch {
-    // ignore
-  }
-}
-
-function uaClearPendingPushSubscription() {
-  try {
-    localStorage.removeItem(UA_NOTIFY_PENDING_SUB_KEY);
   } catch {
     // ignore
   }
@@ -348,36 +326,10 @@ function uaSetNotifyBannerMessage(message) {
 function uaEnsureNotifyBanner() {
   if (document.getElementById(UA_NOTIFY_BANNER_ID)) return document.getElementById(UA_NOTIFY_BANNER_ID);
 
-  if (!document.getElementById('ua-notify-banner-style')) {
-    const style = document.createElement('style');
-    style.id = 'ua-notify-banner-style';
-    style.textContent = `
-#${UA_NOTIFY_BANNER_ID} {
-  position: fixed;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-  z-index: 2147483646;
-  background: rgba(10, 10, 10, 0.92);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  padding: 10px 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  backdrop-filter: blur(8px);
-}
-#${UA_NOTIFY_BANNER_ID} .ua-row { display: flex; align-items: center; gap: 10px; }
-#${UA_NOTIFY_BANNER_ID} .ua-copy { flex: 1; min-width: 0; }
-#${UA_NOTIFY_BANNER_ID} .ua-title { font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
-#${UA_NOTIFY_BANNER_ID} .ua-sub { font: 400 12px/1.25 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; opacity: 0.9; margin: 2px 0 0; }
-#${UA_NOTIFY_BANNER_ID} .ua-btn { appearance: none; border: 0; border-radius: 999px; padding: 8px 12px; font: 600 13px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; cursor: pointer; background: #fff; color: #000; white-space: nowrap; }
-#${UA_NOTIFY_BANNER_ID} .ua-close { appearance: none; border: 0; background: transparent; color: rgba(255,255,255,0.85); font: 600 18px/1 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 6px 8px; cursor: pointer; }
-@media (min-width: 900px) { #${UA_NOTIFY_BANNER_ID} { left: 16px; right: auto; bottom: 16px; width: 360px; } }
-`;
-    document.head.appendChild(style);
-  }
+  uaEnsureCommonBannerStyle();
 
   const banner = document.createElement('div');
+  banner.className = 'ua-banner ua-banner--left';
   banner.id = UA_NOTIFY_BANNER_ID;
   banner.setAttribute('role', 'region');
   banner.setAttribute('aria-label', 'Notifications');
@@ -440,7 +392,6 @@ function uaEnsureNotifyBanner() {
       const existing = await registration.pushManager.getSubscription();
       if (existing) {
         const subscriptionJson = typeof existing.toJSON === 'function' ? existing.toJSON() : existing;
-        uaSetPendingPushSubscription(subscriptionJson);
 
         const res = await uaSendSubscriptionToBackend({
           action: 'subscribe',
@@ -450,14 +401,13 @@ function uaEnsureNotifyBanner() {
         });
 
         if (res.stored) {
-          uaClearPendingPushSubscription();
           uaSetNotifyBannerMessage('You are subscribed to new arrivals.');
-          uaDismissNotifyForDays(180);
-          uaRemoveNotifyBanner();
         } else {
           uaSetNotifyBannerMessage('Enabled on this device — server setup pending.');
         }
 
+        uaDismissNotifyForDays(180);
+        uaRemoveNotifyBanner();
         return;
       }
 
@@ -473,7 +423,6 @@ function uaEnsureNotifyBanner() {
       });
 
       const subscriptionJson = typeof subscription.toJSON === 'function' ? subscription.toJSON() : subscription;
-      uaSetPendingPushSubscription(subscriptionJson);
 
       const res = await uaSendSubscriptionToBackend({
         action: 'subscribe',
@@ -483,13 +432,13 @@ function uaEnsureNotifyBanner() {
       });
 
       if (res.stored) {
-        uaClearPendingPushSubscription();
         uaSetNotifyBannerMessage('Subscribed — we will notify you about new arrivals.');
-        uaDismissNotifyForDays(180);
-        uaRemoveNotifyBanner();
       } else {
         uaSetNotifyBannerMessage('Enabled on this device — server setup pending.');
       }
+
+      uaDismissNotifyForDays(180);
+      uaRemoveNotifyBanner();
     } catch {
       uaSetNotifyBannerMessage('Could not enable notifications right now.');
     }
@@ -498,47 +447,6 @@ function uaEnsureNotifyBanner() {
   document.body.appendChild(banner);
   return banner;
 }
-
-(function uaMaybeFlushPendingPushSubscription() {
-  if (!uaSupportsPush() || !uaIsSecureEnoughForPush()) return;
-  if (uaIsIOS() && !uaIsStandalone()) return;
-
-  const pending = uaGetPendingPushSubscription();
-  if (!pending) return;
-
-  const run = async () => {
-    try {
-      const baseUrl = UA_SCRIPT_BASE_URL;
-      const swUrl = new URL('service-worker.js', baseUrl).toString();
-      const scopePath = baseUrl.pathname;
-      const registration = await navigator.serviceWorker.register(swUrl, { scope: scopePath, updateViaCache: 'none' });
-
-      const existing = await registration.pushManager.getSubscription();
-      if (!existing) {
-        uaClearPendingPushSubscription();
-        return;
-      }
-
-      const subscriptionJson = typeof existing.toJSON === 'function' ? existing.toJSON() : existing;
-      const res = await uaSendSubscriptionToBackend({
-        action: 'subscribe',
-        subscription: subscriptionJson,
-        createdAt: new Date().toISOString(),
-        userAgent: navigator.userAgent,
-      });
-
-      if (res.stored) uaClearPendingPushSubscription();
-    } catch {
-      // ignore
-    }
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => void run(), { once: true });
-  } else {
-    void run();
-  }
-})();
 
 (function uaMaybeShowNotifyBanner() {
   if (uaNow() < uaNotifyDismissedUntil()) return;
