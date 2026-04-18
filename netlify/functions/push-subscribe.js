@@ -1,14 +1,4 @@
-function json(statusCode, data, extraHeaders = {}) {
-  return {
-    statusCode,
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store',
-      ...extraHeaders,
-    },
-    body: JSON.stringify(data),
-  };
-}
+import { deleteSubscription, json, normalizeSubscription, upsertSubscription } from './_pushStore.js';
 
 export async function handler(event) {
   if (event.httpMethod !== 'POST') {
@@ -22,36 +12,52 @@ export async function handler(event) {
     return json(400, { error: 'Invalid JSON' });
   }
 
+  const action = payload && typeof payload.action === 'string' ? payload.action : 'subscribe';
   const subscription = payload && typeof payload.subscription === 'object' ? payload.subscription : null;
-  const endpoint = subscription && typeof subscription.endpoint === 'string' ? subscription.endpoint : '';
 
-  if (!endpoint) {
-    return json(400, { error: 'Missing subscription.endpoint' });
+  const normalized = normalizeSubscription(subscription);
+  if (!normalized) {
+    return json(400, { ok: false, error: 'Missing or invalid subscription.endpoint' });
   }
 
-  // NOTE: This endpoint currently does NOT persist subscriptions.
-  // To enable real "new arrivals" push alerts, you must store subscriptions
-  // in a database/kv store and send pushes server-side using your VAPID private key.
-
+  // Minimal logging (safe for production). Endpoint itself is considered sensitive.
   try {
-    const u = new URL(endpoint);
+    const u = new URL(normalized.endpoint);
     console.log('push-subscribe received', {
-      action: payload && typeof payload.action === 'string' ? payload.action : 'unknown',
+      action,
       endpointOrigin: u.origin,
-      endpointLength: endpoint.length,
-      keysPresent: Boolean(subscription && subscription.keys),
+      keysPresent: Boolean(normalized.keys && (normalized.keys.p256dh || normalized.keys.auth)),
     });
   } catch {
     console.log('push-subscribe received', {
-      action: payload && typeof payload.action === 'string' ? payload.action : 'unknown',
-      endpointLength: endpoint.length,
-      keysPresent: Boolean(subscription && subscription.keys),
+      action,
+      keysPresent: Boolean(normalized.keys && (normalized.keys.p256dh || normalized.keys.auth)),
     });
+  }
+
+  if (action === 'unsubscribe') {
+    const res = await deleteSubscription({ subscription: normalized });
+    if (!res.ok) return json(400, { ok: false, error: res.error || 'Could not unsubscribe' });
+    return json(200, { ok: true, deleted: true, id: res.id });
+  }
+
+  if (action !== 'subscribe') {
+    return json(400, { ok: false, error: 'Unsupported action' });
+  }
+
+  const result = await upsertSubscription({
+    subscription: normalized,
+    userAgent: payload && typeof payload.userAgent === 'string' ? payload.userAgent : '',
+  });
+
+  if (!result.ok) {
+    return json(400, { ok: false, stored: false, error: result.error || 'Could not store subscription' });
   }
 
   return json(200, {
     ok: true,
-    stored: false,
-    message: 'Received subscription, but storage is not configured yet.',
+    stored: true,
+    id: result.id,
+    alreadySubscribed: result.alreadyExisted,
   });
 }

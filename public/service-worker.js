@@ -29,6 +29,16 @@ function withBase(path) {
   return BASE_PATH + path;
 }
 
+async function fetchWithTimeout(request, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(request, { signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 const CORE_PATHS = [
   '',
   'index.html',
@@ -83,7 +93,8 @@ self.addEventListener('install', (event) => {
         CORE_URLS.map(async (url) => {
           try {
             const request = new Request(url, { cache: 'reload' });
-            const response = await fetch(request);
+            // Avoid a stalled network request keeping the SW in "installing" forever.
+            const response = await fetchWithTimeout(request, 6_000);
             if (response && response.ok) {
               await cache.put(url, response);
             }

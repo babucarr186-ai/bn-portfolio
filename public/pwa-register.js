@@ -158,11 +158,9 @@ function uaEnsureBanner({ mode }) {
   const title = 'Uncle Apple Store';
 
   let sub = 'Install this app for faster access.';
-  let ctaLabel = 'Install';
 
   if (mode === 'ios') {
     sub = 'To install this app on iPhone, tap Share, then Add to Home Screen.';
-    ctaLabel = '';
   }
 
   banner.innerHTML = `
@@ -245,6 +243,62 @@ window.addEventListener('appinstalled', () => {
 const UA_NOTIFY_DISMISS_UNTIL_KEY = '__ua_notify_dismissed_until__';
 const UA_NOTIFY_BANNER_ID = 'ua-notify-banner';
 
+const UA_PUSH_STEP_TIMEOUT_MS = 8_000;
+const UA_PUSH_FETCH_TIMEOUT_MS = 6_000;
+const UA_PUSH_SUBSCRIBE_TIMEOUT_MS = 10_000;
+
+function uaIsLocalDevHost() {
+  const localhostNames = new Set(['localhost', '127.0.0.1', '[::1]', '::1']);
+  return localhostNames.has(window.location.hostname);
+}
+
+function uaPushDebugEnabled() {
+  if (uaIsLocalDevHost()) return true;
+  return false;
+}
+
+function uaPushLog(step, detail) {
+  if (!uaPushDebugEnabled()) return;
+  try {
+    if (typeof detail === 'undefined') {
+      console.debug(`[push] ${step}`);
+    } else {
+      console.debug(`[push] ${step}`, detail);
+    }
+  } catch {
+    // ignore
+  }
+}
+
+function uaTimeoutError(label, ms) {
+  const err = new Error(`${label} timed out after ${ms}ms`);
+  err.name = 'TimeoutError';
+  return err;
+}
+
+async function uaWithTimeout(promise, ms, label) {
+  let timer;
+  const timeoutPromise = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(uaTimeoutError(label, ms)), ms);
+  });
+
+  try {
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function uaFetchWithTimeout(url, options = {}, timeoutMs = UA_PUSH_FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function uaIsSecureEnoughForPush() {
   if (window.isSecureContext) return true;
   const host = window.location.hostname;
@@ -286,28 +340,47 @@ function uaBase64UrlToUint8Array(base64Url) {
 
 async function uaFetchVapidPublicKey() {
   const url = new URL('/.netlify/functions/push-vapid-key', window.location.origin).toString();
-  const res = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) return null;
-  const data = await res.json().catch(() => null);
-  const key = data && typeof data.publicKey === 'string' ? data.publicKey.trim() : '';
-  return key || null;
+  try {
+    uaPushLog('vapid-key-fetch-start', { url });
+    const res = await uaWithTimeout(uaFetchWithTimeout(url, { cache: 'no-store' }, UA_PUSH_FETCH_TIMEOUT_MS), UA_PUSH_STEP_TIMEOUT_MS, 'vapid-key-fetch');
+    uaPushLog('vapid-key-fetch-response', { ok: res.ok, status: res.status });
+    if (!res.ok) return null;
+    const data = await res.json().catch(() => null);
+    const key = data && typeof data.publicKey === 'string' ? data.publicKey.trim() : '';
+    return key || null;
+  } catch (err) {
+    uaPushLog('vapid-key-loaded-failed', { name: err?.name, message: err?.message });
+    return null;
+  }
 }
 
 async function uaSendSubscriptionToBackend(payload) {
   const url = new URL('/.netlify/functions/push-subscribe', window.location.origin).toString();
   try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    uaPushLog('subscription-post-start', { url });
+    const res = await uaWithTimeout(
+      uaFetchWithTimeout(
+        url,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        },
+        UA_PUSH_FETCH_TIMEOUT_MS,
+      ),
+      UA_PUSH_STEP_TIMEOUT_MS,
+      'subscription-post',
+    );
+
+    uaPushLog('subscription-post-response', { ok: res.ok, status: res.status });
 
     if (!res.ok) return { ok: false, stored: false };
 
     const data = await res.json().catch(() => null);
     const stored = Boolean(data && data.stored === true);
     return { ok: true, stored };
-  } catch {
+  } catch (err) {
+    uaPushLog('subscription-post-failed', { name: err?.name, message: err?.message });
     return { ok: false, stored: false };
   }
 }
@@ -321,6 +394,44 @@ function uaSetNotifyBannerMessage(message) {
   const el = document.getElementById(UA_NOTIFY_BANNER_ID);
   const msgEl = el ? el.querySelector('.ua-sub') : null;
   if (msgEl && typeof message === 'string') msgEl.textContent = message;
+}
+
+function uaSetNotifyBannerBusy(isBusy, busyLabel) {
+  const el = document.getElementById(UA_NOTIFY_BANNER_ID);
+  if (!el) return;
+
+  const btn = el.querySelector('.ua-btn');
+  if (btn) {
+    const wasBusy = btn.getAttribute('data-ua-busy') === '1';
+    const original = btn.getAttribute('data-ua-original-label') || btn.textContent || 'Enable';
+
+    if (!btn.getAttribute('data-ua-original-label')) {
+      btn.setAttribute('data-ua-original-label', original);
+    }
+
+    if (isBusy) {
+      btn.setAttribute('data-ua-busy', '1');
+      btn.disabled = true;
+      btn.textContent = typeof busyLabel === 'string' && busyLabel ? busyLabel : 'Working…';
+    } else {
+      btn.setAttribute('data-ua-busy', '0');
+      btn.disabled = false;
+      if (wasBusy) btn.textContent = original;
+    }
+  }
+
+  try {
+    el.setAttribute('aria-busy', isBusy ? 'true' : 'false');
+  } catch {
+    // ignore
+  }
+}
+
+function uaRemoveNotifyBannerAfter(ms) {
+  setTimeout(() => {
+    const el = document.getElementById(UA_NOTIFY_BANNER_ID);
+    if (el) el.remove();
+  }, ms);
 }
 
 function uaEnsureNotifyBanner() {
@@ -353,13 +464,19 @@ function uaEnsureNotifyBanner() {
   banner.querySelector('.ua-btn')?.addEventListener('click', async () => {
     // Respectful: never request permission without a user click.
     try {
+      uaPushLog('subscribe-clicked');
+      uaSetNotifyBannerBusy(true, 'Enabling…');
+      uaSetNotifyBannerMessage('Setting up notifications…');
+
       if (!uaSupportsPush() || !uaIsSecureEnoughForPush()) {
+        uaPushLog('unsupported-environment');
         uaSetNotifyBannerMessage('Notifications are not supported in this browser.');
         return;
       }
 
       // iOS: push works only for installed Home Screen apps (iOS 16.4+).
       if (uaIsIOS() && !uaIsStandalone()) {
+        uaPushLog('ios-not-standalone');
         uaSetNotifyBannerMessage('On iPhone, add to Home Screen first to enable notifications.');
         return;
       }
@@ -368,37 +485,65 @@ function uaEnsureNotifyBanner() {
       const swUrl = new URL('service-worker.js', baseUrl).toString();
       const scopePath = baseUrl.pathname;
 
-      const registration = await navigator.serviceWorker.register(swUrl, {
-        scope: scopePath,
-        updateViaCache: 'none',
+      uaPushLog('sw-register-start', { swUrl, scopePath });
+      await uaWithTimeout(
+        navigator.serviceWorker.register(swUrl, {
+          scope: scopePath,
+          updateViaCache: 'none',
+        }),
+        UA_PUSH_STEP_TIMEOUT_MS,
+        'sw-register',
+      );
+
+      const registration = await uaWithTimeout(navigator.serviceWorker.ready, UA_PUSH_STEP_TIMEOUT_MS, 'sw-ready');
+      uaPushLog('sw-ready', {
+        scope: registration?.scope,
+        hasActive: Boolean(registration?.active),
       });
 
       const permission = Notification.permission;
+      uaPushLog('permission-current', { permission });
       if (permission === 'denied') {
         uaSetNotifyBannerMessage('Notifications are blocked in your browser settings.');
         return;
       }
 
       if (permission === 'default') {
-        const result = await Notification.requestPermission();
+        uaSetNotifyBannerMessage('Please allow notifications in the browser prompt.');
+        let result;
+        try {
+          result = await Notification.requestPermission();
+        } catch (err) {
+          uaPushLog('permission-result', { result: 'error', name: err?.name, message: err?.message });
+          uaSetNotifyBannerMessage('Could not request notification permission.');
+          return;
+        }
+
+        uaPushLog('permission-result', { result });
         if (result !== 'granted') {
           uaSetNotifyBannerMessage('No problem — you can enable this later.');
           uaDismissNotifyForDays(30);
-          uaRemoveNotifyBanner();
+          uaSetNotifyBannerBusy(false);
+          uaRemoveNotifyBannerAfter(1800);
           return;
         }
       }
 
-      const existing = await registration.pushManager.getSubscription();
+      uaPushLog('get-subscription-start');
+      const existing = await uaWithTimeout(registration.pushManager.getSubscription(), UA_PUSH_STEP_TIMEOUT_MS, 'get-subscription');
+      uaPushLog('get-subscription-result', { hasSubscription: Boolean(existing) });
       if (existing) {
         const subscriptionJson = typeof existing.toJSON === 'function' ? existing.toJSON() : existing;
 
+        uaSetNotifyBannerMessage('Finishing setup…');
         const res = await uaSendSubscriptionToBackend({
           action: 'subscribe',
           subscription: subscriptionJson,
           createdAt: new Date().toISOString(),
           userAgent: navigator.userAgent,
         });
+
+        uaPushLog(res.ok ? 'subscription-post-success' : 'subscription-post-failed', { stored: res.stored });
 
         if (res.stored) {
           uaSetNotifyBannerMessage('You are subscribed to new arrivals.');
@@ -407,29 +552,56 @@ function uaEnsureNotifyBanner() {
         }
 
         uaDismissNotifyForDays(180);
-        uaRemoveNotifyBanner();
+        uaSetNotifyBannerBusy(false);
+        uaRemoveNotifyBannerAfter(1500);
         return;
       }
 
+      uaSetNotifyBannerMessage('Loading configuration…');
       const publicKey = await uaFetchVapidPublicKey();
       if (!publicKey) {
         uaSetNotifyBannerMessage('Notifications are not configured yet.');
         return;
       }
 
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: uaBase64UrlToUint8Array(publicKey),
-      });
+      uaPushLog('vapid-key-loaded');
+
+      uaSetNotifyBannerMessage('Enabling on this device…');
+      let subscription;
+      try {
+        subscription = await uaWithTimeout(
+          registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: uaBase64UrlToUint8Array(publicKey),
+          }),
+          UA_PUSH_SUBSCRIBE_TIMEOUT_MS,
+          'push-subscribe',
+        );
+      } catch (err) {
+        uaPushLog('push-subscribe-failed', { name: err?.name, message: err?.message });
+        if (err && (err.name === 'NotAllowedError' || err.name === 'NotAllowed')) {
+          uaSetNotifyBannerMessage('Notifications are blocked in your browser settings.');
+        } else if (err && err.name === 'TimeoutError') {
+          uaSetNotifyBannerMessage('That took too long. Please try again.');
+        } else {
+          uaSetNotifyBannerMessage('Could not enable notifications right now.');
+        }
+        return;
+      }
+
+      uaPushLog('push-subscribe-success');
 
       const subscriptionJson = typeof subscription.toJSON === 'function' ? subscription.toJSON() : subscription;
 
+      uaSetNotifyBannerMessage('Saving subscription…');
       const res = await uaSendSubscriptionToBackend({
         action: 'subscribe',
         subscription: subscriptionJson,
         createdAt: new Date().toISOString(),
         userAgent: navigator.userAgent,
       });
+
+      uaPushLog(res.ok ? 'subscription-post-success' : 'subscription-post-failed', { stored: res.stored });
 
       if (res.stored) {
         uaSetNotifyBannerMessage('Subscribed — we will notify you about new arrivals.');
@@ -438,9 +610,18 @@ function uaEnsureNotifyBanner() {
       }
 
       uaDismissNotifyForDays(180);
-      uaRemoveNotifyBanner();
-    } catch {
-      uaSetNotifyBannerMessage('Could not enable notifications right now.');
+      uaSetNotifyBannerBusy(false);
+      uaRemoveNotifyBannerAfter(1500);
+    } catch (err) {
+      uaPushLog('subscribe-flow-failed', { name: err?.name, message: err?.message });
+      if (err && err.name === 'TimeoutError') {
+        uaSetNotifyBannerMessage('That took too long. Please try again.');
+      } else {
+        uaSetNotifyBannerMessage('Could not enable notifications right now.');
+      }
+    } finally {
+      // Ensure we never leave the UI in a stuck loading state.
+      uaSetNotifyBannerBusy(false);
     }
   });
 

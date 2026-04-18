@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/generate-seo-snippets.mjs && npm run optimize:images && npm run pwa:icons",
+    "predev": "node scripts/generate-seo-snippets.mjs && node scripts/generate-push-catalog-manifest.mjs && npm run optimize:images && npm run pwa:icons",
     "dev": "vite",
     "optimize:images": "node scripts/optimize-images.mjs",
     "pwa:icons": "node scripts/generate-pwa-icons.mjs",
-    "prebuild": "node scripts/generate-seo-snippets.mjs && npm run optimize:images && npm run pwa:icons",
+    "prebuild": "node scripts/generate-seo-snippets.mjs && node scripts/generate-push-catalog-manifest.mjs && npm run optimize:images && npm run pwa:icons",
     "build": "vite build",
     "lint": "eslint .",
     "test": "vitest run",
@@ -16,10 +16,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@netlify/blobs": "^9.1.0",
     "lenis": "^1.3.16",
     "lucide-react": "^0.562.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

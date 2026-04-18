@@ -26,5 +26,8 @@ dist-ssr
 # Generated responsive image variants (created by `npm run optimize:images`)
 public/products/**/*-300.*
 public/products/**/*-600.*
+
+# Generated at build time (used for post-deploy push notifications)
+public/push-catalog.json
 public/products/**/*-900.*
 public/products/**/*-1200.*
