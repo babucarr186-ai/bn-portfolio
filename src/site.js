@@ -1269,8 +1269,8 @@ function initChatWidget() {
   renderInitial();
 }
 
-initWhatsAppLinks();
 initHeaderActions();
+initWhatsAppLinks();
 initMobileCategoryNav();
 initAvailabilityForm();
 initImageViewer();
