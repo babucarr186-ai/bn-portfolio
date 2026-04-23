@@ -92,6 +92,16 @@ export const watches = [
     ],
   },
   {
+    title: 'Apple Watch Series 3 (42mm)',
+    subtitle: '42mm • Gold aluminium case • Pink Sand sport band • Price on request',
+    kind: 'square',
+    description:
+      'Apple Watch Series 3 42mm with a Gold aluminium case and Pink Sand sport band. Price and photos will be added soon — message us to confirm availability.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: ['products/placeholders/placeholder-watch.svg'],
+  },
+  {
     title: 'Apple Watch Series 8',
     subtitle: '41mm • Fully tested • Warranty included',
     kind: 'square',
