@@ -213,18 +213,23 @@ function ensureExtraStyles() {
   document.head.appendChild(link);
 }
 
-function ensureSellDeviceButton() {
-  const existing = document.querySelector('[data-sell-device-link]');
+function ensureWhatsAppHeaderButton() {
+  const existing = document.getElementById('navWhatsApp');
   if (existing) return existing;
 
   const navActions = document.querySelector('.nav-actions');
   if (!navActions) return null;
 
   const btn = document.createElement('a');
-  btn.href = SELL_DEVICE_HREF;
-  btn.className = 'btn btn-primary btn-small';
-  btn.setAttribute('data-sell-device-link', '');
-  btn.textContent = 'Sell Your Device';
+  btn.id = 'navWhatsApp';
+  btn.href = '#';
+  btn.className = 'btn btn-whatsapp btn-small';
+  btn.setAttribute('aria-label', 'Chat on WhatsApp');
+  btn.innerHTML =
+    '<svg class="btn-whatsapp__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">'
+    + '<path fill="currentColor" d="M12 2a9.99 9.99 0 0 0-8.65 14.99L2 22l5.19-1.35A10 10 0 1 0 12 2Zm0 18.3a8.26 8.26 0 0 1-4.2-1.15l-.3-.18-3.08.8.82-3-.2-.31A8.3 8.3 0 1 1 12 20.3Zm4.85-6.2c-.27-.14-1.59-.79-1.84-.88-.25-.1-.44-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.31.2-.58.07-.27-.14-1.12-.41-2.13-1.32-.79-.7-1.32-1.56-1.48-1.82-.16-.27-.02-.41.12-.55.12-.12.27-.31.4-.46.14-.16.19-.27.29-.45.1-.18.05-.34-.02-.48-.07-.14-.62-1.5-.86-2.06-.23-.55-.46-.48-.62-.49h-.53c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3s.99 2.68 1.12 2.86c.14.18 1.95 2.98 4.72 4.18.66.28 1.18.45 1.58.58.66.21 1.26.18 1.74.11.53-.08 1.59-.65 1.81-1.28.23-.62.23-1.15.16-1.28-.07-.12-.25-.2-.52-.34Z"/>'
+    + '</svg>'
+    + '<span>WhatsApp Us</span>';
 
   // Keep the existing look by placing it alongside the other header actions.
   navActions.appendChild(btn);
@@ -239,8 +244,8 @@ function initHeaderActions() {
   const existingCart = document.querySelector('[data-cart-link]');
   if (existingCart) existingCart.remove();
 
-  // Requirement: add “Sell Your Device” button.
-  ensureSellDeviceButton();
+  // Header CTA: keep a single, conversion-focused WhatsApp button.
+  ensureWhatsAppHeaderButton();
 
   // Keep globals for back-compat without injecting any Cart UI.
   window.UA_CART = {

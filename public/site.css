@@ -251,6 +251,24 @@ a{ color: inherit; }
   border-color: rgba(11,15,22,0.24);
 }
 
+.btn-whatsapp{
+  background: #16A34A;
+  color: #ffffff;
+  border-color: rgba(22,163,74,0.52);
+  white-space: nowrap;
+}
+
+.btn-whatsapp:hover{
+  background: #15803D;
+  opacity: 0.96;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(11,15,22,0.14);
+}
+
+.btn-whatsapp:active{ transform: translateY(0); box-shadow: none; }
+
+.btn-whatsapp__icon{ display: block; }
+
 .btn-primary:hover{
   opacity: 0.94;
   transform: translateY(-1px);
