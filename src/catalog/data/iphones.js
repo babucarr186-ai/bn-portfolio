@@ -118,6 +118,7 @@ export const iphones = [
     condition: 'Used — Like new',
     batteryHealth: '87%',
     price: 24000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Pink, 128GB, used (like new), battery 87%, Germany sourced. Price GMD 24,000. In The Gambia.',
     description:
