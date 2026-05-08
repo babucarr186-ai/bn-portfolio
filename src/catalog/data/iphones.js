@@ -493,6 +493,7 @@ export const iphones = [
     condition: 'Used — Very good condition',
     batteryHealth: '76%',
     price: 16000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gray, 64GB, battery 76%, used (very good condition), original parts. Price GMD 16,000. In The Gambia.',
     description:
