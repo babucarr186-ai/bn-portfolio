@@ -111,7 +111,7 @@ export const iphones = [
   },
   {
     title: 'iPhone 13',
-    subtitle: 'Pink • 128GB • Like new • Battery 85% • GMD 24,000',
+    subtitle: 'Pink • 128GB • Like new • Battery 85% • FREE Original GUESS case • GMD 24,000',
     kind: 'phone',
     color: 'Pink',
     storage: '128GB',
@@ -119,9 +119,9 @@ export const iphones = [
     batteryHealth: '85%',
     price: 24000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Pink, 128GB, like new condition, battery 85%. Price GMD 24,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Pink, 128GB, like new condition, battery 85%, free original GUESS case included. Price GMD 24,000. In The Gambia.',
     description:
-      'iPhone 13 Pink 128GB battery 85%.',
+      'Like-new iPhone 13 in Pink (128GB) with 85% battery health — plus a FREE original GUESS case as a gift.',
     productTitle: 'iPhone 13 (128GB) — Pink — Used (Like new) — Battery 85%',
     images: [
       'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-1.jpg?v=20260509-1',
