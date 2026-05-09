@@ -237,6 +237,7 @@ export const iphones = [
     condition: 'Used — Like new',
     batteryHealth: '89%',
     price: 9000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone XR — White, 64GB, battery 89%, used (like new). Price GMD 9,000. In The Gambia.',
     description:
