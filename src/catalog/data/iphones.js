@@ -113,7 +113,7 @@ export const iphones = [
     title: 'iPhone 13',
     subtitle: 'Pink • 128GB • Like new • Battery 85% • FREE Original GUESS case • GMD 24,000',
     kind: 'phone',
-    color: 'Pink',
+    color: 'Pink (Free GUESS case)',
     storage: '128GB',
     condition: 'Used — Like new',
     batteryHealth: '85%',
