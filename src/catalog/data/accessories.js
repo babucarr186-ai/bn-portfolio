@@ -58,4 +58,19 @@ export const accessories = [
       'products/accessories/magic-keyboard-ipad-pro-13-m4-3.jpg?v=20260301-1',
     ],
   },
+  {
+    title: 'Premium Two-Tone Apple Watch Band + Case Set',
+    subtitle:
+      'Compatible with 42/44/45MM • Includes protective TPU case • Stainless steel look • Easy adjustable fit • Price on request',
+    kind: 'square',
+    description:
+      'Premium two-tone Apple Watch band + case set with a stainless steel look. Compatible with 42/44/45mm Apple Watch sizes and includes a protective TPU case. Easy adjustable fit for comfortable everyday wear.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Premium Two-Tone Apple Watch Band + Case Set — compatible with 42/44/45mm, includes protective TPU case. Price on request. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/accessories/premium-two-tone-apple-watch-band-case-set.jpeg?v=20260509-1',
+    ],
+  },
 ];
