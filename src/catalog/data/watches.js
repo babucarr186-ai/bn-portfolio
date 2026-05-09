@@ -109,13 +109,21 @@ export const watches = [
   },
   {
     title: 'Apple Watch Series 3 (42mm)',
-    subtitle: '42mm • Gold aluminium case • Pink Sand sport band • Price on request',
+    subtitle: '42mm • Gold aluminium case • Pink Sand sport band • Ready to use • GMD 5,825',
     kind: 'square',
+    price: 5825,
     description:
-      'Apple Watch Series 3 42mm with a Gold aluminium case and Pink Sand sport band. Price and photos will be added soon — message us to confirm availability.',
+      'Apple Watch Series 3 (42mm) with a Gold aluminium case and Pink Sand sport band. Ready to use, clean everyday Apple Watch for calls, notifications, and fitness tracking.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 3 (42mm) — Gold aluminium case, Pink Sand sport band, ready to use. Price GMD 5,825. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
-    images: ['products/placeholders/placeholder-watch.svg'],
+    images: [
+      'products/watches/apple-watch-series-3-42mm-gold-pink-sand/apple-watch-series-3-42mm-gold-pink-sand-1.jpeg?v=20260509-1',
+      'products/watches/apple-watch-series-3-42mm-gold-pink-sand/apple-watch-series-3-42mm-gold-pink-sand-2.jpeg?v=20260509-1',
+      'products/watches/apple-watch-series-3-42mm-gold-pink-sand/apple-watch-series-3-42mm-gold-pink-sand-3.jpeg?v=20260509-1',
+      'products/watches/apple-watch-series-3-42mm-gold-pink-sand/apple-watch-series-3-42mm-gold-pink-sand-4.jpeg?v=20260509-1',
+    ],
   },
   {
     title: 'Apple Watch Series 8',
