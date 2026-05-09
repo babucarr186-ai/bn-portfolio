@@ -228,6 +228,7 @@ function humanizeExtra(value) {
   const text = normalizeSpace(value);
   if (!text) return '';
   if (/original parts/i.test(text)) return 'Original parts';
+  if (/\b12\s*[-‑–]?\s*month\s*warranty\b/i.test(text) || /\b12\s*months\s*warranty\b/i.test(text)) return '12-month warranty';
   if (/warranty/i.test(text)) return 'Warranty included';
   if (/factory unlocked|frei ab werk/i.test(text)) return 'Factory unlocked';
   if (/no sim lock|ohne simlock|without simlock/i.test(text)) return 'No SIM lock';
@@ -269,7 +270,7 @@ function createSalesNote({ conditionLabel, batteryPercent, extras }) {
   if (featuredExtras.length) secondSentence = `${featuredExtras.join('. ')}.`;
   else {
     const extra = extras.find(Boolean);
-    if (/warranty/i.test(extra || '')) secondSentence = 'Warranty included.';
+    if (/warranty/i.test(extra || '')) secondSentence = `${String(extra).replace(/\.+$/, '')}.`;
     else if (/original parts/i.test(extra || '')) secondSentence = 'Original parts.';
     else if (/back glass/i.test(extra || '')) secondSentence = 'Back glass has a crack.';
     else if (/camera/i.test(extra || '')) secondSentence = 'Camera is clear.';
@@ -1266,11 +1267,11 @@ export function renderRecommendationRail({ mountEl, items }) {
 
   const wrap = el('section', 'catalog-recommendations');
   const heading = el('h3', 'catalog-recommendations-title');
-  heading.textContent = 'Other Products You May Like';
+  heading.textContent = 'You May Also Like';
   wrap.appendChild(heading);
 
   const intro = el('p', 'catalog-recommendations-copy');
-  intro.textContent = 'A few cleaner alternatives from other Apple categories if you are still comparing before you buy.';
+  intro.textContent = 'Carefully selected Apple devices from Germany.';
   wrap.appendChild(intro);
 
   const indicator = el('div', 'catalog-rail-indicator');
