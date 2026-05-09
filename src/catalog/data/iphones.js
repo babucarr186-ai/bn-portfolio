@@ -111,23 +111,24 @@ export const iphones = [
   },
   {
     title: 'iPhone 13',
-    subtitle: 'Pink • 128GB • Used (Like new) • Battery 87% • Germany sourced • GMD 24,000',
+    subtitle: 'Pink • 128GB • Like new • Battery 85% • GMD 24,000',
     kind: 'phone',
     color: 'Pink',
     storage: '128GB',
     condition: 'Used — Like new',
-    batteryHealth: '87%',
+    batteryHealth: '85%',
     price: 24000,
     sold: true,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Pink, 128GB, used (like new), battery 87%, Germany sourced. Price GMD 24,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Pink, 128GB, like new condition, battery 85%. Price GMD 24,000. In The Gambia.',
     description:
-      `Color Pink. Storage 128GB. Condition used (like new). Battery health 87%. Sourced from Germany. ${ESIM_UNLOCKED_DETAILS} Price GMD 24,000.`,
-    productTitle: 'iPhone 13 (128GB) — Pink — Used (Like new) — Battery 87% — Germany sourced',
+      'iPhone 13 Pink 128GB battery 85%.',
+    productTitle: 'iPhone 13 (128GB) — Pink — Used (Like new) — Battery 85%',
     images: [
       'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-1.jpg',
       'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-2.jpg',
       'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-3.jpg',
+      'products/iphones/iphone-13-pink-128gb/iphone-13-pink-128gb-4.jpg',
     ],
   },
   {
