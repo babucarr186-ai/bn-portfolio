@@ -61,16 +61,17 @@ export const accessories = [
   {
     title: 'Premium Two-Tone Apple Watch Band + Case Set',
     subtitle:
-      'Compatible with 42/44/45MM • Includes protective TPU case • Stainless steel look • Easy adjustable fit • Price on request',
+      'Compatible with 42/44/45MM • Includes protective TPU case • Stainless steel look • Easy adjustable fit • GMD 1,500',
     kind: 'square',
+    price: 1500,
     description:
       'Premium two-tone Apple Watch band + case set with a stainless steel look. Compatible with 42/44/45mm Apple Watch sizes and includes a protective TPU case. Easy adjustable fit for comfortable everyday wear.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Premium Two-Tone Apple Watch Band + Case Set — compatible with 42/44/45mm, includes protective TPU case. Price on request. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Premium Two-Tone Apple Watch Band + Case Set — compatible with 42/44/45mm, includes protective TPU case. Price GMD 1,500. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
-      'products/accessories/premium-two-tone-apple-watch-band-case-set.jpeg?v=20260509-1',
+      'products/accessories/premium-two-tone-apple-watch-band-case-set.jpeg?v=20260509-2',
     ],
   },
 ];

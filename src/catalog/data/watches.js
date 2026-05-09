@@ -1,5 +1,21 @@
 export const watches = [
   {
+    title: 'Premium Two-Tone Apple Watch Band + Case Set',
+    subtitle:
+      'Compatible with 42/44/45MM • Includes protective TPU case • Stainless steel look • Easy adjustable fit • GMD 1,500',
+    kind: 'square',
+    price: 1500,
+    description:
+      'Premium two-tone Apple Watch band + case set with a stainless steel look. Compatible with 42/44/45mm Apple Watch sizes and includes a protective TPU case. Easy adjustable fit for comfortable everyday wear.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Premium Two-Tone Apple Watch Band + Case Set — compatible with 42/44/45mm, includes protective TPU case. Price GMD 1,500. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/accessories/premium-two-tone-apple-watch-band-case-set.jpeg?v=20260509-2',
+    ],
+  },
+  {
     title: 'Apple Watch Ultra 2 (2024)',
     subtitle:
       'Rugged GPS + Cellular • Fully tested • 12‑month warranty • Excellent condition • GMD 49,200',
