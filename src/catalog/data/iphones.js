@@ -23,15 +23,16 @@ export const iphones = [
   },
   {
     title: 'iPhone 17 Pro',
-    subtitle: '256GB • Brand new • Battery 100% • Nano‑SIM + eSIM • Price on request',
+    subtitle: '256GB • Brand new • Battery 100% • Nano‑SIM + eSIM • GMD 85,000',
     kind: 'phone',
     storage: '256GB',
     condition: 'Brand new',
     batteryHealth: '100%',
+    price: 85000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro — 256GB, brand new, battery 100%, nano‑SIM + eSIM. Price on request. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro — 256GB, brand new, battery 100%, nano‑SIM + eSIM. Price GMD 85,000. In The Gambia.',
     description:
-      `Storage 256GB. Condition brand new. Battery health 100%. ${ESIM_UNLOCKED_DETAILS} Price on request.`,
+      `Storage 256GB. Condition brand new. Battery health 100%. ${ESIM_UNLOCKED_DETAILS} Price GMD 85,000.`,
     productTitle: 'iPhone 17 Pro (256GB) — Brand new — Battery 100% — Nano‑SIM + eSIM',
     images: ['products/iphones/iphone-17-pro-256gb/iphone-17-pro-256gb-1.jpg'],
   },
@@ -154,16 +155,17 @@ export const iphones = [
   },
   {
     title: 'iPhone 13 Pro Max',
-    subtitle: 'Gold • 128GB • Battery 82% • Used • Back glass broken • Price on request',
+    subtitle: 'Gold • 128GB • Battery 82% • Used • Back glass broken • GMD 18,000',
     kind: 'phone',
     color: 'Gold',
     storage: '128GB',
     condition: 'Used — Back glass broken',
     batteryHealth: '82%',
+    price: 18000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 13 Pro Max — Gold, 128GB, battery 82%, used condition (back glass broken). In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 Pro Max — Gold, 128GB, battery 82%, used condition (back glass broken). Price GMD 18,000. In The Gambia.',
     description:
-      `Color Gold. Storage 128GB. Battery capacity 82%. Condition used. Back glass is broken. ${ESIM_UNLOCKED_DETAILS} Price on request.`,
+      `Color Gold. Storage 128GB. Battery capacity 82%. Condition used. Back glass is broken. ${ESIM_UNLOCKED_DETAILS} Price GMD 18,000.`,
     productTitle:
       'iPhone 13 Pro Max (128GB) — Gold — Used (Back glass broken) — Battery 82%',
     images: [
@@ -445,16 +447,17 @@ export const iphones = [
   },
   {
     title: 'iPhone 11 Pro',
-    subtitle: 'Green • 64GB • Battery 73% • Very clean • Original parts',
+    subtitle: 'Green • 64GB • Battery 73% • Very clean • Original parts • GMD 10,000',
     kind: 'phone',
     color: 'Green',
     storage: '64GB',
     condition: 'Used — Very clean',
     batteryHealth: '73%',
+    price: 10000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro — Green, 64GB, battery 73%, very clean condition, original parts. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro — Green, 64GB, battery 73%, very clean condition, original parts. Price GMD 10,000. In The Gambia.',
     description:
-      `Color Green. Storage 64GB. Battery capacity 73%. Condition very clean. Original parts. ${ESIM_UNLOCKED_DETAILS}`,
+      `Color Green. Storage 64GB. Battery capacity 73%. Condition very clean. Original parts. ${ESIM_UNLOCKED_DETAILS} Price GMD 10,000.`,
     images: [
       'products/iphones/iphone-11-pro-green-64gb/iphone-11-pro-green-64gb-1.jpg',
       'products/iphones/iphone-11-pro-green-64gb/iphone-11-pro-green-64gb-2.jpg',
@@ -547,16 +550,17 @@ export const iphones = [
   },
   {
     title: 'iPhone 14 Pro',
-    subtitle: 'Gray • 128GB • Used • Battery 82% • Price on request',
+    subtitle: 'Gray • 128GB • Used • Battery 82% • GMD 35,000',
     kind: 'phone',
     color: 'Gray',
     storage: '128GB',
     condition: 'Used',
     batteryHealth: '82%',
+    price: 35000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro — Gray, 128GB, used condition, battery 82%. Price on request. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro — Gray, 128GB, used condition, battery 82%. Price GMD 35,000. In The Gambia.',
     description:
-      `Capacity 128GB. Color Gray. Battery health 82%. Condition used. ${ESIM_UNLOCKED_DETAILS} Price on request.`,
+      `Capacity 128GB. Color Gray. Battery health 82%. Condition used. ${ESIM_UNLOCKED_DETAILS} Price GMD 35,000.`,
     productTitle: 'iPhone 14 Pro (128GB) — Gray — Used — Battery 82%',
     images: ['products/iphones/iphone-14-pro-gray-128gb/iphone-14-pro.jpg'],
   },

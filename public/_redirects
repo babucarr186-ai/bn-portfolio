@@ -1,0 +1,6 @@
+# Enforce canonical domain + HTTPS for Uncle Apple Store
+# All traffic should end up at: https://uncleapplestore.com/*
+
+http://www.uncleapplestore.com/* https://uncleapplestore.com/:splat 301!
+https://www.uncleapplestore.com/* https://uncleapplestore.com/:splat 301!
+http://uncleapplestore.com/* https://uncleapplestore.com/:splat 301!
