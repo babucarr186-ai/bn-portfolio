@@ -533,6 +533,7 @@ export const iphones = [
     batteryHealth: '85%',
     warranty: '30 days warranty',
     price: 25000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 14 — Starlight, 128GB, used (like new), battery 85%, 30 days warranty, original parts. Price GMD 25,000. In The Gambia.',
     description:
