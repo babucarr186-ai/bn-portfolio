@@ -580,6 +580,14 @@ html[data-category='iphones'] #inventory.section{
   text-align: center;
 }
 
+.founder-name{
+  margin-top: 3px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+
 .founder-copy{
   display: grid;
   gap: 10px;
