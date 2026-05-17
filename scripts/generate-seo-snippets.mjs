@@ -220,17 +220,24 @@ function pickProductImages(product) {
   return unique.slice(0, 8);
 }
 
+function normalizeSchemaPrice(value) {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) && value > 0 ? value : null;
+  }
+
+  if (value === null || value === undefined) return null;
+
+  const asNumber = Number(value);
+  return Number.isFinite(asNumber) && asNumber > 0 ? asNumber : null;
+}
+
 function buildProductSchema(config, product, index) {
   const summary = buildCatalogCardSummary(product);
   const description = buildSchemaDescription(product, summary);
   const url = buildProductUrl(config, product, index);
-  const price = Number(product?.price);
+  const price = normalizeSchemaPrice(product?.price);
 
-  if (!Number.isFinite(price)) {
-    return null;
-  }
-
-  return {
+  const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     '@id': `${url}#product`,
@@ -241,7 +248,10 @@ function buildProductSchema(config, product, index) {
     url,
     availability: schemaAvailabilityUrl(product),
     itemCondition: schemaConditionUrl(product),
-    offers: {
+  };
+
+  if (price !== null) {
+    schema.offers = {
       '@type': 'Offer',
       url,
       priceCurrency: 'GMD',
@@ -249,8 +259,10 @@ function buildProductSchema(config, product, index) {
       availability: schemaAvailabilityUrl(product),
       itemCondition: schemaConditionUrl(product),
       seller: { '@id': storeId },
-    },
-  };
+    };
+  }
+
+  return schema;
 }
 
 function buildItemListSchema(config, products) {
@@ -306,7 +318,6 @@ function escapeAttribute(value) {
 
 function buildProductPageHtml({ config, product, index }) {
   const schema = buildProductSchema(config, product, index);
-  if (!schema) return '';
 
   const title = schema.name;
   const description = schema.description;
@@ -314,7 +325,10 @@ function buildProductPageHtml({ config, product, index }) {
   const primaryImage = Array.isArray(schema.image) && schema.image.length ? schema.image[0] : `${siteOrigin}/apple-profile-header.jpg`;
 
   const backLink = config.absoluteUrl;
-  const priceText = `GMD ${new Intl.NumberFormat('en-US').format(Number(product.price))}`;
+  const price = normalizeSchemaPrice(product?.price);
+  const priceText = price === null
+    ? 'Price on request'
+    : `GMD ${new Intl.NumberFormat('en-US').format(price)}`;
   const availabilityText = product?.sold ? 'Sold out' : 'Available';
 
   return `<!doctype html>
