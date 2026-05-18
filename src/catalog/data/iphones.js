@@ -29,6 +29,7 @@ export const iphones = [
     condition: 'Brand new',
     batteryHealth: '100%',
     price: 85000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro — 256GB, brand new, battery 100%, nano‑SIM + eSIM. Price GMD 85,000. In The Gambia.',
     description:
@@ -45,6 +46,7 @@ export const iphones = [
     condition: 'Brand new',
     warranty: '30-day warranty',
     price: 119000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro Max — Cosmic Orange, 256GB, brand new, 30-day warranty. Price GMD 119,000. In The Gambia.',
     description:
@@ -516,6 +518,7 @@ export const iphones = [
     subtitle: 'Black • 128GB • Battery 83% • Good condition • 12‑month warranty • GMD 5,500',
     kind: 'phone',
     price: 5500,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 7 Plus — Black, 128GB, battery 83%, good condition, 12-month warranty. In The Gambia.',
     mediaFit: 'contain',
