@@ -342,6 +342,7 @@ export const iphones = [
     title: 'iPhone 12',
     subtitle: 'White • 64GB • Battery 82% • Clean • GMD 14,500',
     kind: 'phone',
+    sold: true,
     color: 'White',
     price: 14500,
     whatsAppMessage:
