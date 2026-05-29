@@ -93,19 +93,18 @@ export const iphones = [
   },
   {
     title: 'iPhone 13 Pro',
-    subtitle: 'Gray • 128GB • Used • Battery 86% • Germany sourced • GMD 25,500',
+    subtitle: 'Gray • 512GB • Used • Battery 86% • Germany sourced • GMD 28,000',
     kind: 'phone',
     color: 'Gray',
-    storage: '128GB',
+    storage: '512GB',
     condition: 'Used',
     batteryHealth: '86%',
-    price: 25500,
-    sold: true,
+    price: 28000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 13 Pro — Gray, 128GB, used condition, battery 86%, Germany sourced. Price GMD 25,500. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 Pro — Gray, 512GB, used condition, battery 86%, Germany sourced. Price GMD 28,000. In The Gambia.',
     description:
-      `Color Gray. Storage 128GB. Condition used. Battery health 86%. Sourced from Germany. ${ESIM_UNLOCKED_DETAILS} Price GMD 25,500.`,
-    productTitle: 'iPhone 13 Pro (128GB) — Gray — Used — Battery 86% — Germany sourced',
+      `Color Gray. Storage 512GB. Condition used. Battery health 86%. Sourced from Germany. ${ESIM_UNLOCKED_DETAILS} Price GMD 28,000.`,
+    productTitle: 'iPhone 13 Pro (512GB) — Gray — Used — Battery 86% — Germany sourced',
     images: [
       'products/iphones/iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-1.jpg',
       'products/iphones/iphone-13-pro-gray-128gb/iphone-13-pro-gray-128gb-2.jpg',
