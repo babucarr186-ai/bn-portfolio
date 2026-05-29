@@ -1,0 +1,252 @@
+.ua-header {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ua-header__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 64px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ua-header__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 160px;
+}
+
+.ua-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #111;
+  border-radius: 10px;
+  padding: 6px 6px;
+}
+
+.ua-header__brand:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.ua-header__logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.ua-header__brandText {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ua-header__nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.ua-header__navList {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.ua-header__navLink {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.78);
+  padding: 8px 6px;
+  border-radius: 10px;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.ua-header__navLink:hover {
+  color: #000;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.ua-header__navLink:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.ua-header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.ua-header__iconBtn {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.78);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.ua-header__iconBtn:hover {
+  color: #000;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.ua-header__iconBtn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.ua-header__whatsApp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #25d366;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition: background-color 160ms ease, transform 160ms ease;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+.ua-header__whatsApp:hover {
+  background: #1fb85a;
+}
+
+.ua-header__whatsApp:active {
+  transform: translateY(1px);
+}
+
+.ua-header__whatsApp:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.ua-header__menuBtn {
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.8);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.ua-header__menuBtn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #000;
+}
+
+.ua-header__menuBtn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.ua-header__mobile {
+  display: none;
+}
+
+.ua-header__mobileNav {
+  padding: 10px 16px 16px;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ua-header__mobileLink {
+  display: block;
+  padding: 10px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.78);
+  border-radius: 12px;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.ua-header__mobileLink:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #000;
+}
+
+.ua-header__mobileLink:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+}
+
+.ua-header__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  border: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 860px) {
+  .ua-header__navList {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 760px) {
+  .ua-header__inner {
+    height: 56px;
+  }
+
+  .ua-header__brandText {
+    display: none;
+  }
+
+  .ua-header__menuBtn {
+    display: inline-flex;
+  }
+
+  .ua-header__nav {
+    display: none;
+  }
+
+  .ua-header__actions {
+    min-width: auto;
+  }
+
+  .ua-header__mobile {
+    display: block;
+    position: relative;
+    z-index: 1800;
+  }
+
+  .ua-header__mobile[aria-hidden='true'] {
+    display: none;
+  }
+
+  .ua-header__whatsApp {
+    padding: 0 12px;
+  }
+}
