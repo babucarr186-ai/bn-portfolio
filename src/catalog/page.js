@@ -57,6 +57,7 @@ function initTrendingSection() {
     mountEl,
     products: picks,
     startIndex: 100000,
+    hrefStartIndex: 0,
     imageSizes: '(max-width: 640px) 78vw, 320px',
   });
 

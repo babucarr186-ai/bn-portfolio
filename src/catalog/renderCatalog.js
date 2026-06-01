@@ -123,6 +123,13 @@ function slugify(value) {
     .replace(/(^-|-$)/g, '');
 }
 
+function buildProductPageHref(product, index) {
+  const categoryKey = document.documentElement.dataset.category || 'iphones';
+  const slugBase = slugify(product?.productTitle || product?.title || 'product') || 'product';
+  const baseUrl = String(import.meta.env.BASE_URL || '/').replace(/\/?$/, '/');
+  return `${baseUrl}p/${categoryKey}/${slugBase}-${Number(index) + 1}/`;
+}
+
 function el(tag, className) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -408,6 +415,30 @@ function buildCatalogCardDetails(product) {
     conditionLabel,
     detailLine: detailTokens.slice(0, 3).join(' • '),
   };
+}
+
+function buildCatalogBadges(product, details) {
+  const badges = [];
+  const pushBadge = (value) => {
+    const text = normalizeSpace(value);
+    if (!text || badges.includes(text)) return;
+    badges.push(text);
+  };
+
+  const storage = normalizeStorage(product?.storage);
+  const battery = normalizeBattery(product?.batteryHealth);
+  const color = product?.color ? toTitleCase(product.color) : '';
+  const condition = details?.conditionLabel || normalizeCondition(product?.condition);
+  const description = normalizeSpace(product?.description);
+  const authenticity = normalizeSpace(product?.authenticity || product?.parts);
+
+  pushBadge(battery);
+  pushBadge(storage);
+  pushBadge(color);
+  pushBadge(condition);
+  if (/original parts/i.test(`${authenticity} ${description}`)) pushBadge('Original Parts');
+
+  return badges;
 }
 
 let catalogLightbox;
@@ -986,7 +1017,7 @@ function ensureCatalogLightbox() {
   return catalogLightbox;
 }
 
-export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } = {}) {
+export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartIndex = startIndex, imageSizes } = {}) {
   if (!mountEl) return [];
 
   mountEl.textContent = '';
@@ -1003,8 +1034,9 @@ export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } 
 
     const titleText = product.title || 'Product';
     const subtitleText = product.subtitle || '';
-  const absoluteIndex = startIndex + index;
-  card.id = buildCatalogProductId(titleText, absoluteIndex);
+    const absoluteIndex = startIndex + index;
+    const detailIndex = hrefStartIndex + index;
+    card.id = buildCatalogProductId(titleText, absoluteIndex);
     card.dataset.title = titleText;
     if (subtitleText) card.dataset.subtitle = subtitleText;
     card.dataset.search = `${titleText} ${subtitleText}`.toLowerCase();
@@ -1023,7 +1055,9 @@ export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } 
     }
 
     const display = buildCatalogCardSummary(product);
-  const details = buildCatalogCardDetails(product);
+    const details = buildCatalogCardDetails(product);
+    const detailHref = buildProductPageHref(product, detailIndex);
+    const cardBadges = buildCatalogBadges(product, details);
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
     const imagesToUse = images.length ? images : [product.image].filter(Boolean);
     const firstImage = imagesToUse[0] || '';
@@ -1185,21 +1219,26 @@ export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } 
     title.textContent = titleText;
     body.appendChild(title);
 
-    const detailLine = details.detailLine || display.summary;
-    if (detailLine) {
-      const meta = el('p', 'catalog-detail-line');
-      meta.textContent = detailLine;
-      body.appendChild(meta);
+    if (cardBadges.length) {
+      const badgeRow = el('div', 'catalog-badge-row');
+      cardBadges.forEach((badge) => {
+        const badgeEl = el('span', 'catalog-badge');
+        badgeEl.textContent = badge;
+        badgeRow.appendChild(badgeEl);
+      });
+      body.appendChild(badgeRow);
     }
-
-    const condition = el('p', 'catalog-condition');
-    condition.textContent = details.conditionLabel;
-    body.appendChild(condition);
 
     if (display.priceLabel) {
       const price = el('p', 'catalog-price');
       appendTextWithPriceSpans(price, display.priceLabel);
       body.appendChild(price);
+    }
+
+    if (display.note) {
+      const note = el('p', 'catalog-note');
+      note.textContent = display.note;
+      body.appendChild(note);
     }
 
     if (!product?.sold) {
@@ -1217,28 +1256,29 @@ export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } 
 
     const actions = el('div', 'catalog-actions');
 
-    if (product?.sold) {
-      const soldBtn = document.createElement('button');
-      soldBtn.type = 'button';
-      soldBtn.className = 'btn btn-secondary btn-small btn-sold';
-      soldBtn.textContent = 'Sold';
-      soldBtn.disabled = true;
-      actions.appendChild(soldBtn);
-    } else {
-      const buyBtn = document.createElement('a');
-      buyBtn.className = 'btn btn-primary btn-small';
-      const msg = `Hello, I want to buy this product from Uncle Apple Store: ${titleText}${subtitleText ? ` (${subtitleText})` : ''}. Is it available?`;
-      buyBtn.href = buildWhatsAppHref(msg);
-      buyBtn.target = '_blank';
-      buyBtn.rel = 'noopener noreferrer';
-      buyBtn.textContent = 'Buy Now';
+    const quickViewBtn = document.createElement('button');
+    quickViewBtn.type = 'button';
+    quickViewBtn.className = 'btn btn-outline btn-small';
+    quickViewBtn.textContent = 'Quick View';
+    quickViewBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (!activeImage) return;
+      ensureCatalogLightbox().open({
+        src: activeImage,
+        sources: imagesToUse,
+        index: currentImageIndex,
+        alt: mainImgEl?.alt || titleText,
+        focusEl: quickViewBtn,
+      });
+    });
+    actions.appendChild(quickViewBtn);
 
-      if (window.setWhatsAppHref) {
-        window.setWhatsAppHref(buyBtn, msg);
-      }
-
-      actions.appendChild(buyBtn);
-    }
+    const detailBtn = document.createElement('a');
+    detailBtn.className = 'btn btn-primary btn-small';
+    detailBtn.href = detailHref;
+    detailBtn.textContent = 'View Details';
+    actions.appendChild(detailBtn);
 
     body.appendChild(actions);
     card.appendChild(body);
@@ -1248,6 +1288,7 @@ export function renderCatalog({ mountEl, products, startIndex = 0, imageSizes } 
     rendered.push({
       id: card.id,
       index: absoluteIndex,
+      detailIndex,
       title: titleText,
       subtitle: subtitleText,
       summary: display.summary,

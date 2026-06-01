@@ -575,4 +575,66 @@ export const iphones = [
       'products/iphones/iphone-14-black-256gb/iphone-14-black-256gb-3.jpg',
     ],
   },
+  {
+    title: 'iPhone XS Max',
+    subtitle: 'Gold • 64GB • Battery 81% • Very clean • Original parts • Imported from Germany • Uncle Apple Store Certified Device • GMD 12,000',
+    kind: 'phone',
+    color: 'Gold',
+    storage: '64GB',
+    condition: 'Used — Very clean',
+    batteryHealth: '81%',
+    authenticity: 'Original parts',
+    importedFrom: 'Imported from Germany',
+    certification: 'Uncle Apple Store Certified Device',
+    price: 12000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone XS Max — Gold, 64GB, battery 81%, very clean condition, original parts, imported from Germany, Uncle Apple Store Certified Device. Price GMD 12,000. In The Gambia.',
+    pageTitle: 'iPhone XS Max 64GB Gold — Very Clean • 81% Battery • Original Parts',
+    productTitle: 'iPhone XS Max (64GB) — Gold — Very clean — Battery 81% — Original parts',
+    seoMetaTitle: 'iPhone XS Max 64GB Gold in The Gambia | Very Clean | Uncle Apple Store',
+    seoMetaDescription:
+      'Buy an iPhone XS Max 64GB in Gold from Uncle Apple Store in The Gambia. Very clean condition, 81% battery health, original parts, imported from Germany, and certified by Uncle Apple Store. GMD 12,000.',
+    shortDescription:
+      'A premium iPhone XS Max in Gold with 64GB storage, 81% battery health, original parts, and a very clean finish for buyers who want Apple quality with clear, honest condition details.',
+    longDescription:
+      `This iPhone XS Max in Gold offers the classic large-screen Apple experience in a clean, confidence-building package. It comes with 64GB storage, 81% battery health, original parts, and a very clean cosmetic finish. Imported from Germany and presented as an Uncle Apple Store Certified Device, it is a strong option for buyers in The Gambia who want a premium Apple phone with transparent condition details, reliable everyday performance, and a clear value point at GMD 12,000. ${ESIM_UNLOCKED_DETAILS}`,
+    description:
+      `Color Gold. Storage 64GB. Battery health 81%. Condition very clean. Original parts. Imported from Germany. Uncle Apple Store Certified Device. ${ESIM_UNLOCKED_DETAILS} Price GMD 12,000.`,
+    keyFeatures: [
+      '6.5-inch Super Retina display with the premium XS Max form factor',
+      '64GB storage for daily apps, photos, and essential files',
+      '81% battery health with dependable everyday use remaining',
+      'Original parts for stronger buyer confidence and transparency',
+      'Imported from Germany and certified by Uncle Apple Store',
+    ],
+    conditionReport: [
+      'Very clean exterior presentation with a premium Apple look',
+      'Battery health is 81%',
+      'Original parts noted on the device',
+      'Quality-checked and presented as ready for confident purchase',
+    ],
+    productHighlights: [
+      'Very Clean',
+      'Battery Health 81%',
+      'Original Parts',
+      'Imported from Germany',
+      'Uncle Apple Store Certified Device',
+    ],
+    trustTitle: 'Why this XS Max inspires confidence',
+    trustItems: [
+      'Uncle Apple Store Certified Device',
+      'Imported from Germany for buyers who value sourcing clarity',
+      'Original parts highlighted clearly for transparency',
+      'Battery health, condition, and storage stated up front before payment',
+      'WhatsApp confirmation available before you commit to the device',
+    ],
+    ctaTitle: 'Reserve this iPhone XS Max with confidence',
+    ctaText:
+      'Use WhatsApp to confirm availability, ask any final questions, and get direct support from Uncle Apple Store before payment. This is the fastest way to secure the device.',
+    ctaPrimaryLabel: 'Check availability on WhatsApp',
+    ctaSecondaryLabel: 'Browse more iPhones',
+    images: ['products/placeholders/placeholder-phone.svg'],
+    mediaFit: 'contain',
+    mediaPad: 26,
+  },
 ];

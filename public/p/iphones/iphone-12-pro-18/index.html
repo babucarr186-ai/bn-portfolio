@@ -7,26 +7,65 @@
   <meta name="description" content="128GB Ready to use." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://uncleapplestore.com/p/iphones/iphone-12-pro-18/" />
-
   <meta property="og:site_name" content="Uncle Apple Store" />
   <meta property="og:type" content="product" />
-  <meta property="og:title" content="iPhone 12 Pro" />
+  <meta property="og:title" content="iPhone 12 Pro | Uncle Apple Store" />
   <meta property="og:description" content="128GB Ready to use." />
   <meta property="og:url" content="https://uncleapplestore.com/p/iphones/iphone-12-pro-18/" />
   <meta property="og:image" content="https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-1.jpg" />
-
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="iPhone 12 Pro" />
+  <meta name="twitter:title" content="iPhone 12 Pro | Uncle Apple Store" />
   <meta name="twitter:description" content="128GB Ready to use." />
   <meta name="twitter:image" content="https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-1.jpg" />
-
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/site.css?v=20260304" />
-
+  <style>
+    .product-page{padding:30px 0 52px;background:#fff}
+    .product-shell{width:min(1400px,calc(100% - 40px));margin:0 auto;display:grid;gap:18px}
+    .product-summary-card,.product-media-card,.product-content-grid{display:grid;gap:18px}
+    .product-hero{display:grid;gap:18px;align-items:stretch}
+    .product-card{background:rgba(255,255,255,.94);border:1px solid rgba(11,15,22,.08);border-radius:28px;box-shadow:0 24px 80px rgba(15,23,42,.08);overflow:hidden}
+    .product-media-card,.product-summary-card,.product-section-card{padding:22px}
+    .product-media-card{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(242,245,248,.92))}
+    .product-media-stage{min-height:300px;border-radius:22px;background:linear-gradient(180deg,#ffffff 0%,#eef2f6 100%);display:grid;place-items:center;padding:26px;border:1px solid rgba(11,15,22,.06)}
+    .product-media-stage img{width:100%;max-height:380px;object-fit:contain}
+    .product-thumb-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .product-thumb{border-radius:16px;padding:10px;border:1px solid rgba(11,15,22,.08);background:#fff;min-height:74px;display:grid;place-items:center}
+    .product-thumb img{max-height:58px;object-fit:contain}
+    .product-eyebrow{margin:0;font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(11,15,22,.56)}
+    .product-title{margin:0;font-size:clamp(2rem,6vw,3.8rem);line-height:.98;letter-spacing:-.045em;font-family:"SF Pro Display","SF Pro Text",ui-sans-serif,system-ui,-apple-system,sans-serif}
+    .product-short,.product-section-card p{margin:0;line-height:1.7;color:rgba(11,15,22,.72)}
+    .product-highlight-row{display:flex;flex-wrap:wrap;gap:10px}
+    .product-trust-strip{display:grid;gap:12px;padding:18px 22px}
+    .product-trust-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+    .product-trust-item{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:18px;background:rgba(245,247,250,.88);border:1px solid rgba(11,15,22,.06);font-weight:700;color:#0b0f16}
+    .product-trust-item::before{content:"✓";display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;background:#0b0f16;color:#fff;font-size:.8rem;flex:0 0 auto}
+    .product-tag{display:inline-flex;align-items:center;padding:9px 14px;border-radius:999px;background:rgba(11,15,22,.04);border:1px solid rgba(11,15,22,.08);font-weight:700;font-size:.92rem;color:rgba(11,15,22,.82)}
+    .product-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .product-detail-item{padding:16px;border-radius:20px;background:rgba(245,247,250,.9);border:1px solid rgba(11,15,22,.06)}
+    .product-detail-label{display:block;font-size:.78rem;font-weight:700;color:rgba(11,15,22,.52);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+    .product-detail-value{display:block;font-size:1rem;font-weight:800;color:#0b0f16}
+    .product-purchase-card{display:grid;gap:12px;padding:18px;border-radius:24px;background:linear-gradient(180deg,rgba(11,15,22,.03),rgba(11,15,22,.01));border:1px solid rgba(11,15,22,.06)}
+    .product-price{font-size:clamp(1.75rem,6vw,2.5rem);line-height:1;letter-spacing:-.04em;font-weight:900}
+    .product-status{display:inline-flex;align-items:center;gap:8px;font-size:.95rem;color:rgba(11,15,22,.64);font-weight:700}
+    .product-dot{width:9px;height:9px;border-radius:999px;background:#16a34a;box-shadow:0 0 0 6px rgba(22,163,74,.12)}
+    .product-actions{display:flex;flex-direction:column;gap:10px}
+    .product-actions .btn{width:100%;min-height:50px}
+    .product-list{margin:0;padding-left:18px;display:grid;gap:10px;color:rgba(11,15,22,.76)}
+    .product-list li::marker{color:rgba(11,15,22,.42)}
+    .product-spec-table{width:100%;border-collapse:collapse}
+    .product-spec-table th,.product-spec-table td{padding:14px 0;border-bottom:1px solid rgba(11,15,22,.08);text-align:left;vertical-align:top}
+    .product-spec-table th{width:34%;font-size:.84rem;letter-spacing:.04em;text-transform:uppercase;color:rgba(11,15,22,.52)}
+    .product-spec-table td{font-weight:700;color:#0b0f16}
+    .product-trust-card{background:linear-gradient(180deg,rgba(11,15,22,.96),rgba(22,28,39,.94));color:#fff}
+    .product-trust-card h2,.product-trust-card p,.product-trust-card .product-list{color:inherit}
+    .product-trust-card .product-list li::marker{color:rgba(255,255,255,.66)}
+    .product-cta-card{background:linear-gradient(135deg,rgba(248,250,252,.96),rgba(236,242,247,.96))}
+    @media (min-width:900px){.product-hero{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}.product-content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-section-card--wide,.product-trust-card,.product-cta-card{grid-column:1/-1}.product-actions{flex-direction:row}}
+    @media (max-width:767px){.product-page{padding-top:18px}.product-media-card,.product-summary-card,.product-section-card,.product-trust-strip{padding:18px}.product-detail-grid{grid-template-columns:1fr}.product-media-stage{min-height:240px;padding:20px}.product-thumb-row{grid-template-columns:repeat(2,minmax(0,1fr))}.product-trust-grid{grid-template-columns:1fr}.product-spec-table th,.product-spec-table td{display:block;width:100%;padding:8px 0}.product-spec-table th{padding-top:14px}.product-actions .btn{width:100%}}
+  </style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","@id":"https://uncleapplestore.com/p/iphones/iphone-12-pro-18/#product","name":"iPhone 12 Pro","image":["https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-1.jpg","https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-2.jpg","https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-3.jpg"],"description":"128GB Ready to use.","brand":{"@type":"Brand","name":"Apple"},"url":"https://uncleapplestore.com/p/iphones/iphone-12-pro-18/","availability":"https://schema.org/InStock","itemCondition":"https://schema.org/UsedCondition","offers":{"@type":"Offer","url":"https://uncleapplestore.com/p/iphones/iphone-12-pro-18/","priceCurrency":"GMD","price":19500,"availability":"https://schema.org/InStock","itemCondition":"https://schema.org/UsedCondition","seller":{"@id":"https://uncleapplestore.com/#store"}}}</script>
 </head>
-
-<body>
+<body data-page="product">
   <header class="nav" aria-label="Primary navigation">
     <div class="container">
       <div class="nav-inner">
@@ -49,20 +88,80 @@
       </div>
     </div>
   </header>
-
   <main id="top">
-    <section class="section" aria-label="Product details">
-      <div class="container">
-        <h1>iPhone 12 Pro</h1>
-        <p class="subtle">128GB Ready to use.</p>
-
-        <div class="notice" style="margin-top:14px">
-          <div><strong>Price:</strong> <span class="product-price">GMD 19,500</span></div>
-          <div><strong>Status:</strong> Available</div>
+    <section class="section product-page" aria-label="Product details">
+      <div class="container product-shell">
+        <div class="product-hero">
+          <article class="product-card product-media-card" aria-label="Product media">
+            <div class="product-media-stage">
+              <img src="https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-1.jpg" alt="iPhone 12 Pro" loading="eager" decoding="async" />
+            </div>
+            <div class="product-thumb-row"><div class="product-thumb"><img src="https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-1.jpg" alt="iPhone 12 Pro view 1" loading="lazy" decoding="async" /></div><div class="product-thumb"><img src="https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-2.jpg" alt="iPhone 12 Pro view 2" loading="lazy" decoding="async" /></div><div class="product-thumb"><img src="https://uncleapplestore.com/products/iphones/iphone-12-pro-128gb-3.jpg" alt="iPhone 12 Pro view 3" loading="lazy" decoding="async" /></div></div>
+          </article>
+          <article class="product-card product-summary-card">
+            <p class="product-eyebrow">iPhone listing</p>
+            <h1 class="product-title">iPhone 12 Pro</h1>
+            <p class="product-short">iPhone 12 Pro with clear device details, checked by uncle apple store, and ready to use presentation for buyers who want Apple-quality hardware with transparent condition reporting.</p>
+            <div class="product-highlight-row"><span class="product-tag">Ready to use</span></div>
+            <div class="product-detail-grid">
+              <div class="product-detail-item"><span class="product-detail-label">Storage</span><span class="product-detail-value">Not specified</span></div><div class="product-detail-item"><span class="product-detail-label">Battery health</span><span class="product-detail-value">Not specified</span></div><div class="product-detail-item"><span class="product-detail-label">Condition</span><span class="product-detail-value">Ready to use</span></div><div class="product-detail-item"><span class="product-detail-label">Authenticity</span><span class="product-detail-value">Authenticity checked</span></div><div class="product-detail-item"><span class="product-detail-label">Color</span><span class="product-detail-value">Not specified</span></div><div class="product-detail-item"><span class="product-detail-label">Status</span><span class="product-detail-value">Available now</span></div>
+            </div>
+            <div class="product-purchase-card">
+              <div class="product-price">GMD 19,500</div>
+              <div class="product-status"><span class="product-dot" aria-hidden="true"></span>Available now</div>
+              <div class="product-actions">
+                <a class="btn btn-whatsapp" href="https://wa.me/4915679652076?text=Hi%20Uncle%20Apple!%20Please%20confirm%20availability%20for%20this%20device." target="_blank" rel="noopener">Chat on WhatsApp</a>
+                <a class="btn btn-primary" href="https://uncleapplestore.com/">Back to listings</a>
+              </div>
+            </div>
+          </article>
         </div>
-
-        <div style="margin-top:14px">
-          <a class="btn btn-primary" href="https://uncleapplestore.com/">Back to listings</a>
+        <article class="product-card product-trust-strip">
+          <div class="product-trust-grid">
+            <div class="product-trust-item">Imported from Germany</div><div class="product-trust-item">Device Fully Tested</div><div class="product-trust-item">Honest Battery Reporting</div><div class="product-trust-item">Face ID Tested</div><div class="product-trust-item">Uncle Apple Store Verified</div>
+          </div>
+        </article>
+        <div class="product-content-grid">
+          <article class="product-card product-section-card product-section-card--wide">
+            <h2>Short Description</h2>
+            <p>iPhone 12 Pro with clear device details, checked by uncle apple store, and ready to use presentation for buyers who want Apple-quality hardware with transparent condition reporting.</p>
+          </article>
+          <article class="product-card product-section-card product-section-card--wide">
+            <h2>Full Product Description</h2>
+            <p>iPhone 12 Pro is presented in ready to use condition with clear storage information and transparent battery reporting. Checked by Uncle Apple Store and unlocked network support are stated clearly before payment. The Gambia, Banjul, Serrekunda, Brikama, Bakau, and nearby delivery routes. Dakar requests can be confirmed on WhatsApp before payment.</p>
+          </article>
+          <article class="product-card product-section-card">
+            <h2>Key Features</h2>
+            <p>Information available on request.</p>
+          </article>
+          <article class="product-card product-section-card">
+            <h2>Condition Report</h2>
+            <ul class="product-list"><li>Condition: Ready to use</li><li>Authenticity: Authenticity checked</li></ul>
+          </article>
+          <article class="product-card product-section-card">
+            <h2>Product Specifications</h2>
+            <table class="product-spec-table">
+              <tbody>
+                <tr><th scope="row">Storage</th><td>Not specified</td></tr><tr><th scope="row">Color</th><td>Not specified</td></tr><tr><th scope="row">Battery Health</th><td>Not specified</td></tr><tr><th scope="row">Condition</th><td>Ready to use</td></tr><tr><th scope="row">Parts Status</th><td>Checked by Uncle Apple Store</td></tr><tr><th scope="row">Network</th><td>Unlocked network</td></tr><tr><th scope="row">Face ID Status</th><td>Face ID tested</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="product-card product-section-card">
+            <h2>Product Highlights</h2>
+            <ul class="product-list"><li>Ready to use</li><li>Authenticity checked</li></ul>
+          </article>
+          <article class="product-card product-section-card product-trust-card">
+            <h2>Why buyers trust Uncle Apple Store</h2>
+            <ul class="product-list"><li>The Gambia, Banjul, Serrekunda, Brikama, Bakau, and nearby delivery routes. Dakar requests can be confirmed on WhatsApp before payment.</li></ul>
+          </article>
+          <article class="product-card product-section-card product-cta-card">
+            <h2>Ready to confirm this device?</h2>
+            <p>Chat with Uncle Apple Store on WhatsApp to confirm availability, ask questions, and arrange the next step before payment.</p>
+            <div class="product-actions" style="margin-top:14px">
+              <a class="btn btn-whatsapp" href="https://wa.me/4915679652076?text=Hi%20Uncle%20Apple!%20Please%20confirm%20availability%20for%20this%20device." target="_blank" rel="noopener">Chat on WhatsApp</a>
+              <a class="btn btn-primary" href="https://uncleapplestore.com/">Back to listings</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
