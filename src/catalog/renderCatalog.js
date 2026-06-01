@@ -37,12 +37,13 @@ function createResponsivePicture({ src, alt, sizes, className }) {
   const { path: pathNoQuery, query } = splitQuery(safeSrc);
 
   const ext = fileExt(pathNoQuery);
+  const canBuildVariants = ['jpg', 'jpeg', 'png', 'webp'].includes(ext);
   const isSvg = ext === 'svg';
 
   const picture = document.createElement('picture');
 
-  // SVG (or missing images) should not attempt responsive variants.
-  if (isSvg) {
+  // SVG or paths without a supported file extension should not attempt responsive variants.
+  if (isSvg || !canBuildVariants) {
     const fallback = document.createElement('img');
     if (className) fallback.className = className;
     fallback.loading = 'lazy';
@@ -99,7 +100,14 @@ function createResponsivePicture({ src, alt, sizes, className }) {
 
 function publicAssetUrl(path) {
   const trimmed = String(path || '').replace(/^\/+/, '');
-  return `${import.meta.env.BASE_URL}${trimmed}`;
+  const { path: rawPath, query } = splitQuery(trimmed);
+  const encodedPath = rawPath
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => encodeURIComponent(segment))
+    .join('/');
+
+  return `${import.meta.env.BASE_URL}${encodedPath}${query}`;
 }
 
 export function buildCatalogProductId(title, index) {

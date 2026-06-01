@@ -387,6 +387,36 @@ function initAvailabilityForm() {
   });
 }
 
+async function initStorefrontHero() {
+  const mountNode = document.getElementById('storefrontHeroRoot');
+  if (!mountNode) return;
+
+  mountNode.innerHTML = '';
+
+  const [{ default: React }, { createRoot }, { default: StorefrontHeroSlider }] = await Promise.all([
+    import('react'),
+    import('react-dom/client'),
+    import('./components/StorefrontHeroSlider.jsx'),
+  ]);
+
+  createRoot(mountNode).render(
+    React.createElement(React.StrictMode, null, React.createElement(StorefrontHeroSlider)),
+  );
+}
+
+function startStorefrontHero() {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      void initStorefrontHero();
+    }, { once: true });
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    void initStorefrontHero();
+  });
+}
+
 
 function initImageViewer() {
   let overlayEl = null;
@@ -1273,5 +1303,6 @@ initHeaderActions();
 initWhatsAppLinks();
 initMobileCategoryNav();
 initAvailabilityForm();
+startStorefrontHero();
 initImageViewer();
 initChatWidget();

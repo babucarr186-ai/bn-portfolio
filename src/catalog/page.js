@@ -61,7 +61,8 @@ function initTrendingSection() {
   });
 
   // Avoid duplicate #product-* ids on the homepage (inventory section uses those for hash navigation).
-  rendered.forEach((card) => {
+  void rendered;
+  mountEl.querySelectorAll('.catalog-card[id]').forEach((card) => {
     card.removeAttribute('id');
   });
 }

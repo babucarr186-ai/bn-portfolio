@@ -352,7 +352,7 @@ h1{
 }
 
 /* Storefront hero (index.html) */
-.storefront-hero{ padding: 28px 0 16px; }
+.storefront-hero{ padding: 20px 0 26px; }
 
 .storefront-hero-card{
   display: grid;
@@ -464,7 +464,7 @@ body[data-page='home'] .section.section-compact{ padding: 26px 0; }
 
 /* Trending rail (mobile-first, no slider JS) */
 @media (max-width: 860px){
-  .storefront-hero{ padding: 18px 0 10px; }
+  .storefront-hero{ padding: 14px 0 20px; }
 
   .storefront-hero-card{
     grid-template-columns: 70px 1fr;
@@ -1790,15 +1790,35 @@ body.catalog-lightbox-open{
 /* Mobile sizing tweaks */
 @media (max-width: 640px){
   .container{
-    width: min(1100px, calc(100% - 28px));
+    width: min(1100px, calc(100% - 20px));
   }
 
   .nav-inner{
-    padding: 10px 0;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 8px 0;
+    gap: 10px;
   }
 
-  .logo-img{ height: 38px; }
+  .logo{
+    min-width: 0;
+  }
+
+  .logo-img{ height: 34px; }
+
+  .nav-actions{
+    order: 0;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .nav-actions .btn-whatsapp{
+    min-height: 42px;
+    padding: 9px 12px;
+    font-size: 0.84rem;
+    gap: 8px;
+  }
 
   .nav-links{
     gap: 8px;
@@ -1808,13 +1828,14 @@ body.catalog-lightbox-open{
     justify-content: flex-start;
     white-space: nowrap;
     scrollbar-width: none;
+    grid-column: 1 / -1;
+    order: 3;
+    padding-top: 2px;
   }
 
   .nav-links::-webkit-scrollbar{ display: none; }
 
   .nav-links a{ padding: 6px 6px; white-space: nowrap; }
-
-  .nav-actions{ gap: 8px; }
 
   .nav-search{
     width: min(220px, 62vw);
@@ -1878,7 +1899,10 @@ body.catalog-lightbox-open{
     padding: 0;
   }
 
-  .catalog-grid{ gap: 10px; }
+  .catalog-grid{
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
 
   .catalog-card{ border-radius: 16px; padding: 10px; }
   .catalog-frame{ border-radius: 14px; }
@@ -1907,6 +1931,29 @@ body.catalog-lightbox-open{
 
   footer{ padding: 34px 0 44px; }
   .small{ font-size: 0.88rem; }
+}
+
+@media (max-width: 430px){
+  .logo-img{
+    height: 30px;
+    max-width: 148px;
+  }
+
+  .nav-actions .btn-whatsapp{
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1099px){
+  .catalog-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  body[data-page='home'] .catalog-grid.catalog-grid--rail{
+    grid-template-columns: none;
+  }
 }
 
 @media (max-width: 420px){
