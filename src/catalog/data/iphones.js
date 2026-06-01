@@ -38,23 +38,6 @@ export const iphones = [
     images: ['products/iphones/iphone-17-pro-256gb/iphone-17-pro-256gb-1.jpg'],
   },
   {
-    title: 'iPhone 17 Pro Max',
-    subtitle: 'Cosmic Orange • 256GB • Brand new • 30-day warranty • GMD 119,000',
-    kind: 'phone',
-    color: 'Cosmic Orange',
-    storage: '256GB',
-    condition: 'Brand new',
-    warranty: '30-day warranty',
-    price: 119000,
-    sold: true,
-    whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro Max — Cosmic Orange, 256GB, brand new, 30-day warranty. Price GMD 119,000. In The Gambia.',
-    description:
-      `Capacity 256GB. Condition brand new. Color Cosmic Orange. Apple product. 30-day warranty. ${ESIM_UNLOCKED_DETAILS} Price GMD 119,000.`,
-    productTitle: 'iPhone 17 Pro Max (256GB) — Cosmic Orange — Brand new — 30-day warranty',
-    images: ['products/iphones/iphone-17-pro-max-cosmic-orange-256gb/iphone-17-pro-max.jpg'],
-  },
-  {
     title: 'iPhone SE (2020)',
     subtitle: '64GB • 4.7-inch • Used • Battery 87% • GMD 8,000',
     kind: 'phone',
