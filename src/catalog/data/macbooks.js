@@ -2,20 +2,21 @@ export const macbooks = [
 	{
 		title: 'MacBook Pro 13-inch (2017)',
 		subtitle:
-			'Intel Core i5 • 8GB RAM • 256GB SSD • Used (Like new) • 30 days warranty • GMD 25,000',
+			'256GB • Intel Core i5 • Warranty included • GMD 25,000',
 		kind: 'laptop',
 		cpu: 'Intel Core i5',
 		ram: '8GB',
 		storage: '256GB',
-		condition: 'Used — Like new',
-		warranty: '30 days warranty',
+		condition: 'Like new',
+		warranty: 'Warranty included',
 		price: 25000,
+		sold: true,
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2017) — Intel Core i5, 8GB RAM, 256GB SSD, used (like new), 30 days warranty. Price GMD 25,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2017) — Intel Core i5, 8GB RAM, 256GB SSD, like new, warranty included. Price GMD 25,000. In The Gambia.',
 		description:
-			'Apple MacBook Pro 13-inch (2017) with Intel Core i5, 8GB RAM, and 256GB SSD. A clean Apple laptop for office work, school, browsing, and everyday productivity with a like-new finish and 30-day warranty.',
+			'Apple MacBook Pro 13-inch (2017) with Intel Core i5, 8GB RAM, and 256GB SSD. A like-new Apple laptop for office work, school, browsing, and everyday productivity with warranty included.',
 		productTitle:
-			'MacBook Pro 13-inch (2017) — i5 • 8GB • 256GB — Used (Like new) — 30 days warranty',
+			'MacBook Pro 13-inch (2017) — i5 • 8GB • 256GB — Like new — Warranty included',
 		images: [
 			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-front.jpg',
 			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-i5-8gb-256gb-2.jpg',
