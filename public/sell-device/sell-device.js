@@ -26,6 +26,7 @@
 
   function sanitizeText(value, maxLen) {
     const str = String(value || '')
+      // eslint-disable-next-line no-control-regex
       .replace(/[\u0000-\u001F\u007F]/g, ' ') // control chars
       .replace(/[<>]/g, '') // basic HTML tag stripping
       .replace(/\s+/g, ' ')

@@ -16,14 +16,10 @@ function withoutExt(filePath) {
   return String(filePath || '').replace(/\.[^.]+$/, '');
 }
 
-function fallbackExtFor(pathNoQuery) {
+function fallbackExtFor() {
   // Always use optimized JPG fallbacks to keep file sizes small.
   // (Our generator flattens transparent PNGs onto white for visual consistency.)
   return 'jpg';
-}
-
-function buildVariantPath(pathNoQuery, width, ext) {
-  return `${withoutExt(pathNoQuery)}-${width}.${ext}`;
 }
 
 function buildSrcset(pathNoQuery, query, ext) {
