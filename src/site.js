@@ -1,3 +1,7 @@
+import React from 'react';
+import ReactDomClient from 'react-dom/client';
+import StorefrontHeroSlider from './components/StorefrontHeroSlider.jsx';
+
 import { accessories } from './catalog/data/accessories.js';
 import { airpods } from './catalog/data/airpods.js';
 import { giftCards } from './catalog/data/giftcards.js';
@@ -393,13 +397,7 @@ async function initStorefrontHero() {
 
   mountNode.innerHTML = '';
 
-  const [{ default: React }, { createRoot }, { default: StorefrontHeroSlider }] = await Promise.all([
-    import('react'),
-    import('react-dom/client'),
-    import('./components/StorefrontHeroSlider.jsx'),
-  ]);
-
-  createRoot(mountNode).render(
+  ReactDomClient.createRoot(mountNode).render(
     React.createElement(React.StrictMode, null, React.createElement(StorefrontHeroSlider)),
   );
 }
@@ -412,9 +410,7 @@ function startStorefrontHero() {
     return;
   }
 
-  window.requestAnimationFrame(() => {
-    void initStorefrontHero();
-  });
+  void initStorefrontHero();
 }
 
 

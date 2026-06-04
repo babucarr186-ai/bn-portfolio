@@ -2,7 +2,7 @@
   --uas-hero-height: clamp(27rem, 72vw, 46rem);
   --uas-hero-radius: 2rem;
   --uas-hero-shadow: 0 28px 72px rgba(15, 23, 42, 0.12);
-  padding: 16px 0 18px;
+  padding: 12px 0 8px;
 }
 
 .uas-hero__shell {
@@ -314,17 +314,17 @@
 
 @media (max-width: 960px) {
   .uas-hero {
-    --uas-hero-height: clamp(30rem, 78vw, 39rem);
-    padding-top: 12px;
+    --uas-hero-height: clamp(29rem, 76vw, 38rem);
+    padding-top: 8px;
   }
 
   .uas-hero__shell {
-    width: min(100vw, calc(100vw - 14px));
+    width: min(100vw, calc(100vw - 24px));
     border-radius: 1.5rem;
   }
 
   .uas-hero__content {
-    padding: 1rem 0.95rem 1.15rem;
+    padding: 1.05rem 1rem 1.35rem;
   }
 
   .uas-hero__title {
@@ -336,7 +336,7 @@
   }
 
   .uas-hero__meta {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .uas-hero__controls {
@@ -347,24 +347,24 @@
 
 @media (max-width: 640px) {
   .uas-hero {
-    --uas-hero-height: clamp(31rem, 120vw, 34.5rem);
+    --uas-hero-height: clamp(24rem, 58vh, 31rem);
     --uas-hero-radius: 1.35rem;
-    padding-top: 10px;
+    padding-top: 6px;
   }
 
   .uas-hero__overlay {
     background:
-      linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.5) 36%, rgba(0, 0, 0, 0.86) 100%),
-      linear-gradient(90deg, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.22) 44%, rgba(0, 0, 0, 0.08) 100%);
+      linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.46) 36%, rgba(0, 0, 0, 0.88) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.28) 46%, rgba(0, 0, 0, 0.08) 100%);
   }
 
   .uas-hero__content {
     align-items: flex-end;
-    padding: 0.95rem 0.85rem 4rem;
+    padding: 1rem 0.95rem 4.2rem;
   }
 
   .uas-hero__copy {
-    max-width: min(20.75rem, 92%);
+    max-width: min(19rem, 82%);
   }
 
   .uas-hero__eyebrow {
@@ -374,16 +374,16 @@
   }
 
   .uas-hero__title {
-    font-size: clamp(1.72rem, 8.8vw, 2.45rem);
-    line-height: 0.94;
-    max-width: 7.2ch;
+    font-size: clamp(1.66rem, 8vw, 2.25rem);
+    line-height: 0.96;
+    max-width: 7.8ch;
   }
 
   .uas-hero__subtitle {
     margin-top: 0.7rem;
-    max-width: 18.75rem;
-    font-size: 0.88rem;
-    line-height: 1.48;
+    max-width: 16.8rem;
+    font-size: 0.84rem;
+    line-height: 1.44;
   }
 
   .uas-hero__button {
@@ -421,7 +421,7 @@
 
   .uas-hero__controls {
     justify-content: center;
-    bottom: 0.55rem;
+    bottom: 0.7rem;
     padding-inline: 0.65rem;
   }
 
@@ -450,26 +450,26 @@
 
 @media (max-width: 430px) {
   .uas-hero {
-    --uas-hero-height: clamp(28rem, 112vw, 31.5rem);
+    --uas-hero-height: clamp(23rem, 58vh, 28rem);
   }
 
   .uas-hero__content {
-    padding: 0.85rem 0.8rem 3.6rem;
+    padding: 0.9rem 0.8rem 3.75rem;
   }
 
   .uas-hero__copy {
-    max-width: min(17.8rem, 84%);
+    max-width: min(16.75rem, 80%);
   }
 
   .uas-hero__title {
-    font-size: clamp(1.58rem, 8.2vw, 2.1rem);
-    max-width: 8.4ch;
+    font-size: clamp(1.46rem, 7.6vw, 1.96rem);
+    max-width: 8.8ch;
   }
 
   .uas-hero__subtitle {
-    font-size: 0.82rem;
-    line-height: 1.42;
-    max-width: 16.4rem;
+    font-size: 0.78rem;
+    line-height: 1.38;
+    max-width: 15rem;
   }
 
   .uas-hero__meta {

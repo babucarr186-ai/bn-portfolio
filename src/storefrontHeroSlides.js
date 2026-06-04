@@ -2,19 +2,19 @@ const base = import.meta.env.BASE_URL;
 
 export const storefrontHeroSlides = [
   {
-    id: 'trusted-apple-devices',
-    eyebrow: 'Germany imported devices',
-    title: 'Trusted Apple Devices',
-    subtitle: 'Imported from Germany • Quality Checked • Ready for The Gambia',
-    ctaLabel: 'Shop Now',
-    href: '#inventory',
+    id: 'welcome-to-uncle-apple-store',
+    eyebrow: 'Uncle Apple Store',
+    title: 'Welcome to Uncle Apple Store',
+    subtitle: 'Your Trusted Apple Partner In The Gambia',
+    ctaLabel: 'WhatsApp Us',
+    whatsappMessage: 'Hi Uncle Apple Store! I would like to speak with your team about available Apple devices in The Gambia.',
     image: {
-      src: `${base}hero-iphone.jpg`,
-      alt: 'Apple iPhones displayed in multiple colors on a clean white background',
+      src: `${base}hero-slider/welcome-store.jpeg`,
+      alt: 'Warm and modern Uncle Apple Store interior with Apple products and support staff',
     },
     imagePosition: 'center center',
-    mobileImagePosition: '72% center',
-    highlights: ['Germany imported', 'Quality checked', 'Ready for The Gambia'],
+    mobileImagePosition: '69% center',
+    highlights: ['Trusted Apple partner', 'Professional support', 'Store experience'],
   },
   {
     id: 'experience-apple-differently',
@@ -60,20 +60,5 @@ export const storefrontHeroSlides = [
     imagePosition: '74% center',
     mobileImagePosition: '78% center',
     highlights: ['Health tracking', 'Always connected', 'Germany quality'],
-  },
-  {
-    id: 'welcome-to-uncle-apple-store',
-    eyebrow: 'Uncle Apple Store',
-    title: 'Welcome to Uncle Apple Store',
-    subtitle: 'Your Trusted Apple Partner In The Gambia',
-    ctaLabel: 'WhatsApp Us',
-    whatsappMessage: 'Hi Uncle Apple Store! I would like to speak with your team about available Apple devices in The Gambia.',
-    image: {
-      src: `${base}hero-slider/welcome-store.jpeg`,
-      alt: 'Warm and modern Uncle Apple Store interior with Apple products and support staff',
-    },
-    imagePosition: 'center center',
-    mobileImagePosition: '69% center',
-    highlights: ['Trusted Apple partner', 'Professional support', 'Store experience'],
   },
 ];
