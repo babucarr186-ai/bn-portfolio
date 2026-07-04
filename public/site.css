@@ -1829,6 +1829,18 @@ body.catalog-lightbox-open{
     width: min(1100px, calc(100% - 24px));
   }
 
+  body[data-page='home'] .section.section-compact{
+    padding: 20px 0 24px;
+  }
+
+  body[data-page='home'] #inventory.section{
+    padding: 18px 0 28px;
+  }
+
+  body[data-page='home'] .section-lead{
+    margin-top: 6px;
+  }
+
   .nav-inner{
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -1954,6 +1966,10 @@ body.catalog-lightbox-open{
     padding: 0;
   }
 
+  body[data-page='home'] .catalog-wrap{
+    margin-top: 8px;
+  }
+
   .catalog-grid{
     grid-template-columns: 1fr;
     gap: 12px;
@@ -1968,6 +1984,29 @@ body.catalog-lightbox-open{
   .catalog-nav{ width: 28px; height: 28px; font-size: 1.05rem; }
   .catalog-rail{ grid-auto-columns: minmax(168px, 58vw); }
   .catalog-recommendations{ margin-top: 22px; }
+
+  body[data-page='home'] .catalog-grid{ gap: 8px; }
+  body[data-page='home'] .catalog-card{ padding: 8px; gap: 6px; }
+  body[data-page='home'] .catalog-card-body{ gap: 7px; }
+  body[data-page='home'] .catalog-slide{ padding: 6px; }
+  body[data-page='home'] .catalog-title{ font-size: 0.92rem; line-height: 1.12; }
+  body[data-page='home'] .catalog-meta{ font-size: 0.78rem; }
+  body[data-page='home'] .catalog-badge-row{ gap: 6px; }
+  body[data-page='home'] .catalog-badge{ min-height: 28px; padding: 5px 10px; font-size: 0.74rem; }
+  body[data-page='home'] .catalog-actions{ margin-top: 4px; }
+  body[data-page='home'] .catalog-actions .btn{ min-height: 34px; padding: 8px 12px; }
+  body[data-page='home'] .catalog-grid.catalog-grid--rail{
+    gap: 8px;
+    padding: 0 0 4px;
+    scroll-padding: 8px;
+  }
+  body[data-page='home'] .catalog-grid--rail .catalog-card{
+    width: min(224px, 70vw);
+  }
+  body[data-page='home'] .catalog-grid--rail .catalog-slide{ padding: 6px; }
+  body[data-page='home'] .catalog-grid--rail .catalog-card-body{ gap: 6px; }
+  body[data-page='home'] .catalog-grid--rail .catalog-actions{ margin-top: 4px; }
+  body[data-page='home'] .catalog-grid--rail .catalog-actions .btn{ min-height: 34px; }
 
   .catalog-lightbox{ padding: 10px; }
   .catalog-lightbox-inner{ width: 100%; height: min(88vh, 100%); border-radius: 16px; }

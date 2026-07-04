@@ -217,11 +217,40 @@
 
 @media (max-width: 760px) {
   .ua-header__inner {
-    height: 56px;
+    height: 44px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .ua-header__left {
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .ua-header__brand {
+    gap: 8px;
+    padding: 2px 4px;
+  }
+
+  .ua-header__logo {
+    width: 24px;
+    height: 24px;
   }
 
   .ua-header__brandText {
     display: none;
+  }
+
+  .ua-header__iconBtn,
+  .ua-header__menuBtn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .ua-header__iconBtn svg,
+  .ua-header__menuBtn svg {
+    width: 16px;
+    height: 16px;
   }
 
   .ua-header__menuBtn {
@@ -234,6 +263,7 @@
 
   .ua-header__actions {
     min-width: auto;
+    gap: 4px;
   }
 
   .ua-header__mobile {
@@ -247,6 +277,17 @@
   }
 
   .ua-header__whatsApp {
-    padding: 0 12px;
+    height: 34px;
+    padding: 0 10px;
+    margin-left: 2px;
+    font-size: 12px;
+  }
+
+  .ua-header__mobileNav {
+    padding: 8px 12px 12px;
+  }
+
+  .ua-header__mobileLink {
+    padding: 8px 10px;
   }
 }
