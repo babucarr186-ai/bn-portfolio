@@ -566,9 +566,9 @@ export const iphones = [
       `Big screen, strong performance, and a sharp camera setup for everyday use. Available in Deep Purple, Gold, Silver, and Space Black depending on stock. Clean, tested, and ready to use. ${ESIM_UNLOCKED_DETAILS} Price GMD 38,000.`,
     productTitle: 'iPhone 14 Pro Max (128GB) — Premium finish — Ready to use',
     images: [
-      'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-1.jpeg',
-      'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-2.jpeg',
-      'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-3.jpeg',
+    'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-3.jpeg',
+    'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-2.jpeg',
+    'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-1.jpeg',
     ],
   },
   {
