@@ -652,7 +652,11 @@ export const iphones = [
       'Use WhatsApp to confirm availability, ask any final questions, and get direct support from Uncle Apple Store before payment. This is the fastest way to secure the device.',
     ctaPrimaryLabel: 'Check availability on WhatsApp',
     ctaSecondaryLabel: 'Browse more iPhones',
-    images: ['products/placeholders/placeholder-phone.svg'],
+    images: [
+      'products/iphones/iphone-xs-max-gold-64gb-battery-81/iphone-xs-max-gold-64gb-battery-81-front.jpeg',
+      'products/iphones/iphone-xs-max-gold-64gb-battery-81/iphone-xs-max-gold-64gb-battery-81-back.jpeg',
+      'products/iphones/iphone-xs-max-gold-64gb-battery-81/iphone-xs-max-gold-64gb-battery-81-front-back.jpeg',
+    ],
     mediaFit: 'contain',
     mediaPad: 26,
   },
