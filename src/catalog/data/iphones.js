@@ -660,4 +660,24 @@ export const iphones = [
     mediaFit: 'contain',
     mediaPad: 26,
   },
+  {
+    title: 'iPhone 17 Pro Max',
+    subtitle: '256GB • Available • Factory unlocked • Dual SIM (SIM + eSIM) • Price on request',
+    kind: 'phone',
+    storage: '256GB',
+    condition: 'Available',
+    price: null,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability and price for: iPhone 17 Pro Max — 256GB, factory unlocked, dual SIM (SIM + eSIM). In The Gambia.',
+    description:
+      `Storage 256GB. Condition available. Factory unlocked. Dual SIM (SIM + eSIM). Colors shown in supplied images include White, Orange, and Blue. ${ESIM_UNLOCKED_DETAILS} Price on request.`,
+    productTitle: 'iPhone 17 Pro Max (256GB) — Available — Factory unlocked — Dual SIM',
+    images: [
+      'products/iphones/iphone-17-pro-max-256gb/iphone-17-pro-max-256gb-white.jpeg',
+      'products/iphones/iphone-17-pro-max-256gb/iphone-17-pro-max-256gb-blue.jpeg',
+      'products/iphones/iphone-17-pro-max-256gb/iphone-17-pro-max-256gb-colors.jpeg',
+    ],
+    mediaFit: 'contain',
+    mediaPad: 18,
+  },
 ];
