@@ -4,11 +4,7 @@ import './StorefrontHeroSlider.css';
 
 const AUTOPLAY_DELAY_MS = 5000;
 const SWIPE_THRESHOLD_PX = 56;
-const WHATSAPP_NUMBER = '4915679652076';
-
-function buildStorefrontWhatsAppLink(message) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+const STORE_LOGO_SRC = `${import.meta.env.BASE_URL || './'}logo.jpeg`;
 
 function ArrowIcon({ direction }) {
   return (
@@ -127,10 +123,6 @@ export default function StorefrontHeroSlider() {
           </div>
         </div>
 
-        <div className="uas-hero__status" aria-live="polite">
-          Slide {activeIndex + 1} / {storefrontHeroSlides.length}
-        </div>
-
         <div
           className="uas-hero__viewport"
           onPointerDown={handlePointerDown}
@@ -148,9 +140,6 @@ export default function StorefrontHeroSlider() {
             {storefrontHeroSlides.map((slide, index) => {
               const HeadingTag = index === 0 ? 'h1' : 'h2';
               const isActive = index === activeIndex;
-              const href = slide.whatsappMessage ? buildStorefrontWhatsAppLink(slide.whatsappMessage) : slide.href;
-              const target = slide.whatsappMessage ? '_blank' : undefined;
-              const rel = slide.whatsappMessage ? 'noopener noreferrer' : undefined;
 
               return (
                 <article
@@ -158,43 +147,40 @@ export default function StorefrontHeroSlider() {
                   id={`${carouselId}-${slide.id}`}
                   className={`uas-hero__slide${isActive ? ' is-active' : ''}`}
                   aria-hidden={isActive ? 'false' : 'true'}
-                  style={{
-                    '--uas-hero-object-position': slide.imagePosition || 'center center',
-                    '--uas-hero-object-position-mobile': slide.mobileImagePosition || slide.imagePosition || 'center center',
-                  }}
+                  data-theme={slide.theme || 'silver'}
                 >
-                  <div className="uas-hero__media">
-                    <img
-                      className="uas-hero__image"
-                      src={slide.image.src}
-                      alt={slide.image.alt}
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      fetchPriority={index === 0 ? 'high' : 'auto'}
-                      decoding="async"
-                      onLoad={() => handleImageLoad(index)}
-                    />
-                  </div>
-                  <div className="uas-hero__overlay" aria-hidden="true" />
+                  <div className="uas-hero__panel">
+                    <div className="uas-hero__content">
+                      <div className="uas-hero__copy">
+                        <div className="uas-hero__brand">
+                          <img className="uas-hero__brandLogo" src={STORE_LOGO_SRC} alt="Uncle Apple Store" loading="eager" decoding="async" />
+                          <span className="uas-hero__brandText">Uncle Apple Store</span>
+                        </div>
 
-                  <div className="uas-hero__content">
-                    <div className="uas-hero__copy">
-                      <p className="uas-hero__eyebrow">{slide.eyebrow}</p>
-                      <HeadingTag className="uas-hero__title">{slide.title}</HeadingTag>
-                      <p className="uas-hero__subtitle">{slide.subtitle}</p>
+                        <p className="uas-hero__eyebrow">{slide.eyebrow}</p>
+                        <HeadingTag className="uas-hero__title">{slide.title}</HeadingTag>
+                        <p className="uas-hero__subtitle">{slide.subtitle}</p>
 
-                      <div className="uas-hero__actions">
-                        <a className="uas-hero__button" href={href} target={target} rel={rel}>
-                          {slide.ctaLabel}
-                        </a>
+                        <div className="uas-hero__actions">
+                          <a className="uas-hero__button" href={slide.href}>
+                            {slide.ctaLabel}
+                          </a>
+                        </div>
                       </div>
 
-                      <div className="uas-hero__meta" aria-label={`${slide.title} highlights`}>
-                        {slide.highlights.map((highlight, highlightIndex) => (
-                          <div className="uas-hero__meta-item" key={`${slide.id}-${highlight}`}>
-                            <strong>{highlightIndex === 0 ? 'Trust' : highlightIndex === 1 ? 'Quality' : 'Support'}</strong>
-                            <span>{highlight}</span>
-                          </div>
-                        ))}
+                      <div className="uas-hero__mediaWrap" aria-hidden="true">
+                        <div className="uas-hero__mediaGlow" />
+                        <div className="uas-hero__mediaStage">
+                          <img
+                            className="uas-hero__image"
+                            src={slide.image.src}
+                            alt={slide.image.alt}
+                            loading={index === 0 ? 'eager' : 'lazy'}
+                            fetchPriority={index === 0 ? 'high' : 'auto'}
+                            decoding="async"
+                            onLoad={() => handleImageLoad(index)}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
