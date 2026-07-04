@@ -2,7 +2,7 @@ export const macbooks = [
 	{
 		title: 'MacBook Air 13.3-inch (2019)',
 		subtitle:
-			'Gold • 1.6GHz Intel Core i5 • 8GB RAM • 128GB SSD • Price on request',
+			'Gold • 1.6GHz Intel Core i5 • 8GB RAM • 128GB SSD • GMD 30,000',
 		kind: 'laptop',
 		cpu: '1.6GHz Intel Core i5',
 		ram: '8GB',
@@ -11,7 +11,7 @@ export const macbooks = [
 		display: '13.3-inch Retina display',
 		ports: '2× Thunderbolt 3 (USB-C)',
 		condition: 'Available',
-		price: null,
+		price: 30000,
 		specs: [
 			'Model: MacBook Air 13.3-inch (2019)',
 			'Color: Gold',
@@ -22,9 +22,9 @@ export const macbooks = [
 			'Ports: 2× Thunderbolt 3 (USB-C)',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability and price for: MacBook Air 13.3-inch (2019) — Gold, 1.6GHz Intel Core i5, 8GB RAM, 128GB SSD, Retina display, 2× Thunderbolt 3 ports. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Air 13.3-inch (2019) — Gold, 1.6GHz Intel Core i5, 8GB RAM, 128GB SSD, Retina display, 2× Thunderbolt 3 ports. Price GMD 30,000. In The Gambia.',
 		description:
-			'Apple MacBook Air 13.3-inch (2019) in Gold with 1.6GHz Intel Core i5, 8GB RAM, and 128GB SSD. A slim and reliable Apple laptop for study, office work, browsing, and everyday productivity. Price on request.',
+			'Apple MacBook Air 13.3-inch (2019) in Gold with 1.6GHz Intel Core i5, 8GB RAM, and 128GB SSD. A slim and reliable Apple laptop for study, office work, browsing, and everyday productivity. Price GMD 30,000.',
 		productTitle:
 			'MacBook Air 13.3-inch (2019) — Gold — 1.6GHz i5 • 8GB • 128GB',
 		images: [
@@ -93,6 +93,43 @@ export const macbooks = [
 			'products/macbooks/MacBook Pro 13-inches (2016)/9602dbd1-a3bd-406e-bea1-92f868092f01.jpg',
 			'products/macbooks/MacBook Pro 13-inches (2016)/ac93d726-e053-442e-85e1-88c91cb34057.jpg',
 			'products/macbooks/MacBook Pro 13-inches (2016)/dd43fc7d-671a-4b3a-819d-dab572c5be70.jpg',
+		],
+	},
+	{
+		title: 'MacBook Neo 13-inch',
+		subtitle:
+			'Purple • 8GB RAM • 256GB SSD • 6-core CPU • 5-core GPU • GMD 57,000',
+		kind: 'laptop',
+		cpu: '6-core CPU',
+		gpu: '5-core GPU',
+		ram: '8GB',
+		storage: '256GB SSD',
+		color: 'Purple',
+		display: '13-inch Liquid Retina display',
+		ports: '2× USB-C + headphone jack',
+		modelNumber: 'A3404',
+		condition: 'Available',
+		price: 57000,
+		specs: [
+			'Model: MacBook Neo 13-inch',
+			'Color: Purple',
+			'Model number: A3404',
+			'CPU: 6-core CPU',
+			'GPU: 5-core GPU',
+			'RAM: 8GB',
+			'Storage: 256GB SSD',
+			'Display: 13-inch Liquid Retina display',
+			'Ports: 2× USB-C + headphone jack',
+		],
+		whatsAppMessage:
+			'Hi Uncle Apple! Please confirm availability for: MacBook Neo 13-inch — Purple, 8GB RAM, 256GB SSD, 6-core CPU, 5-core GPU, Liquid Retina display, model A3404. Price GMD 57,000. In The Gambia.',
+		description:
+			'Apple MacBook Neo 13-inch in Purple with 8GB RAM, 256GB SSD, a 6-core CPU, and a 5-core GPU. A compact Apple laptop with Liquid Retina display, USB-C connectivity, and Magic Keyboard. Price GMD 57,000.',
+		productTitle: 'MacBook Neo 13-inch — Purple — 8GB • 256GB',
+		images: [
+			'products/macbooks/macbook-neo-13-purple-8gb-256gb/macbook-neo-13-purple-front.jpeg',
+			'products/macbooks/macbook-neo-13-purple-8gb-256gb/macbook-neo-13-purple-box-detail.jpeg',
+			'products/macbooks/macbook-neo-13-purple-8gb-256gb/macbook-neo-13-purple-box-back.jpeg',
 		],
 	},
 ];
