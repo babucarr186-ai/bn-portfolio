@@ -239,6 +239,10 @@ function isConditionToken(value) {
   return /brand new|like new|excellent|very clean|clean|good|used/i.test(value);
 }
 
+function isAvailabilityStatus(value) {
+  return /^(available|sold)$/i.test(normalizeSpace(value));
+}
+
 function humanizeExtra(value) {
   const text = normalizeSpace(value);
   if (!text) return '';
@@ -336,6 +340,10 @@ function buildDisplayContent(product) {
     pushUnique(extras, humanizeExtra(token));
   });
 
+  if (isAvailabilityStatus(conditionLabel)) {
+    conditionLabel = '';
+  }
+
   if (!priceLabel && Number.isFinite(Number(product?.price))) {
     priceLabel = formatPrice(product.price);
   }
@@ -388,7 +396,7 @@ export function buildCatalogCardSummary(product) {
 function buildCatalogCardDetails(product) {
   const subtitleTokens = splitSubtitleTokens(product?.subtitle);
   const conditionToken = normalizeCondition(product?.condition) || normalizeCondition(subtitleTokens.find(isConditionToken));
-  const conditionLabel = conditionToken || 'Ready to use';
+  const conditionLabel = isAvailabilityStatus(conditionToken) ? '' : (conditionToken || 'Ready to use');
 
   const detailTokens = [];
   const storageLabel = normalizeStorage(product?.storage) || normalizeStorage(subtitleTokens.find(isStorageToken));
@@ -435,7 +443,7 @@ function buildCatalogBadges(product, details) {
   pushBadge(battery);
   pushBadge(storage);
   pushBadge(color);
-  pushBadge(condition);
+  if (!isAvailabilityStatus(condition)) pushBadge(condition);
   if (/original parts/i.test(`${authenticity} ${description}`)) pushBadge('Original Parts');
 
   return badges;

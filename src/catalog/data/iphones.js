@@ -553,6 +553,25 @@ export const iphones = [
     images: ['products/iphones/iphone-14-pro-gray-128gb/iphone-14-pro.jpg'],
   },
   {
+    title: 'iPhone 14 Pro Max',
+    subtitle: '128GB • Premium finish • Ready to use • GMD 38,000',
+    kind: 'phone',
+    color: 'Colors: Deep Purple • Gold • Silver • Space Black',
+    storage: '128GB',
+    condition: 'Available',
+    price: 38000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max — 128GB, premium finish, ready to use. Available in Deep Purple, Gold, Silver, and Space Black depending on stock. Price GMD 38,000. In The Gambia.',
+    description:
+      `Big screen, strong performance, and a sharp camera setup for everyday use. Available in Deep Purple, Gold, Silver, and Space Black depending on stock. Clean, tested, and ready to use. ${ESIM_UNLOCKED_DETAILS} Price GMD 38,000.`,
+    productTitle: 'iPhone 14 Pro Max (128GB) — Premium finish — Ready to use',
+    images: [
+      'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-1.jpeg',
+      'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-2.jpeg',
+      'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-3.jpeg',
+    ],
+  },
+  {
     title: 'iPhone 14',
     subtitle:
       'Black • 256GB • Used (Like new) • Battery 82% • Original parts • 30 days warranty • GMD 25,000',
