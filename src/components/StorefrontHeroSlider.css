@@ -88,15 +88,21 @@
 
 /* Desktop photo slides: show the complete scene instead of cropping it. */
 @media (min-width: 761px) {
+  .uas-hero__slide[data-theme='photo'] .uas-hero__mediaStage {
+    background: #161616;
+  }
+
   .uas-hero__slide[data-theme='photo'] .uas-hero__image,
   .uas-hero__slide[data-theme='photo'].is-active .uas-hero__image,
   .uas-hero__slide:nth-child(2) .uas-hero__image,
   .uas-hero__slide:nth-child(2).is-active .uas-hero__image,
   .uas-hero__slide:nth-child(3) .uas-hero__image,
   .uas-hero__slide:nth-child(3).is-active .uas-hero__image {
-    object-fit: contain;
-    object-position: center;
-    transform: scale(.96);
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: scale(.88) !important;
   }
 }
 
