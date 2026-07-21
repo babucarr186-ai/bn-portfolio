@@ -86,6 +86,20 @@
 .uas-hero__slide:nth-child(2).is-active .uas-hero__image { transform: scale(1.15); }
 .uas-hero__slide:nth-child(3).is-active .uas-hero__image { transform: scale(1.11); }
 
+/* Desktop photo slides: show the complete scene instead of cropping it. */
+@media (min-width: 761px) {
+  .uas-hero__slide[data-theme='photo'] .uas-hero__image,
+  .uas-hero__slide[data-theme='photo'].is-active .uas-hero__image,
+  .uas-hero__slide:nth-child(2) .uas-hero__image,
+  .uas-hero__slide:nth-child(2).is-active .uas-hero__image,
+  .uas-hero__slide:nth-child(3) .uas-hero__image,
+  .uas-hero__slide:nth-child(3).is-active .uas-hero__image {
+    object-fit: contain;
+    object-position: center;
+    transform: scale(.96);
+  }
+}
+
 .uas-hero__controls { position: absolute; inset-inline: 0; bottom: .65rem; z-index: 4; display: flex; align-items: center; justify-content: space-between; padding: 0 .75rem; }
 .uas-hero__nav { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border: 1px solid rgba(17,17,17,.1); border-radius: 999px; background: rgba(255,255,255,.9); color: #1d1d1f; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
 .uas-hero__nav svg { width: 1rem; height: 1rem; }
