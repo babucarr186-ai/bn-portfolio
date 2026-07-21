@@ -483,9 +483,6 @@ function buildProductPageViewModel(config, product, schema) {
     authenticity && !hasTopic(authoredConditionReport, /\b(authenticity|original parts|parts status|parts)\b/i) ? `Authenticity: ${authenticity}` : '',
   ]);
 
-  const authoredTrustItems = asTextArray(product?.trustItems);
-  const hasAuthoredImportLine = authoredTrustItems.some((item) => /imported from/i.test(item));
-
   const trustItems = uniqueText([
     'Genuine Apple devices from Germany',
     'Tested before sale',
