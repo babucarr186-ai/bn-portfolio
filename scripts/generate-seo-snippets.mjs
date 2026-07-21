@@ -487,10 +487,11 @@ function buildProductPageViewModel(config, product, schema) {
   const hasAuthoredImportLine = authoredTrustItems.some((item) => /imported from/i.test(item));
 
   const trustItems = uniqueText([
-    ...authoredTrustItems,
-    hasAuthoredImportLine ? '' : importedFromLine,
-    certification,
-    config.locationCopy,
+    'Genuine Apple devices from Germany',
+    'Tested before sale',
+    'Authenticity verified',
+    'Honest device condition',
+    'Trusted by customers across The Gambia',
   ]);
 
   const trustChecks = uniqueText([
