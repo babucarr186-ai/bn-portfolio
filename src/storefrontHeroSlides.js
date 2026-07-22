@@ -57,4 +57,19 @@ export const storefrontHeroSlides = [
     theme: 'purple',
     fit: 'contain',
   },
+  {
+    id: 'germany-to-gambia',
+    eyebrow: '',
+    title: 'Trusted Apple Devices from Germany',
+    subtitle: '',
+    ctaLabel: '',
+    href: '#inventory',
+    image: {
+      src: `${base}hero/germany-gambia-clean.webp`,
+      desktopSrc: `${base}hero/germany-gambia-clean-desktop.webp`,
+      alt: 'Trusted Apple devices sourced in Germany and delivered to The Gambia',
+    },
+    theme: 'artwork',
+    fit: 'contain',
+  },
 ];

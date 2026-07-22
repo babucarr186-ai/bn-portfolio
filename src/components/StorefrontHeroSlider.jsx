@@ -171,15 +171,20 @@ export default function StorefrontHeroSlider() {
                       <div className="uas-hero__mediaWrap" aria-hidden="true">
                         <div className="uas-hero__mediaGlow" />
                         <div className="uas-hero__mediaStage">
-                          <img
-                            className="uas-hero__image"
-                            src={slide.image.src}
-                            alt={slide.image.alt}
-                            loading={index === 0 ? 'eager' : 'lazy'}
-                            fetchPriority={index === 0 ? 'high' : 'auto'}
-                            decoding="async"
-                            onLoad={() => handleImageLoad(index)}
-                          />
+                          <picture>
+                            {slide.image.desktopSrc ? (
+                              <source media="(min-width: 761px)" srcSet={slide.image.desktopSrc} />
+                            ) : null}
+                            <img
+                              className="uas-hero__image"
+                              src={slide.image.src}
+                              alt={slide.image.alt}
+                              loading={index === 0 ? 'eager' : 'lazy'}
+                              fetchPriority={index === 0 ? 'high' : 'auto'}
+                              decoding="async"
+                              onLoad={() => handleImageLoad(index)}
+                            />
+                          </picture>
                         </div>
                       </div>
                     </div>
