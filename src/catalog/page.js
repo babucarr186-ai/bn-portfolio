@@ -47,7 +47,7 @@ function initTrendingSection() {
   if (!mountEl) return;
 
   const pool = Array.isArray(products) ? products : [];
-  const picks = pool.filter((product) => !product?.sold).slice(0, 10);
+  const picks = pool.filter((product) => !product?.sold).slice(0, 6);
   if (!picks.length) {
     mountEl.textContent = '';
     return;
