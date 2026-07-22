@@ -233,9 +233,9 @@ window.addEventListener('appinstalled', () => {
   };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(show, 1500), { once: true });
+    document.addEventListener('DOMContentLoaded', () => setTimeout(show, 10000), { once: true });
   } else {
-    setTimeout(show, 1500);
+    setTimeout(show, 10000);
   }
 })();
 
@@ -638,6 +638,9 @@ function uaEnsureNotifyBanner() {
   if (uaIsIOS() && !uaIsStandalone()) return;
 
   const show = async () => {
+    // Never stack the notification prompt on top of the install prompt.
+    if (document.getElementById(UA_INSTALL_BANNER_ID)) return;
+
     try {
       const baseUrl = UA_SCRIPT_BASE_URL;
       const swUrl = new URL('service-worker.js', baseUrl).toString();
