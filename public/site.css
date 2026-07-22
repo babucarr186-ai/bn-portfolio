@@ -1986,6 +1986,12 @@ body.catalog-lightbox-open{
   .catalog-recommendations{ margin-top: 22px; }
 
   body[data-page='home'] .catalog-grid{ gap: 8px; }
+  body[data-page='home'] #inventory .catalog-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  body[data-page='home'] #inventory .catalog-note{
+    display: none;
+  }
   body[data-page='home'] .catalog-card{ padding: 8px; gap: 6px; }
   body[data-page='home'] .catalog-card-body{ gap: 7px; }
   body[data-page='home'] .catalog-slide{ padding: 6px; }
