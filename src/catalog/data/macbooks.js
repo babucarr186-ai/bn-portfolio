@@ -2,6 +2,44 @@ export const macbooks = [
 	{
 		title: 'MacBook Air 13.3-inch (2019)',
 		subtitle:
+			'Rose Gold • 8GB RAM • 256GB SSD • Battery 92% • 130 cycles • Grade A • Touch ID working • GMD 35,000',
+		kind: 'laptop',
+		ram: '8GB',
+		storage: '256GB SSD',
+		color: 'Rose Gold',
+		display: '13.3-inch Retina display',
+		batteryHealth: '92%',
+		batteryCycles: '130',
+		condition: 'Grade A',
+		touchId: 'Working',
+		price: 35000,
+		specs: [
+			'Model: MacBook Air 13.3-inch (2019)',
+			'Color: Rose Gold',
+			'RAM: 8GB',
+			'Storage: 256GB SSD',
+			'Battery health: 92%',
+			'Cycle count: 130',
+			'Condition: Grade A',
+			'Touch ID: Working',
+		],
+		whatsAppMessage:
+			'Hi Uncle Apple! Please confirm availability for: MacBook Air 13.3-inch (2019) — Rose Gold, 8GB RAM, 256GB SSD, 92% battery health, 130 cycles, Grade A, Touch ID working. Price GMD 35,000. In The Gambia.',
+		description:
+			'Apple MacBook Air 13.3-inch (2019) in Rose Gold with 8GB RAM and 256GB SSD. Grade A condition with 92% battery health, only 130 cycles, and working Touch ID. Clean, lightweight, and ready for study, office work, browsing, and everyday use.',
+		productTitle:
+			'MacBook Air 13.3-inch (2019) — Rose Gold — 8GB • 256GB — Grade A',
+		images: [
+			'products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-open.webp',
+			'products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-side.webp',
+			'products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-front.webp',
+			'products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-box.webp',
+			'products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-back.webp',
+		],
+	},
+	{
+		title: 'MacBook Air 13.3-inch (2019)',
+		subtitle:
 			'Gold • 1.6GHz Intel Core i5 • 8GB RAM • 128GB SSD • GMD 30,000',
 		kind: 'laptop',
 		cpu: '1.6GHz Intel Core i5',
