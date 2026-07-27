@@ -279,17 +279,17 @@ export const iphones = [
   },
   {
     title: 'iPhone 11',
-    subtitle: 'White • 128GB • Battery 77% • Clean • GMD 12,500',
+    subtitle: 'White • 128GB • Battery 77% • Clean • GMD 14,500',
     kind: 'phone',
     color: 'White',
     storage: '128GB',
     condition: 'Used — Clean',
     batteryHealth: '77%',
-    price: 12500,
+    price: 14500,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 128GB, battery 77%, clean condition. Price GMD 12,500. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 128GB, battery 77%, clean condition. Price GMD 14,500. In The Gambia.',
     description:
-      `Color White. Storage 128GB. Battery health 77%. Condition clean. ${ESIM_UNLOCKED_DETAILS} Price GMD 12,500.`,
+      `Color White. Storage 128GB. Battery health 77%. Condition clean. ${ESIM_UNLOCKED_DETAILS} Price GMD 14,500.`,
     productTitle: 'iPhone 11 (128GB) — White — Used (Clean) — Battery 77%',
     images: [
       'products/iphones/iphone-11-128gb-1.jpg',
