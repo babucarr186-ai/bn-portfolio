@@ -205,16 +205,16 @@ export const iphones = [
   },
   {
     title: 'iPhone 13',
-    subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty • GMD 23,000',
+    subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty • GMD 26,000',
     kind: 'phone',
     color: 'Starlight',
     storage: '128GB',
     condition: 'Used — Excellent condition',
     batteryHealth: '86%',
     warranty: '30days waranty included.',
-    price: 23000,
+    price: 26000,
     description:
-      `Color Starlight. Storage 128GB. Condition used (excellent). Battery health 86%. 30 days warranty. ${ESIM_UNLOCKED_DETAILS} Price GMD 23,000.`,
+      `Color Starlight. Storage 128GB. Condition used (excellent). Battery health 86%. 30 days warranty. ${ESIM_UNLOCKED_DETAILS} Price GMD 26,000.`,
     productTitle: 'iPhone 13 (128GB) — Starlight — Used (Excellent) — Battery 86%',
     images: [
       'products/iphones/iphone-13-128gb-1.jpg',
@@ -245,15 +245,15 @@ export const iphones = [
   },
   {
     title: 'iPhone 13',
-    subtitle: 'Pink • 128GB • Like new • Battery 85% • FREE Original GUESS case • GMD 24,000',
+    subtitle: 'Pink • 128GB • Like new • Battery 85% • FREE Original GUESS case • GMD 26,000',
     kind: 'phone',
     color: 'Pink (Free GUESS case)',
     storage: '128GB',
     condition: 'Used — Like new',
     batteryHealth: '85%',
-    price: 24000,
+    price: 26000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Pink, 128GB, like new condition, battery 85%, free original GUESS case included. Price GMD 24,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Pink, 128GB, like new condition, battery 85%, free original GUESS case included. Price GMD 26,000. In The Gambia.',
     description:
       'Like-new iPhone 13 in Pink (128GB) with 85% battery health — plus a FREE original GUESS case as a gift.',
     productTitle: 'iPhone 13 (128GB) — Pink — Used (Like new) — Battery 85%',
@@ -266,18 +266,18 @@ export const iphones = [
   },
   {
     title: 'iPhone 13',
-    subtitle: 'Starlight • 128GB • Almost new • Battery 81% • GMD 23,000',
+    subtitle: 'Starlight • 128GB • Almost new • Battery 81% • GMD 26,000',
     kind: 'phone',
     color: 'Starlight',
     storage: '128GB',
     condition: 'Used — Almost new',
     batteryHealth: '81%',
-    price: 23000,
+    price: 26000,
     sold: false,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Starlight, 128GB, almost new condition, battery 81%. Price GMD 23,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 — Starlight, 128GB, almost new condition, battery 81%. Price GMD 26,000. In The Gambia.',
     description:
-      `A very clean iPhone 13 in Starlight with 128GB storage, strong everyday performance, and an almost-new look that feels ready to use straight away. ${ESIM_UNLOCKED_DETAILS} Price GMD 23,000.`,
+      `A very clean iPhone 13 in Starlight with 128GB storage, strong everyday performance, and an almost-new look that feels ready to use straight away. ${ESIM_UNLOCKED_DETAILS} Price GMD 26,000.`,
     productTitle: 'iPhone 13 (128GB) — Starlight — Used (Almost new) — Battery 81%',
     images: [
       'products/iphones/iphone-13-starlight-128gb-battery-81/iphone-13-starlight-128gb-battery-81-1.jpg?v=20260402-1',
@@ -309,14 +309,14 @@ export const iphones = [
   },
   {
     title: 'iPhone 13 Green',
-    subtitle: '128GB • condition-Excellent • Battery-86% • 30 days Warranthy • GMD 23,000',
+    subtitle: '128GB • condition-Excellent • Battery-86% • 30 days Warranthy • GMD 26,000',
     kind: 'phone',
     color: 'Green',
     storage: '128GB',
     condition: 'Used — Excellent condition',
     batteryHealth: '86%',
     warranty: '30 days Warranthy included.',
-    price: 23000,
+    price: 26000,
     description: `modell iphone 13 green 128GB condition-Excellent Battery-86% 30 days Warranthy. ${ESIM_UNLOCKED_DETAILS}`,
     productTitle: 'iPhone 13 Green (128GB) — Used (Excellent) — Battery 86%',
     images: [
