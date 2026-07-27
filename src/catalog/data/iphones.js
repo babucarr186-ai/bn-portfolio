@@ -2,6 +2,49 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 
 export const iphones = [
   {
+    title: 'iPhone 11',
+    subtitle: 'White • 128GB • Battery 80–85% • Clean • GMD 14,500',
+    kind: 'phone',
+    color: 'White',
+    storage: '128GB',
+    condition: 'Used — Clean',
+    batteryHealth: '80–85%',
+    price: 14500,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 128GB, battery 80–85%, clean condition. Price GMD 14,500. In The Gambia.',
+    description:
+      `Color White. Storage 128GB. Battery health 80–85%. Condition clean. ${ESIM_UNLOCKED_DETAILS} Price GMD 14,500.`,
+    productTitle: 'iPhone 11 (128GB) — White — Used (Clean) — Battery 80–85%',
+    images: [
+      'products/iphones/iphone-11-128gb-1.jpg',
+      'products/iphones/iphone-11-128gb-2.jpg',
+      'products/iphones/iphone-11-128gb-3.jpg',
+    ],
+  },
+  {
+    title: 'iPhone 11',
+    subtitle: 'White • 64GB • Battery 80–85% • Clean • GMD 12,500',
+    kind: 'phone',
+    sold: false,
+    color: 'White',
+    storage: '64GB',
+    condition: 'Used — Clean',
+    batteryHealth: '80–85%',
+    price: 12500,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 64GB, battery 80–85%, clean condition. Price GMD 12,500. In The Gambia.',
+    description:
+      `Color White. Storage 64GB. Battery health 80–85%. Condition clean. ${ESIM_UNLOCKED_DETAILS} Price GMD 12,500.`,
+    productTitle: 'iPhone 11 (64GB) — White — Used (Clean) — Battery 80–85%',
+    images: [
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-1.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-2.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-3.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-4.jpg',
+      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-5.jpg',
+    ],
+  },
+  {
     title: 'iPhone 17',
     subtitle: 'Lavender • 256GB • Used (Like new) • Original parts • GMD 65,750',
     kind: 'phone',
@@ -275,49 +318,6 @@ export const iphones = [
     images: [
       'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-1.jpg?v=20260314-2',
       'products/iphones/iphone-xr-black-128gb-excellent/iphone-xr-black-128gb-excellent-2.jpg?v=20260314-2',
-    ],
-  },
-  {
-    title: 'iPhone 11',
-    subtitle: 'White • 128GB • Battery 77% • Clean • GMD 14,500',
-    kind: 'phone',
-    color: 'White',
-    storage: '128GB',
-    condition: 'Used — Clean',
-    batteryHealth: '77%',
-    price: 14500,
-    whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 128GB, battery 77%, clean condition. Price GMD 14,500. In The Gambia.',
-    description:
-      `Color White. Storage 128GB. Battery health 77%. Condition clean. ${ESIM_UNLOCKED_DETAILS} Price GMD 14,500.`,
-    productTitle: 'iPhone 11 (128GB) — White — Used (Clean) — Battery 77%',
-    images: [
-      'products/iphones/iphone-11-128gb-1.jpg',
-      'products/iphones/iphone-11-128gb-2.jpg',
-      'products/iphones/iphone-11-128gb-3.jpg',
-    ],
-  },
-  {
-    title: 'iPhone 11',
-    subtitle: 'White • 64GB • Battery 77% • Clean • GMD 12,500',
-    kind: 'phone',
-    sold: false,
-    color: 'White',
-    storage: '64GB',
-    condition: 'Used — Clean',
-    batteryHealth: '77%',
-    price: 12500,
-    whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 11 — White, 64GB, battery 77%, clean condition. Price GMD 12,500. In The Gambia.',
-    description:
-      `Color White. Storage 64GB. Battery health 77%. Condition clean. ${ESIM_UNLOCKED_DETAILS} Price GMD 12,500.`,
-    productTitle: 'iPhone 11 (64GB) — White — Used (Clean) — Battery 77%',
-    images: [
-      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-1.jpg',
-      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-2.jpg',
-      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-3.jpg',
-      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-4.jpg',
-      'products/iphones/iphone-11-white-64gb/iphone-11-white-64gb-5.jpg',
     ],
   },
   {
