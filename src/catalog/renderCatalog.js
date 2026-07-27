@@ -1227,6 +1227,27 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
     title.textContent = titleText;
     body.appendChild(title);
 
+    const compactDetails = el('dl', 'catalog-compact-details');
+    const compactItems = [
+      ['Storage', normalizeStorage(product?.storage)],
+      ['Colour', product?.color ? toTitleCase(product.color) : ''],
+      ['Battery', normalizeBattery(product?.batteryHealth)],
+      ['Parts', /original parts/i.test(`${normalizeSpace(product?.authenticity || product?.parts)} ${normalizeSpace(product?.description)}`) ? 'Original' : normalizeSpace(product?.parts)],
+    ].filter(([, value]) => normalizeSpace(value));
+
+    compactItems.forEach(([label, value]) => {
+      const item = el('div', 'catalog-compact-detail');
+      const term = el('dt', 'catalog-compact-label');
+      const description = el('dd', 'catalog-compact-value');
+      term.textContent = label;
+      description.textContent = value;
+      item.appendChild(term);
+      item.appendChild(description);
+      compactDetails.appendChild(item);
+    });
+
+    if (compactItems.length) body.appendChild(compactDetails);
+
     if (cardBadges.length) {
       const badgeRow = el('div', 'catalog-badge-row');
       cardBadges.forEach((badge) => {
@@ -1285,7 +1306,7 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
     const detailBtn = document.createElement('a');
     detailBtn.className = 'btn btn-primary btn-small';
     detailBtn.href = detailHref;
-    detailBtn.textContent = 'View Details';
+    detailBtn.textContent = 'Details';
     actions.appendChild(detailBtn);
 
     body.appendChild(actions);
