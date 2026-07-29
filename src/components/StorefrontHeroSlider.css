@@ -86,10 +86,16 @@
 .uas-hero__slide:nth-child(2).is-active .uas-hero__image { transform: scale(1.15); }
 .uas-hero__slide:nth-child(3).is-active .uas-hero__image { transform: scale(1.11); }
 
-/* Photo slides: keep the complete original photo visible. */
+/* Desktop photo slides: fill the hero without the previous artificial zoom. */
 @media (min-width: 761px) {
   .uas-hero__slide[data-theme='photo'] .uas-hero__mediaStage {
     background: #161616;
+  }
+
+  .uas-hero__slide[data-theme='photo'] .uas-hero__mediaStage picture {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   .uas-hero__slide[data-theme='photo'] .uas-hero__image,
@@ -98,9 +104,10 @@
   .uas-hero__slide:nth-child(2).is-active .uas-hero__image,
   .uas-hero__slide:nth-child(3) .uas-hero__image,
   .uas-hero__slide:nth-child(3).is-active .uas-hero__image {
+    display: block;
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain !important;
+    object-fit: cover !important;
     object-position: center center !important;
     transform: none !important;
   }
