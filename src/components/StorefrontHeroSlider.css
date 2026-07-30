@@ -111,6 +111,13 @@
     object-position: center center !important;
     transform: none !important;
   }
+
+  /* The showroom photo is composed toward the left. Preserve the shop
+     identity and display tables instead of centring on the empty aisle. */
+  .uas-hero__slide:nth-child(2) .uas-hero__image,
+  .uas-hero__slide:nth-child(2).is-active .uas-hero__image {
+    object-position: 30% 58% !important;
+  }
 }
 
 .uas-hero__slide[data-theme='artwork'] .uas-hero__copy { display: none; }
