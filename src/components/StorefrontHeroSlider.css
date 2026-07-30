@@ -1,5 +1,5 @@
 .uas-hero {
-  --uas-hero-height: clamp(19rem, 29vw, 24rem);
+  --uas-hero-height: clamp(34rem, 54vw, 50rem);
   --uas-hero-radius: 1.5rem;
   padding: 6px 0 4px;
   font-family: 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -86,7 +86,9 @@
 .uas-hero__slide:nth-child(2).is-active .uas-hero__image { transform: scale(1.15); }
 .uas-hero__slide:nth-child(3).is-active .uas-hero__image { transform: scale(1.11); }
 
-/* Desktop photo slides: fill the hero without the previous artificial zoom. */
+/* Desktop photo slides: prioritise the complete photograph over showing
+   inventory below the fold. The dark stage provides a clean letterbox only
+   when a source image and the viewport have different aspect ratios. */
 @media (min-width: 761px) {
   .uas-hero__slide[data-theme='photo'] .uas-hero__mediaStage {
     background: #161616;
@@ -107,7 +109,7 @@
     display: block;
     width: 100% !important;
     height: 100% !important;
-    object-fit: cover !important;
+    object-fit: contain !important;
     object-position: center center !important;
     transform: none !important;
   }
