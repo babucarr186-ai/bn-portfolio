@@ -1,5 +1,21 @@
 export const accessories = [
   {
+    title: 'Retro Street-Style Protective Case — iPhone 14 Pro / Pro Max',
+    subtitle:
+      'Grey • Full-coverage anti-drop protection • iPhone 14 Pro: GMD 350 • iPhone 14 Pro Max: GMD 375',
+    kind: 'square',
+    price: 350,
+    description:
+      'Grey retro street-style case with full-cover protection, shock-resistant edges, scratch resistance, and a non-yellowing finish. Available for iPhone 14 Pro and iPhone 14 Pro Max.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for the grey Retro Street-Style Protective Case. iPhone 14 Pro: GMD 350. iPhone 14 Pro Max: GMD 375. Please confirm the model I need.',
+    mediaFit: 'contain',
+    mediaPad: 8,
+    images: [
+      'products/accessories/retro-street-case-iphone-14-pro-grey.jpeg?v=20260730-1',
+    ],
+  },
+  {
     title: 'Apple Pencil (2nd generation)',
     subtitle:
       'Precision for iPad • Compatible: iPad Pro 12.9 (2018–2022), iPad Pro 11 (2018–2022), iPad Air (2020–2022), iPad mini (2021) • Used (Good condition) • GMD 4,250',
