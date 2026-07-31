@@ -12,7 +12,8 @@ export const accessories = [
     mediaFit: 'contain',
     mediaPad: 8,
     images: [
-      'products/accessories/retro-street-case-iphone-14-pro-grey.jpeg?v=20260730-1',
+      'products/accessories/retro-street-case-iphone-14-pro-grey.svg?v=20260731-2',
+      'products/accessories/retro-street-case-iphone-14-pro-max-brown.svg?v=20260731-2',
     ],
   },
   {
