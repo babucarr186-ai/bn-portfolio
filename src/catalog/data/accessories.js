@@ -1,5 +1,33 @@
 export const accessories = [
   {
+    title: 'Money Moves Creative Case – iPhone 13 Pro',
+    subtitle: 'Orange • Protective raised edges • GMD 350',
+    kind: 'square',
+    price: 350,
+    description:
+      'Bold orange creative case made for iPhone 13 Pro. Features raised camera and screen edges for everyday protection with a comfortable, stylish finish.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Money Moves Creative Case for iPhone 13 Pro — Orange. Price GMD 350.',
+    images: [
+      'products/accessories/money-moves-case-iphone-13-pro-1.jpeg?v=20260731-1',
+      'products/accessories/money-moves-case-iphone-13-pro-2.jpeg?v=20260731-1',
+    ],
+  },
+  {
+    title: '$100 Bill Creative Case – iPhone XS Max',
+    subtitle: 'Banknote design • Raised camera protection • GMD 300',
+    kind: 'square',
+    price: 300,
+    description:
+      'Creative $100 bill design case made for iPhone XS Max. Slim everyday protection with raised edges around the camera.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: $100 Bill Creative Case for iPhone XS Max. Price GMD 300.',
+    images: [
+      'products/accessories/100-dollar-bill-case-iphone-xs-max-1.jpeg?v=20260731-1',
+      'products/accessories/100-dollar-bill-case-iphone-xs-max-2.jpeg?v=20260731-1',
+    ],
+  },
+  {
     title: 'Retro Street-Style Protective Case — iPhone 14 Pro / Pro Max',
     subtitle:
       'Grey • Full-coverage anti-drop protection • iPhone 14 Pro: GMD 350 • iPhone 14 Pro Max: GMD 375',
