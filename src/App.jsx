@@ -5,6 +5,13 @@ import ChatWidget from './ChatWidget';
 import { buildWhatsAppLink } from './contactConfig';
 import { BadgeCheck, Mail, MapPin, MessageCircle, Moon, ShoppingBag, Sun, Truck, ShieldCheck } from 'lucide-react';
 
+const GOOGLE_REVIEWS_ENDPOINT = '/.netlify/functions/google-reviews';
+
+function renderStars(rating) {
+  const safeRating = Number.isFinite(rating) ? Math.max(0, Math.min(5, Math.round(rating))) : 0;
+  return `${'★'.repeat(safeRating)}${'☆'.repeat(5 - safeRating)}`;
+}
+
 export default function App() {
   const params = new URLSearchParams(window.location.search);
   const iphone = params.get('iphone') === '1';
@@ -188,6 +195,35 @@ export default function App() {
   const [reqCondition, setReqCondition] = useState('Original condition');
   const [reqDelivery, setReqDelivery] = useState('Delivery');
   const [reqNotes, setReqNotes] = useState('');
+  const [reviewsState, setReviewsState] = useState({ loading: true, error: '', data: null });
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadReviews() {
+      try {
+        const response = await fetch(GOOGLE_REVIEWS_ENDPOINT, {
+          headers: { accept: 'application/json' },
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload?.error || 'Unable to load Google reviews');
+        }
+
+        if (!active) return;
+        setReviewsState({ loading: false, error: '', data: payload });
+      } catch (error) {
+        if (!active) return;
+        setReviewsState({ loading: false, error: error?.message || 'Unable to load Google reviews', data: null });
+      }
+    }
+
+    loadReviews();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   function submitAvailabilityRequest(e) {
     e.preventDefault();
@@ -404,6 +440,61 @@ export default function App() {
             <div className="support-point"><ShieldCheck size={16} aria-hidden="true" /><span>Condition explained clearly before purchase</span></div>
             <div className="support-point"><Truck size={16} aria-hidden="true" /><span>Delivery updates shared on WhatsApp</span></div>
           </div>
+        </section>
+
+        <section className="card" id="reviews" aria-labelledby="reviews-title">
+          <div className="reviews-header">
+            <div>
+              <h2 id="reviews-title">Google reviews</h2>
+              <p className="muted">Recent Google feedback from verified customers.</p>
+            </div>
+            {reviewsState.data?.writeReviewUrl ? (
+              <a className="btn btn-outline" href={reviewsState.data.writeReviewUrl} target="_blank" rel="noopener noreferrer">
+                Leave a review
+              </a>
+            ) : null}
+          </div>
+
+          {reviewsState.data?.averageRating ? (
+            <div className="reviews-summary" aria-label="Google rating summary">
+              <div className="reviews-score">{reviewsState.data.averageRating.toFixed(1)}</div>
+              <div>
+                <div className="reviews-stars" aria-hidden="true">{renderStars(reviewsState.data.averageRating)}</div>
+                <div className="reviews-meta">
+                  {reviewsState.data.totalRatings ? `${reviewsState.data.totalRatings} Google ratings` : 'Google rating'}
+                </div>
+              </div>
+            </div>
+          ) : null}
+
+          {reviewsState.loading ? <p className="muted">Loading Google reviews…</p> : null}
+          {!reviewsState.loading && reviewsState.error ? <p className="muted">{reviewsState.error}</p> : null}
+
+          {!reviewsState.loading && !reviewsState.error && reviewsState.data?.reviews?.length ? (
+            <div className="reviews-grid" role="list" aria-label="Google reviews list">
+              {reviewsState.data.reviews.map((review) => (
+                <article key={`${review.authorName}-${review.time || review.text}`} className="review-card" role="listitem">
+                  <div className="review-top">
+                    {review.profilePhotoUrl ? (
+                      <img className="review-avatar" src={review.profilePhotoUrl} alt="" loading="lazy" referrerPolicy="no-referrer" />
+                    ) : (
+                      <div className="review-avatar review-avatar-fallback" aria-hidden="true">
+                        {review.authorName.slice(0, 1).toUpperCase()}
+                      </div>
+                    )}
+                    <div>
+                      <div className="review-author">{review.authorName}</div>
+                      <div className="reviews-stars review-card-stars" aria-label={`${review.rating} out of 5 stars`}>
+                        {renderStars(review.rating)}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="review-text">{review.text}</p>
+                  {review.relativeTimeDescription ? <div className="review-age">{review.relativeTimeDescription}</div> : null}
+                </article>
+              ))}
+            </div>
+          ) : null}
         </section>
 
         <section className="card" id="contact" aria-labelledby="contact-title">

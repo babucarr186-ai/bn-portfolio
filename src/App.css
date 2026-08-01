@@ -496,6 +496,119 @@ main {
   background: #242c33;
 }
 
+.reviews-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.reviews-summary {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg,#fff8e1,#ffffff);
+  border: 1px solid rgba(191, 143, 0, 0.18);
+}
+
+[data-theme='dark'] .reviews-summary {
+  background: linear-gradient(135deg,#2b2413,#1b1f24);
+  border-color: rgba(255, 204, 92, 0.18);
+}
+
+.reviews-score {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.reviews-stars {
+  color: #c98700;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+}
+
+.reviews-meta {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.reviews-grid {
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 760px) {
+  .reviews-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.review-card {
+  border-radius: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg,#ffffff,#f7f5ef);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+[data-theme='dark'] .review-card {
+  background: #1e252b;
+  border-color: #2c343b;
+}
+
+.review-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 48px;
+}
+
+.review-avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#ffcc5c,#f28b25);
+  color: #2b1a00;
+  font-weight: 800;
+}
+
+.review-author {
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.review-card-stars {
+  margin-top: 4px;
+  font-size: 0.78rem;
+}
+
+.review-text {
+  margin: 12px 0 0;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.review-age {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 /* Availability request form */
 .availability-form {
   margin-top: 12px;
