@@ -602,6 +602,123 @@ html[data-category='iphones'] #inventory.section{
   color: var(--muted);
   font-weight: 650;
   max-width: 65ch;
+
+.home-reviews-header{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.home-reviews-cta[hidden],
+.home-reviews-summary[hidden],
+.home-reviews-status[hidden]{
+  display: none;
+}
+
+.home-reviews-summary{
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(255, 248, 225, 0.95), rgba(255, 255, 255, 0.98));
+  border: 1px solid rgba(191, 143, 0, 0.18);
+  box-shadow: 0 14px 36px rgba(0,0,0,0.06);
+}
+
+.home-reviews-score{
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.home-reviews-stars{
+  color: #c98700;
+  font-size: 0.9rem;
+  letter-spacing: 0.12em;
+}
+
+.home-reviews-meta{
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.home-reviews-status{
+  margin-top: 14px;
+}
+
+.home-reviews-grid{
+  margin-top: 14px;
+  display: grid;
+  gap: 12px;
+}
+
+.home-review-card{
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(11,15,22,0.08);
+  box-shadow: 0 16px 38px rgba(0,0,0,0.06);
+}
+
+.home-review-top{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-review-avatar{
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 48px;
+}
+
+.home-review-avatar-fallback{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffcc5c, #f28b25);
+  color: #2b1a00;
+  font-weight: 900;
+}
+
+.home-review-author{
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.home-review-card-stars{
+  margin-top: 4px;
+  font-size: 0.78rem;
+}
+
+.home-review-text{
+  margin: 12px 0 0;
+  color: rgba(11,15,22,0.82);
+  font-size: 0.94rem;
+  line-height: 1.55;
+}
+
+.home-review-age{
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+@media (min-width: 760px){
+  .home-reviews-grid{
+    grid-template-columns: 1fr 1fr;
+  }
+}
   text-wrap: balance;
   overflow-wrap: break-word;
 }

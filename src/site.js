@@ -13,6 +13,7 @@ import { watches } from './catalog/data/watches.js';
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
 const WHATSAPP_NUMBER = '4915679652076';
+const GOOGLE_REVIEWS_ENDPOINT = 'https://phenomenal-cendol-d1b2f7.netlify.app/.netlify/functions/google-reviews';
 
 const CART_PAGE_HREF = './cart.html';
 const CHECKOUT_PAGE_HREF = './checkout.html';
@@ -43,6 +44,11 @@ const CHAT_STOP_WORDS = new Set([
   'do', 'for', 'give', 'got', 'have', 'hello', 'hey', 'hi', 'i', 'in', 'is', 'me', 'need', 'of', 'on', 'please',
   'price', 'prices', 'product', 'products', 'request', 'sell', 'show', 'stock', 'tell', 'the', 'what', 'which', 'with', 'you', 'your',
 ]);
+
+function renderReviewStars(rating) {
+  const safeRating = Number.isFinite(rating) ? Math.max(0, Math.min(5, Math.round(rating))) : 0;
+  return `${'★'.repeat(safeRating)}${'☆'.repeat(5 - safeRating)}`;
+}
 
 function normalizeChatText(value) {
   return String(value || '')
@@ -389,6 +395,111 @@ function initAvailabilityForm() {
 
     window.open(buildWhatsAppLink(msg), '_blank', 'noopener,noreferrer');
   });
+}
+
+async function initGoogleReviews() {
+  const grid = document.getElementById('reviewsGrid');
+  const status = document.getElementById('reviewsStatus');
+  const summary = document.getElementById('reviewsSummary');
+  const score = document.getElementById('reviewsScore');
+  const stars = document.getElementById('reviewsStars');
+  const meta = document.getElementById('reviewsMeta');
+  const writeLink = document.getElementById('reviewsWriteLink');
+
+  if (!grid || !status || !summary || !score || !stars || !meta || !writeLink) return;
+
+  const setStatus = (message) => {
+    status.textContent = message;
+    status.hidden = !message;
+  };
+
+  try {
+    const response = await fetch(GOOGLE_REVIEWS_ENDPOINT, {
+      headers: { accept: 'application/json' },
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      throw new Error(payload?.error || 'Unable to load Google reviews');
+    }
+
+    if (payload?.writeReviewUrl) {
+      writeLink.href = payload.writeReviewUrl;
+      writeLink.hidden = false;
+    }
+
+    if (Number.isFinite(payload?.averageRating)) {
+      score.textContent = payload.averageRating.toFixed(1);
+      stars.textContent = renderReviewStars(payload.averageRating);
+      meta.textContent = payload.totalRatings ? `${payload.totalRatings} Google ratings` : 'Google rating';
+      summary.hidden = false;
+    }
+
+    const reviews = Array.isArray(payload?.reviews) ? payload.reviews : [];
+    if (!reviews.length) {
+      setStatus('No Google reviews are available right now.');
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    reviews.forEach((review) => {
+      const card = document.createElement('article');
+      card.className = 'home-review-card';
+      card.setAttribute('role', 'listitem');
+
+      const top = document.createElement('div');
+      top.className = 'home-review-top';
+
+      let avatar;
+      if (review?.profilePhotoUrl) {
+        avatar = document.createElement('img');
+        avatar.className = 'home-review-avatar';
+        avatar.src = review.profilePhotoUrl;
+        avatar.alt = '';
+        avatar.loading = 'lazy';
+        avatar.referrerPolicy = 'no-referrer';
+      } else {
+        avatar = document.createElement('div');
+        avatar.className = 'home-review-avatar home-review-avatar-fallback';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.textContent = String(review?.authorName || 'G').slice(0, 1).toUpperCase();
+      }
+
+      const body = document.createElement('div');
+
+      const author = document.createElement('div');
+      author.className = 'home-review-author';
+      author.textContent = review?.authorName || 'Google customer';
+
+      const rating = document.createElement('div');
+      rating.className = 'home-reviews-stars home-review-card-stars';
+      rating.setAttribute('aria-label', `${Number.isFinite(review?.rating) ? review.rating : 0} out of 5 stars`);
+      rating.textContent = renderReviewStars(Number(review?.rating));
+
+      body.append(author, rating);
+      top.append(avatar, body);
+
+      const text = document.createElement('p');
+      text.className = 'home-review-text';
+      text.textContent = String(review?.text || '').trim();
+
+      card.append(top, text);
+
+      if (review?.relativeTimeDescription) {
+        const age = document.createElement('div');
+        age.className = 'home-review-age';
+        age.textContent = review.relativeTimeDescription;
+        card.append(age);
+      }
+
+      fragment.appendChild(card);
+    });
+
+    grid.replaceChildren(fragment);
+    setStatus('');
+  } catch (error) {
+    setStatus(error?.message || 'Unable to load Google reviews');
+  }
 }
 
 async function initStorefrontHero() {
@@ -1299,6 +1410,7 @@ initHeaderActions();
 initWhatsAppLinks();
 initMobileCategoryNav();
 initAvailabilityForm();
+void initGoogleReviews();
 startStorefrontHero();
 initImageViewer();
 initChatWidget();
