@@ -1,12 +1,20 @@
 /* global process */
 import { json } from './_pushStore.js';
 
-const GOOGLE_PLACE_DETAILS_URL = 'https://maps.googleapis.com/maps/api/place/details/json';
+const GOOGLE_PLACE_DETAILS_URL = 'https://places.googleapis.com/v1/places';
 const DEFAULT_REVIEW_LIMIT = 4;
 const ALLOWED_ORIGINS = new Set([
   'https://uncleapplestore.com',
   'https://www.uncleapplestore.com',
 ]);
+
+const GOOGLE_PLACE_FIELD_MASK = [
+  'displayName',
+  'rating',
+  'userRatingCount',
+  'reviews',
+  'googleMapsLinks',
+].join(',');
 
 function trim(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -40,14 +48,19 @@ function buildMapsUrl(placeId, businessName) {
   return `https://www.google.com/search?q=${encodeURIComponent(`${businessName} reviews`)}`;
 }
 
+function toUnixTimeSeconds(value) {
+  const timestamp = Date.parse(trim(value));
+  return Number.isFinite(timestamp) ? Math.floor(timestamp / 1000) : null;
+}
+
 function normalizeReview(review) {
   return {
-    authorName: trim(review?.author_name) || 'Google customer',
-    profilePhotoUrl: trim(review?.profile_photo_url),
+    authorName: trim(review?.authorAttribution?.displayName) || 'Google customer',
+    profilePhotoUrl: trim(review?.authorAttribution?.photoUri),
     rating: Number.isFinite(review?.rating) ? review.rating : 0,
-    relativeTimeDescription: trim(review?.relative_time_description),
-    text: trim(review?.text),
-    time: Number.isFinite(review?.time) ? review.time : null,
+    relativeTimeDescription: trim(review?.relativePublishTimeDescription),
+    text: trim(review?.originalText?.text) || trim(review?.text?.text),
+    time: toUnixTimeSeconds(review?.publishTime),
   };
 }
 
@@ -76,15 +89,17 @@ export async function handler(event) {
     }, corsHeaders);
   }
 
-  const url = new URL(GOOGLE_PLACE_DETAILS_URL);
-  url.searchParams.set('place_id', placeId);
-  url.searchParams.set('fields', 'name,rating,user_ratings_total,reviews,url');
-  url.searchParams.set('reviews_sort', 'newest');
-  url.searchParams.set('key', apiKey);
+  const url = new URL(`${GOOGLE_PLACE_DETAILS_URL}/${encodeURIComponent(placeId)}`);
 
   let response;
   try {
-    response = await fetch(url);
+    response = await fetch(url, {
+      headers: {
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-FieldMask': GOOGLE_PLACE_FIELD_MASK,
+        Accept: 'application/json',
+      },
+    });
   } catch (error) {
     console.log('google-reviews fetch failed', { message: error?.message });
     return json(502, { error: 'Unable to reach Google Places' }, corsHeaders);
@@ -104,17 +119,16 @@ export async function handler(event) {
     return json(502, { error: 'Invalid Google Places response' }, corsHeaders);
   }
 
-  if (payload?.status !== 'OK' || !payload?.result) {
+  if (!response.ok || !payload || typeof payload !== 'object' || Array.isArray(payload)) {
     return json(502, {
       error: 'Google Places returned an error',
-      status: payload?.status || 'UNKNOWN',
-      message: trim(payload?.error_message),
+      status: trim(payload?.error?.status) || 'UNKNOWN',
+      message: trim(payload?.error?.message),
     }, corsHeaders);
   }
 
-  const result = payload.result;
-  const reviews = Array.isArray(result.reviews)
-    ? result.reviews
+  const reviews = Array.isArray(payload.reviews)
+    ? payload.reviews
         .map(normalizeReview)
         .filter((review) => review.text)
         .slice(0, DEFAULT_REVIEW_LIMIT)
@@ -123,11 +137,11 @@ export async function handler(event) {
   return json(
     200,
     {
-      businessName: trim(result.name) || businessName,
-      averageRating: Number.isFinite(result.rating) ? result.rating : null,
-      totalRatings: Number.isFinite(result.user_ratings_total) ? result.user_ratings_total : null,
+      businessName: trim(payload?.displayName?.text) || businessName,
+      averageRating: Number.isFinite(payload?.rating) ? payload.rating : null,
+      totalRatings: Number.isFinite(payload?.userRatingCount) ? payload.userRatingCount : null,
       reviews,
-      writeReviewUrl: trim(result.url) || buildMapsUrl(placeId, businessName),
+      writeReviewUrl: trim(payload?.googleMapsLinks?.writeAReviewUri) || buildMapsUrl(placeId, businessName),
     },
     {
       ...corsHeaders,
