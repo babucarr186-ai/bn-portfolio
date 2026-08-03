@@ -1,5 +1,37 @@
 export const accessories = [
   {
+    title: 'Apple EarPods with Lightning Connector',
+    subtitle: 'Remote control • Microphone • White • GMD 1,650',
+    kind: 'square',
+    price: 1650,
+    description:
+      'Apple EarPods with a Lightning connector, built-in remote control, and microphone. White wired earphones for compatible iPhones and iPads.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple EarPods with Lightning Connector — remote control, microphone, white. Price GMD 1,650.',
+    mediaFit: 'contain',
+    mediaPad: 10,
+    images: [
+      'products/accessories/apple-earpods-lightning-white-1.jpeg?v=20260803-1',
+      'products/accessories/apple-earpods-lightning-white-2.jpeg?v=20260803-1',
+      'products/accessories/apple-earpods-lightning-white-3.jpeg?v=20260803-1',
+    ],
+  },
+  {
+    title: 'Apple Magic Keyboard (Finnish/Swedish Layout)',
+    subtitle: 'Wireless Bluetooth • USB-C charging • White • QWERTY • GMD 3,000',
+    kind: 'square',
+    price: 3000,
+    description:
+      'Apple Magic Keyboard in white with a Finnish/Swedish QWERTY layout. Connects wirelessly through Bluetooth and charges through USB-C.',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple Magic Keyboard — Finnish/Swedish QWERTY layout, white, wireless Bluetooth with USB-C charging. Price GMD 3,000.',
+    mediaFit: 'contain',
+    mediaPad: 12,
+    images: [
+      'products/accessories/apple-magic-keyboard-finnish-swedish-white.jpeg?v=20260803-1',
+    ],
+  },
+  {
     title: 'Money Moves Creative Case – iPhone 13 Pro',
     subtitle: 'Orange • Protective raised edges • GMD 350',
     kind: 'square',
