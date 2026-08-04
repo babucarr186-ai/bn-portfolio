@@ -112,6 +112,7 @@ export const watches = [
     subtitle: '42mm • Gold aluminium case • Pink Sand sport band • Ready to use • GMD 5,825',
     kind: 'square',
     price: 5825,
+    sold: true,
     description:
       'Apple Watch Series 3 (42mm) with a Gold aluminium case and Pink Sand sport band. Ready to use, clean everyday Apple Watch for calls, notifications, and fitness tracking.',
     whatsAppMessage:
