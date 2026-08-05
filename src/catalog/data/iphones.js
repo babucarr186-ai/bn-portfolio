@@ -289,23 +289,22 @@ export const iphones = [
   },
   {
     title: 'iPhone 13 Pro Max',
-    subtitle: 'Gold • 128GB • Battery 82% • Used • Back glass broken • Price on request',
+    subtitle: 'Silver • 128GB • Battery 89% • Used • Back glass broken • Price on request',
     kind: 'phone',
-    color: 'Gold',
+    color: 'Silver',
     storage: '128GB',
     condition: 'Used — Back glass broken',
-    batteryHealth: '82%',
+    batteryHealth: '89%',
     price: null,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability and price for: iPhone 13 Pro Max — Gold, 128GB, battery 82%, used condition (back glass broken). In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability and price for: iPhone 13 Pro Max — Silver, 128GB, battery 89%, used condition (back glass broken). In The Gambia.',
     description:
-      `Color Gold. Storage 128GB. Battery capacity 82%. Condition used. Back glass is broken. ${ESIM_UNLOCKED_DETAILS} Price on request.`,
+      `Color Silver. Storage 128GB. Battery capacity 89%. Condition used. Back glass is broken. ${ESIM_UNLOCKED_DETAILS} Price on request.`,
     productTitle:
-      'iPhone 13 Pro Max (128GB) — Gold — Used (Back glass broken) — Battery 82%',
+      'iPhone 13 Pro Max (128GB) — Silver — Used (Back glass broken) — Battery 89%',
     images: [
-      'products/iphones/iphone-13-pro-max-gold-128gb/iphone-13-pro-max-gold-128gb-1.jpg',
-      'products/iphones/iphone-13-pro-max-gold-128gb/iphone-13-pro-max-gold-128gb-2.jpg',
-      'products/iphones/iphone-13-pro-max-gold-128gb/iphone-13-pro-max-gold-128gb-3.jpg',
+      'products/iphones/iphone-13-pro-max-silver-128gb/iphone-13-pro-max-silver-128gb-1.jpeg',
+      'products/iphones/iphone-13-pro-max-silver-128gb/iphone-13-pro-max-silver-128gb-2.jpeg',
     ],
   },
   {
