@@ -2,6 +2,31 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 
 export const iphones = [
   {
+    title: 'iPhone 16 Plus',
+    subtitle: 'Blue • 128GB / 256GB • Battery 85–100% • No SIM lock • Box + charging cable • GMD 58,000',
+    kind: 'phone',
+    color: 'Blue',
+    storage: '128GB / 256GB',
+    condition: 'Used — Ready to use',
+    batteryHealth: '85–100%',
+    price: 58000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 16 Plus — Blue, 128GB or 256GB, battery health 85–100%, no SIM lock, box and charging cable included. Price GMD 58,000. In The Gambia.',
+    description:
+      'Blue iPhone 16 Plus available with 128GB or 256GB storage and 85–100% battery health. No SIM lock. Box and USB-C charging cable included. Used, checked, and ready to use. Price GMD 58,000.',
+    productTitle:
+      'iPhone 16 Plus (128GB / 256GB) — Blue — Battery 85–100% — No SIM lock',
+    images: [
+      'products/iphones/iphone-16-plus-blue/iphone-16-plus-blue-boxes.jpeg',
+      'products/iphones/iphone-16-plus-blue/iphone-16-plus-blue-back.jpeg',
+      'products/iphones/iphone-16-plus-blue/iphone-16-plus-blue-front.jpeg',
+      'products/iphones/iphone-16-plus-blue/iphone-16-plus-blue-box-cable.jpeg',
+      'products/iphones/iphone-16-plus-blue/iphone-16-plus-blue-usb-c.jpeg',
+    ],
+    mediaFit: 'contain',
+    mediaPad: 18,
+  },
+  {
     title: 'iPhone 14 Pro Max',
     subtitle: '128GB • Premium finish • Ready to use • GMD 40,000',
     kind: 'phone',
