@@ -7,7 +7,7 @@
   - Network-first for HTML navigations
 */
 
-const CACHE_VERSION = 'v2-20260415';
+const CACHE_VERSION = 'v3-20260810-logo';
 const CORE_CACHE = `core-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 const IMAGE_CACHE = `images-${CACHE_VERSION}`;
