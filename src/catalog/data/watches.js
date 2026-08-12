@@ -5,6 +5,7 @@ export const watches = [
       'Compatible with 42/44/45MM • Includes protective TPU case • Stainless steel look • Easy adjustable fit • GMD 1,500',
     kind: 'square',
     price: 1500,
+    sold: true,
     description:
       'Premium two-tone Apple Watch band + case set with a stainless steel look. Compatible with 42/44/45mm Apple Watch sizes and includes a protective TPU case. Easy adjustable fit for comfortable everyday wear.',
     whatsAppMessage:
