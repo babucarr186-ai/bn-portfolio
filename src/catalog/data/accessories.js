@@ -1,13 +1,13 @@
 export const accessories = [
   {
-    title: 'Mecca Hajj Love Gesture Case — iPhone 17',
-    subtitle: 'Black / Mixed colour • Drop-proof protection • Large camera opening • Price on request',
+    title: 'Mecca Hajj Love Gesture Case for iPhone 17',
+    subtitle: 'Black / Mixed colour • Drop protection • Large camera opening • GMD 350',
     kind: 'square',
-    price: null,
+    price: 350,
     description:
-      'Stylish protective case for iPhone 17 featuring a cartoon Mecca and Hajj love-gesture illustration. The slim design includes drop-proof edges and a fashionable large camera opening for everyday protection.',
+      'Cartoon Mecca Hajj case for iPhone 17. Stylish slim design with drop protection and a large camera opening.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability and price for: Mecca Hajj Love Gesture Case for iPhone 17 — black/mixed colour, drop-proof protection, large camera opening.',
+      'Hi Uncle Apple! Is the Mecca Hajj Love Gesture Case for iPhone 17 available? Price GMD 350.',
     images: [
       'products/accessories/mecca-hajj-love-gesture-case-iphone-17-1.jpeg?v=20260812-1',
       'products/accessories/mecca-hajj-love-gesture-case-iphone-17-2.jpeg?v=20260812-1',
