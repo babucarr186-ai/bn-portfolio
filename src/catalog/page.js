@@ -4,26 +4,17 @@ import {
   renderCatalog,
   renderRecommendationRail,
 } from './renderCatalog.js';
-import { iphones } from './data/iphones.js';
-import { macbooks } from './data/macbooks.js';
-import { watches } from './data/watches.js';
-import { airpods } from './data/airpods.js';
-import { giftCards } from './data/giftcards.js';
-import { accessories } from './data/accessories.js';
-import { ipads } from './data/ipads.js';
-import { appleTvHome } from './data/appleTvHome.js';
-
 const category = document.documentElement.dataset.category || 'iphones';
 
-const map = {
-  iphones,
-  ipads,
-  macbooks,
-  watches,
-  airpods,
-  giftcards: giftCards,
-  accessories,
-  appletvhome: appleTvHome,
+const catalogLoaders = {
+  iphones: () => import('./data/iphones.js').then((module) => module.iphones),
+  ipads: () => import('./data/ipads.js').then((module) => module.ipads),
+  macbooks: () => import('./data/macbooks.js').then((module) => module.macbooks),
+  watches: () => import('./data/watches.js').then((module) => module.watches),
+  airpods: () => import('./data/airpods.js').then((module) => module.airpods),
+  giftcards: () => import('./data/giftcards.js').then((module) => module.giftCards),
+  accessories: () => import('./data/accessories.js').then((module) => module.accessories),
+  appletvhome: () => import('./data/appleTvHome.js').then((module) => module.appleTvHome),
 };
 
 const pageMeta = {
@@ -37,7 +28,7 @@ const pageMeta = {
   appletvhome: { label: 'Apple TV & Home', href: './apple-tv-home.html' },
 };
 
-const products = map[category] || iphones;
+let products = [];
 const PAGE_SIZE = 12;
 const grid = document.getElementById('catalogGrid');
 const wrap = grid?.closest('.catalog-wrap');
@@ -78,7 +69,7 @@ function buildSearchIndex(items) {
   }));
 }
 
-const searchIndex = buildSearchIndex(products);
+let searchIndex = [];
 
 function createPaginationUi(parent) {
   if (!parent) return null;
@@ -217,19 +208,16 @@ function showProductById(targetId) {
   focusRenderedTarget(target.id);
 }
 
-renderPage();
-initTrendingSection();
-
-function initRecommendations(items) {
+function initRecommendations(items, catalogs) {
   if (!wrap || !Array.isArray(items) || !items.length) return;
 
   const categoryOrder = ['iphones', 'ipads', 'macbooks', 'watches', 'airpods', 'giftcards', 'accessories', 'appletvhome'];
   const pools = categoryOrder
     .filter((key) => key !== category)
-    .filter((key) => Array.isArray(map[key]))
+    .filter((key) => Array.isArray(catalogs[key]))
     .map((key) => {
       const meta = pageMeta[key];
-      const productItems = map[key]
+      const productItems = catalogs[key]
         .filter((product) => !product?.sold)
         .map((product, index) => {
           const title = product.title || 'Product';
@@ -375,8 +363,35 @@ function initCatalogHashNavigation() {
   syncHash();
 }
 
-initCatalogPagination();
-initCatalogSearch(searchIndex);
-initRecommendations(searchIndex);
-initCatalogHashNavigation();
-initBackToTop();
+async function loadRecommendations() {
+  const entries = await Promise.all(
+    Object.entries(catalogLoaders).map(async ([key, load]) => [key, await load()]),
+  );
+  initRecommendations(searchIndex, Object.fromEntries(entries));
+}
+
+async function initCatalogPage() {
+  const loadProducts = catalogLoaders[category] || catalogLoaders.iphones;
+  products = await loadProducts();
+  searchIndex = buildSearchIndex(products);
+
+  renderPage();
+  initTrendingSection();
+  initCatalogPagination();
+  initCatalogSearch(searchIndex);
+  initCatalogHashNavigation();
+  initBackToTop();
+
+  const scheduleRecommendations = () => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => void loadRecommendations(), { timeout: 2500 });
+    } else {
+      window.setTimeout(() => void loadRecommendations(), 1200);
+    }
+  };
+
+  if (document.readyState === 'complete') scheduleRecommendations();
+  else window.addEventListener('load', scheduleRecommendations, { once: true });
+}
+
+void initCatalogPage();

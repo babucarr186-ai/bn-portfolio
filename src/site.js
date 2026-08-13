@@ -1,15 +1,3 @@
-import React from 'react';
-import ReactDomClient from 'react-dom/client';
-import StorefrontHeroSlider from './components/StorefrontHeroSlider.jsx';
-
-import { accessories } from './catalog/data/accessories.js';
-import { airpods } from './catalog/data/airpods.js';
-import { giftCards } from './catalog/data/giftcards.js';
-import { ipads } from './catalog/data/ipads.js';
-import { iphones } from './catalog/data/iphones.js';
-import { macbooks } from './catalog/data/macbooks.js';
-import { watches } from './catalog/data/watches.js';
-
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
 const WHATSAPP_NUMBER = '4915679652076';
@@ -29,15 +17,34 @@ const CHAT_CATEGORY_MAP = {
   accessories: { label: 'Accessories', href: './accessories.html', terms: ['accessory', 'accessories', 'pencil', 'keyboard', 'mouse', 'adapter', 'charger', 'magsafe'] },
 };
 
-const CHAT_PRODUCT_SOURCES = {
-  iphones,
-  ipads,
-  macbooks,
-  watches,
-  airpods,
-  giftcards: giftCards,
-  accessories,
-};
+let chatProductSources = null;
+let chatInventory = [];
+
+async function loadChatInventory() {
+  if (chatProductSources) return;
+
+  const [accessoriesModule, airpodsModule, giftCardsModule, ipadsModule, iphonesModule, macbooksModule, watchesModule] =
+    await Promise.all([
+      import('./catalog/data/accessories.js'),
+      import('./catalog/data/airpods.js'),
+      import('./catalog/data/giftcards.js'),
+      import('./catalog/data/ipads.js'),
+      import('./catalog/data/iphones.js'),
+      import('./catalog/data/macbooks.js'),
+      import('./catalog/data/watches.js'),
+    ]);
+
+  chatProductSources = {
+    iphones: iphonesModule.iphones,
+    ipads: ipadsModule.ipads,
+    macbooks: macbooksModule.macbooks,
+    watches: watchesModule.watches,
+    airpods: airpodsModule.airpods,
+    giftcards: giftCardsModule.giftCards,
+    accessories: accessoriesModule.accessories,
+  };
+  chatInventory = buildChatInventory();
+}
 
 const CHAT_STOP_WORDS = new Set([
   'a', 'an', 'and', 'any', 'are', 'available', 'availability', 'can', 'check', 'confirm', 'current', 'currently',
@@ -97,7 +104,7 @@ function buildChatSummary(product) {
 }
 
 function buildChatInventory() {
-  return Object.entries(CHAT_PRODUCT_SOURCES).flatMap(([categoryKey, list]) => {
+  return Object.entries(chatProductSources || {}).flatMap(([categoryKey, list]) => {
     const meta = CHAT_CATEGORY_MAP[categoryKey];
     return (Array.isArray(list) ? list : []).map((product, index) => {
       const title = String(product?.title || 'Product');
@@ -129,8 +136,6 @@ function buildChatInventory() {
   });
 }
 
-const CHAT_INVENTORY = buildChatInventory();
-
 function detectChatCategory(query) {
   const normalized = normalizeChatText(query);
   return Object.entries(CHAT_CATEGORY_MAP).find(([, meta]) => meta.terms.some((term) => normalized.includes(term)))?.[0] || null;
@@ -146,7 +151,7 @@ function findChatMatches(query) {
   const tokens = tokenizeChatQuery(query);
   const categoryKey = detectChatCategory(query);
 
-  return CHAT_INVENTORY.map((item) => {
+  return chatInventory.map((item) => {
     let score = 0;
     tokens.forEach((token) => {
       if (item.title.toLowerCase().includes(token)) score += 4;
@@ -168,7 +173,7 @@ function buildChatProductReply(query) {
   const availableMatches = matches.filter((item) => !item.sold);
 
   if (categoryKey && /(what|which|show|have|available|stock|any)/.test(normalized)) {
-    const categoryItems = CHAT_INVENTORY.filter((item) => item.categoryKey === categoryKey && !item.sold).slice(0, 4);
+    const categoryItems = chatInventory.filter((item) => item.categoryKey === categoryKey && !item.sold).slice(0, 4);
     if (categoryItems.length) {
       const list = categoryItems.map((item) => `${item.title}${item.summary ? ` (${item.summary})` : ''}`).join('; ');
       return `Available ${CHAT_CATEGORY_MAP[categoryKey].label.toLowerCase()} right now: ${list}.`;
@@ -505,6 +510,12 @@ async function initGoogleReviews() {
 async function initStorefrontHero() {
   const mountNode = document.getElementById('storefrontHeroRoot');
   if (!mountNode) return;
+
+  const [{ default: React }, ReactDomClient, { default: StorefrontHeroSlider }] = await Promise.all([
+    import('react'),
+    import('react-dom/client'),
+    import('./components/StorefrontHeroSlider.jsx'),
+  ]);
 
   mountNode.innerHTML = '';
 
@@ -1189,8 +1200,10 @@ function initImageViewer() {
   });
 }
 
-function initChatWidget() {
+async function initChatWidget() {
   if (document.getElementById('uaChatWidget')) return;
+
+  await loadChatInventory();
 
   const container = document.createElement('div');
   container.id = 'uaChatWidget';
@@ -1428,11 +1441,21 @@ initHeaderActions();
 initWhatsAppLinks();
 initMobileCategoryNav();
 initAvailabilityForm();
-void initGoogleReviews();
+const reviewsGrid = document.getElementById('reviewsGrid');
+if (reviewsGrid && 'IntersectionObserver' in window) {
+  const reviewsObserver = new IntersectionObserver((entries, observer) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    observer.disconnect();
+    void initGoogleReviews();
+  }, { rootMargin: '600px 0px' });
+  reviewsObserver.observe(reviewsGrid);
+} else if (reviewsGrid) {
+  window.setTimeout(() => void initGoogleReviews(), 1200);
+}
 startStorefrontHero();
 initImageViewer();
 if (document.documentElement.hasAttribute('data-enable-legacy-chat')) {
-  initChatWidget();
+  void initChatWidget();
 } else {
   initFloatingWhatsAppButton();
 }
