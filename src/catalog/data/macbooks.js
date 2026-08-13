@@ -1,5 +1,37 @@
 export const macbooks = [
 	{
+		title: 'MacBook Pro 14-inch (M5)',
+		subtitle:
+			'Space Black • M5 chip • 16GB unified memory • 1TB SSD • Brand new • Factory sealed • Original Apple receipt • Price on request',
+		kind: 'laptop',
+		cpu: 'Apple M5 chip',
+		ram: '16GB unified memory',
+		storage: '1TB SSD',
+		color: 'Space Black',
+		display: '14-inch display',
+		condition: 'Brand new — Factory sealed',
+		price: null,
+		specs: [
+			'Model: MacBook Pro 14-inch',
+			'Chip: Apple M5',
+			'Memory: 16GB unified memory',
+			'Storage: 1TB SSD',
+			'Color: Space Black',
+			'Condition: Brand new and factory sealed',
+			'Proof of purchase: Original Apple receipt included',
+		],
+		whatsAppMessage:
+			'Hi Uncle Apple! Is the brand-new sealed MacBook Pro 14-inch with M5 chip, 16GB unified memory, and 1TB SSD available? Please confirm the price.',
+		description:
+			'Brand-new 14-inch MacBook Pro in Space Black with Apple M5 chip, 16GB unified memory, and 1TB SSD. Factory sealed in the original box and supplied with the original Apple receipt.',
+		productTitle:
+			'MacBook Pro 14-inch (M5) — Space Black — 16GB • 1TB — Brand new and sealed',
+		images: [
+			'products/macbooks/macbook-pro-14-m5-16gb-1tb-sealed/macbook-pro-14-m5-box-front.jpeg?v=20260813-1',
+			'products/macbooks/macbook-pro-14-m5-16gb-1tb-sealed/macbook-pro-14-m5-box-back.jpeg?v=20260813-1',
+		],
+	},
+	{
 		title: 'MacBook Air 13.3-inch (2019)',
 		subtitle:
 			'Rose Gold • 8GB RAM • 256GB SSD • Battery 92% • 130 cycles • Grade A • Touch ID working • GMD 35,000',
