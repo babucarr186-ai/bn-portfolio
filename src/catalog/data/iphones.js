@@ -527,6 +527,7 @@ export const iphones = [
     condition: 'Used — Very clean',
     batteryHealth: '78%',
     price: 22200,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 12 Pro Max — Gold, 128GB, battery 78%, very clean condition, charger cable available. Price GMD 22,200. In The Gambia.',
     description:
