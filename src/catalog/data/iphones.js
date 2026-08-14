@@ -607,6 +607,7 @@ export const iphones = [
     subtitle: 'Gold • 256GB • Battery service 75% • Used (Like new) • Original parts • Very clean • GMD 17,500',
     kind: 'phone',
     price: 17500,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 11 Pro Max — Gold, 256GB, battery service 75%, used (like new), original parts, very clean. In The Gambia.',
     description:
