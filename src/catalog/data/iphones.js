@@ -2,6 +2,26 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 
 export const iphones = [
   {
+    title: 'iPhone 13',
+    subtitle: 'Green • 128GB • Battery 84% • Used • Box and accessories included • Price on request',
+    kind: 'phone',
+    color: 'Green',
+    storage: '128GB',
+    condition: 'Used',
+    batteryHealth: '84%',
+    price: null,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability and price for: iPhone 13 — Green, 128GB, battery health 84%, used, with box and accessories shown. In The Gambia.',
+    description:
+      'Used green iPhone 13 with 128GB storage and 84% battery health. Includes the box, charging cable, power adapter, and SIM-eject tool shown in the photos. Price on request.',
+    productTitle: 'iPhone 13 (128GB) — Green — Used — Battery 84%',
+    images: [
+      'products/iphones/iphone-13-green-128gb-battery-84/iphone-13-green-box.jpeg',
+      'products/iphones/iphone-13-green-128gb-battery-84/iphone-13-green-with-cable.jpeg',
+      'products/iphones/iphone-13-green-128gb-battery-84/iphone-13-green-accessories.jpeg',
+    ],
+  },
+  {
     title: 'iPhone 16 Plus',
     subtitle: 'Blue • 128GB / 256GB • Battery 85–100% • No SIM lock • Box + charging cable • GMD 58,000',
     kind: 'phone',
