@@ -341,6 +341,7 @@ export const iphones = [
     condition: 'Used — Back glass broken',
     batteryHealth: '89%',
     price: null,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability and price for: iPhone 13 Pro Max — Silver, 128GB, battery 89%, used condition (back glass broken). In The Gambia.',
     description:
