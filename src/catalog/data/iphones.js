@@ -23,16 +23,16 @@ export const iphones = [
   },
   {
     title: 'iPhone 17 Pro Max',
-    subtitle: 'Silver • 512GB • Brand new • Factory sealed • Original Apple device from Germany • Available in The Gambia • Price on request',
+    subtitle: 'Silver • 512GB • Brand new • Factory sealed • Original Apple device from Germany • Available in The Gambia • GMD 120,000',
     kind: 'phone',
     color: 'Silver',
     storage: '512GB',
     condition: 'Brand new — Factory sealed',
-    price: null,
+    price: 120000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability and price for: iPhone 17 Pro Max — Silver, 512GB, brand new and factory sealed, original Apple device from Germany, available in The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Pro Max — Silver, 512GB, brand new and factory sealed, original Apple device from Germany, available in The Gambia. Price GMD 120,000.',
     description:
-      'Brand-new Silver iPhone 17 Pro Max with 512GB storage, factory sealed in the original box. Original Apple device sourced from Germany and available in The Gambia now. Price on request.',
+      'Brand-new Silver iPhone 17 Pro Max with 512GB storage, factory sealed in the original box. Original Apple device sourced from Germany and available in The Gambia now. Price GMD 120,000.',
     productTitle: 'iPhone 17 Pro Max (512GB) — Silver — Brand new and sealed — Germany sourced',
     images: [
       'products/iphones/iphone-17-pro-max-512gb-silver-sealed/iphone-17-pro-max-512gb-silver-box.jpeg',
