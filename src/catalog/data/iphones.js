@@ -2,6 +2,43 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 
 export const iphones = [
   {
+    title: 'iPhone 14 Pro Max',
+    subtitle: 'Silver • 256GB • Grade A • Battery 85% • Box and charging cable • Germany sourced • GMD 45,000',
+    kind: 'phone',
+    color: 'Silver',
+    storage: '256GB',
+    condition: 'Used — Grade A',
+    batteryHealth: '85%',
+    price: 45000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max — Silver, 256GB, Grade A condition, battery 85%, box and charging cable included, sourced from Germany. Price GMD 45,000. In The Gambia.',
+    description:
+      'Beautiful Silver iPhone 14 Pro Max with 256GB storage, Grade A condition, and 85% battery health. Includes the box and charging cable. Sourced from Germany and available for GMD 45,000.',
+    productTitle: 'iPhone 14 Pro Max (256GB) — Silver — Grade A — Battery 85%',
+    images: [
+      'products/iphones/iphone-14-pro-max-256gb-silver-grade-a/iphone-14-pro-max-silver-back.jpeg',
+      'products/iphones/iphone-14-pro-max-256gb-silver-grade-a/iphone-14-pro-max-silver-box-cable.jpeg',
+      'products/iphones/iphone-14-pro-max-256gb-silver-grade-a/iphone-14-pro-max-silver-side.jpeg',
+    ],
+  },
+  {
+    title: 'iPhone 17 Pro Max',
+    subtitle: 'Silver • 512GB • Brand new • Factory sealed • Original Apple device from Germany • Available in The Gambia • Price on request',
+    kind: 'phone',
+    color: 'Silver',
+    storage: '512GB',
+    condition: 'Brand new — Factory sealed',
+    price: null,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability and price for: iPhone 17 Pro Max — Silver, 512GB, brand new and factory sealed, original Apple device from Germany, available in The Gambia.',
+    description:
+      'Brand-new Silver iPhone 17 Pro Max with 512GB storage, factory sealed in the original box. Original Apple device sourced from Germany and available in The Gambia now. Price on request.',
+    productTitle: 'iPhone 17 Pro Max (512GB) — Silver — Brand new and sealed — Germany sourced',
+    images: [
+      'products/iphones/iphone-17-pro-max-512gb-silver-sealed/iphone-17-pro-max-512gb-silver-box.jpeg',
+    ],
+  },
+  {
     title: 'iPhone 13',
     subtitle: 'Green • 128GB • Battery 84% • Used • Box and accessories included • Price on request',
     kind: 'phone',
