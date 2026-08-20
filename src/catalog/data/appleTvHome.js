@@ -8,7 +8,7 @@ export const appleTvHome = [
     description:
       'Apple TV 4K (3rd generation, 2022) with 64GB storage in Black. A strong Apple home device for streaming, movies, sports, and smooth TV control with the Apple ecosystem.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple TV 4K (Gen 3, 2022) — 64GB, black color, used (good condition). Compatible accessories included/available. Price GMD 10,200. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple TV 4K (Gen 3, 2022) - 64GB, black color, used (good condition). Compatible accessories included/available. Price GMD 10,200. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 16,
     images: [
@@ -26,7 +26,7 @@ export const appleTvHome = [
     description:
       'Apple HomePod (2018) in White with rich room-filling sound, Siri voice control, and AirPlay support. A premium Apple speaker choice for music, smart-home control, and everyday listening.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: HomePod (2018) — white color, Wi‑Fi, Siri, AirPlay, excellent condition, with 1-year guarantee. Price GMD 9,500. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: HomePod (2018) - white color, Wi‑Fi, Siri, AirPlay, excellent condition, with 1-year guarantee. Price GMD 9,500. In The Gambia.',
     images: [
       'products/apple-tv-home/homepod-1.jpg?v=20260301-1',
       'products/apple-tv-home/homepod-2.jpg?v=20260301-1',
@@ -42,7 +42,7 @@ export const appleTvHome = [
     description:
       'HomePod mini in White in good condition with warranty included. A compact Apple speaker for music and everyday home audio, with Bluetooth + Wi‑Fi connectivity.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: HomePod mini — white color, good condition, Bluetooth + Wi‑Fi. Warranty included. Price GMD 8,500. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: HomePod mini - white color, good condition, Bluetooth + Wi‑Fi. Warranty included. Price GMD 8,500. In The Gambia.',
     images: [
       'products/apple-tv-home/homepod-mini-1.webp?v=20260301-1',
       'products/apple-tv-home/homepod-mini-2.webp?v=20260301-1',

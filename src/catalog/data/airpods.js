@@ -9,7 +9,7 @@ export const airpods = [
     description:
       'Apple AirPods (2nd generation) in like-new condition, ready to use for calls, music, and everyday listening. A simple Apple audio option for buyers who want easy pairing and reliable daily use.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods (2nd generation) — used (like new), ready to use. Price GMD 4,250. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: AirPods (2nd generation) - used (like new), ready to use. Price GMD 4,250. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -27,7 +27,7 @@ export const airpods = [
     description:
       'Apple AirPods Max (2024) in Beige with premium over-ear comfort, active noise cancellation, transparency mode, and spatial audio. A polished Apple audio option for buyers who want stronger sound and a premium finish.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2024) — beige color, excellent condition. Price GMD 36,550. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2024) - beige color, excellent condition. Price GMD 36,550. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 18,
     images: [
@@ -45,7 +45,7 @@ export const airpods = [
     description:
       'Apple AirPods Max (2020) in Green with over-ear comfort, active noise cancellation, transparency mode, and spatial audio. A strong Apple headphones choice for music, calls, travel, and everyday listening.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2020) — green color, very good condition. Price GMD 22,500. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: AirPods Max (2020) - green color, very good condition. Price GMD 22,500. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 18,
     images: [
@@ -62,7 +62,7 @@ export const airpods = [
     description:
       'Apple AirPods Pro (2nd generation) with a compact in-ear fit, active noise cancellation, transparency mode, and spatial audio. A practical Apple earbuds option for calls, commuting, and daily listening.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: AirPods Pro (2nd generation) — used (good condition). Price GMD 6,375. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: AirPods Pro (2nd generation) - used (good condition). Price GMD 6,375. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [

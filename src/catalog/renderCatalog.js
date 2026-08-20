@@ -202,7 +202,7 @@ function normalizeStorage(value) {
 
 function normalizeCondition(value) {
   const text = normalizeSpace(value)
-    .replace(/^used\s*[—-]\s*/i, '')
+    .replace(/^used\s*-\s*/i, '')
     .replace(/^condition\s*[-:]/i, '')
     .replace(/\bcondition\b/gi, '')
     .trim();

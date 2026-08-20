@@ -1,4 +1,4 @@
-/* Sell Your Device — client-side validation + secure submission */
+/* Sell Your Device - client-side validation + secure submission */
 
 (function () {
   const form = document.getElementById('sellDeviceForm');

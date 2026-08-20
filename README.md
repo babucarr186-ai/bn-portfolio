@@ -34,19 +34,19 @@ This project uses:
 
 ### Functions
 
-- `/.netlify/functions/push-vapid-key` (GET) — returns `{ publicKey }`
-- `/.netlify/functions/push-subscribe` (POST) — stores a subscription
-- `/.netlify/functions/push-subscriptions` (GET, admin) — returns stored subscription ids
-- `/.netlify/functions/push-send` (POST, admin) — sends a push to all stored subscriptions
-- `/.netlify/functions/push-deploy-hook` (POST, deploy webhook) — automatically sends “New Arrival” push after a successful production deploy
+- `/.netlify/functions/push-vapid-key` (GET) - returns `{ publicKey }`
+- `/.netlify/functions/push-subscribe` (POST) - stores a subscription
+- `/.netlify/functions/push-subscriptions` (GET, admin) - returns stored subscription ids
+- `/.netlify/functions/push-send` (POST, admin) - sends a push to all stored subscriptions
+- `/.netlify/functions/push-deploy-hook` (POST, deploy webhook) - automatically sends “New Arrival” push after a successful production deploy
 
 ### Required environment variables (Netlify Project → Environment variables)
 
-- `VAPID_PUBLIC_KEY` — VAPID public key (Base64URL)
-- `VAPID_PRIVATE_KEY` — VAPID private key (Base64URL)
-- `VAPID_SUBJECT` — recommended, e.g. `mailto:you@yourdomain.com`
-- `PUSH_ADMIN_TOKEN` — random secret string used to protect admin endpoints (`push-send`, `push-subscriptions`)
-- `PUSH_DEPLOY_HOOK_TOKEN` — random secret string used to protect the post-deploy webhook endpoint (`push-deploy-hook`)
+- `VAPID_PUBLIC_KEY` - VAPID public key (Base64URL)
+- `VAPID_PRIVATE_KEY` - VAPID private key (Base64URL)
+- `VAPID_SUBJECT` - recommended, e.g. `mailto:you@yourdomain.com`
+- `PUSH_ADMIN_TOKEN` - random secret string used to protect admin endpoints (`push-send`, `push-subscriptions`)
+- `PUSH_DEPLOY_HOOK_TOKEN` - random secret string used to protect the post-deploy webhook endpoint (`push-deploy-hook`)
 
 ### Automatic “New Arrival” notifications (after successful deploy)
 

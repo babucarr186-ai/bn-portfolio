@@ -9,7 +9,7 @@ export const watches = [
     description:
       'Premium two-tone Apple Watch band + case set with a stainless steel look. Compatible with 42/44/45mm Apple Watch sizes and includes a protective TPU case. Easy adjustable fit for comfortable everyday wear.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Premium Two-Tone Apple Watch Band + Case Set — compatible with 42/44/45mm, includes protective TPU case. Price GMD 1,500. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Premium Two-Tone Apple Watch Band + Case Set - compatible with 42/44/45mm, includes protective TPU case. Price GMD 1,500. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -25,7 +25,7 @@ export const watches = [
     description:
       'Apple Watch Ultra 2 (2024) for buyers who want the toughest Apple Watch with a premium finish, GPS + Cellular, and strong everyday performance. A high-end Apple Watch for workouts, outdoor use, and staying connected from your wrist.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Ultra 2 (2024) — fully tested, excellent condition, 12-month warranty. Price GMD 49,200. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Ultra 2 (2024) - fully tested, excellent condition, 12-month warranty. Price GMD 49,200. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -42,7 +42,7 @@ export const watches = [
     description:
       'Apple Watch SE (2022) 40mm is a smart budget-friendly Apple Watch for calls, fitness, notifications, and daily use without overpaying. A practical Apple Watch choice for buyers who want the core Apple experience at a lower price.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch SE (2022) 40mm — fully tested, 12-month warranty. Price GMD 10,620. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch SE (2022) 40mm - fully tested, 12-month warranty. Price GMD 10,620. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: ['products/watches/watch-se-40mm-2022-1.jpg?v=20260301-1'],
@@ -70,7 +70,7 @@ export const watches = [
       'Bluetooth + Wi‑Fi + Cellular (4G/3G capable)',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45MM (Midnight Blue) — 45mm aluminium case with GPS + Cellular, ready to use. We currently have 1 remaining in stock. Price GMD 12,900. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 45MM (Midnight Blue) - 45mm aluminium case with GPS + Cellular, ready to use. We currently have 1 remaining in stock. Price GMD 12,900. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -90,13 +90,13 @@ export const watches = [
       'Apple Watch Series 7 (41mm) in Starlight with a clean look, comfortable fit, and smooth everyday Apple Watch experience. A balanced Apple Watch choice for workouts, messages, and health tracking, with photos available so buyers can review the condition before reserving.',
     specs: [
       '41mm Starlight aluminium case (Polarstern / Starlight)',
-      'Silicone band — soft and easy to clean',
+      'Silicone band - soft and easy to clean',
       'Always‑On display for quick time + notifications',
       'Health features: ECG + Blood Oxygen + heart‑rate tracking',
       'Water resistant for everyday use',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 (41mm) — Starlight — silicone band. Photos available. Price GMD 10,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 7 (41mm) - Starlight - silicone band. Photos available. Price GMD 10,000. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -117,7 +117,7 @@ export const watches = [
     description:
       'Apple Watch Series 3 (42mm) with a Gold aluminium case and Pink Sand sport band. Ready to use, clean everyday Apple Watch for calls, notifications, and fitness tracking.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 3 (42mm) — Gold aluminium case, Pink Sand sport band, ready to use. Price GMD 5,825. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 3 (42mm) - Gold aluminium case, Pink Sand sport band, ready to use. Price GMD 5,825. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -139,7 +139,7 @@ export const watches = [
     description:
       'Apple Watch Series 8 41mm in like-new condition, fully tested and ready for daily use. Battery health is 98%, with warranty included for extra peace of mind.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm — like new, battery 98%, fully tested, warranty included. Price GMD 11,500. We have 1 available. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm - like new, battery 98%, fully tested, warranty included. Price GMD 11,500. We have 1 available. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
@@ -157,7 +157,7 @@ export const watches = [
     description:
       'Apple Watch Series 10 (Titanium) 42mm with a lightweight titanium case, premium finish, and refined modern look. A newer Apple Watch choice for buyers who want something sharper for daily wear, health tracking, and staying connected.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 42mm — fully tested, very good condition, 12-month warranty. Price GMD 20,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 42mm - fully tested, very good condition, 12-month warranty. Price GMD 20,000. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [

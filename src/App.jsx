@@ -232,7 +232,7 @@ export default function App() {
     const color = reqColor || 'Not specified';
     const condition = reqCondition || 'Not specified';
     const delivery = reqDelivery || 'Not specified';
-    const notes = reqNotes.trim() || '—';
+    const notes = reqNotes.trim() || '-';
 
     const msg =
       `Hi ${STORE_NAME}! Please check iPhone availability in ${STORE_LOCATION}.\n` +

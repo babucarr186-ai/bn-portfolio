@@ -60,7 +60,7 @@ function renderReviewStars(rating) {
 function normalizeChatText(value) {
   return String(value || '')
     .toLowerCase()
-    .replace(/[–—‑]/g, '-')
+    .replace(/[-–‑]/g, '-')
     .replace(/[^a-z0-9%+\s-]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
@@ -95,7 +95,7 @@ function buildChatSummary(product) {
   const batteryMatch = subtitle.match(/battery\s*\d{2,3}%/i) || String(product?.batteryHealth || '').match(/\d{2,3}%/);
 
   if (storageMatch) parts.push(storageMatch[0].replace(/\s+/g, ''));
-  if (conditionMatch?.[0]) parts.push(conditionMatch[0].replace(/^used\s*[-—]\s*/i, '').replace(/\bcondition\b/gi, '').trim().replace(/^./, (x) => x.toUpperCase()));
+  if (conditionMatch?.[0]) parts.push(conditionMatch[0].replace(/^used\s*-\s*/i, '').replace(/\bcondition\b/gi, '').trim().replace(/^./, (x) => x.toUpperCase()));
   if (batteryMatch?.[0]) parts.push(/battery/i.test(batteryMatch[0]) ? batteryMatch[0].replace(/^./, (x) => x.toUpperCase()) : `Battery ${batteryMatch[0]}`);
 
   const priceLabel = formatChatPrice(product);
@@ -387,7 +387,7 @@ function initAvailabilityForm() {
     const color = document.getElementById('color')?.value?.trim() || 'Not specified';
     const condition = document.getElementById('condition')?.value || 'Not specified';
     const delivery = document.getElementById('delivery')?.value || 'Not specified';
-    const notes = document.getElementById('notes')?.value?.trim() || '—';
+    const notes = document.getElementById('notes')?.value?.trim() || '-';
 
     const msg =
       `Hi ${STORE_NAME}! Please check availability in ${LOCATION}.\n` +
@@ -1322,7 +1322,7 @@ async function initChatWidget() {
       return `Hi! Ask for any product you want, for example: iPhone XR 128GB, iPad 10th gen, AirPods Pro 2, or MacBook Pro.`;
     }
     if (/(available|availability|in stock|stock)/.test(t)) {
-      return `Sure — tell me the model or category you want, and I’ll check what is currently available.`;
+      return `Sure - tell me the model or category you want, and I’ll check what is currently available.`;
     }
     if (/(delivery|shipping|pickup|pick up|collection)/.test(t)) {
       return `We can arrange delivery or pickup in ${LOCATION}. Which do you prefer?`;

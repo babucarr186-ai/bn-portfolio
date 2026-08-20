@@ -521,7 +521,7 @@ function uaEnsureNotifyBanner() {
 
         uaPushLog('permission-result', { result });
         if (result !== 'granted') {
-          uaSetNotifyBannerMessage('No problem — you can enable this later.');
+          uaSetNotifyBannerMessage('No problem - you can enable this later.');
           uaDismissNotifyForDays(30);
           uaSetNotifyBannerBusy(false);
           uaRemoveNotifyBannerAfter(1800);
@@ -548,7 +548,7 @@ function uaEnsureNotifyBanner() {
         if (res.stored) {
           uaSetNotifyBannerMessage('You are subscribed to new arrivals.');
         } else {
-          uaSetNotifyBannerMessage('Enabled on this device — server setup pending.');
+          uaSetNotifyBannerMessage('Enabled on this device - server setup pending.');
         }
 
         uaDismissNotifyForDays(180);
@@ -604,9 +604,9 @@ function uaEnsureNotifyBanner() {
       uaPushLog(res.ok ? 'subscription-post-success' : 'subscription-post-failed', { stored: res.stored });
 
       if (res.stored) {
-        uaSetNotifyBannerMessage('Subscribed — we will notify you about new arrivals.');
+        uaSetNotifyBannerMessage('Subscribed - we will notify you about new arrivals.');
       } else {
-        uaSetNotifyBannerMessage('Enabled on this device — server setup pending.');
+        uaSetNotifyBannerMessage('Enabled on this device - server setup pending.');
       }
 
       uaDismissNotifyForDays(180);

@@ -141,7 +141,7 @@ export function buildOrderMessage({ cart, customer, storeName = 'Uncle Apple Sto
     ? items
         .map((item) => {
           const name = `${item.name}${item.storage ? ` (${item.storage})` : ''}`;
-          const pricePart = item.price ? ` — ${formatMoney(item.price, { currency })}` : ' — Price on request';
+          const pricePart = item.price ? ` - ${formatMoney(item.price, { currency })}` : ' - Price on request';
           return `- ${name} x${item.quantity}${pricePart}`;
         })
         .join('\n')
@@ -163,6 +163,6 @@ export function buildOrderMessage({ cart, customer, storeName = 'Uncle Apple Sto
     `Name: ${name}\n` +
     `Phone: ${phone}\n` +
     `Address: ${address}${city ? `, ${city}` : ''}\n\n` +
-    `I will complete payment via bank transfer (Trust Bank Ltd).`
+    `Please confirm the available payment methods and send the payment instructions privately.`
   );
 }

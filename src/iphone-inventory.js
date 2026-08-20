@@ -11,8 +11,8 @@ function normalizePhone(phone) {
     image: phone?.image || '',
     alt: phone?.alt || phone?.model || 'iPhone',
     model: phone?.model || 'iPhone',
-    storage: phone?.storage || '—',
-    condition: phone?.condition || '—',
+    storage: phone?.storage || '-',
+    condition: phone?.condition || '-',
   };
 }
 

@@ -1,6 +1,6 @@
 export const ipads = [
   {
-    title: 'iPad Pro — Space Gray',
+    title: 'iPad Pro - Space Gray',
     subtitle: 'Used • Good condition • Box included • GMD 21,250',
     kind: 'square',
     price: 21250,
@@ -12,10 +12,10 @@ export const ipads = [
     description:
       'A solid iPad for browsing, videos, schoolwork, and everyday use. Box included.',
     whatsAppMessage:
-      'Hi Uncle Apple! Is this available: iPad Pro — Space Gray (used, good condition, box included). Price GMD 21,250. In The Gambia.',
+      'Hi Uncle Apple! Is this available: iPad Pro - Space Gray (used, good condition, box included). Price GMD 21,250. In The Gambia.',
   },
   {
-    title: 'iPad (10th generation) — 64GB — Silver (Wi‑Fi)',
+    title: 'iPad (10th generation) - 64GB - Silver (Wi‑Fi)',
     subtitle: 'Used • 64GB • Wi‑Fi • Silver • GMD 25,000',
     kind: 'square',
     price: 25000,
@@ -26,10 +26,10 @@ export const ipads = [
       'products/ipads/ipad-10th-gen-used/ipad-10th-gen-used-2.jpeg',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Is this available: iPad (10th generation) — 64GB, Silver (Wi‑Fi), used. Price GMD 25,000. In The Gambia.',
+      'Hi Uncle Apple! Is this available: iPad (10th generation) - 64GB, Silver (Wi‑Fi), used. Price GMD 25,000. In The Gambia.',
   },
   {
-    title: 'iPad Air (2020) — 64GB — Space Gray',
+    title: 'iPad Air (2020) - 64GB - Space Gray',
     subtitle: 'Used • 64GB • Space Gray • 12-month warranty • GMD 17,000',
     kind: 'square',
     price: 17000,
@@ -37,10 +37,10 @@ export const ipads = [
     description:
       'Lightweight iPad with strong battery life and fast performance. Price GMD 17,000.',
     whatsAppMessage:
-      'Hi Uncle Apple! Is this available: iPad Air (2020) — 64GB, Space Gray, used (12-month warranty). Price GMD 17,000. In The Gambia.',
+      'Hi Uncle Apple! Is this available: iPad Air (2020) - 64GB, Space Gray, used (12-month warranty). Price GMD 17,000. In The Gambia.',
   },
   {
-    title: 'iPad mini (2021) — 64GB',
+    title: 'iPad mini (2021) - 64GB',
     subtitle: 'Used • 64GB • 12-month warranty • GMD 22,300',
     kind: 'square',
     price: 22300,
@@ -48,6 +48,6 @@ export const ipads = [
     description:
       'Compact size, powerful performance, easy to carry anywhere. Price GMD 22,300.',
     whatsAppMessage:
-      'Hi Uncle Apple! Is this available: iPad mini (2021) — 64GB, used (12-month warranty). Price GMD 22,300. In The Gambia.',
+      'Hi Uncle Apple! Is this available: iPad mini (2021) - 64GB, used (12-month warranty). Price GMD 22,300. In The Gambia.',
   },
 ];

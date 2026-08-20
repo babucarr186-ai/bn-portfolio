@@ -9,7 +9,7 @@ export const macbooks = [
 		storage: '1TB SSD',
 		color: 'Space Black',
 		display: '14-inch display',
-		condition: 'Brand new — Factory sealed',
+		condition: 'Brand new - Factory sealed',
 		price: null,
 		specs: [
 			'Model: MacBook Pro 14-inch',
@@ -25,7 +25,7 @@ export const macbooks = [
 		description:
 			'Brand-new 14-inch MacBook Pro in Space Black with Apple M5 chip, 16GB unified memory, and 1TB SSD. Factory sealed in the original box and supplied with the original Apple receipt.',
 		productTitle:
-			'MacBook Pro 14-inch (M5) — Space Black — 16GB • 1TB — Brand new and sealed',
+			'MacBook Pro 14-inch (M5) - Space Black - 16GB • 1TB - Brand new and sealed',
 		images: [
 			'products/macbooks/macbook-pro-14-m5-16gb-1tb-sealed/macbook-pro-14-m5-box-front.jpeg?v=20260813-1',
 			'products/macbooks/macbook-pro-14-m5-16gb-1tb-sealed/macbook-pro-14-m5-box-back.jpeg?v=20260813-1',
@@ -56,11 +56,11 @@ export const macbooks = [
 			'Touch ID: Working',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Air 13.3-inch (2019) — Rose Gold, 8GB RAM, 256GB SSD, 92% battery health, 130 cycles, Grade A, Touch ID working. Price GMD 35,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Air 13.3-inch (2019) - Rose Gold, 8GB RAM, 256GB SSD, 92% battery health, 130 cycles, Grade A, Touch ID working. Price GMD 35,000. In The Gambia.',
 		description:
 			'Apple MacBook Air 13.3-inch (2019) in Rose Gold with 8GB RAM and 256GB SSD. Grade A condition with 92% battery health, only 130 cycles, and working Touch ID. Clean, lightweight, and ready for study, office work, browsing, and everyday use.',
 		productTitle:
-			'MacBook Air 13.3-inch (2019) — Rose Gold — 8GB • 256GB — Grade A',
+			'MacBook Air 13.3-inch (2019) - Rose Gold - 8GB • 256GB - Grade A',
 		images: [
 			'products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-open.webp',
 			'products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-side.webp',
@@ -92,11 +92,11 @@ export const macbooks = [
 			'Ports: 2× Thunderbolt 3 (USB-C)',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Air 13.3-inch (2019) — Gold, 1.6GHz Intel Core i5, 8GB RAM, 128GB SSD, Retina display, 2× Thunderbolt 3 ports. Price GMD 30,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Air 13.3-inch (2019) - Gold, 1.6GHz Intel Core i5, 8GB RAM, 128GB SSD, Retina display, 2× Thunderbolt 3 ports. Price GMD 30,000. In The Gambia.',
 		description:
 			'Apple MacBook Air 13.3-inch (2019) in Gold with 1.6GHz Intel Core i5, 8GB RAM, and 128GB SSD. A slim and reliable Apple laptop for study, office work, browsing, and everyday productivity. Price GMD 30,000.',
 		productTitle:
-			'MacBook Air 13.3-inch (2019) — Gold — 1.6GHz i5 • 8GB • 128GB',
+			'MacBook Air 13.3-inch (2019) - Gold - 1.6GHz i5 • 8GB • 128GB',
 		images: [
 			'products/macbooks/macbook-air-2019-gold-13-3-inch-i5-8gb-128gb/macbook-air-2019-gold-front.jpeg',
 			'products/macbooks/macbook-air-2019-gold-13-3-inch-i5-8gb-128gb/macbook-air-2019-gold-keyboard.jpeg',
@@ -117,11 +117,11 @@ export const macbooks = [
 		price: 25000,
 		sold: true,
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2017) — Intel Core i5, 8GB RAM, 256GB SSD, like new, warranty included. Price GMD 25,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2017) - Intel Core i5, 8GB RAM, 256GB SSD, like new, warranty included. Price GMD 25,000. In The Gambia.',
 		description:
 			'Apple MacBook Pro 13-inch (2017) with Intel Core i5, 8GB RAM, and 256GB SSD. A like-new Apple laptop for office work, school, browsing, and everyday productivity with warranty included.',
 		productTitle:
-			'MacBook Pro 13-inch (2017) — i5 • 8GB • 256GB — Like new — Warranty included',
+			'MacBook Pro 13-inch (2017) - i5 • 8GB • 256GB - Like new - Warranty included',
 		images: [
 			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-front.jpg',
 			'products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-i5-8gb-256gb-2.jpg',
@@ -142,7 +142,7 @@ export const macbooks = [
 		ports: '2× Thunderbolt 3 (USB‑C)',
 		batteryCycles: '221',
 		batteryCondition: 'Good',
-		condition: 'Used — Neat condition',
+		condition: 'Used - Neat condition',
 		price: 20000,
 		specs: [
 			'Model: MacBook Pro 13-inch (2016)',
@@ -150,14 +150,14 @@ export const macbooks = [
 			'CPU: Intel Core i5',
 			'RAM: 16GB',
 			'Storage: 256GB SSD',
-			'Battery: Good — 221 cycles',
+			'Battery: Good - 221 cycles',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2016) — Intel Core i5, 16GB RAM, 256GB SSD, 2× Thunderbolt 3 ports, battery good (221 cycles), used, neat condition. Price GMD 20,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Pro 13-inch (2016) - Intel Core i5, 16GB RAM, 256GB SSD, 2× Thunderbolt 3 ports, battery good (221 cycles), used, neat condition. Price GMD 20,000. In The Gambia.',
 		description:
 			'Apple MacBook Pro 13-inch (2016) with Intel Core i5, 16GB RAM, and 256GB SSD. A solid Apple laptop for multitasking, office work, study, and everyday use, with good battery health and neat used condition.',
 		productTitle:
-			'MacBook Pro 13-inch (2016) — i5 • 16GB • 256GB — Used — Neat condition',
+			'MacBook Pro 13-inch (2016) - i5 • 16GB • 256GB - Used - Neat condition',
 		images: [
 			'products/macbooks/MacBook Pro 13-inches (2016)/front image.jpg',
 			'products/macbooks/MacBook Pro 13-inches (2016)/9602dbd1-a3bd-406e-bea1-92f868092f01.jpg',
@@ -192,10 +192,10 @@ export const macbooks = [
 			'Ports: 2× USB-C + headphone jack',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: MacBook Neo 13-inch — Purple, 8GB RAM, 256GB SSD, 6-core CPU, 5-core GPU, Liquid Retina display, model A3404. Price GMD 57,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: MacBook Neo 13-inch - Purple, 8GB RAM, 256GB SSD, 6-core CPU, 5-core GPU, Liquid Retina display, model A3404. Price GMD 57,000. In The Gambia.',
 		description:
 			'Apple MacBook Neo 13-inch in Purple with 8GB RAM, 256GB SSD, a 6-core CPU, and a 5-core GPU. A compact Apple laptop with Liquid Retina display, USB-C connectivity, and Magic Keyboard. Price GMD 57,000.',
-		productTitle: 'MacBook Neo 13-inch — Purple — 8GB • 256GB',
+		productTitle: 'MacBook Neo 13-inch - Purple - 8GB • 256GB',
 		images: [
 			'products/macbooks/macbook-neo-13-purple-8gb-256gb/macbook-neo-13-purple-front.jpeg',
 			'products/macbooks/macbook-neo-13-purple-8gb-256gb/macbook-neo-13-purple-box-detail.jpeg',

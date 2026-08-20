@@ -159,7 +159,7 @@ export default function ChatWidget() {
   }
 
   function exportToWhatsApp() {
-    const leadSummary = `\n\nAvailability Request\n- Model: ${lead.model || '—'}\n- Storage: ${lead.storage || '—'}\n- Color: ${lead.color || '—'}\n- Condition: ${lead.condition || '—'}\n- Delivery/Pickup: ${lead.deliveryPref || '—'}\n- Email: ${lead.contactEmail || '—'}\n\nNote: ${STORE_NAME} sells original Apple products/parts only.`;
+    const leadSummary = `\n\nAvailability Request\n- Model: ${lead.model || '-'}\n- Storage: ${lead.storage || '-'}\n- Color: ${lead.color || '-'}\n- Condition: ${lead.condition || '-'}\n- Delivery/Pickup: ${lead.deliveryPref || '-'}\n- Email: ${lead.contactEmail || '-'}\n\nNote: ${STORE_NAME} sells original Apple products/parts only.`;
     const body = messages.map(m => (m.from === 'user' ? 'You: ' : BOT_NAME + ': ') + m.text).join('\n') + leadSummary;
     const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent('Conversation summary:%0A' + body + '\n\nMy message: ')}`;
     window.open(url, '_blank', 'noopener');
@@ -203,7 +203,7 @@ export default function ChatWidget() {
     if (next && next.text) return next.text;
     switch (intent) {
       case 'greeting':
-        return 'Hi! Tell me the model and storage you want — I’ll help you request availability.';
+        return 'Hi! Tell me the model and storage you want - I’ll help you request availability.';
       case 'models':
         return 'We can help with iPhone Pro / iPhone / Plus / SE. Which one do you prefer?';
       case 'availability':
@@ -217,9 +217,9 @@ export default function ChatWidget() {
       case 'thanks':
         return 'Happy to help! When ready, tap “Send to WhatsApp” to place the enquiry.';
       case 'bye':
-        return 'Talk soon — message us anytime if you want a quote.';
+        return 'Talk soon - message us anytime if you want a quote.';
       default:
-        return 'Tell me: model (Pro/Plus/SE), storage, and preferred color — and I’ll help you request availability.';
+        return 'Tell me: model (Pro/Plus/SE), storage, and preferred color - and I’ll help you request availability.';
     }
   }
 

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="Uncle Apple Store — Shopping cart" />
+  <meta name="description" content="Uncle Apple Store - Shopping cart" />
   <meta name="robots" content="noindex,follow" />
   <meta name="theme-color" content="#000000" />
-  <title>Uncle Apple Store — Cart</title>
+  <title>Uncle Apple Store - Cart</title>
 
   <link rel="canonical" href="https://uncleapplestore.com/cart.html" />
 
@@ -60,8 +60,8 @@
           </div>
 
           <div class="cart-panel cart-summary" aria-label="Cart summary">
-            <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal" class="product-price">—</span></div>
-            <div class="summary-line"><span>Total</span><span id="cartTotal" class="product-price">—</span></div>
+            <div class="summary-line"><span>Subtotal</span><span id="cartSubtotal" class="product-price">-</span></div>
+            <div class="summary-line"><span>Total</span><span id="cartTotal" class="product-price">-</span></div>
             <a id="proceedBtn" class="btn btn-primary" href="./checkout.html">Proceed to Checkout</a>
             <div class="notice">Payment method: <strong>Bank Transfer</strong></div>
           </div>
@@ -119,8 +119,8 @@
 
       if (!items.length){
         emptyEl.hidden = false;
-        subEl.textContent = '—';
-        totalEl.textContent = '—';
+        subEl.textContent = '-';
+        totalEl.textContent = '-';
         proceedBtn.setAttribute('aria-disabled', 'true');
         proceedBtn.style.pointerEvents = 'none';
         proceedBtn.style.opacity = '0.6';
