@@ -3,6 +3,28 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 export const iphones = [
   {
     title: 'iPhone 14 Pro Max',
+    subtitle: 'Deep Purple • 512GB • Grade A • Battery 93% • Original box and charging cable • GMD 50,000',
+    kind: 'phone',
+    color: 'Deep Purple',
+    storage: '512GB',
+    condition: 'Used - Grade A',
+    batteryHealth: '93%',
+    price: 50000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max - Deep Purple, 512GB, Grade A condition, battery 93%, original box and charging cable included. Price GMD 50,000. In The Gambia.',
+    description:
+      'Deep Purple iPhone 14 Pro Max with 512GB storage, Grade A condition, and 93% battery health. Includes the original box and charging cable. Available for GMD 50,000.',
+    productTitle: 'iPhone 14 Pro Max (512GB) - Deep Purple - Grade A - Battery 93%',
+    images: [
+      'products/iphones/iphone-14-pro-max-512gb-deep-purple-grade-a/iphone-14-pro-max-deep-purple-back.jpeg',
+      'products/iphones/iphone-14-pro-max-512gb-deep-purple-grade-a/iphone-14-pro-max-deep-purple-front.jpeg',
+      'products/iphones/iphone-14-pro-max-512gb-deep-purple-grade-a/iphone-14-pro-max-deep-purple-side-left.jpeg',
+      'products/iphones/iphone-14-pro-max-512gb-deep-purple-grade-a/iphone-14-pro-max-deep-purple-side-right.jpeg',
+      'products/iphones/iphone-14-pro-max-512gb-deep-purple-grade-a/iphone-14-pro-max-box-cable.jpeg',
+    ],
+  },
+  {
+    title: 'iPhone 14 Pro Max',
     subtitle: 'Silver • 256GB • Grade A • Battery 85% • Box and charging cable • Germany sourced • GMD 45,000',
     kind: 'phone',
     color: 'Silver',
