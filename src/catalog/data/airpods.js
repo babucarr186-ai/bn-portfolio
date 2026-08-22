@@ -1,21 +1,22 @@
 export const airpods = [
   {
-    title: 'Beats Studio3 Wireless',
+    title: 'Beats by Dr. Dre Studio3 Wireless',
     subtitle:
-      'Original Apple Beats • Gray • Wireless Bluetooth • Over-ear • GMD 10,000',
+      'Original Beats by Dr. Dre • Gray • Wireless Bluetooth • Over-ear • GMD 10,000',
     kind: 'square',
+    brand: 'Beats by Dr. Dre',
     color: 'Gray',
     condition: 'Ready to use',
     price: 10000,
-    authenticity: 'Original Apple Beats',
+    authenticity: 'Original Beats by Dr. Dre',
     description:
-      'Original Apple Beats Studio3 Wireless headphones in gray. Comfortable over-ear cushions, wireless Bluetooth connectivity and noise cancelling make them suitable for music, calls, travel and everyday listening. The foldable design is easy to carry and store.',
+      'Original Beats by Dr. Dre Studio3 Wireless headphones in gray. Comfortable over-ear cushions, wireless Bluetooth connectivity and noise cancelling make them suitable for music, calls, travel and everyday listening. The foldable design is easy to carry and store.',
     shortDescription:
-      'Original Beats Studio3 Wireless headphones in gray with Bluetooth, noise cancelling and comfortable over-ear cushions.',
+      'Original Beats by Dr. Dre Studio3 Wireless headphones in gray with Bluetooth, noise cancelling and comfortable over-ear cushions.',
     longDescription:
-      'Enjoy music, calls and everyday listening with these original Apple Beats Studio3 Wireless headphones. The gray finish is clean and understated, while the cushioned over-ear design provides a comfortable fit. Wireless Bluetooth, noise cancelling and a foldable frame make them practical at home, at work or while travelling.',
+      'Enjoy music, calls and everyday listening with these original Beats by Dr. Dre Studio3 Wireless headphones. The gray finish is clean and understated, while the cushioned over-ear design provides a comfortable fit. Wireless Bluetooth, noise cancelling and a foldable frame make them practical at home, at work or while travelling.',
     productHighlights: [
-      'Original Apple Beats',
+      'Original Beats by Dr. Dre',
       'Gray finish',
       'Wireless Bluetooth connection',
       'Noise cancelling',
@@ -31,7 +32,7 @@ export const airpods = [
       'The supplied photos show the actual condition and included items',
     ],
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Original Apple Beats Studio3 Wireless headphones in gray. Price GMD 10,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Original Beats by Dr. Dre Studio3 Wireless headphones in gray. Price GMD 10,000. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [

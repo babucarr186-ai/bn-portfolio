@@ -340,7 +340,7 @@ function buildProductSchema(config, product, index) {
     name: normalizeSpace(product?.pageTitle || product?.productTitle || product?.title || `${config.sectionLabel} listing`),
     image: pickProductImages(product),
     description,
-    brand: { '@type': 'Brand', name: 'Apple' },
+    brand: { '@type': 'Brand', name: normalizeSpace(product?.brand || 'Apple') },
     url,
     availability: schemaAvailabilityUrl(product),
     itemCondition: schemaConditionUrl(product),
