@@ -1206,13 +1206,21 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
     }
 
     frame.appendChild(slider);
+    if (product?.sold) {
+      const soldOverlay = el('div', 'catalog-sold-overlay');
+      soldOverlay.setAttribute('aria-label', 'Sold item');
+      const soldText = el('span', 'catalog-sold-overlay-text');
+      soldText.textContent = 'SOLD';
+      soldOverlay.appendChild(soldText);
+      frame.appendChild(soldOverlay);
+    }
     card.appendChild(frame);
 
     const body = el('div', 'catalog-card-body');
 
     const tags = el('div', 'catalog-tags');
     const statusTag = el('span', `catalog-tag ${product?.sold ? 'catalog-tag--sold' : 'catalog-tag--available'}`);
-    statusTag.textContent = product?.sold ? 'Sold' : 'Available';
+    statusTag.textContent = product?.sold ? 'SOLD OUT' : 'Available';
     tags.appendChild(statusTag);
 
     if (details.conditionLabel) {
@@ -1258,7 +1266,7 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
       body.appendChild(badgeRow);
     }
 
-    if (display.priceLabel) {
+    if (!product?.sold && display.priceLabel) {
       const price = el('p', 'catalog-price');
       appendTextWithPriceSpans(price, display.priceLabel);
       body.appendChild(price);

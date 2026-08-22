@@ -97,11 +97,13 @@ img, video{
   font-size: 0.78rem;
 }
 
-/* SOLD product styling (visual only; does not change layout) */
+/* SOLD product styling */
 .catalog-frame{ position: relative; }
 
 .catalog-card.is-sold{
-  border-color: rgba(220, 38, 38, 0.26);
+  border: 2px solid rgba(185, 28, 28, 0.66);
+  background: linear-gradient(180deg, rgba(254, 242, 242, 0.74), #fff 42%);
+  box-shadow: 0 16px 38px rgba(185, 28, 28, 0.15);
 }
 
 .catalog-card.is-sold .catalog-frame img{
@@ -122,11 +124,34 @@ img, video{
   opacity: 0.78;
 }
 
-.catalog-card.is-sold .catalog-price,
-.catalog-card.is-sold .catalog-price .product-price,
-html[data-category="iphones"] .catalog-card.is-sold .catalog-price,
-html[data-category="iphones"] .catalog-card.is-sold .catalog-price .product-price{
-  color: rgba(100,116,139,0.92);
+.catalog-card.is-sold .catalog-price{
+  display: none !important;
+}
+
+.catalog-sold-overlay{
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.catalog-sold-overlay-text{
+  width: 125%;
+  padding: 14px 20px;
+  transform: rotate(-8deg);
+  background: rgba(185, 28, 28, 0.96);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(127, 29, 29, 0.34);
+  font-size: clamp(1.45rem, 5vw, 2.35rem);
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-align: center;
+  text-indent: 0.18em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.24);
 }
 
 /* Performance: avoid rendering offscreen cards until needed */
@@ -291,9 +316,13 @@ html[data-category="iphones"] .catalog-card.is-sold .catalog-price .product-pric
 }
 
 .catalog-tag--sold{
-  background: rgba(220,38,38,0.10);
-  border-color: rgba(220,38,38,0.20);
-  color: rgba(220,38,38,0.92);
+  padding: 7px 12px;
+  background: #b91c1c;
+  border-color: #991b1b;
+  color: #fff;
+  box-shadow: 0 5px 14px rgba(185,28,28,0.24);
+  font-size: 0.75rem;
+  letter-spacing: 0.09em;
 }
 
 .catalog-nav{

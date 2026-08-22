@@ -133,13 +133,12 @@ export const watches = [
     kind: 'square',
     condition: 'Like new',
     batteryHealth: '98%',
-    price: 11500,
-    stockRemaining: 1,
-    lowStockText: 'Only 1 left',
+    price: null,
+    sold: true,
     description:
       'Apple Watch Series 8 41mm in like-new condition, fully tested and ready for daily use. Battery health is 98%, with warranty included for extra peace of mind.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 41mm - like new, battery 98%, fully tested, warranty included. Price GMD 11,500. We have 1 available. In The Gambia.',
+      'Hi Uncle Apple! I saw the sold Apple Watch Series 8 41mm. Please show me similar Apple Watches that are currently available.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [

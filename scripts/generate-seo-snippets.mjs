@@ -307,8 +307,9 @@ function buildGeneratedMetaDescription(product, config, fields) {
   const title = normalizeSpace(product?.pageTitle || product?.productTitle || product?.title || `${config.sectionLabel} listing`);
   const partsStatus = buildPartsStatus(product);
   const importedFrom = normalizeSpace(product?.importedFrom || product?.origin);
+  const availabilityCopy = product?.sold ? 'This item is sold.' : `${formatCurrency(product?.price)}.`;
   return normalizeSpace(
-    `${title} from Uncle Apple Store in The Gambia. ${fields.condition} condition.${fields.batteryHealth ? ` ${fields.batteryHealth} battery health.` : ''}${fields.storage ? ` ${fields.storage} storage.` : ''} ${partsStatus}.${importedFrom ? ` ${importedFrom}.` : ''} ${formatCurrency(product?.price)}.`,
+    `${title} from Uncle Apple Store in The Gambia. ${fields.condition} condition.${fields.batteryHealth ? ` ${fields.batteryHealth} battery health.` : ''}${fields.storage ? ` ${fields.storage} storage.` : ''} ${partsStatus}.${importedFrom ? ` ${importedFrom}.` : ''} ${availabilityCopy}`,
   );
 }
 
@@ -450,7 +451,7 @@ function buildProductPageViewModel(config, product, schema) {
     : '';
   const certification = normalizeSpace(product?.certification);
   const availabilityText = product?.sold ? 'Sold out' : 'Available now';
-  const priceText = formatCurrency(product?.price);
+  const priceText = product?.sold ? '' : formatCurrency(product?.price);
 
   const authoredHighlights = asTextArray(product?.productHighlights);
   const authoredKeyFeatures = uniqueText([
@@ -518,6 +519,7 @@ function buildProductPageViewModel(config, product, schema) {
   ];
 
   return {
+    sold: Boolean(product?.sold),
     pageTitle,
     metaTitle,
     metaDescription,
@@ -527,10 +529,12 @@ function buildProductPageViewModel(config, product, schema) {
     availabilityText,
     whatsappHref: buildWhatsAppLink(product?.whatsAppMessage),
     trustTitle: normalizeSpace(product?.trustTitle || 'Why buyers trust Uncle Apple Store'),
-    ctaTitle: normalizeSpace(product?.ctaTitle || 'Ready to confirm this device?'),
+    ctaTitle: normalizeSpace(product?.ctaTitle || (product?.sold ? 'This item has been sold' : 'Ready to confirm this device?')),
     ctaText: normalizeSpace(
       product?.ctaText ||
-        'Chat with Uncle Apple Store on WhatsApp to confirm availability, ask questions, and arrange the next step before payment.',
+        (product?.sold
+          ? `Browse the current ${config.sectionLabel} listings to find an available option.`
+          : 'Chat with Uncle Apple Store on WhatsApp to confirm availability, ask questions, and arrange the next step before payment.'),
     ),
     ctaPrimaryLabel: normalizeSpace(product?.ctaPrimaryLabel || 'Chat on WhatsApp'),
     ctaSecondaryLabel: normalizeSpace(product?.ctaSecondaryLabel || 'Back to listings'),
@@ -611,9 +615,12 @@ function buildProductPageHtml(config, product, index) {
     .product-detail-label{display:block;font-size:.78rem;font-weight:700;color:rgba(11,15,22,.52);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
     .product-detail-value{display:block;font-size:1rem;font-weight:800;color:#0b0f16}
     .product-purchase-card{display:grid;gap:12px;padding:18px;border-radius:24px;background:linear-gradient(180deg,rgba(11,15,22,.03),rgba(11,15,22,.01));border:1px solid rgba(11,15,22,.06)}
+    .product-purchase-card--sold{border:2px solid rgba(185,28,28,.56);background:rgba(254,242,242,.96)}
     .product-price{font-size:clamp(1.75rem,6vw,2.5rem);line-height:1;letter-spacing:-.04em;font-weight:900}
     .product-status{display:inline-flex;align-items:center;gap:8px;font-size:.95rem;color:rgba(11,15,22,.64);font-weight:700}
     .product-dot{width:9px;height:9px;border-radius:999px;background:#16a34a;box-shadow:0 0 0 6px rgba(22,163,74,.12)}
+    .product-status--sold{color:#991b1b;font-size:1.05rem;font-weight:950;letter-spacing:.09em;text-transform:uppercase}
+    .product-status--sold .product-dot{background:#dc2626;box-shadow:0 0 0 6px rgba(220,38,38,.14)}
     .product-actions{display:flex;flex-direction:column;gap:10px}
     .product-actions .btn{width:100%;min-height:50px}
     .product-list{margin:0;padding-left:18px;display:grid;gap:10px;color:rgba(11,15,22,.76)}
@@ -672,12 +679,14 @@ function buildProductPageHtml(config, product, index) {
             <div class="product-detail-grid">
               ${viewModel.details.map((detail) => `<div class="product-detail-item"><span class="product-detail-label">${escapeHtml(detail.label)}</span><span class="product-detail-value">${escapeHtml(detail.value)}</span></div>`).join('')}
             </div>
-            <div class="product-purchase-card">
-              <div class="product-price">${escapeHtml(viewModel.priceText)}</div>
-              <div class="product-status"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
+            <div class="product-purchase-card${viewModel.sold ? ' product-purchase-card--sold' : ''}">
+              ${viewModel.priceText ? `<div class="product-price">${escapeHtml(viewModel.priceText)}</div>` : ''}
+              <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
               <div class="product-actions">
-                <a class="btn btn-whatsapp" href="${escapeAttribute(viewModel.whatsappHref)}" target="_blank" rel="noopener">${escapeHtml(viewModel.ctaPrimaryLabel)}</a>
-                <a class="btn btn-primary" href="${escapeAttribute(backLink)}">${escapeHtml(viewModel.ctaSecondaryLabel)}</a>
+                ${viewModel.sold
+                  ? `<a class="btn btn-primary" href="${escapeAttribute(backLink)}">Browse available ${escapeHtml(config.sectionLabel)}</a>`
+                  : `<a class="btn btn-whatsapp" href="${escapeAttribute(viewModel.whatsappHref)}" target="_blank" rel="noopener">${escapeHtml(viewModel.ctaPrimaryLabel)}</a>
+                <a class="btn btn-primary" href="${escapeAttribute(backLink)}">${escapeHtml(viewModel.ctaSecondaryLabel)}</a>`}
               </div>
             </div>
           </article>
@@ -724,8 +733,10 @@ function buildProductPageHtml(config, product, index) {
             <h2>${escapeHtml(viewModel.ctaTitle)}</h2>
             <p>${escapeHtml(viewModel.ctaText)}</p>
             <div class="product-actions" style="margin-top:14px">
-              <a class="btn btn-whatsapp" href="${escapeAttribute(viewModel.whatsappHref)}" target="_blank" rel="noopener">${escapeHtml(viewModel.ctaPrimaryLabel)}</a>
-              <a class="btn btn-primary" href="${escapeAttribute(backLink)}">${escapeHtml(viewModel.ctaSecondaryLabel)}</a>
+              ${viewModel.sold
+                ? `<a class="btn btn-primary" href="${escapeAttribute(backLink)}">Browse available ${escapeHtml(config.sectionLabel)}</a>`
+                : `<a class="btn btn-whatsapp" href="${escapeAttribute(viewModel.whatsappHref)}" target="_blank" rel="noopener">${escapeHtml(viewModel.ctaPrimaryLabel)}</a>
+              <a class="btn btn-primary" href="${escapeAttribute(backLink)}">${escapeHtml(viewModel.ctaSecondaryLabel)}</a>`}
             </div>
           </article>
         </div>
