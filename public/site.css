@@ -144,13 +144,15 @@ a{ color: inherit; }
     flex-wrap: nowrap;
     overflow-x: auto;
     justify-content: flex-start;
-    gap: 10px;
-    padding: 4px 2px 2px;
+    gap: 4px;
+    padding: 4px 12px 3px 2px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x proximity;
     scroll-padding: 10px;
     touch-action: pan-x;
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 22px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 22px), transparent 100%);
   }
 
   .nav-links.nav-links--catbar a{
@@ -159,9 +161,11 @@ a{ color: inherit; }
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5px;
-    min-width: 66px;
-    padding: 8px 10px;
+    gap: 8px;
+    width: 86px;
+    min-width: 86px;
+    min-height: 58px;
+    padding: 7px 8px;
     border-radius: 12px;
     text-align: center;
     scroll-snap-align: start;
@@ -170,11 +174,11 @@ a{ color: inherit; }
   .nav-links--catbar .nav-catbar__icon{
     display: grid;
     place-items: center;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     color: rgba(11,15,22,0.78);
   }
-  .nav-links--catbar .nav-catbar__icon svg{ width: 20px; height: 20px; }
+  .nav-links--catbar .nav-catbar__icon svg{ width: 22px; height: 22px; stroke-width: 1.8; }
 
   .nav-links--catbar .nav-catbar__label{
     display: block;
@@ -184,9 +188,9 @@ a{ color: inherit; }
     line-height: 1.1;
     color: rgba(11,15,22,0.72);
     white-space: nowrap;
-    max-width: 90px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: none;
+    overflow: visible;
+    text-overflow: clip;
   }
 
   .nav-links.nav-links--catbar a:hover{
@@ -197,9 +201,15 @@ a{ color: inherit; }
     background: rgba(255,255,255,0.78);
   }
 
+  .nav-links.nav-links--catbar a:focus-visible{
+    outline: 2px solid rgba(11,15,22,0.92);
+    outline-offset: -2px;
+  }
+
   .nav-links.nav-links--catbar a[aria-current='page']{
     background: rgba(255,255,255,0.72);
     color: rgba(11,15,22,1);
+    box-shadow: inset 0 -3px 0 rgba(11,15,22,1);
   }
   .nav-links.nav-links--catbar a[aria-current='page'] .nav-catbar__label{
     color: rgba(11,15,22,0.92);
@@ -2079,8 +2089,8 @@ body.catalog-lightbox-open{
   }
 
   .logo-img{
-    height: 44px;
-    max-width: min(48vw, 178px);
+    height: 62px;
+    max-width: min(53vw, 220px);
   }
 
   .nav-actions{
@@ -2090,10 +2100,11 @@ body.catalog-lightbox-open{
   }
 
   .nav-actions .btn-whatsapp{
-    min-height: 36px;
-    padding: 6px 9px;
-    font-size: 0.74rem;
-    gap: 4px;
+    min-height: 44px;
+    padding: 8px 11px;
+    font-size: 0.78rem;
+    gap: 5px;
+    white-space: nowrap;
   }
 
   .nav-actions .btn-whatsapp__icon{
@@ -2102,7 +2113,7 @@ body.catalog-lightbox-open{
   }
 
   .nav-links{
-    gap: 7px;
+    gap: 4px;
     font-size: 0.82rem;
     overflow-x: auto;
     flex-wrap: nowrap;
@@ -2111,7 +2122,7 @@ body.catalog-lightbox-open{
     scrollbar-width: none;
     grid-column: 1 / -1;
     order: 3;
-    padding: 1px 0 0;
+    padding: 2px 12px 1px 0;
     scroll-snap-type: x proximity;
     scroll-padding-left: 2px;
   }
@@ -2125,19 +2136,21 @@ body.catalog-lightbox-open{
   }
 
   .nav-links.nav-links--catbar a{
-    min-width: 68px;
-    padding: 5px 8px;
-    gap: 3px;
+    width: 86px;
+    min-width: 86px;
+    min-height: 60px;
+    padding: 6px 8px;
+    gap: 8px;
   }
 
   .nav-links--catbar .nav-catbar__icon,
   .nav-links--catbar .nav-catbar__icon svg{
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
   }
 
   .nav-links.nav-links--catbar .nav-catbar__label{
-    font-size: 0.66rem;
+    font-size: 0.67rem;
     max-width: none;
     overflow: visible;
     text-overflow: clip;
@@ -2274,20 +2287,20 @@ body.catalog-lightbox-open{
 
 @media (max-width: 430px){
   .logo-img{
-    height: 42px;
-    max-width: 164px;
+    height: 60px;
+    max-width: min(52vw, 205px);
   }
 
   .nav-actions .btn-whatsapp{
-    padding: 6px 8px;
-    font-size: 0.72rem;
+    padding: 8px 10px;
+    font-size: 0.75rem;
   }
 }
 
 @media (max-width: 350px){
   .logo-img{
-    height: 39px;
-    max-width: 146px;
+    height: 56px;
+    max-width: 53vw;
   }
 
   .nav-inner{
@@ -2295,8 +2308,8 @@ body.catalog-lightbox-open{
   }
 
   .nav-actions .btn-whatsapp{
-    padding-inline: 7px;
-    font-size: 0.69rem;
+    padding-inline: 8px;
+    font-size: 0.72rem;
   }
 }
 

@@ -244,7 +244,7 @@ function ensureWhatsAppHeaderButton() {
     '<svg class="btn-whatsapp__icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">'
     + '<path fill="currentColor" d="M12 2a9.99 9.99 0 0 0-8.65 14.99L2 22l5.19-1.35A10 10 0 1 0 12 2Zm0 18.3a8.26 8.26 0 0 1-4.2-1.15l-.3-.18-3.08.8.82-3-.2-.31A8.3 8.3 0 1 1 12 20.3Zm4.85-6.2c-.27-.14-1.59-.79-1.84-.88-.25-.1-.44-.14-.62.14-.19.27-.71.88-.87 1.06-.16.18-.31.2-.58.07-.27-.14-1.12-.41-2.13-1.32-.79-.7-1.32-1.56-1.48-1.82-.16-.27-.02-.41.12-.55.12-.12.27-.31.4-.46.14-.16.19-.27.29-.45.1-.18.05-.34-.02-.48-.07-.14-.62-1.5-.86-2.06-.23-.55-.46-.48-.62-.49h-.53c-.18 0-.48.07-.73.34-.25.27-.96.94-.96 2.3s.99 2.68 1.12 2.86c.14.18 1.95 2.98 4.72 4.18.66.28 1.18.45 1.58.58.66.21 1.26.18 1.74.11.53-.08 1.59-.65 1.81-1.28.23-.62.23-1.15.16-1.28-.07-.12-.25-.2-.52-.34Z"/>'
     + '</svg>'
-    + '<span>WhatsApp Us</span>';
+    + '<span>WhatsApp</span>';
 
   // Keep the existing look by placing it alongside the other header actions.
   navActions.appendChild(btn);
@@ -312,6 +312,18 @@ function initMobileCategoryNav() {
     return pathname.endsWith('/index.html') ? pathname.slice(0, -'/index.html'.length) + '/' : pathname;
   };
   const currentPath = normalizePath(current.pathname);
+  const pageCategory = String(document.documentElement.dataset.category || '').toLowerCase();
+  const categoryAliases = {
+    iphones: 'iphones',
+    models: 'models',
+    ipads: 'ipads',
+    macbooks: 'macbook',
+    watches: 'watch',
+    airpods: 'airpods',
+    giftcards: 'giftcards',
+    accessories: 'accessories',
+    appletvhome: 'tvhome',
+  };
 
   const anchors = Array.from(navLinks.querySelectorAll('a'));
   anchors.forEach((a) => {
@@ -330,7 +342,7 @@ function initMobileCategoryNav() {
 
     const labelEl = document.createElement('span');
     labelEl.className = 'nav-catbar__label';
-    labelEl.textContent = label;
+    labelEl.textContent = key === 'models' ? 'Shop' : label;
 
     a.appendChild(iconEl);
     a.appendChild(labelEl);
@@ -348,10 +360,14 @@ function initMobileCategoryNav() {
       const isSamePage = linkPath === currentPath;
       const isInventoryLink = String(linkUrl.hash || '') === '#inventory';
       const isInventoryPage = currentPath.endsWith('/') || currentPath.endsWith('/index.html') || currentPath.endsWith('/index');
+      const isCategoryMatch = categoryAliases[pageCategory] === key;
       const isActive =
-        (isSamePage && (!linkUrl.hash || linkUrl.hash === current.hash)) || (isInventoryLink && isInventoryPage);
+        isCategoryMatch ||
+        (isSamePage && (!linkUrl.hash || linkUrl.hash === current.hash)) ||
+        (isInventoryLink && isInventoryPage);
 
       if (isActive) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
     }
   });
 }
