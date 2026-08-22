@@ -1,5 +1,47 @@
 export const airpods = [
   {
+    title: 'Beats by Dr. Dre Solo Pro ANC Wireless',
+    subtitle:
+      'Original Beats by Dr. Dre • Gray • ANC noise cancelling • Wireless Bluetooth • On-ear • GMD 10,000',
+    kind: 'square',
+    brand: 'Beats by Dr. Dre',
+    color: 'Gray',
+    condition: 'Ready to use',
+    price: 10000,
+    authenticity: 'Original Beats by Dr. Dre',
+    description:
+      'Original Beats by Dr. Dre Solo Pro wireless headphones in gray. Active noise cancelling helps reduce background sound, while the compact on-ear design is suitable for music, calls, travel and everyday listening.',
+    shortDescription:
+      'Original Beats by Dr. Dre Solo Pro headphones in gray with wireless Bluetooth and active noise cancelling.',
+    longDescription:
+      'Enjoy focused listening with these original Beats by Dr. Dre Solo Pro wireless headphones. The gray finish is clean and understated, while active noise cancelling helps reduce surrounding sound. The compact on-ear design is practical for music, calls, commuting and travel.',
+    productHighlights: [
+      'Original Beats by Dr. Dre',
+      'Gray finish',
+      'Active noise cancelling',
+      'Wireless Bluetooth connection',
+      'Compact on-ear design',
+    ],
+    keyFeatures: [
+      'ANC helps reduce background noise',
+      'Suitable for music, calls and travel',
+      'Easy wireless connection with compatible Bluetooth devices',
+    ],
+    conditionReport: [
+      'Ready to use',
+      'The supplied photos show the product condition',
+    ],
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Original Beats by Dr. Dre Solo Pro ANC Wireless headphones in gray. Price GMD 10,000. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/airpods/beats-solo-pro-anc-wireless-gray/beats-solo-pro-anc-wireless-gray-1.jpeg?v=20260822-1',
+      'products/airpods/beats-solo-pro-anc-wireless-gray/beats-solo-pro-anc-wireless-gray-2.jpeg?v=20260822-1',
+      'products/airpods/beats-solo-pro-anc-wireless-gray/beats-solo-pro-anc-wireless-gray-3.jpeg?v=20260822-1',
+    ],
+  },
+  {
     title: 'Beats by Dr. Dre Studio3 Wireless',
     subtitle:
       'Original Beats by Dr. Dre • Gray • Wireless Bluetooth • Over-ear • GMD 10,000',
