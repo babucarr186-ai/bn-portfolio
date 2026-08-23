@@ -2,6 +2,54 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 
 export const iphones = [
   {
+    title: 'iPhone 13 Pro Max',
+    subtitle: 'Gray • 256GB • Grade A • Battery 100% • Original battery • Box and original charger • Germany sourced • GMD 36,000',
+    kind: 'phone',
+    color: 'Gray',
+    storage: '256GB',
+    condition: 'Used - Grade A',
+    batteryHealth: '100%',
+    authenticity: 'Original battery',
+    importedFrom: 'Sourced from Germany',
+    price: 36000,
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 13 Pro Max - Gray, 256GB, Grade A condition, 100% original battery, box and original charger included, sourced from Germany. Price GMD 36,000. Available in The Gambia.',
+    shortDescription:
+      'Grade A iPhone 13 Pro Max in Gray with 256GB storage, 100% original battery, box and original charger.',
+    longDescription:
+      `This Gray iPhone 13 Pro Max comes with 256GB storage, Grade A condition and 100% battery health. The battery is original, and the phone includes its box and original charger. Sourced from Germany, checked and available now in The Gambia. ${ESIM_UNLOCKED_DETAILS}`,
+    description:
+      `Color Gray. Storage 256GB. Grade A condition. Battery health 100% with original battery. Box and original charger included. Sourced from Germany and available now in The Gambia. ${ESIM_UNLOCKED_DETAILS} Price GMD 36,000.`,
+    productTitle: 'iPhone 13 Pro Max (256GB) - Gray - Grade A - Battery 100% - Original battery',
+    productHighlights: [
+      '256GB storage',
+      'Gray finish',
+      'Grade A condition',
+      '100% original battery',
+      'Box and original charger included',
+      'Sourced from Germany',
+    ],
+    keyFeatures: [
+      'Large Super Retina XDR display with ProMotion',
+      'Pro camera system for photos and video',
+      'Factory unlocked with SIM and eSIM support',
+    ],
+    conditionReport: [
+      'Grade A cosmetic condition',
+      'Battery health is 100%',
+      'Original battery',
+      'Box and original charger included',
+    ],
+    images: [
+      'products/iphones/iphone-13-pro-max-256gb-gray-grade-a/iphone-13-pro-max-gray-front-1.jpeg?v=20260823-1',
+      'products/iphones/iphone-13-pro-max-256gb-gray-grade-a/iphone-13-pro-max-gray-front-2.jpeg?v=20260823-1',
+      'products/iphones/iphone-13-pro-max-256gb-gray-grade-a/iphone-13-pro-max-gray-back-box.jpeg?v=20260823-1',
+      'products/iphones/iphone-13-pro-max-256gb-gray-grade-a/iphone-13-pro-max-gray-camera-closeup-1.jpeg?v=20260823-1',
+      'products/iphones/iphone-13-pro-max-256gb-gray-grade-a/iphone-13-pro-max-gray-back.jpeg?v=20260823-1',
+      'products/iphones/iphone-13-pro-max-256gb-gray-grade-a/iphone-13-pro-max-gray-camera-closeup-2.jpeg?v=20260823-1',
+    ],
+  },
+  {
     title: 'iPhone 14 Pro Max',
     subtitle: 'Deep Purple • 512GB • Grade A • Battery 93% • Original box and charging cable • GMD 50,000',
     kind: 'phone',
