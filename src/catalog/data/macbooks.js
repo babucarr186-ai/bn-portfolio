@@ -144,6 +144,7 @@ export const macbooks = [
 		batteryCondition: 'Good',
 		condition: 'Used - Neat condition',
 		price: 20000,
+		sold: true,
 		specs: [
 			'Model: MacBook Pro 13-inch (2016)',
 			'Ports: 2× Thunderbolt 3 (USB‑C)',
