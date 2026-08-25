@@ -156,17 +156,19 @@ export const iphones = [
   },
   {
     title: 'iPhone 14 Pro Max',
-    subtitle: '128GB • Premium finish • Ready to use • GMD 40,000',
+    subtitle: '128GB • Battery 100% • Original battery • Ready to use • GMD 40,000',
     kind: 'phone',
     color: 'Colors: Deep Purple • Gold • Silver • Space Black',
     storage: '128GB',
+    batteryHealth: '100%',
+    authenticity: 'Original battery',
     condition: 'Available',
     price: 40000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max - 128GB, premium finish, ready to use. Available in Deep Purple, Gold, Silver, and Space Black depending on stock. Price GMD 40,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max - 128GB, 100% original battery, factory unlocked, and Dual SIM (SIM + eSIM). Available in Deep Purple, Gold, Silver, and Space Black depending on stock. Price GMD 40,000. In The Gambia.',
     description:
-      `Big screen, strong performance, and a sharp camera setup for everyday use. Available in Deep Purple, Gold, Silver, and Space Black depending on stock. Clean, tested, and ready to use. ${ESIM_UNLOCKED_DETAILS} Price GMD 40,000.`,
-    productTitle: 'iPhone 14 Pro Max (128GB) - Premium finish - Ready to use',
+      `iPhone 14 Pro Max with 128GB storage and 100% original battery. Available in Deep Purple, Gold, Silver, and Space Black depending on stock. Clean, tested, and ready to use. ${ESIM_UNLOCKED_DETAILS} Price GMD 40,000.`,
+    productTitle: 'iPhone 14 Pro Max (128GB) - Battery 100% - Original battery',
     images: [
     'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-3.jpeg',
     'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-2.jpeg',
