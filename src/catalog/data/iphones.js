@@ -166,9 +166,25 @@ export const iphones = [
     price: 43000,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max, Deep Purple, 128GB, 100% original battery, with box and original charger. Factory unlocked with Dual SIM (SIM + eSIM). Price GMD 43,000. In The Gambia.',
+    shortDescription:
+      'Deep Purple iPhone 14 Pro Max with 128GB storage, 100% original battery, box and original charger.',
+    longDescription:
+      `This Deep Purple iPhone 14 Pro Max has 128GB storage and 100% battery health. The battery is original, and the phone includes its box and original charger. Clean, tested, factory unlocked, and ready to use. ${ESIM_UNLOCKED_DETAILS}`,
     description:
       `Deep Purple iPhone 14 Pro Max with 128GB storage and 100% original battery. Includes the box and original charger. Clean, tested, and ready to use. ${ESIM_UNLOCKED_DETAILS} Price GMD 43,000.`,
     productTitle: 'iPhone 14 Pro Max (128GB) - Deep Purple - Battery 100% - Original battery',
+    productHighlights: [
+      'Deep Purple finish',
+      '128GB storage',
+      '100% original battery',
+      'Box and original charger included',
+    ],
+    conditionReport: [
+      'Battery health is 100%',
+      'Original battery',
+      'Box and original charger included',
+      'Clean, tested, and ready to use',
+    ],
     images: [
     'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-3.jpeg',
     'products/iphones/iphone-14-pro-max-128gb/iphone-14-pro-max-128gb-2.jpeg',
