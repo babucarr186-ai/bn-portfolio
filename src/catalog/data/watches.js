@@ -22,6 +22,7 @@ export const watches = [
       'Rugged GPS + Cellular • Fully tested • 12‑month warranty • Excellent condition • GMD 49,200',
     kind: 'square',
     price: 49200,
+    sold: true,
     description:
       'Apple Watch Ultra 2 (2024) for buyers who want the toughest Apple Watch with a premium finish, GPS + Cellular, and strong everyday performance. A high-end Apple Watch for workouts, outdoor use, and staying connected from your wrist.',
     whatsAppMessage:
