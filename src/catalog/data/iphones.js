@@ -58,6 +58,7 @@ export const iphones = [
     condition: 'Used - Grade A',
     batteryHealth: '93%',
     price: 50000,
+    sold: true,
     whatsAppMessage:
       'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max - Deep Purple, 512GB, Grade A condition, battery 93%, original box and charging cable included. Price GMD 50,000. In The Gambia.',
     description:
