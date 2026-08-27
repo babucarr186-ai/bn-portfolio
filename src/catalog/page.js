@@ -151,14 +151,14 @@ function renderPage() {
 
   if (paginationUi) {
     paginationUi.controls.hidden = totalPages <= 1;
-    paginationUi.summary.textContent = `Showing ${start + 1}-${end} of ${products.length} products`;
+    paginationUi.summary.textContent = `${products.length} products`;
     paginationUi.prev.disabled = state.currentPage <= 1;
     paginationUi.next.disabled = state.currentPage >= totalPages;
     paginationUi.pages.textContent = '';
 
     const pageNumbers = [];
     for (let page = 1; page <= totalPages; page += 1) {
-      if (page === 1 || page === totalPages || Math.abs(page - state.currentPage) <= 1) {
+      if (totalPages <= 7 || page === 1 || page === totalPages || Math.abs(page - state.currentPage) <= 1) {
         pageNumbers.push(page);
       }
     }
