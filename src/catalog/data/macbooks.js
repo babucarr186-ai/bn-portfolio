@@ -2,7 +2,7 @@ export const macbooks = [
 	{
 		title: 'MacBook Pro 14-inch (M5)',
 		subtitle:
-			'Space Black • M5 chip • 16GB unified memory • 1TB SSD • Brand new • Factory sealed • Original Apple receipt • Price on request',
+			'Space Black • M5 chip • 16GB unified memory • 1TB SSD • Brand new • Factory sealed • Original Apple receipt',
 		kind: 'laptop',
 		cpu: 'Apple M5 chip',
 		ram: '16GB unified memory',
