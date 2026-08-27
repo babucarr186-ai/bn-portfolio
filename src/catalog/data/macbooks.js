@@ -11,6 +11,7 @@ export const macbooks = [
 		display: '14-inch display',
 		condition: 'Brand new - Factory sealed',
 		price: null,
+		sold: true,
 		specs: [
 			'Model: MacBook Pro 14-inch',
 			'Chip: Apple M5',
