@@ -3587,3 +3587,119 @@ footer:not(.site-footer) .foot-legal > div:last-child {
     font-size: 0.7rem;
   }
 }
+
+
+/* 2026-08-28 desktop storefront polish */
+@media (min-width: 1000px) {
+  body[data-page="home"] .container {
+    width: min(1180px, calc(100% - 72px));
+  }
+
+  body[data-page="home"] .section {
+    padding-top: 54px;
+    padding-bottom: 54px;
+  }
+
+  body[data-page="home"] .section.section-compact {
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  body[data-page="home"] .storefront-section-head,
+  body[data-page="home"] #inventory > .container > .section-title,
+  body[data-page="home"] #inventory > .container > .section-lead {
+    max-width: 760px;
+  }
+
+  body[data-page="home"] .trust-home {
+    background: rgba(248,249,251,0.72);
+  }
+
+  body[data-page="home"] .trust-home-row {
+    align-items: center;
+  }
+
+  body[data-page="home"] .trust-home .section-title {
+    font-size: 1.85rem;
+  }
+
+  body[data-page="home"] .trust-home .section-lead {
+    max-width: 680px;
+    font-size: 0.96rem;
+  }
+
+  body[data-page="home"] .trust-home-note {
+    max-width: 760px;
+    font-size: 0.78rem;
+  }
+
+  body[data-page="home"] #reviews {
+    background: #fff;
+  }
+
+  body[data-page="home"] #reviews .home-reviews-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  body[data-page="home"] #reviews .home-reviews-summary {
+    display: inline-flex;
+    width: auto;
+    padding: 10px 13px;
+    border-radius: 14px;
+    box-shadow: none;
+  }
+
+  body[data-page="home"] #reviews .home-reviews-score {
+    font-size: 1.45rem;
+  }
+
+  body[data-page="home"] #reviews .home-reviews-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  body[data-page="home"] #reviews .home-review-card {
+    min-height: 200px;
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  body[data-page="home"] #reviews .home-review-avatar {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+  }
+
+  body[data-page="home"] #reviews .home-review-author {
+    font-size: 0.9rem;
+  }
+
+  body[data-page="home"] #reviews .home-review-text {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 12px;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+  }
+
+  body[data-page="home"] #reviews .home-review-age {
+    margin-top: 10px;
+    font-size: 0.72rem;
+  }
+
+  body[data-page="home"] .site-footer {
+    padding-top: 46px;
+  }
+
+  body[data-page="home"] .site-footer .footer-grid {
+    gap: 44px;
+  }
+}
