@@ -1168,3 +1168,61 @@ html[data-category="iphones"] .catalog-frame img{
     line-height: 1;
   }
 }
+
+
+/* Inline promotional pricing */
+.catalog-sale-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:2px;
+  font-weight:850;
+  line-height:1.15;
+}
+
+.catalog-sale-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:28px;
+  padding:4px 8px;
+  border-radius:7px;
+  background:#e30613;
+  color:#fff;
+  font-size:.76rem;
+  font-weight:900;
+}
+
+.catalog-sale-original{
+  color:rgba(11,15,22,.72);
+  font-size:.9rem;
+  text-decoration:line-through;
+  text-decoration-thickness:1.5px;
+}
+
+.catalog-sale-price{
+  color:#e30613;
+  font-size:1rem;
+  font-weight:950;
+}
+
+@media (max-width:640px){
+  .catalog-sale-row{
+    gap:6px;
+  }
+
+  .catalog-sale-badge{
+    min-height:24px;
+    padding:3px 7px;
+    font-size:.68rem;
+  }
+
+  .catalog-sale-original{
+    font-size:.78rem;
+  }
+
+  .catalog-sale-price{
+    font-size:.88rem;
+  }
+}
