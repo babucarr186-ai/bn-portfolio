@@ -208,12 +208,11 @@ function normalizeCondition(value) {
     .trim();
 
   if (!text) return '';
-  if (/brand new|sealed/i.test(text)) return 'Brand new';
-  if (/like new/i.test(text)) return 'Like new';
-  if (/excellent/i.test(text)) return 'Excellent';
-  if (/very clean/i.test(text)) return 'Very clean';
-  if (/clean/i.test(text)) return 'Clean';
-  if (/good/i.test(text)) return 'Good';
+  if (/brand new|sealed/i.test(text)) return 'Brand New';
+  if (/grade\s*a/i.test(text)) return 'Grade A';
+  if (/like new/i.test(text)) return 'Like New';
+  if (/excellent|very clean/i.test(text)) return 'Very Clean';
+  if (/neat/i.test(text)) return 'Neat Used';
   if (/used/i.test(text)) return 'Used';
   return toTitleCase(text);
 }
@@ -444,7 +443,7 @@ function buildCatalogBadges(product, details) {
   pushBadge(storage);
   pushBadge(color);
   if (!isAvailabilityStatus(condition)) pushBadge(condition);
-  if (/original parts/i.test(`${authenticity} ${description}`)) pushBadge('Original Parts');
+  if (/original parts/i.test(authenticity)) pushBadge('Original Parts');
 
   return badges;
 }
@@ -1236,11 +1235,18 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
     body.appendChild(title);
 
     const compactDetails = el('dl', 'catalog-compact-details');
+    const explicitParts = normalizeSpace(product?.authenticity || product?.parts);
+    const explicitSource = normalizeSpace(product?.source || product?.origin);
+    const germanySource =
+      /germany/i.test(explicitSource) ||
+      /germany sourced|sourced from germany|from germany/i.test(normalizeSpace(product?.subtitle));
+
     const compactItems = [
       ['Storage', normalizeStorage(product?.storage)],
       ['Colour', product?.color ? toTitleCase(product.color) : ''],
       ['Battery', normalizeBattery(product?.batteryHealth)],
-      ['Parts', /original parts/i.test(`${normalizeSpace(product?.authenticity || product?.parts)} ${normalizeSpace(product?.description)}`) ? 'Original' : normalizeSpace(product?.parts)],
+      ['Parts', /original parts/i.test(explicitParts) ? 'Original Parts' : explicitParts],
+      ['Source', germanySource ? 'Germany' : explicitSource],
     ].filter(([, value]) => normalizeSpace(value));
 
     compactItems.forEach(([label, value]) => {
