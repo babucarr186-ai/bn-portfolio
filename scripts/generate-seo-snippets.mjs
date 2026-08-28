@@ -452,6 +452,17 @@ function buildProductPageViewModel(config, product, schema) {
   const certification = normalizeSpace(product?.certification);
   const availabilityText = product?.sold ? 'Sold out' : 'Available now';
   const priceText = product?.sold ? '' : formatCurrency(product?.price);
+  const originalPriceValue = normalizeSchemaPrice(product?.originalPrice);
+  const currentPriceValue = normalizeSchemaPrice(product?.price);
+  const discountPercent = Number(product?.discountPercent);
+  const hasOffer =
+    !product?.sold &&
+    originalPriceValue !== null &&
+    currentPriceValue !== null &&
+    originalPriceValue > currentPriceValue &&
+    Number.isFinite(discountPercent) &&
+    discountPercent > 0;
+  const originalPriceText = hasOffer ? formatCurrency(originalPriceValue) : '';
 
   const authoredHighlights = asTextArray(product?.productHighlights);
   const authoredKeyFeatures = uniqueText([
@@ -526,6 +537,8 @@ function buildProductPageViewModel(config, product, schema) {
     shortDescription,
     fullDescription,
     priceText,
+    originalPriceText,
+    discountPercent: hasOffer ? Math.round(discountPercent) : 0,
     availabilityText,
     whatsappHref: buildWhatsAppLink(product?.whatsAppMessage),
     trustTitle: normalizeSpace(product?.trustTitle || 'Why buyers trust Uncle Apple Store'),
@@ -617,6 +630,10 @@ function buildProductPageHtml(config, product, index) {
     .product-purchase-card{display:grid;gap:12px;padding:18px;border-radius:24px;background:linear-gradient(180deg,rgba(11,15,22,.03),rgba(11,15,22,.01));border:1px solid rgba(11,15,22,.06)}
     .product-purchase-card--sold{border:2px solid rgba(185,28,28,.56);background:rgba(254,242,242,.96)}
     .product-price{font-size:clamp(1.75rem,6vw,2.5rem);line-height:1;letter-spacing:-.04em;font-weight:900}
+    .product-offer-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .product-offer-badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 9px;border-radius:8px;background:#e30613;color:#fff;font-size:.82rem;font-weight:900;line-height:1}
+    .product-offer-original{color:rgba(11,15,22,.65);font-size:1rem;font-weight:750;text-decoration:line-through;text-decoration-thickness:1.5px}
+    .product-offer-price{color:#e30613;font-size:clamp(1.55rem,5vw,2.25rem);line-height:1;font-weight:950;letter-spacing:-.035em}
     .product-status{display:inline-flex;align-items:center;gap:8px;font-size:.95rem;color:rgba(11,15,22,.64);font-weight:700}
     .product-dot{width:9px;height:9px;border-radius:999px;background:#16a34a;box-shadow:0 0 0 6px rgba(22,163,74,.12)}
     .product-status--sold{color:#991b1b;font-size:1.05rem;font-weight:950;letter-spacing:.09em;text-transform:uppercase}
@@ -680,7 +697,11 @@ function buildProductPageHtml(config, product, index) {
               ${viewModel.details.map((detail) => `<div class="product-detail-item"><span class="product-detail-label">${escapeHtml(detail.label)}</span><span class="product-detail-value">${escapeHtml(detail.value)}</span></div>`).join('')}
             </div>
             <div class="product-purchase-card${viewModel.sold ? ' product-purchase-card--sold' : ''}">
-              ${viewModel.priceText ? `<div class="product-price">${escapeHtml(viewModel.priceText)}</div>` : ''}
+              ${viewModel.originalPriceText
+                ? `<div class="product-offer-row"><span class="product-offer-badge">-${escapeHtml(viewModel.discountPercent)}%</span><span class="product-offer-original">${escapeHtml(viewModel.originalPriceText)}</span><span class="product-offer-price">${escapeHtml(viewModel.priceText)}</span></div>`
+                : viewModel.priceText
+                  ? `<div class="product-price">${escapeHtml(viewModel.priceText)}</div>`
+                  : ''}
               <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
               <div class="product-actions">
                 ${viewModel.sold
