@@ -77,9 +77,6 @@ function createPaginationUi(parent) {
   const controls = document.createElement('div');
   controls.className = 'catalog-pagination';
 
-  const summary = document.createElement('p');
-  summary.className = 'catalog-pagination-summary';
-
   const actions = document.createElement('div');
   actions.className = 'catalog-pagination-actions';
 
@@ -88,22 +85,17 @@ function createPaginationUi(parent) {
   prev.className = 'catalog-pagination-btn';
   prev.textContent = 'Previous';
 
-  const pages = document.createElement('div');
-  pages.className = 'catalog-pagination-pages';
-
   const next = document.createElement('button');
   next.type = 'button';
   next.className = 'catalog-pagination-btn';
   next.textContent = 'Next';
 
   actions.appendChild(prev);
-  actions.appendChild(pages);
   actions.appendChild(next);
-  controls.appendChild(summary);
   controls.appendChild(actions);
   parent.appendChild(controls);
 
-  return { controls, summary, actions, prev, pages, next };
+  return { controls, actions, prev, next };
 }
 
 const paginationUi = createPaginationUi(wrap);
@@ -151,39 +143,8 @@ function renderPage() {
 
   if (paginationUi) {
     paginationUi.controls.hidden = totalPages <= 1;
-    paginationUi.summary.textContent = `${products.length} products`;
     paginationUi.prev.disabled = state.currentPage <= 1;
     paginationUi.next.disabled = state.currentPage >= totalPages;
-    paginationUi.pages.textContent = '';
-
-    const pageNumbers = [];
-    for (let page = 1; page <= totalPages; page += 1) {
-      if (totalPages <= 7 || page === 1 || page === totalPages || Math.abs(page - state.currentPage) <= 1) {
-        pageNumbers.push(page);
-      }
-    }
-
-    pageNumbers.forEach((page, index) => {
-      if (index > 0 && pageNumbers[index - 1] !== page - 1) {
-        const gap = document.createElement('span');
-        gap.className = 'catalog-pagination-gap';
-        gap.textContent = '...';
-        paginationUi.pages.appendChild(gap);
-      }
-
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'catalog-pagination-page';
-      button.textContent = String(page);
-      button.setAttribute('aria-current', page === state.currentPage ? 'page' : 'false');
-      button.addEventListener('click', () => {
-        if (page === state.currentPage) return;
-        state.currentPage = page;
-        renderPage();
-        wrap?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-      paginationUi.pages.appendChild(button);
-    });
   }
 
   if (state.pendingTargetId) {
