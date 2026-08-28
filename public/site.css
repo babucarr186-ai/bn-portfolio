@@ -3283,3 +3283,220 @@ body.image-viewer-open{
     font-size: 0.74rem;
   }
 }
+
+
+/* 2026-08-28 mobile storefront cleanup */
+.trust-home {
+  border-top: 1px solid rgba(11,15,22,0.08);
+  border-bottom: 1px solid rgba(11,15,22,0.08);
+}
+
+.trust-home-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.trust-home-kicker {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.trust-home .section-lead {
+  max-width: 760px;
+}
+
+.trust-home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.trust-home-note {
+  margin: 14px 0 0;
+  max-width: 900px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 759px) {
+  .trust-home.section {
+    padding-top: 26px !important;
+    padding-bottom: 26px !important;
+  }
+
+  .trust-home-row {
+    display: block;
+  }
+
+  .trust-home .section-title {
+    font-size: 1.65rem !important;
+    line-height: 1.04 !important;
+  }
+
+  .trust-home .section-lead {
+    margin-top: 8px !important;
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .trust-home-actions {
+    margin-top: 14px;
+  }
+
+  .trust-home-actions .btn {
+    min-height: 36px !important;
+    padding: 8px 12px !important;
+    font-size: 0.76rem !important;
+  }
+
+  .trust-home-note {
+    margin-top: 12px;
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+
+  #reviews.section {
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+  }
+
+  #reviews .home-reviews-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+  }
+
+  #reviews .section-title {
+    font-size: 1.65rem !important;
+    line-height: 1.05 !important;
+  }
+
+  #reviews .section-lead {
+    font-size: 0.78rem !important;
+    line-height: 1.4 !important;
+  }
+
+  #reviews .home-reviews-cta {
+    min-height: 34px !important;
+    padding: 7px 11px !important;
+    font-size: 0.72rem !important;
+  }
+
+  #reviews .home-reviews-summary {
+    display: inline-flex !important;
+    width: auto !important;
+    margin-top: 10px !important;
+    padding: 8px 10px !important;
+    gap: 8px !important;
+    border-radius: 12px !important;
+  }
+
+  #reviews .home-reviews-score {
+    font-size: 1.25rem !important;
+  }
+
+  #reviews .home-reviews-stars {
+    font-size: 0.68rem !important;
+  }
+
+  #reviews .home-reviews-meta {
+    font-size: 0.66rem !important;
+  }
+
+  #reviews .home-reviews-grid {
+    display: flex !important;
+    gap: 10px !important;
+    width: calc(100% + 18px) !important;
+    margin-top: 10px !important;
+    margin-right: -18px !important;
+    padding: 0 18px 4px 0 !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+  }
+
+  #reviews .home-review-card {
+    flex: 0 0 min(72vw, 260px) !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+    scroll-snap-align: start !important;
+  }
+
+  #reviews .home-review-top {
+    gap: 8px !important;
+  }
+
+  #reviews .home-review-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    flex: 0 0 32px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+  }
+
+  #reviews .home-review-author {
+    font-size: 0.8rem !important;
+  }
+
+  #reviews .home-review-card-stars {
+    margin-top: 2px !important;
+    font-size: 0.66rem !important;
+  }
+
+  #reviews .home-review-text {
+    display: -webkit-box !important;
+    margin: 8px 0 0 !important;
+    overflow: hidden !important;
+    font-size: 0.78rem !important;
+    line-height: 1.42 !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important;
+  }
+
+  #reviews .home-review-age {
+    margin-top: 6px !important;
+    font-size: 0.66rem !important;
+  }
+
+  .back-to-top {
+    right: calc(14px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    border-radius: 50% !important;
+  }
+
+  .back-to-top::before {
+    content: "↑";
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .floating-whatsapp {
+    right: calc(14px + env(safe-area-inset-right, 0px)) !important;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .footer-trust-note {
+    display: none !important;
+  }
+
+  .site-footer {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
