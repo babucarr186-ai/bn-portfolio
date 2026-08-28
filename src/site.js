@@ -426,6 +426,7 @@ async function initGoogleReviews() {
   const stars = document.getElementById('reviewsStars');
   const meta = document.getElementById('reviewsMeta');
   const writeLink = document.getElementById('reviewsWriteLink');
+  const section = grid?.closest('section');
 
   if (!grid || !status || !summary || !score || !stars || !meta || !writeLink) return;
 
@@ -458,7 +459,7 @@ async function initGoogleReviews() {
 
     const reviews = Array.isArray(payload?.reviews) ? payload.reviews : [];
     if (!reviews.length) {
-      setStatus('No Google reviews are available right now.');
+      if (section) section.hidden = true;
       return;
     }
 
@@ -518,9 +519,28 @@ async function initGoogleReviews() {
 
     grid.replaceChildren(fragment);
     setStatus('');
-  } catch (error) {
-    setStatus(error?.message || 'Unable to load Google reviews');
+  } catch {
+    grid.replaceChildren();
+    summary.hidden = true;
+    writeLink.hidden = true;
+    setStatus('');
+    if (section) section.hidden = true;
   }
+}
+
+function initTrustFooter() {
+  const footer = document.querySelector('footer');
+  if (!footer || footer.querySelector('.footer-trust-note')) return;
+
+  const note = document.createElement('div');
+  note.className = 'footer-trust-note';
+  note.innerHTML =
+    '<strong>Coming soon:</strong> Aziz Mall, OIC Rd, Serrekunda, The Gambia. Planned hours 09:30 - 20:00.<br>' +
+    'WhatsApp Gambia: +220 301 3139 · Germany: +49 1567 9652076<br>' +
+    '<span>Independent reseller. Uncle Apple Store is not affiliated with, endorsed by, sponsored by, or operated by Apple Inc.</span>';
+
+  const target = footer.querySelector('.footer-bottom, .foot-legal') || footer;
+  target.appendChild(note);
 }
 
 async function initStorefrontHero() {
@@ -1454,6 +1474,7 @@ function initFloatingWhatsAppButton() {
 }
 
 initHeaderActions();
+initTrustFooter();
 initWhatsAppLinks();
 initMobileCategoryNav();
 initAvailabilityForm();
