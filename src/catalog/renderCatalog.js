@@ -1273,9 +1273,37 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
     }
 
     if (!product?.sold && display.priceLabel) {
-      const price = el('p', 'catalog-price');
-      appendTextWithPriceSpans(price, display.priceLabel);
-      body.appendChild(price);
+      const currentPrice = Number(product?.price);
+      const originalPrice = Number(product?.originalPrice);
+      const discountPercent = Number(product?.discountPercent);
+      const hasOffer =
+        Number.isFinite(currentPrice) &&
+        Number.isFinite(originalPrice) &&
+        originalPrice > currentPrice &&
+        Number.isFinite(discountPercent) &&
+        discountPercent > 0;
+
+      if (hasOffer) {
+        const saleRow = el('div', 'catalog-sale-row');
+
+        const badge = el('span', 'catalog-sale-badge');
+        badge.textContent = `-${Math.round(discountPercent)}%`;
+        saleRow.appendChild(badge);
+
+        const oldPrice = el('span', 'catalog-sale-original');
+        oldPrice.textContent = formatPrice(originalPrice);
+        saleRow.appendChild(oldPrice);
+
+        const newPrice = el('span', 'catalog-sale-price');
+        newPrice.textContent = formatPrice(currentPrice);
+        saleRow.appendChild(newPrice);
+
+        body.appendChild(saleRow);
+      } else {
+        const price = el('p', 'catalog-price');
+        appendTextWithPriceSpans(price, display.priceLabel);
+        body.appendChild(price);
+      }
     }
 
     if (display.note) {
