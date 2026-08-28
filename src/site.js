@@ -464,7 +464,7 @@ async function initGoogleReviews() {
     }
 
     const fragment = document.createDocumentFragment();
-    reviews.forEach((review) => {
+    reviews.slice(0, 3).forEach((review) => {
       const card = document.createElement('article');
       card.className = 'home-review-card';
       card.setAttribute('role', 'listitem');
@@ -529,19 +529,10 @@ async function initGoogleReviews() {
 }
 
 function initTrustFooter() {
-  const footer = document.querySelector('footer');
-  if (!footer || footer.querySelector('.footer-trust-note')) return;
-
-  const note = document.createElement('div');
-  note.className = 'footer-trust-note';
-  note.innerHTML =
-    '<strong>Coming soon:</strong> Aziz Mall, OIC Rd, Serrekunda, The Gambia. Planned hours 09:30 - 20:00.<br>' +
-    'WhatsApp Gambia: +220 301 3139 · Germany: +49 1567 9652076<br>' +
-    '<span>Independent reseller. Uncle Apple Store is not affiliated with, endorsed by, sponsored by, or operated by Apple Inc.</span>';
-
-  const target = footer.querySelector('.footer-bottom, .foot-legal') || footer;
-  target.appendChild(note);
+  // Detailed trust and contact information lives on About, Contact and Terms.
+  // Keep the storefront footer visually light.
 }
+
 
 async function initStorefrontHero() {
   const mountNode = document.getElementById('storefrontHeroRoot');
