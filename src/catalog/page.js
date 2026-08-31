@@ -38,7 +38,10 @@ function initTrendingSection() {
   if (!mountEl) return;
 
   const pool = Array.isArray(products) ? products : [];
-  const picks = pool.filter((product) => !product?.sold).slice(0, 6);
+  const picks = pool
+    .map((product, index) => ({ product, index }))
+    .filter(({ product }) => !product?.sold)
+    .slice(0, 6);
   if (!picks.length) {
     mountEl.textContent = '';
     return;
@@ -46,9 +49,9 @@ function initTrendingSection() {
 
   const rendered = renderCatalog({
     mountEl,
-    products: picks,
+    products: picks.map(({ product }) => product),
     startIndex: 100000,
-    hrefStartIndex: 0,
+    detailIndices: picks.map(({ index }) => index),
     imageSizes: '(max-width: 640px) 78vw, 320px',
   });
 

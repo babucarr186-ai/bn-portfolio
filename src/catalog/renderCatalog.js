@@ -1024,7 +1024,14 @@ function ensureCatalogLightbox() {
   return catalogLightbox;
 }
 
-export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartIndex = startIndex, imageSizes } = {}) {
+export function renderCatalog({
+  mountEl,
+  products,
+  startIndex = 0,
+  hrefStartIndex = startIndex,
+  detailIndices,
+  imageSizes,
+} = {}) {
   if (!mountEl) return [];
 
   mountEl.textContent = '';
@@ -1042,7 +1049,10 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
     const titleText = product.title || 'Product';
     const subtitleText = product.subtitle || '';
     const absoluteIndex = startIndex + index;
-    const detailIndex = hrefStartIndex + index;
+    const mappedDetailIndex = Array.isArray(detailIndices) ? Number(detailIndices[index]) : Number.NaN;
+    const detailIndex = Number.isInteger(mappedDetailIndex) && mappedDetailIndex >= 0
+      ? mappedDetailIndex
+      : hrefStartIndex + index;
     card.id = buildCatalogProductId(titleText, absoluteIndex);
     card.dataset.title = titleText;
     if (subtitleText) card.dataset.subtitle = subtitleText;

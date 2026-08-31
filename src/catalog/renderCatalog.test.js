@@ -70,6 +70,38 @@ describe('renderRecommendationRail', () => {
 });
 
 describe('renderCatalog', () => {
+  it('keeps detail links matched to original inventory indexes after sold items are filtered out', () => {
+    const mountEl = document.createElement('div');
+    document.body.appendChild(mountEl);
+
+    renderCatalog({
+      mountEl,
+      products: [
+        {
+          title: 'iPhone 13',
+          productTitle: 'iPhone 13 128GB',
+          images: ['/products/placeholders/placeholder-phone.svg'],
+        },
+        {
+          title: 'iPhone 15',
+          productTitle: 'iPhone 15 256GB',
+          images: ['/products/placeholders/placeholder-phone.svg'],
+        },
+      ],
+      startIndex: 100000,
+      detailIndices: [0, 2],
+    });
+
+    const detailLinks = [...mountEl.querySelectorAll('.catalog-actions a')].map((link) =>
+      link.getAttribute('href'),
+    );
+
+    expect(detailLinks[0]).toMatch(/iphone-13-128gb-1\/$/);
+    expect(detailLinks[1]).toMatch(/iphone-15-256gb-3\/$/);
+
+    mountEl.remove();
+  });
+
   it('gives Buy Now a direct WhatsApp href even without the helper', () => {
     const previousHelper = window.setWhatsAppHref;
     const mountEl = document.createElement('div');
