@@ -1218,8 +1218,13 @@ export function renderCatalog({ mountEl, products, startIndex = 0, hrefStartInde
     const body = el('div', 'catalog-card-body');
 
     const tags = el('div', 'catalog-tags');
-    const statusTag = el('span', `catalog-tag ${product?.sold ? 'catalog-tag--sold' : 'catalog-tag--available'}`);
-    statusTag.textContent = product?.sold ? 'SOLD OUT' : 'Available';
+    const statusClass = product?.sold
+      ? 'catalog-tag--sold'
+      : product?.reserved
+        ? 'catalog-tag--reserved'
+        : 'catalog-tag--available';
+    const statusTag = el('span', `catalog-tag ${statusClass}`);
+    statusTag.textContent = product?.sold ? 'SOLD OUT' : product?.reserved ? 'RESERVED' : 'Available';
     tags.appendChild(statusTag);
 
     if (details.conditionLabel) {
