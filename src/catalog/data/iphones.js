@@ -50,7 +50,7 @@ export const iphones = [
     ],
   },
   {
-    title: 'iPhone 14 Pro Max',
+    title: 'iPhone 14 Pro',
     subtitle: 'Deep Purple • 512GB • Grade A • Battery 93% • Original box and charging cable • GMD 50,000',
     kind: 'phone',
     color: 'Deep Purple',
@@ -58,12 +58,13 @@ export const iphones = [
     condition: 'Used - Grade A',
     batteryHealth: '93%',
     price: 50000,
-    sold: true,
+    sold: false,
+    availability: 'Available',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro Max - Deep Purple, 512GB, Grade A condition, battery 93%, original box and charging cable included. Price GMD 50,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro - Deep Purple, 512GB, Grade A condition, battery 93%, original box and charging cable included. Price GMD 50,000. In The Gambia.',
     description:
-      'Deep Purple iPhone 14 Pro Max with 512GB storage, Grade A condition, and 93% battery health. Includes the original box and charging cable. Available for GMD 50,000.',
-    productTitle: 'iPhone 14 Pro Max (512GB) - Deep Purple - Grade A - Battery 93%',
+      'Deep Purple iPhone 14 Pro with 512GB storage, Grade A condition, and 93% battery health. Includes the original box and charging cable. Available for GMD 50,000.',
+    productTitle: 'iPhone 14 Pro (512GB) - Deep Purple - Grade A - Battery 93%',
     images: [
       'products/iphones/iphone-14-pro-max-512gb-deep-purple-grade-a/iphone-14-pro-max-deep-purple-back.jpeg',
       'products/iphones/iphone-14-pro-max-512gb-deep-purple-grade-a/iphone-14-pro-max-deep-purple-front.jpeg',
