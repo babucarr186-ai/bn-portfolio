@@ -450,7 +450,7 @@ function buildProductPageViewModel(config, product, schema) {
       : `Imported from ${importedFrom}.`
     : '';
   const certification = normalizeSpace(product?.certification);
-  const availabilityText = product?.sold ? 'Sold out' : 'Available now';
+  const availabilityText = product?.sold ? 'Sold out' : product?.reserved ? 'Reserved' : 'Available now';
   const priceText = product?.sold ? '' : formatCurrency(product?.price);
   const originalPriceValue = normalizeSchemaPrice(product?.originalPrice);
   const currentPriceValue = normalizeSchemaPrice(product?.price);
