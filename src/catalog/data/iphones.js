@@ -3,18 +3,18 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 export const iphones = [
   {
     title: 'iPhone 15 Pro Max',
-    subtitle: 'Pacific Blue • 256GB • Battery 88% • 563 cycles • Box and charger • Price on request',
+    subtitle: 'Blue Titanium • 256GB • Battery 88% • 563 cycles • Box and charger • GMD 60,000',
     kind: 'phone',
-    color: 'Pacific Blue',
+    color: 'Blue Titanium',
     storage: '256GB',
     batteryHealth: '88%',
     cycleCount: 563,
-    price: null,
+    price: 60000,
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability and price for: iPhone 15 Pro Max - 256GB, Pacific Blue, battery health 88%, 563 battery cycles, with box and charger. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone 15 Pro Max - 256GB, Blue Titanium, battery health 88%, 563 battery cycles, with box and charger. Price GMD 60,000. Available in The Gambia.',
     description:
-      'iPhone 15 Pro Max with 256GB storage in Pacific Blue. Battery health 88% with 563 cycles. Includes box and charger. Price on request.',
-    productTitle: 'iPhone 15 Pro Max (256GB) - Pacific Blue - Battery 88% - 563 cycles - Box and charger',
+      'iPhone 15 Pro Max with 256GB storage in Blue Titanium. Battery health 88% with 563 cycles. Includes box and charger. Price GMD 60,000.',
+    productTitle: 'iPhone 15 Pro Max (256GB) - Blue Titanium - Battery 88% - 563 cycles - Box and charger',
     keyFeatures: [
       '256GB storage',
       'Battery health 88%',
@@ -27,9 +27,9 @@ export const iphones = [
       'Box and charger included',
     ],
     images: [
-      'products/iphones/iphone-15-pro-max-256gb-pacific-blue/iphone-15-pro-max-pacific-blue-front.jpeg',
-      'products/iphones/iphone-15-pro-max-256gb-pacific-blue/iphone-15-pro-max-pacific-blue-back.jpeg',
-      'products/iphones/iphone-15-pro-max-256gb-pacific-blue/iphone-15-pro-max-pacific-blue-box.jpeg',
+      'products/iphones/iphone-15-pro-max-256gb-blue-titanium/iphone-15-pro-max-blue-1.jpg',
+      'products/iphones/iphone-15-pro-max-256gb-blue-titanium/iphone-15-pro-max-blue-2.jpg',
+      'products/iphones/iphone-15-pro-max-256gb-blue-titanium/iphone-15-pro-max-blue-3.jpg',
     ],
   },
 
