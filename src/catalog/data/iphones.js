@@ -29,7 +29,6 @@ export const iphones = [
     images: [
       'products/iphones/iphone-15-pro-max-256gb-blue-titanium/iphone-15-pro-max-blue-1.jpg',
       'products/iphones/iphone-15-pro-max-256gb-blue-titanium/iphone-15-pro-max-blue-2.jpg',
-      'products/iphones/iphone-15-pro-max-256gb-blue-titanium/iphone-15-pro-max-blue-3.jpg',
     ],
   },
 
