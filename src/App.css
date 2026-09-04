@@ -103,7 +103,6 @@ body {
   filter: contrast(1.03) drop-shadow(0 26px 66px rgba(0,0,0,0.26));
   transform: translate3d(-50%, -50%, 0) rotateX(14deg) rotateY(-18deg) rotateZ(-18deg);
   transform-origin: 50% 50%;
-  will-change: transform;
 }
 
 [data-theme='dark'] .air-phone {
@@ -173,7 +172,6 @@ body {
 .hero-copy {
   display: grid;
   gap: 12px;
-  will-change: opacity, transform;
 }
 
 .shop-hero-title {
@@ -278,9 +276,7 @@ body {
   height:100%;
   object-fit:cover;
   border-radius:50%;
-  transition:transform .35s ease;
 }
-.avatar-inline:hover { transform:scale(1.06); }
 
 .hero-name-text { display:block; }
 
