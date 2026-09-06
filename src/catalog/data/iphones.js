@@ -2,6 +2,41 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 
 export const iphones = [
   {
+    title: 'iPhone 17 Air',
+    subtitle: 'Black • 256GB • New • 0 battery cycles • GMD 65,000',
+    kind: 'phone',
+    color: 'Black',
+    storage: '256GB',
+    condition: 'Brand new',
+    cycleCount: 0,
+    price: 65000,
+    sold: false,
+    availability: 'Available',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Air - Black, 256GB, new condition, 0 battery cycles. Price GMD 65,000. Available in The Gambia.',
+    shortDescription:
+      'New iPhone 17 Air in Black with 256GB storage and 0 battery cycles.',
+    description:
+      'New iPhone 17 Air in Black with 256GB storage and 0 battery cycles. Available for GMD 65,000.',
+    productTitle: 'iPhone 17 Air (256GB) - Black - New - 0 battery cycles',
+    productHighlights: [
+      '256GB storage',
+      'Black finish',
+      'New condition',
+      '0 battery cycles',
+    ],
+    conditionReport: [
+      'New condition',
+      'Battery cycle count: 0',
+    ],
+    images: [
+      'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-back.jpeg',
+      'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-front.jpeg',
+      'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-box.jpeg',
+      'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-cable.jpeg',
+    ],
+  },
+  {
     title: 'iPhone 15 Pro Max',
     subtitle: 'Blue Titanium • 256GB • Battery 88% • 563 cycles • Box and charger • GMD 60,000',
     kind: 'phone',
