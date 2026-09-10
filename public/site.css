@@ -378,6 +378,20 @@ h1{
   min-height: calc(clamp(34rem, 54vw, 50rem) + 10px);
 }
 
+/* The six trending cards are inserted by the catalog module. Reserve their
+   responsive grid footprint so inventory below does not jump when it mounts. */
+#trendingGrid{
+  min-height: 1235px;
+}
+
+@media (min-width: 760px) and (max-width: 979px){
+  #trendingGrid{ min-height: 1900px; }
+}
+
+@media (min-width: 980px) and (max-width: 1319px){
+  #trendingGrid{ min-height: 1200px; }
+}
+
 .storefront-hero-card{
   display: grid;
   grid-template-columns: 78px 1fr;
@@ -497,6 +511,10 @@ body[data-page='home'] .section.section-compact{ padding: 10px 0 16px; }
 
   #storefrontHeroRoot{
     min-height: calc(clamp(17.5rem, 76vw, 20rem) + 6px);
+  }
+
+  #trendingGrid{
+    min-height: 500px;
   }
 
   .storefront-hero-card{
