@@ -124,7 +124,7 @@ describe('renderCatalog', () => {
     const buyNow = mountEl.querySelector('.catalog-actions a.btn-primary');
 
     expect(buyNow).toBeInTheDocument();
-    expect(buyNow?.getAttribute('href')).toContain('https://wa.me/4915679652076?text=');
+    expect(buyNow?.getAttribute('href')).toContain('https://wa.me/220833013139?text=');
     expect(buyNow?.getAttribute('target')).toBe('_blank');
 
     if (previousHelper) {

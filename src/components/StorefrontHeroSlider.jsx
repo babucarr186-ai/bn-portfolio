@@ -138,7 +138,6 @@ export default function StorefrontHeroSlider() {
         >
           <div className="uas-hero__track" style={{ transform: `translate3d(-${activeIndex * 100}%, 0, 0)` }}>
             {storefrontHeroSlides.map((slide, index) => {
-              const HeadingTag = index === 0 ? 'h1' : 'h2';
               const isActive = index === activeIndex;
 
               return (
@@ -153,12 +152,12 @@ export default function StorefrontHeroSlider() {
                     <div className="uas-hero__content">
                       <div className="uas-hero__copy">
                         <div className="uas-hero__brand">
-                          <img className="uas-hero__brandLogo" src={STORE_LOGO_SRC} alt="Uncle Apple Store" loading="eager" decoding="async" />
+                          <img className="uas-hero__brandLogo" src={STORE_LOGO_SRC} alt="Uncle Apple Store" width="560" height="319" loading="eager" decoding="async" />
                           <span className="uas-hero__brandText">Uncle Apple Store</span>
                         </div>
 
                         <p className="uas-hero__eyebrow">{slide.eyebrow}</p>
-                        <HeadingTag className="uas-hero__title">{slide.title}</HeadingTag>
+                        <h2 className="uas-hero__title">{slide.title}</h2>
                         <p className="uas-hero__subtitle">{slide.subtitle}</p>
 
                         <div className="uas-hero__actions">
@@ -179,6 +178,8 @@ export default function StorefrontHeroSlider() {
                               className="uas-hero__image"
                               src={slide.image.src}
                               alt={slide.image.alt}
+                              width={slide.image.width}
+                              height={slide.image.height}
                               loading={index === 0 ? 'eager' : 'lazy'}
                               fetchPriority={index === 0 ? 'high' : 'auto'}
                               decoding="async"

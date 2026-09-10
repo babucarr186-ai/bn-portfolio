@@ -364,6 +364,20 @@ h1{
 /* Storefront hero (index.html) */
 .storefront-hero{ padding: 12px 0 4px; }
 
+.storefront-page-title{
+  width: min(1180px, calc(100% - 36px));
+  margin: 6px auto 14px;
+  font-size: clamp(1.45rem, 3vw, 2.35rem);
+  line-height: 1.08;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Reserve the carousel's final height before its React module loads. */
+#storefrontHeroRoot{
+  min-height: calc(clamp(34rem, 54vw, 50rem) + 10px);
+}
+
 .storefront-hero-card{
   display: grid;
   grid-template-columns: 78px 1fr;
@@ -475,6 +489,15 @@ body[data-page='home'] .section.section-compact{ padding: 10px 0 16px; }
 /* Trending rail (mobile-first, no slider JS) */
 @media (max-width: 860px){
   .storefront-hero{ padding: 8px 0 2px; }
+
+  .storefront-page-title{
+    margin: 4px auto 10px;
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
+  }
+
+  #storefrontHeroRoot{
+    min-height: calc(clamp(17.5rem, 76vw, 20rem) + 6px);
+  }
 
   .storefront-hero-card{
     grid-template-columns: 70px 1fr;
@@ -667,6 +690,7 @@ html[data-category='iphones'] #inventory.section{
   margin-top: 14px;
   display: grid;
   gap: 12px;
+  min-height: 214px;
 }
 
 .home-review-card{
@@ -725,6 +749,10 @@ html[data-category='iphones'] #inventory.section{
 }
 
 @media (max-width: 759px){
+  #reviews .container{
+    min-height: 350px;
+  }
+
   #reviews.section{
     padding-top: 38px;
     padding-bottom: 38px;
@@ -776,6 +804,7 @@ html[data-category='iphones'] #inventory.section{
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    min-height: 190px;
   }
 
   .home-reviews-grid::-webkit-scrollbar{

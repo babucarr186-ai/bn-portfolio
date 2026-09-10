@@ -32,16 +32,44 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Store",
+      "@type": "ElectronicsStore",
       "@id": "https://uncleapplestore.com/#store",
       "name": "Uncle Apple Store",
       "url": "https://uncleapplestore.com/",
+      "image": "https://uncleapplestore.com/apple-profile-header.jpg",
+      "logo": "https://uncleapplestore.com/logo.jpeg",
       "description": "MacBook Gambia buyers can shop MacBook models with honest condition notes and delivery confirmation from Uncle Apple Store.",
-      "areaServed": "GM",
+      "areaServed": [
+        "The Gambia",
+        "Serrekunda",
+        "Banjul",
+        "Brikama",
+        "Bakau",
+        "Dakar"
+      ],
       "email": "support@uncleapplestore.com",
-      "telephone": "+4915679652076",
+      "telephone": "+220833013139",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+220833013139",
+          "contactType": "sales and customer service",
+          "areaServed": "GM",
+          "availableLanguage": "English"
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+4915679652076",
+          "contactType": "secondary customer service",
+          "areaServed": ["DE", "GM"],
+          "availableLanguage": "English"
+        }
+      ],
+      "currenciesAccepted": "GMD",
       "sameAs": [
-        "https://wa.me/4915679652076"
+        "https://www.instagram.com/uncleapplestore/",
+        "https://www.facebook.com/share/1CVKbaFTww/",
+        "https://www.tiktok.com/@uncleapplestore"
       ]
     }
   </script>
@@ -111,38 +139,54 @@
     "@id": "https://uncleapplestore.com/macbook.html#current-inventory",
     "name": "Current MacBooks in The Gambia",
     "itemListOrder": "https://schema.org/ItemListOrderAscending",
-    "numberOfItems": 4,
+    "numberOfItems": 6,
     "itemListElement": [
       {
         "@type": "ListItem",
         "position": 1,
-        "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-1/",
+        "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-14-inch-m5-space-black-16gb-1tb-brand-new-and-sealed-1/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-1/#product"
+          "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-14-inch-m5-space-black-16gb-1tb-brand-new-and-sealed-1/#product"
         }
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-2/",
+        "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-rose-gold-8gb-256gb-grade-a-2/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-2/#product"
+          "@id": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-rose-gold-8gb-256gb-grade-a-2/#product"
         }
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-3/",
+        "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-3/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-3/#product"
+          "@id": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-3/#product"
         }
       },
       {
         "@type": "ListItem",
         "position": 4,
-        "url": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-4/",
+        "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-4/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-4/#product"
+          "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-4/#product"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-5/",
+        "item": {
+          "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-5/#product"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-6/",
+        "item": {
+          "@id": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-6/#product"
         }
       }
     ]
@@ -150,7 +194,61 @@
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-1/#product",
+    "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-14-inch-m5-space-black-16gb-1tb-brand-new-and-sealed-1/#product",
+    "name": "MacBook Pro 14-inch (M5) - Space Black - 16GB • 1TB - Brand new and sealed",
+    "image": [
+      "https://uncleapplestore.com/products/macbooks/macbook-pro-14-m5-16gb-1tb-sealed/macbook-pro-14-m5-box-front.jpeg",
+      "https://uncleapplestore.com/products/macbooks/macbook-pro-14-m5-16gb-1tb-sealed/macbook-pro-14-m5-box-back.jpeg"
+    ],
+    "description": "Brand-new 14-inch MacBook Pro in Space Black with Apple M5 chip, 16GB unified memory, and 1TB SSD. Factory sealed in the original box and supplied with the original Apple receipt.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Apple"
+    },
+    "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-14-inch-m5-space-black-16gb-1tb-brand-new-and-sealed-1/",
+    "availability": "https://schema.org/OutOfStock",
+    "itemCondition": "https://schema.org/NewCondition"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-rose-gold-8gb-256gb-grade-a-2/#product",
+    "name": "MacBook Air 13.3-inch (2019) - Rose Gold - 8GB • 256GB - Grade A",
+    "image": [
+      "https://uncleapplestore.com/products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-open.webp",
+      "https://uncleapplestore.com/products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-side.webp",
+      "https://uncleapplestore.com/products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-front.webp",
+      "https://uncleapplestore.com/products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-box.webp",
+      "https://uncleapplestore.com/products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-back.webp"
+    ],
+    "description": "Apple MacBook Air 13.3-inch (2019) in Rose Gold with 8GB RAM and 256GB SSD. Grade A condition with 92% battery health, only 130 cycles, and working Touch ID. Clean, lightweight, and ready for study, office work, browsing, and everyday use.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Apple"
+    },
+    "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-rose-gold-8gb-256gb-grade-a-2/",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/UsedCondition",
+    "offers": {
+      "@type": "Offer",
+      "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-rose-gold-8gb-256gb-grade-a-2/",
+      "priceCurrency": "GMD",
+      "price": 35000,
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/UsedCondition",
+      "seller": {
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
+      }
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-3/#product",
     "name": "MacBook Air 13.3-inch (2019) - Gold - 1.6GHz i5 • 8GB • 128GB",
     "image": [
       "https://uncleapplestore.com/products/macbooks/macbook-air-2019-gold-13-3-inch-i5-8gb-128gb/macbook-air-2019-gold-front.jpeg",
@@ -163,25 +261,29 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-1/",
+    "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-3/",
     "availability": "https://schema.org/InStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-1/",
+      "url": "https://uncleapplestore.com/p/macbooks/macbook-air-13-3-inch-2019-gold-1-6ghz-i5-8gb-128gb-3/",
       "priceCurrency": "GMD",
       "price": 30000,
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-2/#product",
+    "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-4/#product",
     "name": "MacBook Pro 13-inch (2017) - i5 • 8GB • 256GB - Like new - Warranty included",
     "image": [
       "https://uncleapplestore.com/products/macbooks/macbook-pro-13-2017-i5-8gb-256gb/macbook-pro-13-2017-front.jpg",
@@ -196,25 +298,29 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-2/",
+    "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-4/",
     "availability": "https://schema.org/OutOfStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-2/",
+      "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-4/",
       "priceCurrency": "GMD",
       "price": 25000,
       "availability": "https://schema.org/OutOfStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-3/#product",
+    "@id": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-5/#product",
     "name": "MacBook Pro 13-inch (2016) - i5 • 16GB • 256GB - Used - Neat condition",
     "image": [
       "https://uncleapplestore.com/products/macbooks/MacBook Pro 13-inches (2016)/front image.jpg",
@@ -227,25 +333,29 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-3/",
-    "availability": "https://schema.org/InStock",
+    "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-5/",
+    "availability": "https://schema.org/OutOfStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-3/",
+      "url": "https://uncleapplestore.com/p/macbooks/macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-5/",
       "priceCurrency": "GMD",
       "price": 20000,
-      "availability": "https://schema.org/InStock",
+      "availability": "https://schema.org/OutOfStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-4/#product",
+    "@id": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-6/#product",
     "name": "MacBook Neo 13-inch - Purple - 8GB • 256GB",
     "image": [
       "https://uncleapplestore.com/products/macbooks/macbook-neo-13-purple-8gb-256gb/macbook-neo-13-purple-front.jpeg",
@@ -257,18 +367,22 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-4/",
+    "url": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-6/",
     "availability": "https://schema.org/InStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-4/",
+      "url": "https://uncleapplestore.com/p/macbooks/macbook-neo-13-inch-purple-8gb-256gb-6/",
       "priceCurrency": "GMD",
       "price": 57000,
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   }
@@ -283,7 +397,7 @@
       <div class="nav-inner">
         <a class="logo" href="./index.html" aria-label="Home">
           <span class="logo-badge" aria-hidden="true">
-            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" width="560" height="319" loading="eager" decoding="async" />
           </span>
         </a>
 
@@ -326,7 +440,7 @@
       <div class="container">
         <div class="catalog-wrap" aria-label="Featured image">
           <div class="phone-frame" style="aspect-ratio: 16 / 9; border-radius: 28px; width: 100%; max-width: 720px; margin-inline: auto; box-sizing: border-box;">
-            <img src="products/macbooks/macbook-intro.png?v=20260301-1" alt="MacBook" loading="lazy" decoding="async" />
+            <img src="products/macbooks/macbook-intro.png?v=20260301-1" alt="MacBook" width="1200" height="673" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>

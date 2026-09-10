@@ -32,16 +32,44 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Store",
+      "@type": "ElectronicsStore",
       "@id": "https://uncleapplestore.com/#store",
       "name": "Uncle Apple Store",
       "url": "https://uncleapplestore.com/",
+      "image": "https://uncleapplestore.com/apple-profile-header.jpg",
+      "logo": "https://uncleapplestore.com/logo.jpeg",
       "description": "Buy AirPods in Gambia with fast support and delivery to Banjul and Dakar.",
-      "areaServed": "GM",
+      "areaServed": [
+        "The Gambia",
+        "Serrekunda",
+        "Banjul",
+        "Brikama",
+        "Bakau",
+        "Dakar"
+      ],
       "email": "support@uncleapplestore.com",
-      "telephone": "+4915679652076",
+      "telephone": "+220833013139",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+220833013139",
+          "contactType": "sales and customer service",
+          "areaServed": "GM",
+          "availableLanguage": "English"
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+4915679652076",
+          "contactType": "secondary customer service",
+          "areaServed": ["DE", "GM"],
+          "availableLanguage": "English"
+        }
+      ],
+      "currenciesAccepted": "GMD",
       "sameAs": [
-        "https://wa.me/4915679652076"
+        "https://www.instagram.com/uncleapplestore/",
+        "https://www.facebook.com/share/1CVKbaFTww/",
+        "https://www.tiktok.com/@uncleapplestore"
       ]
     }
   </script>
@@ -111,38 +139,54 @@
     "@id": "https://uncleapplestore.com/airpods.html#current-inventory",
     "name": "Current AirPods listings in The Gambia",
     "itemListOrder": "https://schema.org/ItemListOrderAscending",
-    "numberOfItems": 4,
+    "numberOfItems": 6,
     "itemListElement": [
       {
         "@type": "ListItem",
         "position": 1,
-        "url": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-1/",
+        "url": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-solo-pro-anc-wireless-1/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-1/#product"
+          "@id": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-solo-pro-anc-wireless-1/#product"
         }
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "url": "https://uncleapplestore.com/p/airpods/airpods-max-2024-2/",
+        "url": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-studio3-wireless-2/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2024-2/#product"
+          "@id": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-studio3-wireless-2/#product"
         }
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "url": "https://uncleapplestore.com/p/airpods/airpods-max-2020-3/",
+        "url": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-3/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2020-3/#product"
+          "@id": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-3/#product"
         }
       },
       {
         "@type": "ListItem",
         "position": 4,
-        "url": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-4/",
+        "url": "https://uncleapplestore.com/p/airpods/airpods-max-2024-4/",
         "item": {
-          "@id": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-4/#product"
+          "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2024-4/#product"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "url": "https://uncleapplestore.com/p/airpods/airpods-max-2020-5/",
+        "item": {
+          "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2020-5/#product"
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "url": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-6/",
+        "item": {
+          "@id": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-6/#product"
         }
       }
     ]
@@ -150,7 +194,75 @@
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-1/#product",
+    "@id": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-solo-pro-anc-wireless-1/#product",
+    "name": "Beats by Dr. Dre Solo Pro ANC Wireless",
+    "image": [
+      "https://uncleapplestore.com/products/airpods/beats-solo-pro-anc-wireless-gray/beats-solo-pro-anc-wireless-gray-1.jpeg",
+      "https://uncleapplestore.com/products/airpods/beats-solo-pro-anc-wireless-gray/beats-solo-pro-anc-wireless-gray-2.jpeg",
+      "https://uncleapplestore.com/products/airpods/beats-solo-pro-anc-wireless-gray/beats-solo-pro-anc-wireless-gray-3.jpeg"
+    ],
+    "description": "Original Beats by Dr. Dre Solo Pro wireless headphones in gray. Active noise cancelling helps reduce background sound, while the compact on-ear design is suitable for music, calls, travel and everyday listening.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Beats by Dr. Dre"
+    },
+    "url": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-solo-pro-anc-wireless-1/",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/UsedCondition",
+    "offers": {
+      "@type": "Offer",
+      "url": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-solo-pro-anc-wireless-1/",
+      "priceCurrency": "GMD",
+      "price": 10000,
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/UsedCondition",
+      "seller": {
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
+      }
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-studio3-wireless-2/#product",
+    "name": "Beats by Dr. Dre Studio3 Wireless",
+    "image": [
+      "https://uncleapplestore.com/products/airpods/beats-studio3-wireless-gray/beats-studio3-wireless-gray-1.jpeg",
+      "https://uncleapplestore.com/products/airpods/beats-studio3-wireless-gray/beats-studio3-wireless-gray-2.jpeg",
+      "https://uncleapplestore.com/products/airpods/beats-studio3-wireless-gray/beats-studio3-wireless-gray-3.jpeg"
+    ],
+    "description": "Original Beats by Dr. Dre Studio3 Wireless headphones in gray. Comfortable over-ear cushions, wireless Bluetooth connectivity and noise cancelling make them suitable for music, calls, travel and everyday listening. The foldable design is easy to carry and store.",
+    "brand": {
+      "@type": "Brand",
+      "name": "Beats by Dr. Dre"
+    },
+    "url": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-studio3-wireless-2/",
+    "availability": "https://schema.org/InStock",
+    "itemCondition": "https://schema.org/UsedCondition",
+    "offers": {
+      "@type": "Offer",
+      "url": "https://uncleapplestore.com/p/airpods/beats-by-dr-dre-studio3-wireless-2/",
+      "priceCurrency": "GMD",
+      "price": 10000,
+      "availability": "https://schema.org/InStock",
+      "itemCondition": "https://schema.org/UsedCondition",
+      "seller": {
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
+      }
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-3/#product",
     "name": "AirPods (2nd generation)",
     "image": [
       "https://uncleapplestore.com/products/airpods/airpods-2nd-gen-1.jpg",
@@ -162,25 +274,29 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-1/",
+    "url": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-3/",
     "availability": "https://schema.org/OutOfStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-1/",
+      "url": "https://uncleapplestore.com/p/airpods/airpods-2nd-generation-3/",
       "priceCurrency": "GMD",
       "price": 4250,
       "availability": "https://schema.org/OutOfStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2024-2/#product",
+    "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2024-4/#product",
     "name": "AirPods Max (2024)",
     "image": [
       "https://uncleapplestore.com/products/airpods/airpods-max-2024-beige-1.jpg",
@@ -192,25 +308,29 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/airpods/airpods-max-2024-2/",
+    "url": "https://uncleapplestore.com/p/airpods/airpods-max-2024-4/",
     "availability": "https://schema.org/InStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/airpods/airpods-max-2024-2/",
+      "url": "https://uncleapplestore.com/p/airpods/airpods-max-2024-4/",
       "priceCurrency": "GMD",
       "price": 36550,
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2020-3/#product",
+    "@id": "https://uncleapplestore.com/p/airpods/airpods-max-2020-5/#product",
     "name": "AirPods Max (2020)",
     "image": [
       "https://uncleapplestore.com/products/airpods/airpods-max-1.jpg",
@@ -221,25 +341,29 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/airpods/airpods-max-2020-3/",
+    "url": "https://uncleapplestore.com/p/airpods/airpods-max-2020-5/",
     "availability": "https://schema.org/InStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/airpods/airpods-max-2020-3/",
+      "url": "https://uncleapplestore.com/p/airpods/airpods-max-2020-5/",
       "priceCurrency": "GMD",
       "price": 22500,
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
   {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-4/#product",
+    "@id": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-6/#product",
     "name": "AirPods Pro (2nd generation)",
     "image": [
       "https://uncleapplestore.com/products/airpods/airpods-pro-2-1.jpg",
@@ -251,18 +375,22 @@
       "@type": "Brand",
       "name": "Apple"
     },
-    "url": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-4/",
+    "url": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-6/",
     "availability": "https://schema.org/InStock",
     "itemCondition": "https://schema.org/UsedCondition",
     "offers": {
       "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-4/",
+      "url": "https://uncleapplestore.com/p/airpods/airpods-pro-2nd-generation-6/",
       "priceCurrency": "GMD",
       "price": 6375,
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   }
@@ -277,7 +405,7 @@
       <div class="nav-inner">
         <a class="logo" href="./index.html" aria-label="Home">
           <span class="logo-badge" aria-hidden="true">
-            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" width="560" height="319" loading="eager" decoding="async" />
           </span>
         </a>
 
@@ -315,7 +443,7 @@
 
           <div class="hero-media" aria-label="Product image">
             <div class="phone-frame" style="aspect-ratio: 1 / 1; border-radius: 28px; width: 100%; max-width: 420px; box-sizing: border-box;">
-              <img src="products/airpods/airpods-max-2024-beige-1.jpg?v=20260301-1" alt="AirPods Max (2024)" loading="eager" decoding="async" />
+              <img src="products/airpods/airpods-max-2024-beige-1.jpg?v=20260301-1" alt="AirPods Max (2024)" width="976" height="916" loading="eager" decoding="async" />
             </div>
           </div>
         </div>
@@ -326,7 +454,7 @@
       <div class="container">
         <div class="catalog-wrap" aria-label="Featured image">
           <div class="phone-frame" style="aspect-ratio: 16 / 9; border-radius: 28px; width: 100%; max-width: 720px; margin-inline: auto; box-sizing: border-box;">
-            <img src="products/airpods/airpods-pro-2-lead.webp?v=20260301-1" alt="AirPods Pro 2" loading="lazy" decoding="async" />
+            <img src="products/airpods/airpods-pro-2-lead.webp?v=20260301-1" alt="AirPods Pro 2" width="2000" height="1000" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>

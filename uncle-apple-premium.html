@@ -31,16 +31,44 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Store",
+      "@type": "ElectronicsStore",
       "@id": "https://uncleapplestore.com/#store",
       "name": "Uncle Apple Store",
       "url": "https://uncleapplestore.com/",
+      "image": "https://uncleapplestore.com/apple-profile-header.jpg",
+      "logo": "https://uncleapplestore.com/logo.jpeg",
       "description": "Original iPhones and Apple devices available in The Gambia. Verified condition. Fast WhatsApp response.",
-      "areaServed": "GM",
+      "areaServed": [
+        "The Gambia",
+        "Serrekunda",
+        "Banjul",
+        "Brikama",
+        "Bakau",
+        "Dakar"
+      ],
       "email": "support@uncleapplestore.com",
-      "telephone": "+4915679652076",
+      "telephone": "+220833013139",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+220833013139",
+          "contactType": "sales and customer service",
+          "areaServed": "GM",
+          "availableLanguage": "English"
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+4915679652076",
+          "contactType": "secondary customer service",
+          "areaServed": ["DE", "GM"],
+          "availableLanguage": "English"
+        }
+      ],
+      "currenciesAccepted": "GMD",
       "sameAs": [
-        "https://wa.me/4915679652076"
+        "https://www.instagram.com/uncleapplestore/",
+        "https://www.facebook.com/share/1CVKbaFTww/",
+        "https://www.tiktok.com/@uncleapplestore"
       ]
     }
   </script>
@@ -53,7 +81,7 @@
     - hero-iphone.jpg        (hero large phone)
     - iphone-pro.jpg         (iPhone Pro section)
     - iphone.jpg             (iPhone section)
-    - iphone-plus.jpg        (iPhone Plus section)
+    - iphone-plus.webp       (iPhone Plus section)
     - iphone-se.jpg          (iPhone SE section)
 
     If you want different filenames, update the <img src="..."> paths below.
@@ -526,7 +554,7 @@
       <div class="nav-inner">
         <a class="logo" href="./index.html#top" aria-label="Home">
           <span class="logo-badge" aria-hidden="true">
-            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" width="560" height="319" loading="eager" decoding="async" />
           </span>
         </a>
 
@@ -566,7 +594,7 @@
           <div class="hero-media" aria-label="Large iPhone image">
             <div class="phone-frame" role="img" aria-label="iPhone image placeholder">
               <div class="phone-notch" aria-hidden="true"></div>
-              <img src="hero-iphone.jpg" alt="iPhone (hero)" loading="eager" decoding="async" />
+              <img src="hero-iphone.jpg" alt="iPhone (hero)" width="1920" height="1080" loading="eager" decoding="async" />
             </div>
           </div>
         </div>
@@ -584,7 +612,7 @@
           <div class="story-media">
             <div class="phone-frame" aria-label="iPhone Pro image placeholder">
               <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone-pro.jpg" alt="iPhone Pro" loading="lazy" decoding="async" />
+              <img src="iphone-pro.jpg" alt="iPhone Pro" width="1600" height="960" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="story-copy">
@@ -615,7 +643,7 @@
           <div class="story-media">
             <div class="phone-frame" aria-label="iPhone image placeholder">
               <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone.jpg" alt="iPhone" loading="lazy" decoding="async" />
+              <img src="iphone.jpg" alt="iPhone" width="4000" height="6000" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="story-copy">
@@ -645,7 +673,7 @@
           <div class="story-media">
             <div class="phone-frame" aria-label="iPhone Plus image placeholder">
               <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone-plus.jpg" alt="iPhone Plus" loading="lazy" decoding="async" />
+              <img src="iphone-plus.webp" alt="iPhone Plus" width="574" height="1086" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="story-copy">
@@ -675,7 +703,7 @@
           <div class="story-media">
             <div class="phone-frame" aria-label="iPhone SE image placeholder">
               <div class="phone-notch" aria-hidden="true"></div>
-              <img src="iphone-se.jpg" alt="iPhone SE" loading="lazy" decoding="async" />
+              <img src="iphone-se.jpg" alt="iPhone SE" width="1242" height="1548" loading="lazy" decoding="async" />
             </div>
           </div>
           <div class="story-copy">
@@ -871,7 +899,7 @@
     const STORE_NAME = 'Uncle Apple';
     const LOCATION = 'The Gambia';
 
-    const WHATSAPP_NUMBER = '4915679652076';
+    const WHATSAPP_NUMBER = '220833013139';
 
     function buildWhatsAppLink(message){
       const encoded = encodeURIComponent(message);

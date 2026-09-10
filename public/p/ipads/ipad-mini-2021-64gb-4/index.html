@@ -27,10 +27,13 @@
     .product-media-card,.product-summary-card,.product-section-card{padding:22px}
     .product-media-card{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(242,245,248,.92))}
     .product-media-stage{min-height:300px;border-radius:22px;background:linear-gradient(180deg,#ffffff 0%,#eef2f6 100%);display:grid;place-items:center;padding:26px;border:1px solid rgba(11,15,22,.06)}
-    .product-media-stage img{width:100%;max-height:380px;object-fit:contain}
+    .product-media-stage img{width:100%;height:380px;max-height:380px;object-fit:contain}
     .product-thumb-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
     .product-thumb{border-radius:16px;padding:10px;border:1px solid rgba(11,15,22,.08);background:#fff;min-height:74px;display:grid;place-items:center}
-    .product-thumb img{max-height:58px;object-fit:contain}
+    .product-thumb img{width:100%;height:58px;max-height:58px;object-fit:contain}
+    .product-breadcrumb{display:flex;align-items:center;gap:8px;min-width:0;color:rgba(11,15,22,.62);font-size:.82rem;font-weight:700}
+    .product-breadcrumb a{color:inherit;text-decoration:none}
+    .product-breadcrumb [aria-current="page"]{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:rgba(11,15,22,.82)}
     .product-eyebrow{margin:0;font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(11,15,22,.56)}
     .product-title{margin:0;font-size:clamp(2rem,6vw,3.8rem);line-height:.98;letter-spacing:-.045em;font-family:"SF Pro Display","SF Pro Text",ui-sans-serif,system-ui,-apple-system,sans-serif}
     .product-short,.product-section-card p{margin:0;line-height:1.7;color:rgba(11,15,22,.72)}
@@ -45,9 +48,16 @@
     .product-detail-label{display:block;font-size:.78rem;font-weight:700;color:rgba(11,15,22,.52);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
     .product-detail-value{display:block;font-size:1rem;font-weight:800;color:#0b0f16}
     .product-purchase-card{display:grid;gap:12px;padding:18px;border-radius:24px;background:linear-gradient(180deg,rgba(11,15,22,.03),rgba(11,15,22,.01));border:1px solid rgba(11,15,22,.06)}
+    .product-purchase-card--sold{border:2px solid rgba(185,28,28,.56);background:rgba(254,242,242,.96)}
     .product-price{font-size:clamp(1.75rem,6vw,2.5rem);line-height:1;letter-spacing:-.04em;font-weight:900}
+    .product-offer-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .product-offer-badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 9px;border-radius:8px;background:#e30613;color:#fff;font-size:.82rem;font-weight:900;line-height:1}
+    .product-offer-original{color:rgba(11,15,22,.65);font-size:1rem;font-weight:750;text-decoration:line-through;text-decoration-thickness:1.5px}
+    .product-offer-price{color:#e30613;font-size:clamp(1.55rem,5vw,2.25rem);line-height:1;font-weight:950;letter-spacing:-.035em}
     .product-status{display:inline-flex;align-items:center;gap:8px;font-size:.95rem;color:rgba(11,15,22,.64);font-weight:700}
     .product-dot{width:9px;height:9px;border-radius:999px;background:#16a34a;box-shadow:0 0 0 6px rgba(22,163,74,.12)}
+    .product-status--sold{color:#991b1b;font-size:1.05rem;font-weight:950;letter-spacing:.09em;text-transform:uppercase}
+    .product-status--sold .product-dot{background:#dc2626;box-shadow:0 0 0 6px rgba(220,38,38,.14)}
     .product-actions{display:flex;flex-direction:column;gap:10px}
     .product-actions .btn{width:100%;min-height:50px}
     .product-list{margin:0;padding-left:18px;display:grid;gap:10px;color:rgba(11,15,22,.76)}
@@ -61,9 +71,10 @@
     .product-trust-card .product-list li::marker{color:rgba(255,255,255,.66)}
     .product-cta-card{background:linear-gradient(135deg,rgba(248,250,252,.96),rgba(236,242,247,.96))}
     @media (min-width:900px){.product-hero{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}.product-content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-section-card--wide,.product-trust-card,.product-cta-card{grid-column:1/-1}.product-actions{flex-direction:row}}
-    @media (max-width:767px){.product-page{padding-top:18px}.product-media-card,.product-summary-card,.product-section-card,.product-trust-strip{padding:18px}.product-detail-grid{grid-template-columns:1fr}.product-media-stage{min-height:240px;padding:20px}.product-thumb-row{grid-template-columns:repeat(2,minmax(0,1fr))}.product-trust-grid{grid-template-columns:1fr}.product-spec-table th,.product-spec-table td{display:block;width:100%;padding:8px 0}.product-spec-table th{padding-top:14px}.product-actions .btn{width:100%}}
+    @media (max-width:767px){.product-page{padding-top:18px}.product-media-card,.product-summary-card,.product-section-card,.product-trust-strip{padding:18px}.product-detail-grid{grid-template-columns:1fr}.product-media-stage{min-height:240px;padding:20px}.product-media-stage img{height:300px}.product-thumb-row{grid-template-columns:repeat(2,minmax(0,1fr))}.product-trust-grid{grid-template-columns:1fr}.product-spec-table th,.product-spec-table td{display:block;width:100%;padding:8px 0}.product-spec-table th{padding-top:14px}.product-actions .btn{width:100%}}
   </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","@id":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/#product","name":"iPad mini (2021) - 64GB","image":["https://uncleapplestore.com/products/ipads/ipad-mini-6-1.jpg","https://uncleapplestore.com/products/ipads/ipad-mini-6-2.jpg"],"description":"Compact size, powerful performance, easy to carry anywhere. Price GMD 22,300.","brand":{"@type":"Brand","name":"Apple"},"url":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/","availability":"https://schema.org/InStock","itemCondition":"https://schema.org/UsedCondition","offers":{"@type":"Offer","url":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/","priceCurrency":"GMD","price":22300,"availability":"https://schema.org/InStock","itemCondition":"https://schema.org/UsedCondition","seller":{"@id":"https://uncleapplestore.com/#store"}}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","@id":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/#product","name":"iPad mini (2021) - 64GB","image":["https://uncleapplestore.com/products/ipads/ipad-mini-6-1.jpg","https://uncleapplestore.com/products/ipads/ipad-mini-6-2.jpg"],"description":"Compact size, powerful performance, easy to carry anywhere. Price GMD 22,300.","brand":{"@type":"Brand","name":"Apple"},"url":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/","availability":"https://schema.org/InStock","itemCondition":"https://schema.org/UsedCondition","offers":{"@type":"Offer","url":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/","priceCurrency":"GMD","price":22300,"availability":"https://schema.org/InStock","itemCondition":"https://schema.org/UsedCondition","seller":{"@type":"ElectronicsStore","@id":"https://uncleapplestore.com/#store","name":"Uncle Apple Store","url":"https://uncleapplestore.com/","telephone":"+220833013139"}}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","@id":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://uncleapplestore.com/"},{"@type":"ListItem","position":2,"name":"iPads","item":"https://uncleapplestore.com/ipads.html"},{"@type":"ListItem","position":3,"name":"iPad mini (2021) - 64GB","item":"https://uncleapplestore.com/p/ipads/ipad-mini-2021-64gb-4/"}]}</script>
 </head>
 <body data-page="product">
   <header class="nav" aria-label="Primary navigation">
@@ -71,7 +82,7 @@
       <div class="nav-inner">
         <a class="logo" href="https://uncleapplestore.com/ipads.html" aria-label="Home">
           <span class="logo-badge" aria-hidden="true">
-            <img class="logo-img" src="/logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+            <img class="logo-img" src="/logo.jpeg" alt="Uncle Apple" width="560" height="319" loading="eager" decoding="async" />
           </span>
         </a>
         <nav class="nav-links" aria-label="Site links">
@@ -91,12 +102,17 @@
   <main id="top">
     <section class="section product-page" aria-label="Product details">
       <div class="container product-shell">
+        <nav class="product-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span>
+          <a href="https://uncleapplestore.com/ipads.html">iPads</a><span aria-hidden="true">›</span>
+          <span aria-current="page">iPad mini (2021) - 64GB</span>
+        </nav>
         <div class="product-hero">
           <article class="product-card product-media-card" aria-label="Product media">
             <div class="product-media-stage">
-              <img src="https://uncleapplestore.com/products/ipads/ipad-mini-6-1.jpg" alt="iPad mini (2021) - 64GB" loading="eager" decoding="async" />
+              <img src="https://uncleapplestore.com/products/ipads/ipad-mini-6-1.jpg" alt="iPad mini (2021) - 64GB" width="1200" height="1200" loading="eager" decoding="async" />
             </div>
-            <div class="product-thumb-row"><div class="product-thumb"><img src="https://uncleapplestore.com/products/ipads/ipad-mini-6-1.jpg" alt="iPad mini (2021) - 64GB view 1" loading="lazy" decoding="async" /></div><div class="product-thumb"><img src="https://uncleapplestore.com/products/ipads/ipad-mini-6-2.jpg" alt="iPad mini (2021) - 64GB view 2" loading="lazy" decoding="async" /></div></div>
+            <div class="product-thumb-row"><div class="product-thumb"><img src="https://uncleapplestore.com/products/ipads/ipad-mini-6-1.jpg" alt="iPad mini (2021) - 64GB view 1" width="300" height="300" loading="lazy" decoding="async" /></div><div class="product-thumb"><img src="https://uncleapplestore.com/products/ipads/ipad-mini-6-2.jpg" alt="iPad mini (2021) - 64GB view 2" width="300" height="300" loading="lazy" decoding="async" /></div></div>
           </article>
           <article class="product-card product-summary-card">
             <p class="product-eyebrow">iPad listing</p>
@@ -110,7 +126,7 @@
               <div class="product-price">GMD 22,300</div>
               <div class="product-status"><span class="product-dot" aria-hidden="true"></span>Available now</div>
               <div class="product-actions">
-                <a class="btn btn-whatsapp" href="https://wa.me/4915679652076?text=Hi%20Uncle%20Apple!%20Is%20this%20available%3A%20iPad%20mini%20(2021)%20%E2%80%94%2064GB%2C%20used%20(12-month%20warranty).%20Price%20GMD%2022%2C300.%20In%20The%20Gambia." target="_blank" rel="noopener">Chat on WhatsApp</a>
+                <a class="btn btn-whatsapp" href="https://wa.me/220833013139?text=Hi%20Uncle%20Apple!%20Is%20this%20available%3A%20iPad%20mini%20(2021)%20-%2064GB%2C%20used%20(12-month%20warranty).%20Price%20GMD%2022%2C300.%20In%20The%20Gambia." target="_blank" rel="noopener">Chat on WhatsApp</a>
                 <a class="btn btn-primary" href="https://uncleapplestore.com/ipads.html">Back to listings</a>
               </div>
             </div>
@@ -152,13 +168,13 @@
           </article>
           <article class="product-card product-section-card product-trust-card">
             <h2>Why buyers trust Uncle Apple Store</h2>
-            <ul class="product-list"><li>The Gambia, Banjul, Serrekunda, Brikama, Bakau, and nearby delivery routes. Dakar requests can be confirmed on WhatsApp before payment.</li></ul>
+            <ul class="product-list"><li>Genuine Apple devices from Germany</li><li>Tested before sale</li><li>Authenticity verified</li><li>Honest device condition</li><li>Trusted by customers across The Gambia</li></ul>
           </article>
           <article class="product-card product-section-card product-cta-card">
             <h2>Ready to confirm this device?</h2>
             <p>Chat with Uncle Apple Store on WhatsApp to confirm availability, ask questions, and arrange the next step before payment.</p>
             <div class="product-actions" style="margin-top:14px">
-              <a class="btn btn-whatsapp" href="https://wa.me/4915679652076?text=Hi%20Uncle%20Apple!%20Is%20this%20available%3A%20iPad%20mini%20(2021)%20%E2%80%94%2064GB%2C%20used%20(12-month%20warranty).%20Price%20GMD%2022%2C300.%20In%20The%20Gambia." target="_blank" rel="noopener">Chat on WhatsApp</a>
+              <a class="btn btn-whatsapp" href="https://wa.me/220833013139?text=Hi%20Uncle%20Apple!%20Is%20this%20available%3A%20iPad%20mini%20(2021)%20-%2064GB%2C%20used%20(12-month%20warranty).%20Price%20GMD%2022%2C300.%20In%20The%20Gambia." target="_blank" rel="noopener">Chat on WhatsApp</a>
               <a class="btn btn-primary" href="https://uncleapplestore.com/ipads.html">Back to listings</a>
             </div>
           </article>

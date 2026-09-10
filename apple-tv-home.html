@@ -32,16 +32,44 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Store",
+      "@type": "ElectronicsStore",
       "@id": "https://uncleapplestore.com/#store",
       "name": "Uncle Apple Store",
       "url": "https://uncleapplestore.com/",
+      "image": "https://uncleapplestore.com/apple-profile-header.jpg",
+      "logo": "https://uncleapplestore.com/logo.jpeg",
       "description": "Buy Apple TV and Home products in Gambia with support and delivery to Banjul and Dakar when available.",
-      "areaServed": "GM",
+      "areaServed": [
+        "The Gambia",
+        "Serrekunda",
+        "Banjul",
+        "Brikama",
+        "Bakau",
+        "Dakar"
+      ],
       "email": "support@uncleapplestore.com",
-      "telephone": "+4915679652076",
+      "telephone": "+220833013139",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+220833013139",
+          "contactType": "sales and customer service",
+          "areaServed": "GM",
+          "availableLanguage": "English"
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+4915679652076",
+          "contactType": "secondary customer service",
+          "areaServed": ["DE", "GM"],
+          "availableLanguage": "English"
+        }
+      ],
+      "currenciesAccepted": "GMD",
       "sameAs": [
-        "https://wa.me/4915679652076"
+        "https://www.instagram.com/uncleapplestore/",
+        "https://www.facebook.com/share/1CVKbaFTww/",
+        "https://www.tiktok.com/@uncleapplestore"
       ]
     }
   </script>
@@ -164,7 +192,11 @@
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
@@ -194,7 +226,11 @@
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
@@ -224,7 +260,11 @@
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   }
@@ -239,7 +279,7 @@
       <div class="nav-inner">
         <a class="logo" href="./index.html" aria-label="Home">
           <span class="logo-badge" aria-hidden="true">
-            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" width="560" height="319" loading="eager" decoding="async" />
           </span>
         </a>
 
@@ -277,7 +317,7 @@
 
           <div class="hero-media" aria-label="Product image">
             <div class="phone-frame" style="aspect-ratio: 16 / 9; border-radius: 28px; width: min(520px, 92vw);">
-              <img src="products/apple-tv-home/apple-tv-hero.jpg?v=20260301-3" alt="Apple TV and Home" loading="eager" decoding="async" onerror="this.onerror=null; this.src='iphone-air.webp';" />
+              <img src="products/apple-tv-home/apple-tv-hero.jpg?v=20260301-3" alt="Apple TV and Home" width="1500" height="1418" loading="eager" decoding="async" onerror="this.onerror=null; this.src='iphone-air.webp';" />
             </div>
           </div>
         </div>

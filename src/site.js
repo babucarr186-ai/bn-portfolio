@@ -1,6 +1,8 @@
+import { WHATSAPP_NUMBER_E164 } from './contactConfig.js';
+
 const STORE_NAME = 'Uncle Apple';
 const LOCATION = 'The Gambia';
-const WHATSAPP_NUMBER = '4915679652076';
+const WHATSAPP_NUMBER = WHATSAPP_NUMBER_E164;
 const GOOGLE_REVIEWS_ENDPOINT = 'https://phenomenal-cendol-d1b2f7.netlify.app/.netlify/functions/google-reviews';
 
 const CART_PAGE_HREF = './cart.html';
@@ -477,6 +479,8 @@ async function initGoogleReviews() {
         avatar = document.createElement('img');
         avatar.className = 'home-review-avatar';
         avatar.src = review.profilePhotoUrl;
+        avatar.width = 48;
+        avatar.height = 48;
         avatar.alt = '';
         avatar.loading = 'lazy';
         avatar.referrerPolicy = 'no-referrer';

@@ -3,6 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildCatalogCardSummary } from '../src/catalog/renderCatalog.js';
+import { WHATSAPP_NUMBER_E164 } from '../src/contactConfig.js';
 import { accessories } from '../src/catalog/data/accessories.js';
 import { airpods } from '../src/catalog/data/airpods.js';
 import { appleTvHome } from '../src/catalog/data/appleTvHome.js';
@@ -17,7 +18,7 @@ const projectRoot = dirname(dirname(scriptPath));
 const siteOrigin = 'https://uncleapplestore.com';
 const storeId = 'https://uncleapplestore.com/#store';
 const productPathBase = '/p';
-const whatsappNumber = '4915679652076';
+export const whatsappNumber = WHATSAPP_NUMBER_E164;
 const sharedLocationCopy = 'The Gambia, Banjul, Serrekunda, Brikama, Bakau, and nearby delivery routes. Dakar requests can be confirmed on WhatsApp before payment.';
 
 const pageConfigs = [
@@ -327,7 +328,17 @@ function buildGeneratedLongDescription(product, config, fields) {
   );
 }
 
-function buildProductSchema(config, product, index) {
+function buildStoreSeller() {
+  return {
+    '@type': 'ElectronicsStore',
+    '@id': storeId,
+    name: 'Uncle Apple Store',
+    url: `${siteOrigin}/`,
+    telephone: `+${WHATSAPP_NUMBER_E164}`,
+  };
+}
+
+export function buildProductSchema(config, product, index) {
   const summary = buildCatalogCardSummary(product);
   const description = normalizeSpace(product?.seoMetaDescription) || buildSchemaDescription(product, summary);
   const url = buildProductUrl(config, product, index);
@@ -354,11 +365,46 @@ function buildProductSchema(config, product, index) {
       price,
       availability: schemaAvailabilityUrl(product),
       itemCondition: schemaConditionUrl(product),
-      seller: { '@id': storeId },
+      seller: buildStoreSeller(),
     };
   }
 
   return schema;
+}
+
+export function buildBreadcrumbSchema(config, productSchema) {
+  const categoryName = config.key === 'iphones'
+    ? 'iPhones'
+    : normalizeSpace(config.pageLabel).replace(/\s+listings$/i, '');
+  const categoryUrl = config.key === 'iphones'
+    ? `${siteOrigin}/buy-iphone-gambia/`
+    : config.absoluteUrl;
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    '@id': `${productSchema.url}#breadcrumb`,
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: `${siteOrigin}/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: categoryName,
+        item: categoryUrl,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: productSchema.name,
+        item: productSchema.url,
+      },
+    ],
+  };
 }
 
 function buildItemListSchema(config, productSchemas) {
@@ -572,13 +618,21 @@ function buildProductPageViewModel(config, product, schema) {
 
 function buildProductPageHtml(config, product, index) {
   const schema = buildProductSchema(config, product, index);
+  const breadcrumbSchema = buildBreadcrumbSchema(config, schema);
   const viewModel = buildProductPageViewModel(config, product, schema);
   const canonical = schema.url;
   const galleryImages = schema.image.length ? schema.image : [`${siteOrigin}/products/placeholders/placeholder-phone.svg`];
   const primaryImage = galleryImages[0];
   const backLink = config.absoluteUrl;
+  const breadcrumbCategoryName = breadcrumbSchema.itemListElement[1].name;
+  const breadcrumbCategoryUrl = breadcrumbSchema.itemListElement[1].item;
+  const priceMarkup = viewModel.originalPriceText
+    ? `<div class="product-offer-row"><span class="product-offer-badge">-${escapeHtml(viewModel.discountPercent)}%</span><span class="product-offer-original">${escapeHtml(viewModel.originalPriceText)}</span><span class="product-offer-price">${escapeHtml(viewModel.priceText)}</span></div>`
+    : viewModel.priceText
+      ? `<div class="product-price">${escapeHtml(viewModel.priceText)}</div>`
+      : '';
   const galleryMarkup = galleryImages.length > 1
-    ? `<div class="product-thumb-row">${galleryImages.slice(0, 4).map((image, imageIndex) => `<div class="product-thumb"><img src="${escapeAttribute(image)}" alt="${escapeAttribute(`${viewModel.pageTitle} view ${imageIndex + 1}`)}" loading="lazy" decoding="async" /></div>`).join('')}</div>`
+    ? `<div class="product-thumb-row">${galleryImages.slice(0, 4).map((image, imageIndex) => `<div class="product-thumb"><img src="${escapeAttribute(image)}" alt="${escapeAttribute(`${viewModel.pageTitle} view ${imageIndex + 1}`)}" width="300" height="300" loading="lazy" decoding="async" /></div>`).join('')}</div>`
     : '';
 
   return `<!doctype html>
@@ -610,10 +664,13 @@ function buildProductPageHtml(config, product, index) {
     .product-media-card,.product-summary-card,.product-section-card{padding:22px}
     .product-media-card{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(242,245,248,.92))}
     .product-media-stage{min-height:300px;border-radius:22px;background:linear-gradient(180deg,#ffffff 0%,#eef2f6 100%);display:grid;place-items:center;padding:26px;border:1px solid rgba(11,15,22,.06)}
-    .product-media-stage img{width:100%;max-height:380px;object-fit:contain}
+    .product-media-stage img{width:100%;height:380px;max-height:380px;object-fit:contain}
     .product-thumb-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
     .product-thumb{border-radius:16px;padding:10px;border:1px solid rgba(11,15,22,.08);background:#fff;min-height:74px;display:grid;place-items:center}
-    .product-thumb img{max-height:58px;object-fit:contain}
+    .product-thumb img{width:100%;height:58px;max-height:58px;object-fit:contain}
+    .product-breadcrumb{display:flex;align-items:center;gap:8px;min-width:0;color:rgba(11,15,22,.62);font-size:.82rem;font-weight:700}
+    .product-breadcrumb a{color:inherit;text-decoration:none}
+    .product-breadcrumb [aria-current="page"]{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:rgba(11,15,22,.82)}
     .product-eyebrow{margin:0;font-size:.78rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:rgba(11,15,22,.56)}
     .product-title{margin:0;font-size:clamp(2rem,6vw,3.8rem);line-height:.98;letter-spacing:-.045em;font-family:"SF Pro Display","SF Pro Text",ui-sans-serif,system-ui,-apple-system,sans-serif}
     .product-short,.product-section-card p{margin:0;line-height:1.7;color:rgba(11,15,22,.72)}
@@ -651,9 +708,10 @@ function buildProductPageHtml(config, product, index) {
     .product-trust-card .product-list li::marker{color:rgba(255,255,255,.66)}
     .product-cta-card{background:linear-gradient(135deg,rgba(248,250,252,.96),rgba(236,242,247,.96))}
     @media (min-width:900px){.product-hero{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}.product-content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-section-card--wide,.product-trust-card,.product-cta-card{grid-column:1/-1}.product-actions{flex-direction:row}}
-    @media (max-width:767px){.product-page{padding-top:18px}.product-media-card,.product-summary-card,.product-section-card,.product-trust-strip{padding:18px}.product-detail-grid{grid-template-columns:1fr}.product-media-stage{min-height:240px;padding:20px}.product-thumb-row{grid-template-columns:repeat(2,minmax(0,1fr))}.product-trust-grid{grid-template-columns:1fr}.product-spec-table th,.product-spec-table td{display:block;width:100%;padding:8px 0}.product-spec-table th{padding-top:14px}.product-actions .btn{width:100%}}
+    @media (max-width:767px){.product-page{padding-top:18px}.product-media-card,.product-summary-card,.product-section-card,.product-trust-strip{padding:18px}.product-detail-grid{grid-template-columns:1fr}.product-media-stage{min-height:240px;padding:20px}.product-media-stage img{height:300px}.product-thumb-row{grid-template-columns:repeat(2,minmax(0,1fr))}.product-trust-grid{grid-template-columns:1fr}.product-spec-table th,.product-spec-table td{display:block;width:100%;padding:8px 0}.product-spec-table th{padding-top:14px}.product-actions .btn{width:100%}}
   </style>
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
+  <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
 </head>
 <body data-page="product">
   <header class="nav" aria-label="Primary navigation">
@@ -661,7 +719,7 @@ function buildProductPageHtml(config, product, index) {
       <div class="nav-inner">
         <a class="logo" href="${escapeAttribute(backLink)}" aria-label="Home">
           <span class="logo-badge" aria-hidden="true">
-            <img class="logo-img" src="/logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+            <img class="logo-img" src="/logo.jpeg" alt="Uncle Apple" width="560" height="319" loading="eager" decoding="async" />
           </span>
         </a>
         <nav class="nav-links" aria-label="Site links">
@@ -681,10 +739,15 @@ function buildProductPageHtml(config, product, index) {
   <main id="top">
     <section class="section product-page" aria-label="Product details">
       <div class="container product-shell">
+        <nav class="product-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a><span aria-hidden="true">›</span>
+          <a href="${escapeAttribute(breadcrumbCategoryUrl)}">${escapeHtml(breadcrumbCategoryName)}</a><span aria-hidden="true">›</span>
+          <span aria-current="page">${escapeHtml(viewModel.pageTitle)}</span>
+        </nav>
         <div class="product-hero">
           <article class="product-card product-media-card" aria-label="Product media">
             <div class="product-media-stage">
-              <img src="${escapeAttribute(primaryImage)}" alt="${escapeAttribute(viewModel.pageTitle)}" loading="eager" decoding="async" />
+              <img src="${escapeAttribute(primaryImage)}" alt="${escapeAttribute(viewModel.pageTitle)}" width="1200" height="1200" loading="eager" decoding="async" />
             </div>
             ${galleryMarkup}
           </article>
@@ -697,12 +760,7 @@ function buildProductPageHtml(config, product, index) {
               ${viewModel.details.map((detail) => `<div class="product-detail-item"><span class="product-detail-label">${escapeHtml(detail.label)}</span><span class="product-detail-value">${escapeHtml(detail.value)}</span></div>`).join('')}
             </div>
             <div class="product-purchase-card${viewModel.sold ? ' product-purchase-card--sold' : ''}">
-              ${viewModel.originalPriceText
-                ? `<div class="product-offer-row"><span class="product-offer-badge">-${escapeHtml(viewModel.discountPercent)}%</span><span class="product-offer-original">${escapeHtml(viewModel.originalPriceText)}</span><span class="product-offer-price">${escapeHtml(viewModel.priceText)}</span></div>`
-                : viewModel.priceText
-                  ? `<div class="product-price">${escapeHtml(viewModel.priceText)}</div>`
-                  : ''}
-              <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
+${priceMarkup ? `              ${priceMarkup}\n` : ''}              <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
               <div class="product-actions">
                 ${viewModel.sold
                   ? `<a class="btn btn-primary" href="${escapeAttribute(backLink)}">Browse available ${escapeHtml(config.sectionLabel)}</a>`

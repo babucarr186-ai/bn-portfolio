@@ -11,6 +11,8 @@ export const storefrontHeroSlides = [
     image: {
       src: `${base}hero/apple-watch-ultra.webp`,
       alt: 'Apple Watch Ultra with dark trail loop',
+      width: 1179,
+      height: 1172,
     },
     theme: 'warm',
     fit: 'contain',
@@ -25,6 +27,8 @@ export const storefrontHeroSlides = [
     image: {
       src: `${base}hero/uncle-apple-store.webp`,
       alt: 'Uncle Apple Store showroom in The Gambia',
+      width: 1500,
+      height: 1000,
     },
     theme: 'photo',
     fit: 'cover',
@@ -39,6 +43,8 @@ export const storefrontHeroSlides = [
     image: {
       src: `${base}hero/carefully-sourced.webp`,
       alt: 'Uncle Apple Store carefully inspecting Apple products at a German electronics dealer',
+      width: 1333,
+      height: 1000,
     },
     theme: 'photo',
     fit: 'cover',
@@ -53,6 +59,8 @@ export const storefrontHeroSlides = [
     image: {
       src: `${base}hero/iphone-16-purple.webp`,
       alt: 'Purple iPhone 16 viewed from the back',
+      width: 1179,
+      height: 1178,
     },
     theme: 'purple',
     fit: 'contain',
@@ -68,6 +76,8 @@ export const storefrontHeroSlides = [
       src: `${base}hero/germany-gambia-clean.webp`,
       desktopSrc: `${base}hero/germany-gambia-clean-desktop.webp`,
       alt: 'Trusted Apple devices sourced in Germany and delivered to The Gambia',
+      width: 1920,
+      height: 1080,
     },
     theme: 'artwork',
     fit: 'contain',

@@ -1,10 +1,8 @@
 import { useEffect, useId, useMemo, useState } from 'react';
 import { Menu, Search, ShoppingCart, X } from 'lucide-react';
 
+import { WHATSAPP_DISPLAY, WHATSAPP_NUMBER_E164 } from '../contactConfig.js';
 import './Header.css';
-
-const WHATSAPP_NUMBER_E164 = '2203013139';
-const WHATSAPP_DISPLAY = '+220 301 3139';
 
 function buildWhatsAppHref(message) {
   const base = `https://wa.me/${WHATSAPP_NUMBER_E164}`;
@@ -65,6 +63,8 @@ export default function Header() {
               className="ua-header__logo"
               src={`${import.meta.env.BASE_URL || './'}logo.jpeg`}
               alt="Uncle Apple Store"
+              width="560"
+              height="319"
               loading="eager"
               decoding="async"
             />

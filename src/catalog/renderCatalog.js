@@ -1,3 +1,5 @@
+import { WHATSAPP_NUMBER_E164 } from '../contactConfig.js';
+
 const RESPONSIVE_WIDTHS = [300, 600, 900, 1200];
 
 function splitQuery(url) {
@@ -48,6 +50,8 @@ function createResponsivePicture({ src, alt, sizes, className }) {
     if (className) fallback.className = className;
     fallback.loading = 'lazy';
     fallback.decoding = 'async';
+    fallback.width = 1200;
+    fallback.height = 1200;
     fallback.src = publicAssetUrl(`${pathNoQuery}${query}`);
     if (sizes) fallback.sizes = sizes;
     fallback.alt = alt || 'Product';
@@ -67,6 +71,8 @@ function createResponsivePicture({ src, alt, sizes, className }) {
 
   fallback.loading = 'lazy';
   fallback.decoding = 'async';
+  fallback.width = 1200;
+  fallback.height = 1200;
   try {
     fallback.fetchPriority = 'low';
   } catch {
@@ -449,7 +455,7 @@ function buildCatalogBadges(product, details) {
 }
 
 let catalogLightbox;
-const WHATSAPP_NUMBER = '4915679652076';
+const WHATSAPP_NUMBER = WHATSAPP_NUMBER_E164;
 
 function buildWhatsAppHref(message) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;

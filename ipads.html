@@ -32,16 +32,44 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Store",
+      "@type": "ElectronicsStore",
       "@id": "https://uncleapplestore.com/#store",
       "name": "Uncle Apple Store",
       "url": "https://uncleapplestore.com/",
+      "image": "https://uncleapplestore.com/apple-profile-header.jpg",
+      "logo": "https://uncleapplestore.com/logo.jpeg",
       "description": "Buy iPad in Gambia with delivery to Banjul and Dakar from a trusted electronics store Gambia.",
-      "areaServed": "GM",
+      "areaServed": [
+        "The Gambia",
+        "Serrekunda",
+        "Banjul",
+        "Brikama",
+        "Bakau",
+        "Dakar"
+      ],
       "email": "support@uncleapplestore.com",
-      "telephone": "+4915679652076",
+      "telephone": "+220833013139",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+220833013139",
+          "contactType": "sales and customer service",
+          "areaServed": "GM",
+          "availableLanguage": "English"
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+4915679652076",
+          "contactType": "secondary customer service",
+          "areaServed": ["DE", "GM"],
+          "availableLanguage": "English"
+        }
+      ],
+      "currenciesAccepted": "GMD",
       "sameAs": [
-        "https://wa.me/4915679652076"
+        "https://www.instagram.com/uncleapplestore/",
+        "https://www.facebook.com/share/1CVKbaFTww/",
+        "https://www.tiktok.com/@uncleapplestore"
       ]
     }
   </script>
@@ -172,7 +200,11 @@
       "availability": "https://schema.org/OutOfStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
@@ -201,7 +233,11 @@
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
@@ -230,7 +266,11 @@
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   },
@@ -259,7 +299,11 @@
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/UsedCondition",
       "seller": {
-        "@id": "https://uncleapplestore.com/#store"
+        "@type": "ElectronicsStore",
+        "@id": "https://uncleapplestore.com/#store",
+        "name": "Uncle Apple Store",
+        "url": "https://uncleapplestore.com/",
+        "telephone": "+220833013139"
       }
     }
   }
@@ -274,7 +318,7 @@
       <div class="nav-inner">
         <a class="logo" href="./index.html" aria-label="Home">
           <span class="logo-badge" aria-hidden="true">
-            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" loading="eager" decoding="async" />
+            <img class="logo-img" src="logo.jpeg" alt="Uncle Apple" width="560" height="319" loading="eager" decoding="async" />
           </span>
         </a>
 
@@ -317,7 +361,7 @@
       <div class="container">
         <div class="catalog-wrap" aria-label="Featured image">
           <div class="phone-frame" style="aspect-ratio: 16 / 9; border-radius: 28px; width: 100%; max-width: 720px; margin-inline: auto; box-sizing: border-box;">
-            <img src="products/ipads/ipads-intro.webp?v=20260301-1" alt="iPad models" loading="lazy" decoding="async" />
+            <img src="products/ipads/ipads-intro.webp?v=20260301-1" alt="iPad models" width="1200" height="500" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>

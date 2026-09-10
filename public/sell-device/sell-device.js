@@ -11,7 +11,7 @@
   const MAX_FILES = 5;
   const MAX_FILE_BYTES = 5 * 1024 * 1024;
   const ALLOWED_MIME = new Set(['image/jpeg', 'image/png']);
-  const WHATSAPP_NUMBER = '4915679652076';
+  const WHATSAPP_NUMBER = '220833013139';
 
   function setMessage(el, message) {
     if (!el) return;
