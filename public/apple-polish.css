@@ -1,0 +1,123 @@
+/* Apple device polish for Safari and installed PWA users.
+   Kept as a small override layer so the existing site stays unchanged elsewhere. */
+
+:root {
+  --ua-safe-top: env(safe-area-inset-top, 0px);
+  --ua-safe-right: env(safe-area-inset-right, 0px);
+  --ua-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --ua-safe-left: env(safe-area-inset-left, 0px);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Keep taps responsive without the harsh default iOS highlight. */
+a,
+button,
+input,
+select,
+textarea,
+[role='button'] {
+  -webkit-tap-highlight-color: rgba(11, 15, 22, 0.08);
+}
+
+/* Standalone iPhone/iPad PWA: respect the notch / Dynamic Island area. */
+@media (display-mode: standalone) {
+  .nav {
+    padding-top: var(--ua-safe-top);
+  }
+
+  footer {
+    padding-bottom: max(60px, calc(28px + var(--ua-safe-bottom)));
+  }
+}
+
+/* Product media: allow vertical page scrolling and pinch zoom while preserving horizontal swipe logic. */
+.catalog-zoom {
+  touch-action: pan-y pinch-zoom;
+}
+
+/* Apple-sized touch targets while keeping the visible controls subtle. */
+.catalog-nav {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.catalog-nav-prev {
+  left: 5px;
+}
+
+.catalog-nav-next {
+  right: 5px;
+}
+
+/* PWA install / notification banners must sit above the iPhone home indicator. */
+.ua-banner {
+  left: calc(12px + var(--ua-safe-left)) !important;
+  right: calc(12px + var(--ua-safe-right)) !important;
+  bottom: calc(12px + var(--ua-safe-bottom)) !important;
+}
+
+@media (min-width: 900px) {
+  .ua-banner.ua-banner--right {
+    left: auto !important;
+    right: calc(16px + var(--ua-safe-right)) !important;
+    bottom: calc(16px + var(--ua-safe-bottom)) !important;
+  }
+
+  .ua-banner.ua-banner--left {
+    left: calc(16px + var(--ua-safe-left)) !important;
+    right: auto !important;
+    bottom: calc(16px + var(--ua-safe-bottom)) !important;
+  }
+}
+
+/* Keep important storefront actions comfortably tappable on phones. */
+@media (max-width: 860px) {
+  body[data-page='home'] .catalog-actions .btn,
+  .catalog-grid--rail .catalog-actions .btn {
+    min-height: 44px;
+  }
+
+  textarea {
+    min-height: 84px;
+  }
+}
+
+/* Remove hover motion on touch-only devices so taps do not feel sticky on Safari. */
+@media (hover: none) and (pointer: coarse) {
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-outline:hover,
+  .btn-whatsapp:hover,
+  .storefront-btn--primary:hover,
+  .storefront-btn--secondary:hover,
+  .catalog-card:hover {
+    transform: none;
+  }
+}
+
+/* Respect the user's iOS motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
