@@ -19,6 +19,21 @@ const UA_SCRIPT_BASE_URL = (() => {
   }
 })();
 
+// Small Safari/iPhone/iPad polish layer. Loading it from this shared script keeps
+// all static entry pages consistent without duplicating <link> tags everywhere.
+(function uaLoadApplePolishStyles() {
+  try {
+    if (document.querySelector('link[data-ua-apple-polish]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = new URL('apple-polish.css?v=20260911-1', UA_SCRIPT_BASE_URL).toString();
+    link.dataset.uaApplePolish = '1';
+    document.head.appendChild(link);
+  } catch {
+    // Keep the base site working if the optional polish layer cannot load.
+  }
+})();
+
 function uaNow() {
   return Date.now();
 }
