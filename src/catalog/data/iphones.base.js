@@ -148,10 +148,10 @@ export const iphones = [
     condition: 'Used - Grade A',
     batteryHealth: '85%',
     price: 45000,
-    reserved: true,
-    availability: 'Reserved',
+    sold: true,
+    availability: 'Sold',
     whatsAppMessage:
-      'Hi Uncle Apple! I am interested in the reserved iPhone 14 Pro Max - Silver, 256GB, Grade A condition, battery 85%, box and charging cable included, sourced from Germany. Price GMD 45,000. Please let me know if the reservation becomes available.',
+      'Hi Uncle Apple! I am interested in the sold iPhone 14 Pro Max - Silver, 256GB, Grade A condition, battery 85%, box and charging cable included, sourced from Germany. Please let me know if a similar device becomes available.',
     description:
       'Beautiful Silver iPhone 14 Pro Max with 256GB storage, Grade A condition, and 85% battery health. Includes the box and charging cable. Sourced from Germany and available for GMD 45,000.',
     productTitle: 'iPhone 14 Pro Max (256GB) - Silver - Grade A - Battery 85%',
