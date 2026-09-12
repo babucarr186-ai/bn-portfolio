@@ -1,5 +1,33 @@
 export const macbooks = [
 	{
+		title: 'Apple iMac 24-inch (M1)',
+		subtitle:
+			'Silver • Apple M1 chip • 24-inch Retina 4.5K display • Original accessories • Original box • GMD 48,450',
+		kind: 'desktop',
+		cpu: 'Apple M1 chip',
+		color: 'Silver',
+		display: '24-inch Retina 4.5K display',
+		condition: 'Used - Complete set',
+		price: 48450,
+		specs: [
+			'Model: Apple iMac 24-inch',
+			'Chip: Apple M1',
+			'Color: Silver',
+			'Display: 24-inch Retina 4.5K display',
+			'Original Apple keyboard included',
+			'Original Apple Magic Mouse included',
+			'Original power adapter and cables included',
+			'Original box included',
+		],
+		whatsAppMessage:
+			'Hi Uncle Apple! Please confirm availability for the Apple iMac 24-inch with M1 chip, Silver, complete with original Apple accessories and original box. Price GMD 48,450.',
+		description:
+			'Apple iMac 24-inch with M1 chip in Silver, supplied as a complete set with the original Apple keyboard, Magic Mouse, power adapter, cables, and original box. A clean all-in-one Mac setup for office work, study, business, creative work, and home use. Price GMD 48,450.',
+		productTitle:
+			'Apple iMac 24-inch (M1) - Silver - Complete set with original accessories and box',
+		images: [],
+	},
+	{
 		title: 'MacBook Pro 14-inch (M5)',
 		subtitle:
 			'Space Black • M5 chip • 16GB unified memory • 1TB SSD • Brand new • Factory sealed • Original Apple receipt',
