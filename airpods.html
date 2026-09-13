@@ -450,11 +450,23 @@
       </div>
     </section>
 
-    <section class="section" aria-label="Introduction image">
+    <section class="section" aria-label="AirPods showcase video">
       <div class="container">
-        <div class="catalog-wrap" aria-label="Featured image">
-          <div class="phone-frame" style="aspect-ratio: 16 / 9; border-radius: 28px; width: 100%; max-width: 720px; margin-inline: auto; box-sizing: border-box;">
-            <img src="products/airpods/airpods-pro-2-lead.webp?v=20260301-1" alt="AirPods Pro 2" width="2000" height="1000" loading="lazy" decoding="async" />
+        <div class="catalog-wrap" aria-label="Featured AirPods video">
+          <div class="phone-frame" style="aspect-ratio: 512 / 910; border-radius: 28px; width: min(100%, 360px); margin-inline: auto; overflow: hidden; background: #000; box-sizing: border-box;">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              poster="products/airpods/airpods-max-showcase-poster.jpg?v=20260913-1"
+              aria-label="AirPods Max showcase video"
+              style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;"
+            >
+              <source src="products/airpods/airpods-max-showcase-13s.mp4?v=20260913-1" type="video/mp4" />
+              Your browser does not support video playback.
+            </video>
           </div>
         </div>
       </div>
