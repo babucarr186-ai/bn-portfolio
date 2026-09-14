@@ -108,7 +108,7 @@ export const macbooks = [
 	{
 		title: 'Apple MacBook Retina 12-inch (2017)',
 		subtitle:
-			'Rose Gold • Intel Core m3 • 8GB RAM • 256GB SSD • 107 battery cycles • macOS Ventura • GMD 30,000',
+			'Rose Gold • Intel Core m3 • 8GB RAM • 256GB SSD • 107 battery cycles • macOS Ventura • Ready to use • GMD 30,000',
 		kind: 'laptop',
 		cpu: 'Intel Core m3',
 		ram: '8GB',
@@ -117,7 +117,8 @@ export const macbooks = [
 		display: '12-inch Retina display',
 		batteryCycles: '107',
 		operatingSystem: 'macOS Ventura',
-		condition: 'Available',
+		condition: 'Ready to use',
+		sold: false,
 		price: 30000,
 		specs: [
 			'Model: Apple MacBook Retina 12-inch (2017)',
@@ -128,18 +129,21 @@ export const macbooks = [
 			'Display: 12-inch Retina display',
 			'Battery cycles: 107',
 			'Operating system: macOS Ventura',
+			'Status: Available',
+			'Condition: Ready to use',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for: Apple MacBook Retina 12-inch (2017) - Rose Gold, Intel Core m3, 8GB RAM, 256GB SSD, 107 battery cycles, macOS Ventura. Price GMD 30,000. In The Gambia.',
+			'Hi Uncle Apple! Please confirm availability for: Apple MacBook Retina 12-inch (2017) - Rose Gold, Intel Core m3, 8GB RAM, 256GB SSD, 107 battery cycles, macOS Ventura, ready to use. Price GMD 30,000. In The Gambia.',
+		shortDescription:
+			'Apple MacBook Retina 12-inch (2017) in Rose Gold with Intel Core m3, 8GB RAM, 256GB SSD, 107 battery cycles, and macOS Ventura. Available and ready to use for GMD 30,000.',
+		longDescription:
+			'Apple MacBook Retina 12-inch (2017) in Rose Gold with Intel Core m3, 8GB RAM, and 256GB SSD. It has 107 battery cycles and runs macOS Ventura. Available and ready to use. Price GMD 30,000.',
 		description:
-			'Apple MacBook Retina 12-inch (2017) in Rose Gold with Intel Core m3, 8GB RAM, and 256GB SSD. It has only 107 battery cycles and runs macOS Ventura. A compact and lightweight MacBook for browsing, study, office work, email, and everyday use. Price GMD 30,000.',
+			'Apple MacBook Retina 12-inch (2017) in Rose Gold with Intel Core m3, 8GB RAM, and 256GB SSD. It has only 107 battery cycles and runs macOS Ventura. Available and ready to use. A compact and lightweight MacBook for browsing, study, office work, email, and everyday use. Price GMD 30,000.',
 		productTitle:
 			'Apple MacBook Retina 12-inch (2017) - Rose Gold - Core m3 • 8GB • 256GB SSD',
 		images: [
-			'products/macbooks/macbook-air-2019-gold-13-3-inch-i5-8gb-128gb/macbook-air-2019-gold-front.jpeg',
-			'products/macbooks/macbook-air-2019-gold-13-3-inch-i5-8gb-128gb/macbook-air-2019-gold-keyboard.jpeg',
-			'products/macbooks/macbook-air-2019-gold-13-3-inch-i5-8gb-128gb/macbook-air-2019-gold-box.jpeg',
-			'products/macbooks/macbook-air-2019-gold-13-3-inch-i5-8gb-128gb/macbook-air-2019-gold-side.jpeg',
+			'products/macbooks/macbook-retina-12-2017-rose-gold/macbook-retina-12-2017-rose-gold-box.png',
 		],
 	},
 	{
