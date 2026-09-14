@@ -2,14 +2,14 @@ export const macbooks = [
 	{
 		title: 'Apple iMac 24-inch (M1)',
 		subtitle:
-			'Silver • Apple M1 chip • 256GB SSD • 24-inch Retina 4.5K display • Original accessories • Original box • GMD 48,450',
+			'Silver • Apple M1 chip • 256GB SSD • 24-inch Retina 4.5K display • Original accessories • Original box • GMD 60,000',
 		kind: 'desktop',
 		cpu: 'Apple M1 chip',
 		storage: '256GB SSD',
 		color: 'Silver',
 		display: '24-inch Retina 4.5K display',
 		condition: 'Used - Complete set',
-		price: 48450,
+		price: 60000,
 		specs: [
 			'Model: Apple iMac 24-inch',
 			'Chip: Apple M1',
@@ -22,9 +22,9 @@ export const macbooks = [
 			'Original box included',
 		],
 		whatsAppMessage:
-			'Hi Uncle Apple! Please confirm availability for the Apple iMac 24-inch with M1 chip, 256GB SSD, Silver, complete with original Apple accessories and original box. Price GMD 48,450.',
+			'Hi Uncle Apple! Please confirm availability for the Apple iMac 24-inch with M1 chip, 256GB SSD, Silver, complete with original Apple accessories and original box. Price GMD 60,000.',
 		description:
-			'Apple iMac 24-inch with M1 chip and 256GB SSD in Silver, supplied as a complete set with the original Apple keyboard, Magic Mouse, power adapter, cables, and original box. A clean all-in-one Mac setup for office work, study, business, creative work, and home use. Price GMD 48,450.',
+			'Apple iMac 24-inch with M1 chip and 256GB SSD in Silver, supplied as a complete set with the original Apple keyboard, Magic Mouse, power adapter, cables, and original box. A clean all-in-one Mac setup for office work, study, business, creative work, and home use. Price GMD 60,000.',
 		productTitle:
 			'Apple iMac 24-inch (M1) - Silver - 256GB SSD - Complete set with original accessories and box',
 		images: [
