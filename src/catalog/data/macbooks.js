@@ -1,5 +1,32 @@
 export const macbooks = [
 	{
+		"title": "Apple iMac 21.5-inch Retina 4K (2019)",
+		"subtitle": "16GB RAM • 512GB SSD • AMD Radeon Pro 560X 4GB • Like new • Original box • GMD 46,000",
+		"kind": "desktop",
+		"ram": "16GB",
+		"gpu": "AMD Radeon Pro 560X 4GB",
+		"storage": "512GB SSD",
+		"display": "21.5-inch Retina 4K display (4096 × 2304)",
+		"condition": "Used - Like new",
+		"price": 46000,
+		"sold": false,
+		"specs": [
+			"Model: Apple iMac 21.5-inch Retina 4K (2019)",
+			"RAM: 16GB",
+			"Graphics: AMD Radeon Pro 560X with 4GB graphics memory",
+			"Storage: 512GB SSD",
+			"Display: 21.5-inch Retina 4K (4096 × 2304)",
+			"Condition: Excellent, nearly like new",
+			"Original packaging included",
+			"Operating system installed",
+			"No known technical issues"
+		],
+		"whatsAppMessage": "Hi Uncle Apple! Please confirm availability for the Apple iMac 21.5-inch Retina 4K (2019), 16GB RAM, 512GB SSD, AMD Radeon Pro 560X 4GB, nearly like-new condition with original packaging. Price GMD 46,000.",
+		"description": "Apple iMac 21.5-inch Retina 4K (2019) with 16GB RAM, a 512GB SSD, and AMD Radeon Pro 560X graphics with 4GB of graphics memory. The 21.5-inch Retina 4K display has a resolution of 4096 × 2304. In excellent, nearly like-new condition, with original packaging included. Operating system installed. No known technical issues. Price GMD 46,000.",
+		"productTitle": "Apple iMac 21.5-inch Retina 4K (2019) - 16GB RAM - 512GB SSD - Like new",
+		"images": []
+	},
+	{
 		title: 'Apple iMac 24-inch (M1)',
 		subtitle:
 			'Silver • Apple M1 chip • 256GB SSD • 24-inch Retina 4.5K display • Original accessories • Original box • GMD 60,000',
