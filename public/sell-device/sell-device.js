@@ -80,7 +80,8 @@
 
   function buildWhatsAppLink(message) {
     const encoded = encodeURIComponent(message);
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+    const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+    return window.uaReferral ? window.uaReferral.decorate(href) : href;
   }
 
   function openWhatsApp(message) {

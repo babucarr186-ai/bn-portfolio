@@ -7,5 +7,6 @@ export const WHATSAPP_GREETING = 'Hi! I want to request iPhone availability. Ple
 export function buildWhatsAppLink(customPrefix = '') {
   const base = `https://wa.me/${WHATSAPP_NUMBER_E164}`;
   const text = encodeURIComponent((customPrefix ? customPrefix + '\n' : '') + WHATSAPP_GREETING);
-  return `${base}?text=${text}`;
+  const href = `${base}?text=${text}`;
+  return typeof window !== 'undefined' && window.uaReferral ? window.uaReferral.decorate(href) : href;
 }

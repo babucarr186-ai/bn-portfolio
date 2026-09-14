@@ -162,7 +162,7 @@ export default function ChatWidget() {
     const leadSummary = `\n\nAvailability Request\n- Model: ${lead.model || '-'}\n- Storage: ${lead.storage || '-'}\n- Color: ${lead.color || '-'}\n- Condition: ${lead.condition || '-'}\n- Delivery/Pickup: ${lead.deliveryPref || '-'}\n- Email: ${lead.contactEmail || '-'}\n\nNote: ${STORE_NAME} sells original Apple products/parts only.`;
     const body = messages.map(m => (m.from === 'user' ? 'You: ' : BOT_NAME + ': ') + m.text).join('\n') + leadSummary;
     const url = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent('Conversation summary:%0A' + body + '\n\nMy message: ')}`;
-    window.open(url, '_blank', 'noopener');
+    window.open(window.uaReferral ? window.uaReferral.decorate(url) : url, '_blank', 'noopener');
   }
 
   function clearChat() {
