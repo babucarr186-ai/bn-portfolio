@@ -151,13 +151,13 @@ export const watches = [
   {
     title: 'Apple Watch Series 10 (Titanium)',
     subtitle:
-      '42mm • Premium titanium case • Fully tested • 12‑month warranty • Very good condition • GMD 20,000',
+      '46MM • Premium titanium case • Fully tested • 12‑month warranty • Very good condition • GMD 39,000',
     kind: 'square',
-    price: 20000,
+    price: 39000,
     description:
-      'Apple Watch Series 10 (Titanium) 42mm with a lightweight titanium case, premium finish, and refined modern look. A newer Apple Watch choice for buyers who want something sharper for daily wear, health tracking, and staying connected.',
+      'Apple Watch Series 10 (Titanium) 46MM with a lightweight titanium case, premium finish, and refined modern look. A newer Apple Watch choice for buyers who want something sharper for daily wear, health tracking, and staying connected.',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 42mm - fully tested, very good condition, 12-month warranty. Price GMD 20,000. In The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 10 (Titanium) 46MM - fully tested, very good condition, 12-month warranty. Price GMD 39,000. In The Gambia.',
     mediaFit: 'contain',
     mediaPad: 14,
     images: [
