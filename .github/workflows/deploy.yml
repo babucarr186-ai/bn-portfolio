@@ -46,6 +46,82 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+      - name: Keep category navigation visible while scrolling
+        run: |
+          cat >> dist/site.css <<'EOF'
+
+          /* Sticky mobile category navigation: keep product pages one tap away while scrolling. */
+          @media (max-width: 860px) {
+            .nav {
+              position: sticky;
+              top: 0;
+              z-index: 2000;
+              background: rgba(255,255,255,0.96);
+              -webkit-backdrop-filter: saturate(180%) blur(14px);
+              backdrop-filter: saturate(180%) blur(14px);
+              transition: box-shadow 180ms ease;
+            }
+
+            .nav.is-category-sticky {
+              box-shadow: 0 6px 20px rgba(11,15,22,0.08);
+            }
+
+            .nav.is-category-sticky .logo,
+            .nav.is-category-sticky .nav-actions {
+              display: none !important;
+            }
+
+            .nav.is-category-sticky .nav-inner {
+              padding-top: 4px;
+              padding-bottom: 4px;
+              gap: 0;
+            }
+
+            .nav.is-category-sticky .nav-links.nav-links--catbar {
+              order: 1;
+              flex-basis: 100%;
+              padding-top: 2px;
+              padding-bottom: 2px;
+              mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 22px), transparent 100%);
+              -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 22px), transparent 100%);
+            }
+
+            .nav.is-category-sticky .nav-links.nav-links--catbar a {
+              min-height: 54px;
+              padding-top: 5px;
+              padding-bottom: 5px;
+            }
+          }
+          EOF
+
+          cat > dist/sticky-category-nav.js <<'EOF'
+          (() => {
+            const nav = document.querySelector('.nav');
+            const catbar = document.querySelector('.nav-links--catbar');
+            if (!nav || !catbar) return;
+
+            const update = () => {
+              nav.classList.toggle('is-category-sticky', window.scrollY > 96);
+            };
+
+            update();
+            window.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('pageshow', update);
+          })();
+          EOF
+
+          python - <<'PY'
+          from pathlib import Path
+
+          marker = '<script src="/sticky-category-nav.js" defer></script>'
+          for path in Path('dist').rglob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              if marker in text:
+                  continue
+              if '</body>' in text:
+                  text = text.replace('</body>', f'  {marker}\n</body>', 1)
+                  path.write_text(text, encoding='utf-8')
+          PY
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
