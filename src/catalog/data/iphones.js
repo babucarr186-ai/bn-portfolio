@@ -27,6 +27,10 @@ const iphone18ProMax = {
     'Brand new condition',
     'Comes in the box',
   ],
+  images: [
+    'products/iphones/iphone-18-pro-max-256gb-burgundy/IMG_3004.jpeg',
+  ],
+  mediaFit: 'contain',
 };
 
 const targetIndex = baseIphones.findIndex((product) =>
