@@ -1,5 +1,34 @@
 import { iphones as baseIphones } from './iphones.base.js';
 
+const iphone18ProMax = {
+  title: 'iPhone 18 Pro Max',
+  subtitle: 'Burgundy • 256GB • Brand new in box • GMD 150,000',
+  kind: 'phone',
+  color: 'Burgundy',
+  storage: '256GB',
+  condition: 'Brand new in box',
+  price: 150000,
+  sold: false,
+  availability: 'Available',
+  whatsAppMessage:
+    'Hi Uncle Apple! Please confirm availability for: iPhone 18 Pro Max - Burgundy, 256GB, brand new in box. Price GMD 150,000. Available in The Gambia.',
+  shortDescription:
+    'Brand new iPhone 18 Pro Max in Burgundy with 256GB storage, new in the box.',
+  description:
+    'Brand new iPhone 18 Pro Max in Burgundy with 256GB storage. Comes new in the box and is available now from Uncle Apple Store. Price GMD 150,000.',
+  productTitle: 'iPhone 18 Pro Max (256GB) - Burgundy - Brand new in box',
+  productHighlights: [
+    '256GB storage',
+    'Burgundy finish',
+    'Brand new in box',
+    'Available now',
+  ],
+  conditionReport: [
+    'Brand new condition',
+    'Comes in the box',
+  ],
+};
+
 const targetIndex = baseIphones.findIndex((product) =>
   product?.title === 'iPhone 12 Pro Max' &&
   product?.storage === '128GB' &&
@@ -24,6 +53,8 @@ const updatedTarget = target
     }
   : null;
 
-export const iphones = updatedTarget
+const currentIphones = updatedTarget
   ? [updatedTarget, ...baseIphones.filter((_, index) => index !== targetIndex)]
   : baseIphones;
+
+export const iphones = [iphone18ProMax, ...currentIphones];
