@@ -1,3 +1,4 @@
+import { loadLiveCatalogs } from './catalog/liveInventory.js';
 import { WHATSAPP_NUMBER_E164 } from './contactConfig.js';
 
 const STORE_NAME = 'Uncle Apple';
@@ -20,31 +21,15 @@ const CHAT_CATEGORY_MAP = {
 };
 
 let chatProductSources = null;
+let chatFetchedAt = 0;
 let chatInventory = [];
 
 async function loadChatInventory() {
-  if (chatProductSources) return;
+  if (chatProductSources && Date.now() - chatFetchedAt < 15000) return;
+  chatFetchedAt = Date.now();
 
-  const [accessoriesModule, airpodsModule, giftCardsModule, ipadsModule, iphonesModule, macbooksModule, watchesModule] =
-    await Promise.all([
-      import('./catalog/data/accessories.js'),
-      import('./catalog/data/airpods.js'),
-      import('./catalog/data/giftcards.js'),
-      import('./catalog/data/ipads.js'),
-      import('./catalog/data/iphones.js'),
-      import('./catalog/data/macbooks.js'),
-      import('./catalog/data/watches.js'),
-    ]);
-
-  chatProductSources = {
-    iphones: iphonesModule.iphones,
-    ipads: ipadsModule.ipads,
-    macbooks: macbooksModule.macbooks,
-    watches: watchesModule.watches,
-    airpods: airpodsModule.airpods,
-    giftcards: giftCardsModule.giftCards,
-    accessories: accessoriesModule.accessories,
-  };
+  try { chatProductSources = await loadLiveCatalogs(); }
+  catch { chatProductSources = {}; }
   chatInventory = buildChatInventory();
 }
 

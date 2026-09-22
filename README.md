@@ -193,3 +193,26 @@ git add public/products src/catalog/data src/phones.js
 git commit -m "Add product photos"
 git push
 ```
+
+## Shared stock system
+
+The public catalog now reads current stock and prices from
+`https://uncle-apple-stock.jameel186.chatgpt.site/api/public-catalog`.
+Manage products at `https://uncle-apple-stock.jameel186.chatgpt.site`.
+The owner signs in with their connected ChatGPT account, adds staff emails under Team,
+and shares the staff link. Staff can view products and sell one unit; only the owner
+can add products, change prices, replenish stock, or change staff access.
+
+The stock app stores data in D1. Server-side membership checks protect private APIs;
+only product information is available through the public read-only catalog API.
+Stock updates use version checks to prevent concurrent overselling. The team view
+refreshes every 15 seconds. Public product details refresh every 15 seconds;
+category pages check for changes every 30 seconds and when returning to a tab.
+The original `src/catalog/data` files are the import snapshot, not the live stock source.
+Editing those files will not change current stock. New catalog products use stable
+`inventoryId` links at `/product.html?id=...` and do not require a website build.
+
+If live stock cannot be reached on initial load, show a confirmation notice rather
+than presenting the old snapshot as current. Existing build-time SEO remains a
+snapshot and will not track live stock changes; customer-facing product pages load
+current data from the shared system.
