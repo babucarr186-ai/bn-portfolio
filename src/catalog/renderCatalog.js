@@ -130,7 +130,6 @@ function slugify(value) {
 }
 
 function buildProductPageHref(product, index) {
-  if (product?.inventoryId) return `${import.meta.env.BASE_URL || './'}product.html?id=${encodeURIComponent(product.inventoryId)}`;
   const categoryKey = document.documentElement.dataset.category || 'iphones';
   const slugBase = slugify(product?.productTitle || product?.title || 'product') || 'product';
   const baseUrl = String(import.meta.env.BASE_URL || '/').replace(/\/?$/, '/');

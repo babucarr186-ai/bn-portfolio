@@ -1,4 +1,3 @@
-import { loadLiveCatalogs } from './liveInventory.js';
 import {
   buildCatalogCardSummary,
   buildCatalogProductId,
@@ -6,6 +5,17 @@ import {
   renderRecommendationRail,
 } from './renderCatalog.js';
 const category = document.documentElement.dataset.category || 'iphones';
+
+const catalogLoaders = {
+  iphones: () => import('./data/iphones.js').then((module) => module.iphones),
+  ipads: () => import('./data/ipads.js').then((module) => module.ipads),
+  macbooks: () => import('./data/macbooks.js').then((module) => module.macbooks),
+  watches: () => import('./data/watches.js').then((module) => module.watches),
+  airpods: () => import('./data/airpods.js').then((module) => module.airpods),
+  giftcards: () => import('./data/giftcards.js').then((module) => module.giftCards),
+  accessories: () => import('./data/accessories.js').then((module) => module.accessories),
+  appletvhome: () => import('./data/appleTvHome.js').then((module) => module.appleTvHome),
+};
 
 const pageMeta = {
   iphones: { label: 'iPhone', href: './index.html' },
@@ -19,7 +29,6 @@ const pageMeta = {
 };
 
 let products = [];
-let liveCatalogs = null;
 const PAGE_SIZE = 12;
 const grid = document.getElementById('catalogGrid');
 const wrap = grid?.closest('.catalog-wrap');
@@ -187,7 +196,7 @@ function initRecommendations(items, catalogs) {
             note: summary.note,
             priceLabel: summary.priceLabel,
             categoryLabel: meta?.label || key,
-            href: product.inventoryId ? `./product.html?id=${encodeURIComponent(product.inventoryId)}` : `${meta?.href || './'}#${targetId}`,
+            href: `${meta?.href || './'}#${targetId}`,
             onClick: null,
           };
         });
@@ -319,21 +328,15 @@ function initCatalogHashNavigation() {
 }
 
 async function loadRecommendations() {
-  if (liveCatalogs) initRecommendations(searchIndex, liveCatalogs);
+  const entries = await Promise.all(
+    Object.entries(catalogLoaders).map(async ([key, load]) => [key, await load()]),
+  );
+  initRecommendations(searchIndex, Object.fromEntries(entries));
 }
 
 async function initCatalogPage() {
-  try {
-    liveCatalogs = await loadLiveCatalogs();
-    products = liveCatalogs[category] || [];
-  } catch {
-    products = [];
-    const notice = document.createElement('p');
-    notice.textContent = 'Live stock is temporarily unavailable. Please ask us on WhatsApp to confirm prices and availability.';
-    notice.setAttribute('role','status');
-    notice.style.cssText='padding:16px;border:1px solid #ddd;border-radius:10px;background:#fff';
-    grid?.before(notice);
-  }
+  const loadProducts = catalogLoaders[category] || catalogLoaders.iphones;
+  products = await loadProducts();
   searchIndex = buildSearchIndex(products);
 
   renderPage();
@@ -342,18 +345,6 @@ async function initCatalogPage() {
   initCatalogSearch(searchIndex);
   initCatalogHashNavigation();
   initBackToTop();
-  const signature = JSON.stringify(liveCatalogs);
-  if (liveCatalogs) window.setInterval(async () => {
-    if (document.visibilityState !== 'visible') return;
-    try { const current = await loadLiveCatalogs(); if (JSON.stringify(current) !== signature) window.location.reload(); } catch { /* Keep the visible page until the next retry. */ }
-  }, 30000);
-  let refreshStarted = Date.now();
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && Date.now() - refreshStarted > 15000) {
-      refreshStarted = Date.now();
-      window.location.reload();
-    }
-  });
 
   const scheduleRecommendations = () => {
     if ('requestIdleCallback' in window) {

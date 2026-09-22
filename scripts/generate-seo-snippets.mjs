@@ -638,7 +638,6 @@ function buildProductPageHtml(config, product, index) {
   return `<!doctype html>
 <html lang="en">
 <head>
-  <script type="module" src="/live-product.js"></script>
   <script defer src="../../../referral.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
