@@ -278,13 +278,15 @@ export const macbooks = [
 	},
 {
   "title": "MacBook Pro 13-inch (2017) — Four Thunderbolt 3 Ports",
-  "subtitle": "8GB RAM • 256GB SSD • Touch Bar & Touch ID • Battery Good • 162 cycles • Box included • GMD 26,900",
+  "subtitle": "Space Gray • 8GB RAM • 256GB SSD • Touch Bar & Touch ID • Battery Good • 162 cycles • Box included • GMD 26,900",
   "kind": "laptop",
   "ram": "8GB",
   "storage": "256GB SSD",
   "ports": "4× Thunderbolt 3 (USB-C)",
   "batteryCycles": "162",
   "batteryCondition": "Good",
+  "batteryHealth": "Good",
+  "color": "Space Gray",
   "operatingSystem": "macOS Ventura 13.7.8",
   "touchId": "Fingerprint unlock",
   "condition": "Used",
@@ -292,6 +294,7 @@ export const macbooks = [
   "sold": false,
   "specs": [
     "Model: MacBook Pro 13-inch (2017)",
+    "Color: Space Gray",
     "RAM: 8GB",
     "Storage: 256GB SSD",
     "Ports: Four Thunderbolt 3 (USB-C) ports",
@@ -302,8 +305,8 @@ export const macbooks = [
     "Box included",
     "Sourced from Germany"
   ],
-  "whatsAppMessage": "Hi Uncle Apple! Please confirm availability for the MacBook Pro 13-inch (2017), four Thunderbolt 3 ports, 8GB RAM, 256GB SSD, Touch Bar and Touch ID, battery Good with 162 cycles, macOS Ventura 13.7.8, and box included. Price GMD 26,900.",
-  "description": "MacBook Pro 13-inch (2017) with 8GB RAM, 256GB SSD, four Thunderbolt 3 ports, Touch Bar, and Touch ID fingerprint unlock. Battery condition reported as Good, with 162 cycles. Runs macOS Ventura 13.7.8. Box included. Sourced from Germany. Price GMD 26,900.",
+  "whatsAppMessage": "Hi Uncle Apple! Please confirm availability for the MacBook Pro 13-inch (2017) in Space Gray, four Thunderbolt 3 ports, 8GB RAM, 256GB SSD, Touch Bar and Touch ID, battery Good with 162 cycles, macOS Ventura 13.7.8, and box included. Price GMD 26,900.",
+  "description": "MacBook Pro 13-inch (2017) in Space Gray with 8GB RAM, 256GB SSD, four Thunderbolt 3 ports, Touch Bar, and Touch ID fingerprint unlock. Battery condition reported as Good, with 162 cycles. Runs macOS Ventura 13.7.8. Box included. Sourced from Germany. Price GMD 26,900.",
   "productTitle": "MacBook Pro 13-inch (2017) - Four Thunderbolt 3 Ports - 8GB - 256GB SSD - Touch ID",
   "images": [
     "products/macbooks/macbook-pro-13-2017-four-ports-8gb-256gb/macbook-pro-2017-box.jpeg"
