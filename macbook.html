@@ -147,8 +147,8 @@
 .macbook-catalog #inventory .section-title { font-size: 1.45rem; margin-bottom: 6px; }
 .macbook-catalog #inventory .section-lead { font-size: .88rem; margin-bottom: 18px; max-width: none; }
 .macbook-catalog #inventory .catalog-wrap { padding: 0; }
-.macbook-catalog #inventory .catalog-grid { gap: 14px; align-items: stretch; }
-.macbook-catalog #inventory .catalog-card { padding: 12px; gap: 12px; border-radius: 18px; }
+.macbook-catalog #inventory .catalog-grid { gap: 14px; align-items: start; }
+.macbook-catalog #inventory .catalog-card { padding: 12px; gap: 12px; border-radius: 18px; min-height: 0; height: auto; align-self: start; content-visibility: visible; contain-intrinsic-size: none; }
 .macbook-catalog #inventory .catalog-frame { aspect-ratio: auto; height: 180px; min-height: 0; border-radius: 12px; }
 .macbook-catalog #inventory .catalog-slide { padding: 8px; }
 .macbook-catalog #inventory .catalog-card-body { gap: 8px; min-height: 0; align-content: start; }
@@ -173,17 +173,32 @@
 .macbook-catalog .hero-copy h1 { font-size: 1.65rem; }
   .macbook-catalog .hero-copy .sub { font-size: .86rem; }
   .macbook-catalog #inventory { padding: 18px 0 24px; }
-  .macbook-catalog #inventory .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .macbook-catalog #inventory .catalog-card { padding: 9px; gap: 9px; border-radius: 14px; }
-  .macbook-catalog #inventory .catalog-frame { height: 130px; }
-  .macbook-catalog #inventory .catalog-title { font-size: .87rem; -webkit-line-clamp: 3; line-clamp: 3; }
+  .macbook-catalog #inventory .section-lead { margin-bottom: 12px; font-size: .8rem; }
+  .macbook-catalog #inventory .catalog-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .macbook-catalog #inventory .catalog-card {
+    display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: start;
+    padding: 14px 0; gap: 12px; border: 0; border-bottom: 1px solid #e5e7eb;
+    border-radius: 0; box-shadow: none; background: transparent;
+  }
+  .macbook-catalog #inventory .catalog-frame { width: 112px; height: 112px; border-radius: 8px; background: #f6f6f6; }
+  .macbook-catalog #inventory .catalog-slide { padding: 4px; }
+  .macbook-catalog #inventory .catalog-card-body { min-width: 0; gap: 5px; }
+  .macbook-catalog #inventory .catalog-title { font-size: .88rem; line-height: 1.3; -webkit-line-clamp: 3; line-clamp: 3; }
   .macbook-catalog #inventory .catalog-tags { gap: 4px; }
-  .macbook-catalog #inventory .catalog-tag { font-size: .61rem; padding: 4px 6px; }
-  .macbook-catalog #inventory .catalog-compact-details { font-size: .72rem; gap: 4px 7px; }
-  .macbook-catalog #inventory .catalog-price { font-size: .96rem; }
-  .macbook-catalog #inventory .catalog-stock { font-size: .74rem; }
-  .macbook-catalog #inventory .catalog-actions { grid-template-columns: 1fr; flex-wrap: wrap; }
-  .macbook-catalog #inventory .catalog-actions .btn { flex: 1 1 100%; width: 100%; font-size: .75rem; }
+  .macbook-catalog #inventory .catalog-tag { min-height: 0; font-size: .6rem; padding: 2px 5px; line-height: 1.3; }
+  .macbook-catalog #inventory .catalog-listing-date { font-size: .67rem; line-height: 1.3; }
+  .macbook-catalog #inventory .catalog-compact-details { font-size: .71rem; gap: 3px 7px; line-height: 1.35; }
+  .macbook-catalog #inventory .catalog-price { font-size: 1rem; line-height: 1.25; margin: 1px 0; }
+  .macbook-catalog #inventory .catalog-stock { width: fit-content; font-size: .7rem; padding: 0; border: 0; background: transparent; }
+  .macbook-catalog #inventory .catalog-actions { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 0; }
+  .macbook-catalog #inventory .catalog-actions .btn {
+    flex: 0 0 auto; width: auto; min-height: 30px; padding: 3px 0; border: 0;
+    border-radius: 0; background: transparent; box-shadow: none; font-size: .72rem;
+    line-height: 1.3; color: #0064d2;
+  }
+  .macbook-catalog #inventory .catalog-actions .btn:hover { text-decoration: underline; }
+  .macbook-catalog #inventory .catalog-actions .btn:focus-visible { outline: 2px solid #0064d2; outline-offset: 3px; }
+
 }
 
 </style>
