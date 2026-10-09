@@ -3750,3 +3750,5 @@ footer:not(.site-footer) .foot-legal > div:last-child {
     gap: 44px;
   }
 }
+
+.catalog-listing-date { display: block; color: #666; font-size: .78rem; line-height: 1.4; margin: 0 0 10px; }

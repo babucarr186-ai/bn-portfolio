@@ -1,3 +1,4 @@
+import { formatListingDate, getListingDate } from './listingDates.js';
 import { WHATSAPP_NUMBER_E164 } from '../contactConfig.js';
 
 const RESPONSIVE_WIDTHS = [300, 600, 900, 1200];
@@ -1036,6 +1037,7 @@ export function renderCatalog({
   startIndex = 0,
   hrefStartIndex = startIndex,
   detailIndices,
+  cardIndices,
   imageSizes,
 } = {}) {
   if (!mountEl) return [];
@@ -1054,7 +1056,9 @@ export function renderCatalog({
 
     const titleText = product.title || 'Product';
     const subtitleText = product.subtitle || '';
-    const absoluteIndex = startIndex + index;
+    const mappedCardIndex = Array.isArray(cardIndices) ? Number(cardIndices[index]) : Number.NaN;
+    const absoluteIndex = Number.isInteger(mappedCardIndex) && mappedCardIndex >= 0
+      ? mappedCardIndex : startIndex + index;
     const mappedDetailIndex = Array.isArray(detailIndices) ? Number(detailIndices[index]) : Number.NaN;
     const detailIndex = Number.isInteger(mappedDetailIndex) && mappedDetailIndex >= 0
       ? mappedDetailIndex
@@ -1254,6 +1258,14 @@ export function renderCatalog({
     const title = el('h3', 'catalog-title');
     title.textContent = titleText;
     body.appendChild(title);
+
+    const listingDate = getListingDate(product);
+    if (listingDate) {
+      const date = el('time', 'catalog-listing-date');
+      date.dateTime = listingDate;
+      date.textContent = `Listed: ${formatListingDate(product)}`;
+      body.appendChild(date);
+    }
 
     const compactDetails = el('dl', 'catalog-compact-details');
     const explicitParts = normalizeSpace(product?.authenticity || product?.parts);

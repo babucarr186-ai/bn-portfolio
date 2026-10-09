@@ -193,3 +193,7 @@ git add public/products src/catalog/data src/phones.js
 git commit -m "Add product photos"
 git push
 ```
+
+### Listing dates and order
+
+Add `listingDate: 'YYYY-MM-DD'` to every new product in `src/catalog/data/`. Use the publication date and keep it unchanged when editing the price or description. Append new products to the array so existing product URLs remain stable. Inventory and trending sections sort dated listings newest first; same-day listings use the newest appended item first. Undated older products retain their existing order and show no invented date. Dates appear on catalog cards and product detail pages.

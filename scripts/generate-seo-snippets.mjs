@@ -1,3 +1,4 @@
+import { formatListingDate, getListingDate } from '../src/catalog/listingDates.js';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -581,6 +582,8 @@ function buildProductPageViewModel(config, product, schema) {
     metaTitle,
     metaDescription,
     shortDescription,
+    listingDate: getListingDate(product),
+    listingDateLabel: formatListingDate(product),
     fullDescription,
     priceText,
     originalPriceText,
@@ -755,7 +758,7 @@ function buildProductPageHtml(config, product, index) {
           <article class="product-card product-summary-card">
             <p class="product-eyebrow">${escapeHtml(viewModel.heroEyebrow)}</p>
             <h1 class="product-title">${escapeHtml(viewModel.pageTitle)}</h1>
-            <p class="product-short">${escapeHtml(viewModel.shortDescription)}</p>
+            <p class="product-short">${escapeHtml(viewModel.shortDescription)}</p>${viewModel.listingDate ? `\n            <p class="product-short">Listed: <time datetime="${escapeAttribute(viewModel.listingDate)}">${escapeHtml(viewModel.listingDateLabel)}</time></p>` : ''}
             ${renderTagRow(viewModel.heroBadges)}
             <div class="product-detail-grid">
               ${viewModel.details.map((detail) => `<div class="product-detail-item"><span class="product-detail-label">${escapeHtml(detail.label)}</span><span class="product-detail-value">${escapeHtml(detail.value)}</span></div>`).join('')}

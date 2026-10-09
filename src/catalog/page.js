@@ -1,3 +1,4 @@
+import { getNewestListings } from './listingDates.js';
 import {
   buildCatalogCardSummary,
   buildCatalogProductId,
@@ -29,6 +30,7 @@ const pageMeta = {
 };
 
 let products = [];
+let orderedListings = [];
 const PAGE_SIZE = 12;
 const grid = document.getElementById('catalogGrid');
 const wrap = grid?.closest('.catalog-wrap');
@@ -38,8 +40,7 @@ function initTrendingSection() {
   if (!mountEl) return;
 
   const pool = Array.isArray(products) ? products : [];
-  const picks = pool
-    .map((product, index) => ({ product, index }))
+  const picks = getNewestListings(pool)
     .filter(({ product }) => !product?.sold)
     .slice(0, 6);
   if (!picks.length) {
@@ -140,7 +141,9 @@ function renderPage() {
 
   state.rendered = renderCatalog({
     mountEl: grid,
-    products: products.slice(start, end),
+    products: orderedListings.slice(start, end).map(({ product }) => product),
+    detailIndices: orderedListings.slice(start, end).map(({ index }) => index),
+    cardIndices: orderedListings.slice(start, end).map(({ index }) => index),
     startIndex: start,
   });
 
@@ -161,7 +164,7 @@ function showProductById(targetId) {
   const target = searchIndex.find((item) => item.id === targetId);
   if (!target) return;
 
-  const nextPage = Math.floor(target.index / state.pageSize) + 1;
+  const nextPage = Math.floor(orderedListings.findIndex(({ index }) => index === target.index) / state.pageSize) + 1;
   if (nextPage !== state.currentPage) {
     state.pendingTargetId = target.id;
     state.currentPage = nextPage;
@@ -181,12 +184,11 @@ function initRecommendations(items, catalogs) {
     .filter((key) => Array.isArray(catalogs[key]))
     .map((key) => {
       const meta = pageMeta[key];
-      const productItems = catalogs[key]
-        .filter((product) => !product?.sold)
-        .map((product, index) => {
+      const productItems = getNewestListings(catalogs[key])
+        .filter(({ product }) => !product?.sold)
+        .map(({ product, index }) => {
           const title = product.title || 'Product';
-          const fallbackId = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'product'}-${index + 1}`;
-          const targetId = `product-${fallbackId}`;
+          const targetId = buildCatalogProductId(title, index);
           const summary = buildCatalogCardSummary(product);
 
           return {
@@ -337,6 +339,7 @@ async function loadRecommendations() {
 async function initCatalogPage() {
   const loadProducts = catalogLoaders[category] || catalogLoaders.iphones;
   products = await loadProducts();
+  orderedListings = getNewestListings(products);
   searchIndex = buildSearchIndex(products);
 
   renderPage();

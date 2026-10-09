@@ -167,6 +167,7 @@ export const watches = [
   },
   {
     title: 'Apple Watch Series 8 (45mm)',
+    listingDate: '2026-10-09',
     shortDescription: 'Grade A condition with box, charger and 3 watch bands. GMD 15,000.',
     longDescription: 'Apple Watch Series 8 45mm in Grade A condition. Includes the box, charger and three watch bands. Price: GMD 15,000. Product images are for illustration.',
     subtitle: '45mm • Grade A • Box + charger • 3 bands • GMD 15,000',
