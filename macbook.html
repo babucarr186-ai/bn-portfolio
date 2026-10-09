@@ -130,7 +130,8 @@
 
 
 
-
+
+
 <!-- SEO-SCHEMA:START macbook.html -->
   <script type="application/ld+json">
 [
@@ -514,7 +515,7 @@
 <!-- SEO-SCHEMA:END macbook.html -->
 </head>
 
-<body>
+<body class="macbook-catalog">
   <header class="nav" aria-label="Primary navigation">
     <div class="container">
       <div class="nav-inner">
@@ -548,28 +549,36 @@
         <div class="hero-grid">
           <div class="hero-copy">
             <h1>Buy MacBook in Gambia</h1>
-            <p class="sub">Shop MacBook listings with clear condition notes and delivery to Banjul, Dakar, and nearby areas.</p>
+            <p class="sub">MacBooks and iMacs with clear condition notes. Delivery to Banjul, Dakar and nearby areas.</p>
 
             <div class="hero-actions" aria-label="Hero actions">
               <a class="btn btn-primary" id="heroChat" href="#">Chat on WhatsApp</a>
               <a class="btn btn-outline" href="#contact">Contact</a>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-compact" aria-label="Introduction image">
-      <div class="container">
-        <div class="catalog-wrap" aria-label="Featured image">
-          <div class="phone-frame" style="aspect-ratio: 16 / 9; border-radius: 28px; width: 100%; max-width: 720px; margin-inline: auto; box-sizing: border-box;">
-            <img src="products/macbooks/macbook-intro.png?v=20260301-1" alt="MacBook" width="1200" height="673" loading="lazy" decoding="async" />
+          <div class="hero-media macbook-hero-media" aria-label="MacBook collection">
+            <img src="products/macbooks/macbook-intro.png?v=20260301-1" alt="MacBook collection" width="1200" height="673" loading="eager" decoding="async" />
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section section-compact" aria-label="iMac showcase video">
+
+
+
+
+    <section class="section section-compact" id="inventory" aria-label="MacBook inventory">
+      <div class="container">
+        <h2 class="section-title">Inventory</h2>
+        <p class="section-lead">Latest listings first. Choose a device to see its photos and full specifications.</p>
+
+        <div class="catalog-wrap" aria-label="Inventory grid">
+          <div class="catalog-grid" id="catalogGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-compact macbook-showcase" aria-label="iMac showcase video">
       <div class="container">
         <div class="catalog-wrap" aria-label="Featured iMac advertisement">
           <div class="phone-frame" style="aspect-ratio: 910 / 512; border-radius: 28px; width: 100%; max-width: 720px; margin-inline: auto; overflow: hidden; background: #fff; box-sizing: border-box;">
@@ -587,17 +596,6 @@
               Your browser does not support video playback.
             </video>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-compact" id="inventory" aria-label="MacBook inventory">
-      <div class="container">
-        <h2 class="section-title">Inventory</h2>
-        <p class="section-lead">Browse MacBooks with real photos and compare related categories like <a href="./ipads.html">iPads</a>, <a href="./index.html#inventory">iPhones</a>, and <a href="./accessories.html">Accessories</a>.</p>
-
-        <div class="catalog-wrap" aria-label="Inventory grid">
-          <div class="catalog-grid" id="catalogGrid"></div>
         </div>
       </div>
     </section>

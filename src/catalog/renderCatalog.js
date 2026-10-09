@@ -1275,6 +1275,7 @@ export function renderCatalog({
       /germany sourced|sourced from germany|from germany/i.test(normalizeSpace(product?.subtitle));
 
     const compactItems = [
+      ...(document.documentElement.dataset.category === 'macbooks' ? [['RAM', normalizeSpace(product?.ram)]] : []),
       ['Storage', normalizeStorage(product?.storage)],
       ['Colour', product?.color ? toTitleCase(product.color) : ''],
       ['Battery', normalizeBattery(product?.batteryHealth)],
