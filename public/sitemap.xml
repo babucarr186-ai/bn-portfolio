@@ -400,4 +400,8 @@
     <priority>0.3</priority>
   </url>
 <!-- SEO-PRODUCT-URLS:END -->
+  <url>
+    <loc>https://uncleapplestore.com/p/watches/apple-watch-series-8-45mm-9/</loc>
+    <priority>0.3</priority>
+  </url>
 </urlset>

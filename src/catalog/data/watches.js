@@ -165,4 +165,30 @@ export const watches = [
       'products/watches/watch-series-10-titan-42mm-2.jpg?v=20260301-2',
     ],
   },
+  {
+    title: 'Apple Watch Series 8 (45mm)',
+    shortDescription: 'Grade A condition with box, charger and 3 watch bands. GMD 15,000.',
+    longDescription: 'Apple Watch Series 8 45mm in Grade A condition. Includes the box, charger and three watch bands. Price: GMD 15,000. Product images are for illustration.',
+    subtitle: '45mm • Grade A • Box + charger • 3 bands • GMD 15,000',
+    kind: 'square',
+    condition: 'Grade A',
+    price: 15000,
+    description:
+      'Apple Watch Series 8 45mm in Grade A condition. Includes the box, charger and three watch bands. Price: GMD 15,000. Product images are for illustration.',
+    specs: [
+      '45mm case',
+      'Grade A condition',
+      'Box included',
+      'Charger included',
+      '3 watch bands included',
+    ],
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm availability for: Apple Watch Series 8 45mm, Grade A, with box, charger and 3 bands. Price GMD 15,000. In The Gambia.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/watches/apple-watch-series-8-45mm-grade-a/apple-watch-series-8-45mm-1.jpeg',
+      'products/watches/apple-watch-series-8-45mm-grade-a/apple-watch-series-8-45mm-2.jpeg',
+    ],
+  },
 ];
