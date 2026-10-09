@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { getListingDate, formatListingDate, getNewestListings } from './listingDates.js';
 import { renderCatalog, buildCatalogProductId } from './renderCatalog.js';
 import { watches } from './data/watches.js';
+import { macbooks } from './data/macbooks.js';
 
 describe('listing dates', () => {
   it('sorts newest first without changing catalog indexes or undated order', () => {
@@ -27,4 +28,21 @@ describe('listing dates', () => {
     expect(first.textContent).toContain('15,000');
     expect(document.querySelectorAll('time')).toHaveLength(1);
   });
+  it('shows the updated MacBook first with two remaining and stable links', () => {
+    const entries = getNewestListings(macbooks);
+    const { product, index } = entries[0];
+    expect(product.title).toContain('Four Thunderbolt 3 Ports');
+    expect(product.price).toBe(26900);
+    expect(product.stockRemaining).toBe(2);
+    document.documentElement.dataset.category = 'macbooks';
+    document.body.innerHTML = '<div id="grid"></div>';
+    renderCatalog({ mountEl: document.querySelector('#grid'), products: [product], detailIndices: [index], cardIndices: [index] });
+    const card = document.querySelector('.catalog-card');
+    expect(card.textContent).toContain('Listed: 9 Oct 2026');
+    expect(card.querySelector('.catalog-stock').textContent).toBe('Only 2 left');
+    expect(card.querySelector('.catalog-stock').getAttribute('aria-label')).toBe('2 remaining in stock');
+    expect(card.id).toBe(buildCatalogProductId(product.title, index));
+    expect(card.querySelector('a').getAttribute('href')).toContain('-9/');
+  });
+
 });

@@ -278,6 +278,9 @@ export const macbooks = [
 	},
 {
   "title": "MacBook Pro 13-inch (2017) — Four Thunderbolt 3 Ports",
+  "listingDate": "2026-10-09",
+  "stockRemaining": 2,
+  "lowStockText": "Only 2 left",
   "subtitle": "Space Gray • 8GB RAM • 256GB SSD • Touch Bar & Touch ID • Battery Good • 162 cycles • Box included • GMD 26,900",
   "kind": "laptop",
   "ram": "8GB",
@@ -294,6 +297,7 @@ export const macbooks = [
   "sold": false,
   "specs": [
     "Model: MacBook Pro 13-inch (2017)",
+    "Only 2 left in stock",
     "Color: Space Gray",
     "RAM: 8GB",
     "Storage: 256GB SSD",
@@ -305,8 +309,8 @@ export const macbooks = [
     "Box included",
     "Sourced from Germany"
   ],
-  "whatsAppMessage": "Hi Uncle Apple! Please confirm availability for the MacBook Pro 13-inch (2017) in Space Gray, four Thunderbolt 3 ports, 8GB RAM, 256GB SSD, Touch Bar and Touch ID, battery Good with 162 cycles, macOS Ventura 13.7.8, and box included. Price GMD 26,900.",
-  "description": "MacBook Pro 13-inch (2017) in Space Gray with 8GB RAM, 256GB SSD, four Thunderbolt 3 ports, Touch Bar, and Touch ID fingerprint unlock. Battery condition reported as Good, with 162 cycles. Runs macOS Ventura 13.7.8. Box included. Sourced from Germany. Price GMD 26,900.",
+  "whatsAppMessage": "Hi Uncle Apple! Please confirm availability for the MacBook Pro 13-inch (2017) in Space Gray, four Thunderbolt 3 ports, 8GB RAM, 256GB SSD, Touch Bar and Touch ID, battery Good with 162 cycles, macOS Ventura 13.7.8, and box included. Only 2 left in stock. Price GMD 26,900.",
+  "description": "MacBook Pro 13-inch (2017) in Space Gray with 8GB RAM, 256GB SSD, four Thunderbolt 3 ports, Touch Bar, and Touch ID fingerprint unlock. Battery condition reported as Good, with 162 cycles. Runs macOS Ventura 13.7.8. Box included. Sourced from Germany. Only 2 left in stock. Price GMD 26,900.",
   "productTitle": "MacBook Pro 13-inch (2017) - Four Thunderbolt 3 Ports - 8GB - 256GB SSD - Touch ID",
   "images": [
     "products/macbooks/macbook-pro-13-2017-four-ports-8gb-256gb/macbook-pro-2017-box.jpeg"

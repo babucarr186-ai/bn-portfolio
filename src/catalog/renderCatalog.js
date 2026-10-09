@@ -1353,7 +1353,8 @@ export function renderCatalog({
       if (shouldShowLowStock) {
         const stock = el('p', 'catalog-stock');
         stock.textContent = lowStockText || 'Only 1 left';
-        stock.setAttribute('aria-label', '1 remaining in stock');
+        stock.setAttribute('aria-label', Number.isFinite(remaining) && remaining > 0
+          ? `${remaining} remaining in stock` : lowStockText);
         body.appendChild(stock);
       }
     }
