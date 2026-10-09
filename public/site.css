@@ -1975,9 +1975,10 @@ body.catalog-lightbox-open{
   padding: 6px 4px 10px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
-  overscroll-behavior: contain;
+  /* Keep sideways swipes in the rail, but let vertical gestures scroll the page. */
   overscroll-behavior-x: contain;
-  touch-action: pan-x;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .catalog-rail::-webkit-scrollbar{ display: none; }
