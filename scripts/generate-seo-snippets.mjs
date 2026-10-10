@@ -713,6 +713,42 @@ function buildProductPageHtml(config, product, index) {
     .product-cta-card{background:linear-gradient(135deg,rgba(248,250,252,.96),rgba(236,242,247,.96))}
     @media (min-width:900px){.product-hero{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}.product-content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-section-card--wide,.product-trust-card,.product-cta-card{grid-column:1/-1}.product-actions{flex-direction:row}}
     @media (max-width:767px){.product-page{padding-top:18px}.product-media-card,.product-summary-card,.product-section-card,.product-trust-strip{padding:18px}.product-detail-grid{grid-template-columns:1fr}.product-media-stage{min-height:240px;padding:20px}.product-media-stage img{height:300px}.product-thumb-row{grid-template-columns:repeat(2,minmax(0,1fr))}.product-trust-grid{grid-template-columns:1fr}.product-spec-table th,.product-spec-table td{display:block;width:100%;padding:8px 0}.product-spec-table th{padding-top:14px}.product-actions .btn{width:100%}}
+
+    ${config.key === 'macbooks' ? `/* Compact mobile MacBook product details. */
+    @media (max-width:767px){
+      .product-page{padding:12px 0 28px}
+      .product-shell{width:calc(100% - 24px);gap:12px}
+      .product-hero,.product-content-grid{gap:12px}
+      .product-card{border-radius:12px;box-shadow:none}
+      .product-media-card,.product-summary-card,.product-section-card,.product-trust-strip{padding:12px;gap:10px;min-width:0}
+      .product-media-stage{min-height:0;padding:8px;border-radius:8px}
+      .product-media-stage img{height:210px;max-height:210px}
+      .product-thumb-row{display:flex;overflow-x:auto;gap:8px}
+      .product-thumb{flex:0 0 64px;min-height:60px;padding:4px;border-radius:8px}
+      .product-thumb img{height:50px}
+      .product-summary-card{display:flex;flex-direction:column}
+      .product-title{font-size:1.3rem;line-height:1.25;letter-spacing:-.02em;overflow-wrap:anywhere}
+      .product-eyebrow{font-size:.65rem;letter-spacing:.08em}
+      .product-short,.product-section-card p{font-size:.86rem;line-height:1.5}
+      .product-purchase-card{order:-1;padding:12px;gap:10px;border-radius:10px}
+      .product-summary-card .product-eyebrow,.product-summary-card .product-title{order:-2}
+      .product-price,.product-offer-price{font-size:1.5rem;line-height:1.15}
+      .product-actions .btn{min-height:44px;font-size:.85rem;padding:10px 12px}
+      .product-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+      .product-detail-item{padding:10px;border-radius:8px;min-width:0}
+      .product-detail-label{font-size:.62rem;letter-spacing:.03em;margin-bottom:4px}
+      .product-detail-value{font-size:.82rem;overflow-wrap:anywhere}
+      .product-highlight-row{gap:6px}
+      .product-tag{padding:5px 8px;font-size:.75rem}
+      .product-trust-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+      .product-trust-item{padding:8px;font-size:.72rem;border-radius:8px;gap:6px;overflow-wrap:anywhere}
+      .product-trust-item::before{width:18px;height:18px}
+      .product-section-card h2{font-size:1.05rem;margin:0}
+      .product-list{font-size:.86rem;line-height:1.5;gap:6px}
+      .product-spec-table{table-layout:fixed}
+      .product-spec-table th,.product-spec-table td{display:table-cell;padding:9px 6px;font-size:.78rem;overflow-wrap:anywhere}
+      .product-spec-table th{width:38%;letter-spacing:0}
+    }` : ''}
   </style>
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
   <script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>
