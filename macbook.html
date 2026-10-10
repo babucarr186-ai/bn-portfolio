@@ -174,30 +174,140 @@
   .macbook-catalog .hero-copy .sub { font-size: .86rem; }
   .macbook-catalog #inventory { padding: 18px 0 24px; }
   .macbook-catalog #inventory .section-lead { margin-bottom: 12px; font-size: .8rem; }
-  .macbook-catalog #inventory .catalog-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+
+  .macbook-catalog #inventory .catalog-grid { align-items: stretch; }
+  .macbook-catalog #inventory .catalog-card { display: grid; grid-template-columns: minmax(0, 1fr); align-self: stretch; align-content: start; border: 1px solid rgba(11,15,22,.1); box-shadow: 0 10px 26px rgba(0,0,0,.04); background: linear-gradient(180deg, #fff, #f8fafc); }
+  .macbook-catalog #inventory .catalog-frame { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 12px; background: transparent; }
+  .macbook-catalog #inventory .catalog-compact-detail { display: block; }
+  .macbook-catalog #inventory .catalog-actions { display: grid; }
+  .macbook-catalog #inventory .catalog-actions .btn { border: 1px solid rgba(11,15,22,.14); color: #149bea; background: transparent; box-shadow: none; }
+  .macbook-catalog #inventory .catalog-actions .btn-primary { color: #fff; background: #0b0f16; border-color: #0b0f16; }
+  .macbook-catalog #inventory .catalog-stock { width: auto; padding: 0; border: 0; background: transparent; }
+  .macbook-catalog #inventory .catalog-listing-date { font-size: .62rem; line-height: 1.3; }
+  .macbook-catalog #inventory .catalog-title { -webkit-line-clamp: 3; line-clamp: 3; text-wrap: wrap; }
+  .macbook-catalog #inventory .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
   .macbook-catalog #inventory .catalog-card {
-    display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: start;
-    padding: 14px 0; gap: 12px; border: 0; border-bottom: 1px solid #e5e7eb;
-    border-radius: 0; box-shadow: none; background: transparent;
+    min-width: 0;
+    min-height: 0;
+    padding: 7px !important;
+    gap: 6px !important;
+    border-radius: 15px;
   }
-  .macbook-catalog #inventory .catalog-frame { width: 112px; height: 112px; border-radius: 8px; background: #f6f6f6; }
-  .macbook-catalog #inventory .catalog-slide { padding: 4px; }
-  .macbook-catalog #inventory .catalog-card-body { min-width: 0; gap: 5px; }
-  .macbook-catalog #inventory .catalog-title { font-size: .88rem; line-height: 1.3; -webkit-line-clamp: 3; line-clamp: 3; }
-  .macbook-catalog #inventory .catalog-tags { gap: 4px; }
-  .macbook-catalog #inventory .catalog-tag { min-height: 0; font-size: .6rem; padding: 2px 5px; line-height: 1.3; }
-  .macbook-catalog #inventory .catalog-listing-date { font-size: .67rem; line-height: 1.3; }
-  .macbook-catalog #inventory .catalog-compact-details { font-size: .71rem; gap: 3px 7px; line-height: 1.35; }
-  .macbook-catalog #inventory .catalog-price { font-size: 1rem; line-height: 1.25; margin: 1px 0; }
-  .macbook-catalog #inventory .catalog-stock { width: fit-content; font-size: .7rem; padding: 0; border: 0; background: transparent; }
-  .macbook-catalog #inventory .catalog-actions { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 0; }
+
+  .macbook-catalog #inventory .catalog-card-body {
+    min-height: 0;
+    gap: 6px !important;
+  }
+
+  .macbook-catalog #inventory .catalog-card .catalog-frame {
+    --frame-aspect: 1 / 1;
+    --frame-radius: 12px;
+  }
+
+  .macbook-catalog #inventory .catalog-slide {
+    padding: 5px;
+  }
+
+  .macbook-catalog #inventory .catalog-tags {
+    gap: 4px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .macbook-catalog #inventory .catalog-tag {
+    min-width: 0;
+    max-width: 50%;
+    padding: 4px 6px;
+    font-size: 0.58rem;
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .macbook-catalog #inventory .catalog-title {
+    font-size: 0.88rem;
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .macbook-catalog #inventory .catalog-badge-row,
+  .macbook-catalog #inventory .catalog-note {
+    display: none;
+  }
+
+  .macbook-catalog #inventory .catalog-compact-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px 7px;
+    margin: 0;
+  }
+
+  .macbook-catalog #inventory .catalog-compact-detail {
+    min-width: 0;
+  }
+
+  .macbook-catalog #inventory .catalog-compact-label {
+    margin: 0 0 1px;
+    color: rgba(11, 15, 22, 0.55);
+    font-size: 0.56rem;
+    font-weight: 650;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .macbook-catalog #inventory .catalog-compact-value {
+    margin: 0;
+    color: rgba(11, 15, 22, 0.9);
+    font-size: 0.67rem;
+    font-weight: 750;
+    line-height: 1.12;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .macbook-catalog #inventory .catalog-price {
+    font-size: 0.88rem;
+    line-height: 1.1;
+    margin: 1px 0 0;
+    letter-spacing: -0.02em;
+  }
+
+  .macbook-catalog #inventory .catalog-stock {
+    margin: 0;
+    font-size: 0.65rem;
+    line-height: 1.15;
+  }
+
+  .macbook-catalog #inventory .catalog-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 5px;
+    margin-top: 2px !important;
+  }
+
   .macbook-catalog #inventory .catalog-actions .btn {
-    flex: 0 0 auto; width: auto; min-height: 30px; padding: 3px 0; border: 0;
-    border-radius: 0; background: transparent; box-shadow: none; font-size: .72rem;
-    line-height: 1.3; color: #0064d2;
+    width: 100%;
+    min-width: 0;
+    min-height: 30px !important;
+    padding: 6px 4px !important;
+    border-radius: 9px;
+    font-size: 0.62rem;
+    line-height: 1;
+    letter-spacing: 0;
+    white-space: nowrap;
   }
-  .macbook-catalog #inventory .catalog-actions .btn:hover { text-decoration: underline; }
-  .macbook-catalog #inventory .catalog-actions .btn:focus-visible { outline: 2px solid #0064d2; outline-offset: 3px; }
+
+  .macbook-catalog #inventory .catalog-card.is-sold {
+    min-height: 0;
+  }
+
 
 }
 
