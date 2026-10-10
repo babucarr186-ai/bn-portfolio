@@ -155,4 +155,36 @@ export const airpods = [
       'products/airpods/airpods-pro-2-3.jpg?v=20260301-1',
     ],
   },
+  {
+    "title": "Apple AirPods (2nd generation)",
+    "subtitle": "Used • Good condition • Good battery • Charger included • Authentic Apple • GMD 4,500",
+    "kind": "square",
+    "brand": "Apple",
+    "color": "White",
+    "condition": "Used - Good condition",
+    "batteryHealth": "Good",
+    "price": 4500,
+    "authenticity": "Authentic Apple",
+    "listingDate": "2026-10-11",
+    "description": "Authentic Apple AirPods (2nd generation) in good used condition with a good battery. Charger included.",
+    "shortDescription": "Authentic Apple AirPods Gen 2. Good condition and good battery, with charger included.",
+    "longDescription": "Apple AirPods (2nd generation) in good used condition with a good battery. Authentic Apple, with charger included. See the supplied photo for the actual product and included items.",
+    "productHighlights": [
+      "Authentic Apple",
+      "Good used condition",
+      "Good battery",
+      "Charger included"
+    ],
+    "conditionReport": [
+      "Good used condition",
+      "Good battery",
+      "Charger included"
+    ],
+    "whatsAppMessage": "Hi Uncle Apple! Please confirm availability for: Apple AirPods (2nd generation), good condition and good battery, charger included, authentic Apple. Price GMD 4,500. In The Gambia.",
+    "mediaFit": "contain",
+    "mediaPad": 14,
+    "images": [
+      "products/airpods/airpods-gen-2-good-20261011.jpeg"
+    ]
+  },
 ];
