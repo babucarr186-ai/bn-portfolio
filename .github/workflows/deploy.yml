@@ -91,23 +91,19 @@ jobs:
               padding-top: 5px;
               padding-bottom: 5px;
             }
+
+            /* Shop keeps its layout height while the logo scrolls away. */
+            html[data-category='models'] .nav {
+              top: var(--shop-nav-top, 0px);
+              background: #fff;
+              -webkit-backdrop-filter: none;
+              backdrop-filter: none;
+            }
+
+            html[data-category='models'] .nav-links.nav-links--catbar {
+              touch-action: pan-x pan-y pinch-zoom;
+            }
           }
-          EOF
-
-          cat > dist/sticky-category-nav.js <<'EOF'
-          (() => {
-            const nav = document.querySelector('.nav');
-            const catbar = document.querySelector('.nav-links--catbar');
-            if (!nav || !catbar) return;
-
-            const update = () => {
-              nav.classList.toggle('is-category-sticky', window.scrollY > 96);
-            };
-
-            update();
-            window.addEventListener('scroll', update, { passive: true });
-            window.addEventListener('pageshow', update);
-          })();
           EOF
 
           python - <<'PY'
