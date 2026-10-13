@@ -16,6 +16,36 @@
   <meta name="apple-mobile-web-app-title" content="Uncle Apple Store" />
   <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../site.css?v=20260301" />
+
+  <style>
+    .shop-categories{background:#f4f2ed;padding:32px 0 48px;color:#101819}
+    .shop-categories .container{max-width:1120px}
+    .shop-heading{margin-bottom:24px}
+    .shop-heading h1{font-size:clamp(32px,5vw,52px);letter-spacing:-.045em;line-height:1.1;margin:0 0 10px}
+    .shop-heading p{color:#626766;font-size:15px;line-height:1.6;margin:0}
+    .shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:180px;gap:16px}
+    .shop-card{position:relative;display:block;overflow:clip;isolation:isolate;background:#fff;border:1px solid #dededb;border-radius:24px;color:#101819;text-decoration:none;min-width:0;box-shadow:0 1px 2px #00000004;transition:transform .2s,box-shadow .2s}
+    .shop-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px #0000000d}
+    .shop-card:focus-visible{outline:3px solid #1765bb;outline-offset:4px}
+    .shop-card img{position:absolute;right:0;top:8%;width:65%;height:75%;object-fit:contain;mix-blend-mode:multiply;z-index:-1}
+    .shop-card-copy{position:absolute;bottom:22px;left:22px;right:16px}
+    .shop-card h2{margin:0 0 6px;font-size:clamp(20px,2.5vw,30px);letter-spacing:-.03em;line-height:1.15}
+    .shop-card p{margin:0;color:#4e5a59;font-size:14px;line-height:1.4}
+    .shop-card-copy h2,.shop-card-copy p{width:fit-content;max-width:100%;background:#ffffffed;border-radius:4px}
+    .shop-card--iphone{grid-row:span 2}
+    .shop-card--iphone img{width:94%;height:72%;top:0;right:-8%}
+    .shop-card--wide{grid-column:span 2;grid-row:span 2}
+    .shop-card--wide img{width:72%;height:87%;top:0;right:-2%}
+    .shop-card--accessories{grid-row:span 2}
+    .shop-card--accessories img{width:95%;height:76%;top:1%;right:-10%}
+    .shop-card--gift{grid-column:span 2;grid-row:span 2}
+    .shop-card--gift img{width:78%;height:90%;right:-6%;top:-3%}
+    .shop-help{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:28px;font-size:14px;color:#626766}
+    .shop-help a{color:#101819;text-underline-offset:4px;font-weight:600}
+    @media(min-width:800px){.shop-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:180px 180px 180px 260px}.shop-card:nth-child(1){grid-area:1 / 1 / 3 / 2}.shop-card:nth-child(2){grid-area:1 / 2 / 2 / 3}.shop-card:nth-child(3){grid-area:1 / 3 / 2 / 4}.shop-card:nth-child(4){grid-area:2 / 2 / 4 / 4}.shop-card:nth-child(5){grid-area:1 / 4 / 2 / 5}.shop-card:nth-child(6){grid-area:2 / 4 / 4 / 5}.shop-card:nth-child(7){grid-area:3 / 1 / 4 / 2}.shop-card:nth-child(8){grid-area:4 / 1 / 5 / 3}.shop-card:nth-child(9){grid-area:4 / 3 / 5 / 5}.shop-card--gift img{width:90%;height:75%;right:0;top:0}}
+    @media(max-width:599px){.shop-categories{padding:24px 0 32px}.shop-categories .container{padding-left:16px;padding-right:16px}.shop-heading{margin-bottom:20px}.shop-grid{gap:12px;grid-auto-rows:142px}.shop-card{border-radius:20px}.shop-card-copy{bottom:16px;left:16px;right:10px}.shop-card h2{font-size:20px}.shop-card p{font-size:12px}.shop-card--iphone img{height:74%}.shop-card--wide img{width:89%;height:77%;right:-12%}.shop-card--gift img{width:100%;height:75%;right:0;top:0}}
+    @media(prefers-reduced-motion:reduce){.shop-card{transition:none}.shop-card:hover{transform:none}}
+  </style>
 </head>
 <body>
   <header class="nav" aria-label="Primary navigation">
@@ -44,40 +74,53 @@
   </header>
 
   <main id="top">
-    <section class="hero hero-compact" aria-label="Models and inventory">
+    <section class="shop-categories" aria-labelledby="shop-title">
       <div class="container">
-        <div class="hero-grid">
-          <div class="hero-copy">
-            <h1>Apple Models &amp; Inventory. Available in The Gambia.</h1>
-            <p class="sub">Browse by category. Tap any product to view photos, then message us on WhatsApp to confirm availability.</p>
-
-            <div class="hero-actions" aria-label="Browse actions">
-              <a class="btn btn-primary" href="../index.html#inventory">Browse iPhones</a>
-              <a class="btn btn-outline" href="../support/">Get Support</a>
-            </div>
-          </div>
+        <div class="shop-heading">
+          <h1 id="shop-title">Shop All</h1>
+          <p>Genuine Apple devices sourced from Germany.<br>Built on trust, not hype.</p>
         </div>
+        <div class="shop-grid">
+          <a class="shop-card shop-card--iphone" href="../index.html#inventory">
+            <img src="../hero/iphone-16-purple.webp" alt="" loading="eager" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>iPhones</h2><p>Find your next iPhone</p></div>
+          </a>
+          <a class="shop-card" href="../ipads.html">
+            <img src="../products/ipads/ipad-air-4-1.jpg" alt="" loading="eager" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>iPads</h2><p>Work, play and create</p></div>
+          </a>
+          <a class="shop-card" href="../apple-watch.html">
+            <img src="../hero/apple-watch-ultra.webp" alt="" loading="eager" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>Apple Watch</h2><p>Stay connected</p></div>
+          </a>
+          <a class="shop-card shop-card--wide" href="../macbook.html">
+            <img src="../products/macbooks/macbook-air-2019-rose-gold-8gb-256gb/macbook-air-2019-rose-gold-open.webp" alt="" loading="lazy" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>MacBooks</h2><p>Air and Pro. Ready to work.</p></div>
+          </a>
+          <a class="shop-card" href="../airpods.html">
+            <img src="../products/airpods/airpods-max-2024-beige-1.jpg" alt="" loading="lazy" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>AirPods &amp; Audio</h2><p>Find your sound</p></div>
+          </a>
+          <a class="shop-card shop-card--accessories" href="../accessories.html">
+            <img src="../products/accessories/magsafe-2-charger-1.jpg" alt="" loading="lazy" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>Accessories</h2><p>Chargers, cases and more</p></div>
+          </a>
+          <a class="shop-card" href="../apple-tv-home.html">
+            <img src="../products/apple-tv-home/homepod-mini-1.webp" alt="" loading="lazy" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>Apple TV &amp; Home</h2><p>Upgrade your everyday</p></div>
+          </a>
+          <a class="shop-card shop-card--wide" href="../macbook.html#inventory">
+            <img src="../products/macbooks/imac-24-m1-256gb-silver/imac-24-m1-front.jpg" alt="" loading="lazy" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>iMac</h2><p>Your desktop, reimagined</p></div>
+          </a>
+          <a class="shop-card shop-card--gift" href="../gift-cards.html">
+            <img src="../products/giftcards/apple-gift-card-1.jpg" alt="" loading="lazy" decoding="async" width="600" height="600" />
+            <div class="shop-card-copy"><h2>Apple Gift Cards</h2><p>Explore digital gift cards</p></div>
+          </a>
+        </div>
+        <div class="shop-help"><span>Browse a category to see current stock and GMD prices.</span><a href="../support/">Need help choosing? →</a></div>
       </div>
     </section>
-
-    <section class="section section-compact" aria-label="Categories">
-      <div class="container">
-        <h2 class="section-title">Categories</h2>
-        <p class="section-lead">Choose a category to see current inventory.</p>
-
-        <div class="hero-actions" style="justify-content:flex-start; flex-wrap:wrap; gap:12px;">
-          <a class="btn btn-outline" href="../index.html#inventory">iPhones</a>
-          <a class="btn btn-outline" href="../ipads.html">iPads</a>
-          <a class="btn btn-outline" href="../macbook.html">MacBook</a>
-          <a class="btn btn-outline" href="../apple-watch.html">Apple Watch</a>
-          <a class="btn btn-outline" href="../airpods.html">AirPods</a>
-          <a class="btn btn-outline" href="../gift-cards.html">Gift Cards</a>
-          <a class="btn btn-outline" href="../accessories.html">Accessories</a>
-          <a class="btn btn-outline" href="../apple-tv-home.html">Apple TV &amp; Home</a>
-        </div>
-      </div>
-    </section>
-
     <section class="section" id="contact" aria-label="Contact">
       <div class="container">
         <h2 class="section-title">Contact</h2>
