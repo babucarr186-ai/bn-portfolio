@@ -1,3 +1,4 @@
+import { startOfferCountdown } from './offerCountdown.js';
 import { formatListingDate, getListingDate } from './listingDates.js';
 import { WHATSAPP_NUMBER_E164 } from '../contactConfig.js';
 
@@ -1333,6 +1334,18 @@ export function renderCatalog({
         saleRow.appendChild(newPrice);
 
         body.appendChild(saleRow);
+        if (product.offerExpiresAt) {
+          const timer = el('p', 'catalog-offer-countdown');
+          timer.dataset.offerExpires = product.offerExpiresAt;
+          timer.dataset.regularPrice = formatPrice(originalPrice);
+          timer.dataset.regularMessage = product.regularWhatsAppMessage || '';
+          timer.dataset.refreshOnExpiry = 'true';
+          timer.style.cssText = 'margin:8px 0;font-size:12px;font-weight:700;color:#b42318;font-variant-numeric:tabular-nums';
+          timer.setAttribute('role', 'timer');
+          body.appendChild(timer);
+          startOfferCountdown(body);
+        }
+
       } else {
         const price = el('p', 'catalog-price');
         appendTextWithPriceSpans(price, display.priceLabel);

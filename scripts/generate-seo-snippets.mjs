@@ -1,3 +1,4 @@
+import { startOfferCountdown } from '../src/catalog/offerCountdown.js';
 import { formatListingDate, getListingDate } from '../src/catalog/listingDates.js';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
@@ -363,6 +364,7 @@ export function buildProductSchema(config, product, index) {
       '@type': 'Offer',
       url,
       priceCurrency: 'GMD',
+      ...(product.offerExpiresAt ? { priceValidUntil: product.offerExpiresAt } : {}),
       price,
       availability: schemaAvailabilityUrl(product),
       itemCondition: schemaConditionUrl(product),
@@ -588,6 +590,8 @@ function buildProductPageViewModel(config, product, schema) {
     priceText,
     originalPriceText,
     discountPercent: hasOffer ? Math.round(discountPercent) : 0,
+    offerExpiresAt: hasOffer ? product.offerExpiresAt : undefined,
+    regularWhatsAppMessage: product.regularWhatsAppMessage || '',
     availabilityText,
     whatsappHref: buildWhatsAppLink(product?.whatsAppMessage),
     trustTitle: normalizeSpace(product?.trustTitle || 'Why buyers trust Uncle Apple Store'),
@@ -634,6 +638,9 @@ function buildProductPageHtml(config, product, index) {
     : viewModel.priceText
       ? `<div class="product-price">${escapeHtml(viewModel.priceText)}</div>`
       : '';
+  const countdownMarkup = viewModel.offerExpiresAt
+    ? `<p role="timer" data-offer-expires="${escapeAttribute(viewModel.offerExpiresAt)}" data-regular-price="${escapeAttribute(viewModel.originalPriceText)}" data-regular-message="${escapeAttribute(viewModel.regularWhatsAppMessage)}" style="font-weight:750;color:#b42318;font-variant-numeric:tabular-nums">24-hour offer</p>`
+    : '';
   const galleryMarkup = galleryImages.length > 1
     ? `<div class="product-thumb-row">${galleryImages.slice(0, 4).map((image, imageIndex) => `<div class="product-thumb"><img src="${escapeAttribute(image)}" alt="${escapeAttribute(`${viewModel.pageTitle} view ${imageIndex + 1}`)}" width="300" height="300" loading="lazy" decoding="async" /></div>`).join('')}</div>`
     : '';
@@ -800,7 +807,7 @@ function buildProductPageHtml(config, product, index) {
               ${viewModel.details.map((detail) => `<div class="product-detail-item"><span class="product-detail-label">${escapeHtml(detail.label)}</span><span class="product-detail-value">${escapeHtml(detail.value)}</span></div>`).join('')}
             </div>
             <div class="product-purchase-card${viewModel.sold ? ' product-purchase-card--sold' : ''}">
-${priceMarkup ? `              ${priceMarkup}\n` : ''}              <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
+${priceMarkup ? `              ${priceMarkup}${countdownMarkup}\n` : ''}              <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
               <div class="product-actions">
                 ${viewModel.sold
                   ? `<a class="btn btn-primary" href="${escapeAttribute(backLink)}">Browse available ${escapeHtml(config.sectionLabel)}</a>`
@@ -862,6 +869,7 @@ ${priceMarkup ? `              ${priceMarkup}\n` : ''}              <div class="
       </div>
     </section>
   </main>
+  ${viewModel.offerExpiresAt ? `<script>${startOfferCountdown.toString()};startOfferCountdown();</script>` : ''}
 </body>
 </html>`;
 }
