@@ -3754,3 +3754,50 @@ footer:not(.site-footer) .foot-legal > div:last-child {
 
 .catalog-listing-date { display: block; color: #666; font-size: .78rem; line-height: 1.4; margin: 0 0 10px; }
 
+
+/* Footer social links: clear icons on a restrained charcoal surface. */
+footer .foot-social .footer-social,
+footer.site-footer .foot-social .footer-social{
+  gap: 12px;
+  margin-top: 6px;
+}
+footer .foot-social .footer-social a,
+footer.site-footer .foot-social .footer-social a,
+footer .foot .foot-social__icons a{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #f5f5f7;
+  background: #161c24;
+  border: 1px solid #39414c;
+  box-shadow: none;
+  text-decoration: none;
+  opacity: 1;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+footer .foot-social .footer-social a:hover,
+footer.site-footer .foot-social .footer-social a:hover,
+footer .foot .foot-social__icons a:hover{
+  color: #fff;
+  background: #252e39;
+  border-color: #6c7785;
+  transform: none;
+  text-decoration: none;
+  opacity: 1;
+}
+footer .foot-social .footer-social a:focus-visible,
+footer.site-footer .foot-social .footer-social a:focus-visible,
+footer .foot .foot-social__icons a:focus-visible{
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+footer .foot-social .footer-social svg,
+footer .foot .foot-social__icons svg{
+  width: 20px !important;
+  height: 20px !important;
+}
+@media(prefers-reduced-motion:reduce){
+  footer .foot-social .footer-social a,
+  footer.site-footer .foot-social .footer-social a,
+  footer .foot .foot-social__icons a{transition:none}
+}
