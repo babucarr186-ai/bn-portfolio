@@ -1,36 +1,27 @@
 import { iphones as baseIphones } from './iphones.base.js';
 
-const offerExpiresAt = '2026-10-15T15:40:44.000Z';
-const offerActive = Date.now() < Date.parse(offerExpiresAt);
-const iphone18PriceLabel = offerActive ? '120,000' : '150,000';
-const regularWhatsAppMessage = 'Hi Uncle Apple! Please confirm availability for: iPhone 18 Pro Max - Burgundy, 256GB, brand new in box. Price GMD 150,000. Available in The Gambia.';
-
 const iphone18ProMax = {
   title: 'iPhone 18 Pro Max',
-  subtitle: `Burgundy • 256GB • Brand new in box • GMD ${iphone18PriceLabel}`,
+  subtitle: 'Burgundy • 256GB • Brand new in box • Only available on order',
   kind: 'phone',
   color: 'Burgundy',
   storage: '256GB',
   condition: 'Brand new in box',
-  price: offerActive ? 120000 : 150000,
-  originalPrice: offerActive ? 150000 : undefined,
-  discountPercent: offerActive ? 20 : undefined,
-  offerExpiresAt: offerActive ? offerExpiresAt : undefined,
-  regularWhatsAppMessage,
-  sold: false,
-  availability: 'Available',
+  price: 150000,
+  sold: true,
+  stockRemaining: 0,
+  availability: 'Only available on order',
   whatsAppMessage:
-    regularWhatsAppMessage.replace('150,000', iphone18PriceLabel),
-  shortDescription:
-    'Brand new iPhone 18 Pro Max in Burgundy with 256GB storage, new in the box.',
-  description:
-    `Brand new iPhone 18 Pro Max in Burgundy with 256GB storage. Comes new in the box and is available now from Uncle Apple Store. Price GMD ${iphone18PriceLabel}.`,
+    'Hi Uncle Apple! I would like to order an iPhone 18 Pro Max - Burgundy, 256GB, brand new in box. Please confirm the current order price and delivery time.',
+  shortDescription: 'Only available on order',
+  description: 'Only available on order',
+  ctaText: 'Only available on order',
   productTitle: 'iPhone 18 Pro Max (256GB) - Burgundy - Brand new in box',
   productHighlights: [
     '256GB storage',
     'Burgundy finish',
     'Brand new in box',
-    'Available now',
+    'Only available on order',
   ],
   conditionReport: [
     'Brand new condition',
