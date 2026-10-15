@@ -1245,7 +1245,7 @@ export function renderCatalog({
         ? 'catalog-tag--reserved'
         : 'catalog-tag--available';
     const statusTag = el('span', `catalog-tag ${statusClass}`);
-    statusTag.textContent = product?.sold ? 'SOLD OUT' : product?.reserved ? 'RESERVED' : 'Available';
+    statusTag.textContent = product?.sold ? (product?.availability || 'SOLD OUT') : product?.reserved ? 'RESERVED' : 'Available';
     tags.appendChild(statusTag);
 
     if (details.conditionLabel) {
