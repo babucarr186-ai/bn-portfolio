@@ -61,4 +61,30 @@ const currentIphones = updatedTarget
   ? [updatedTarget, ...baseIphones.filter((_, index) => index !== targetIndex)]
   : baseIphones;
 
-export const iphones = [iphone18ProMax, ...currentIphones];
+const iphone11Green = {
+  title: 'iPhone 11',
+  subtitle: 'Green • 64GB • Grade A • Battery 84% • Box, charger and Lightning EarPods • GMD 13,500',
+  kind: 'phone',
+  color: 'Green',
+  storage: '64GB',
+  condition: 'Used - Grade A',
+  batteryHealth: '84%',
+  price: 13500,
+  sold: false,
+  availability: 'Available',
+  listingDate: '2026-10-20',
+  whatsAppMessage: 'Hi Uncle Apple! Please confirm availability for: iPhone 11 - Green, 64GB, Grade A used condition, battery health 84%. Includes box, charger and wired EarPods with Lightning connector. Price GMD 13,500.',
+  shortDescription: 'Grade A used iPhone 11 in Green with 64GB storage and 84% battery health. Includes box, charger and wired Lightning EarPods.',
+  description: 'iPhone 11 in Green with 64GB storage and 84% battery health. Grade A used condition, clean and well cared for. Includes box, charger and wired EarPods with Lightning connector. Price GMD 13,500.',
+  productTitle: 'iPhone 11 (64GB) - Green - Grade A - Battery 84%',
+  productHighlights: ['64GB storage', 'Green finish', 'Grade A used condition', '84% battery health', 'Box and charger included', 'Wired EarPods with Lightning connector included'],
+  conditionReport: ['Used - Grade A', 'Clean and well cared for', 'Battery health: 84%'],
+  images: [
+    'products/iphones/iphone-11-green-64gb/iphone-11-green-front.jpeg',
+    'products/iphones/iphone-11-green-64gb/iphone-11-green-back.jpeg',
+    'products/iphones/iphone-11-green-64gb/iphone-11-green-accessories.jpeg',
+  ],
+  mediaFit: 'contain',
+};
+
+export const iphones = [iphone18ProMax, ...currentIphones, iphone11Green];
