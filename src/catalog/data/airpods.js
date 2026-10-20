@@ -187,4 +187,31 @@ export const airpods = [
       "products/airpods/airpods-gen-2-good-20261011.jpeg"
     ]
   },
+  {
+    title: 'Apple iPod Classic',
+    productTitle: 'Apple iPod Classic (160GB) - Black - With accessories',
+    subtitle: 'Black • 160GB • Clean used condition • Charger and earphones included • GMD 17,000',
+    kind: 'square',
+    brand: 'Apple',
+    color: 'Black',
+    storage: '160GB',
+    condition: 'Used - Clean',
+    price: 17000,
+    sold: false,
+    availability: 'Available',
+    listingDate: '2026-10-20',
+    description: 'Apple iPod Classic in Black with 160GB storage. Clean, well-kept used condition with visible marks on the polished back, as shown in the photos. Includes charger, USB charging cable and earphones. Price GMD 17,000.',
+    shortDescription: 'Black Apple iPod Classic with 160GB storage. Charger, USB charging cable and earphones included. Clean used condition with marks on the back.',
+    productHighlights: ['160GB storage', 'Black finish', 'Charger included', 'USB charging cable included', 'Earphones included'],
+    conditionReport: ['Clean, well-kept used condition', 'Visible marks on the polished back; see actual product photos'],
+    whatsAppMessage: 'Hi Uncle Apple! Please confirm availability for: Apple iPod Classic - Black, 160GB, clean used condition with marks on the back. Includes charger, USB charging cable and earphones. Price GMD 17,000.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/airpods/ipod-classic-160gb-black/ipod-classic-front.jpeg',
+      'products/airpods/ipod-classic-160gb-black/ipod-classic-back.jpeg',
+      'products/airpods/ipod-classic-160gb-black/ipod-classic-top.jpeg',
+      'products/airpods/ipod-classic-160gb-black/ipod-classic-cable.jpeg',
+    ],
+  },
 ];
