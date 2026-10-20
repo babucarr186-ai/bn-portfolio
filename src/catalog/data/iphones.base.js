@@ -895,8 +895,10 @@ export const iphones = [
     condition: 'Used',
     batteryHealth: '82%',
     price: 35000,
+    sold: true,
+    availability: 'Sold',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 14 Pro - Gray, 128GB, used condition, battery 82%. Price GMD 35,000. In The Gambia.',
+      'Hi Uncle Apple! I am interested in the sold iPhone 14 Pro - Gray, 128GB, used condition, battery 82%. Please let me know if a similar device becomes available.',
     description:
       `Capacity 128GB. Color Gray. Battery health 82%. Condition used. ${ESIM_UNLOCKED_DETAILS} Price GMD 35,000.`,
     productTitle: 'iPhone 14 Pro (128GB) - Gray - Used - Battery 82%',
