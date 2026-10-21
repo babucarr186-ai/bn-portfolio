@@ -1,5 +1,50 @@
 import { iphones as baseIphones } from './iphones.base.js';
 
+const iphoneSE2022ProductRed = {
+  title: 'iPhone SE (2022)',
+  subtitle: 'PRODUCT(RED) • 64GB • Clean used • Battery 91% • Charging cable included • No box • GMD 12,000',
+  kind: 'phone',
+  color: 'PRODUCT(RED)',
+  storage: '64GB',
+  condition: 'Used - Clean',
+  batteryHealth: '91%',
+  price: 12000,
+  sold: false,
+  availability: 'Available',
+  listingDate: '2026-10-21',
+  whatsAppMessage:
+    'Hi Uncle Apple! Please confirm availability for: iPhone SE (2022) - PRODUCT(RED), 64GB, clean used condition, battery health 91%, charging cable included, no box. Price GMD 12,000.',
+  shortDescription:
+    'Clean used iPhone SE (2022) in PRODUCT(RED) with 64GB storage, 91% battery health and a charging cable.',
+  description:
+    'iPhone SE (2022) in PRODUCT(RED) with 64GB storage and 91% battery health. Clean used condition with light signs of previous use visible in the supplied photos. A charging cable is included; no box. Price GMD 12,000.',
+  productTitle: 'iPhone SE (2022) (64GB) - PRODUCT(RED) - Clean used - Battery 91%',
+  productHighlights: [
+    '64GB storage',
+    'PRODUCT(RED) finish',
+    '91% battery health',
+    'Clean used condition',
+    'Charging cable included',
+    'No box',
+  ],
+  conditionReport: [
+    'Used - Clean',
+    'Battery health: 91%',
+    'Light signs of previous use visible in the photos',
+    'Charging cable included',
+    'No box',
+  ],
+  images: [
+    'products/iphones/iphone-se-2022-product-red-64gb/iphone-se-2022-product-red-back.jpeg',
+    'products/iphones/iphone-se-2022-product-red-64gb/iphone-se-2022-product-red-angle.jpeg',
+    'products/iphones/iphone-se-2022-product-red-64gb/iphone-se-2022-product-red-camera.jpeg',
+    'products/iphones/iphone-se-2022-product-red-64gb/iphone-se-2022-product-red-battery.jpeg',
+    'products/iphones/iphone-se-2022-product-red-64gb/iphone-se-2022-product-red-detail.jpeg',
+  ],
+  mediaFit: 'contain',
+  mediaPad: 10,
+};
+
 const iphone18ProMax = {
   title: 'iPhone 18 Pro Max',
   subtitle: 'Burgundy • 256GB • Brand new in box • Only available on order',
@@ -87,4 +132,4 @@ const iphone11Green = {
   mediaFit: 'contain',
 };
 
-export const iphones = [iphone18ProMax, ...currentIphones, iphone11Green];
+export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green];
