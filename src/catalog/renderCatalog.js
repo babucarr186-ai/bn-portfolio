@@ -1427,10 +1427,6 @@ export function renderCatalog({
     actions.appendChild(detailBtn);
 
     if (variantPicker) {
-      const whatsapp = el('a', 'btn btn-primary catalog-variant-whatsapp');
-      whatsapp.textContent = 'Ask on WhatsApp';
-      whatsapp.target = '_blank';
-      whatsapp.rel = 'noopener';
       const selectVariant = (variantIndex) => {
         product = { ...originalProduct, ...variants[variantIndex] };
         variantButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === variantIndex)));
@@ -1444,8 +1440,6 @@ export function renderCatalog({
         const price = body.querySelector('.catalog-price');
         if (price) { price.textContent = ''; appendTextWithPriceSpans(price, formatPrice(product.price)); }
         detailBtn.href = `${detailHref}?variant=${variantIndex}`;
-        const message = `Hi Uncle Apple! Please confirm availability for: ${titleText}, ${product.color || ''}, ${product.storage}, battery ${product.batteryHealth}, ${formatPrice(product.price)}.`;
-        whatsapp.href = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent(message)}`;
       };
       variantButtons.forEach((button, variantIndex) => button.addEventListener('click', (event) => {
         event.preventDefault();
@@ -1453,7 +1447,6 @@ export function renderCatalog({
         selectVariant(variantIndex);
       }));
       selectVariant(0);
-      body.appendChild(whatsapp);
     }
     body.appendChild(actions);
     card.appendChild(body);

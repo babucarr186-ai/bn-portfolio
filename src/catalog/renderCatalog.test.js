@@ -134,7 +134,7 @@ describe('renderCatalog', () => {
   });
 });
 
-it('switches storage, battery, price and purchase links directly on a variant card', () => {
+it('switches storage, battery, price and detail links directly on a variant card', () => {
   const mountEl = document.createElement('div');
   document.body.appendChild(mountEl);
   const product = {
@@ -157,8 +157,7 @@ it('switches storage, battery, price and purchase links directly on a variant ca
   expect(mountEl.querySelector('.catalog-badge-row')).toHaveTextContent('128GB');
   expect(mountEl.querySelector('.catalog-badge-row')).toHaveTextContent('Battery 89%');
   expect(mountEl.querySelector('.catalog-actions a')).toHaveAttribute('href', expect.stringContaining('?variant=1'));
-  const message = new URL(mountEl.querySelector('.catalog-variant-whatsapp').href).searchParams.get('text');
-  expect(message).toContain('128GB'); expect(message).toContain('89%'); expect(message).toContain('GMD 12,000');
+  expect(mountEl.querySelector('.catalog-variant-whatsapp')).not.toBeInTheDocument();
   buttons[0].click();
   expect(mountEl.querySelector('.catalog-price')).toHaveTextContent(/^GMD 10,000$/);
   expect(product.storage).toBe('64GB / 128GB');
