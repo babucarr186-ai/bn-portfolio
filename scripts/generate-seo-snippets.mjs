@@ -807,7 +807,7 @@ function buildProductPageHtml(config, product, index) {
               ${viewModel.details.map((detail) => `<div class="product-detail-item"><span class="product-detail-label">${escapeHtml(detail.label)}</span><span class="product-detail-value">${escapeHtml(detail.value)}</span></div>`).join('')}
             </div>
             <div class="product-purchase-card${viewModel.sold ? ' product-purchase-card--sold' : ''}">
-              ${product.variants?.length ? `<label for="product-variant">Choose storage and battery</label><select id="product-variant" style="width:100%;padding:14px;font-size:16px;border-radius:12px;margin-bottom:14px">${product.variants.map((variant, variantIndex) => `<option value="${variantIndex}">${escapeHtml(variant.storage)} — Battery ${escapeHtml(variant.batteryHealth)} — GMD ${Number(variant.price).toLocaleString('en-US')}</option>`).join('')}</select>` : ''}
+              ${product.variants?.length ? `<div id="product-variant" role="group" aria-label="Choose storage"><p class="catalog-variant-label">Choose storage</p><div class="catalog-variant-options">${product.variants.map((variant, variantIndex) => `<button type="button" class="catalog-variant-button" data-variant="${variantIndex}" aria-pressed="${variantIndex === 0}">${escapeHtml(variant.storage)}</button>`).join('')}</div></div>` : ''}
 ${priceMarkup ? `              ${priceMarkup}${countdownMarkup}\n` : ''}              <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
               <div class="product-actions">
                 ${viewModel.sold

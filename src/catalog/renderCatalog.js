@@ -1047,7 +1047,9 @@ export function renderCatalog({
 
   const rendered = [];
 
-  products.forEach((product, index) => {
+  products.forEach((originalProduct, index) => {
+    const variants = Array.isArray(originalProduct.variants) ? originalProduct.variants : [];
+    let product = variants.length ? { ...originalProduct, ...variants[0] } : originalProduct;
     const card = el('article', 'catalog-card');
     card.dataset.kind = product.kind || 'laptop';
 
@@ -1083,6 +1085,7 @@ export function renderCatalog({
     }
 
     const display = buildCatalogCardSummary(product);
+    if (variants.length) display.priceLabel = formatPrice(product.price);
     const details = buildCatalogCardDetails(product);
     const detailHref = buildProductPageHref(product, detailIndex);
     const cardBadges = buildCatalogBadges(product, details);
@@ -1268,6 +1271,28 @@ export function renderCatalog({
       body.appendChild(date);
     }
 
+    let variantPicker;
+    const variantButtons = [];
+    if (variants.length > 1 && !product.sold) {
+      variantPicker = el('div', 'catalog-variant-picker');
+      variantPicker.setAttribute('role', 'group');
+      variantPicker.setAttribute('aria-label', `Choose storage for ${titleText}`);
+      const label = el('p', 'catalog-variant-label');
+      label.textContent = 'Choose storage';
+      variantPicker.appendChild(label);
+      const options = el('div', 'catalog-variant-options');
+      variants.forEach((variant, variantIndex) => {
+        const button = el('button', 'catalog-variant-button');
+        button.type = 'button';
+        button.textContent = variant.storage;
+        button.setAttribute('aria-pressed', String(variantIndex === 0));
+        options.appendChild(button);
+        variantButtons.push(button);
+      });
+      variantPicker.appendChild(options);
+      body.appendChild(variantPicker);
+    }
+
     const compactDetails = el('dl', 'catalog-compact-details');
     const explicitParts = normalizeSpace(product?.authenticity || product?.parts);
     const explicitSource = normalizeSpace(product?.source || product?.origin);
@@ -1289,7 +1314,8 @@ export function renderCatalog({
       const term = el('dt', 'catalog-compact-label');
       const description = el('dd', 'catalog-compact-value');
       term.textContent = label;
-      description.textContent = value;
+      description.textContent = variants.length && label === 'Battery' ? value.replace(/^Battery /, '') : value;
+      description.dataset.detail = label;
       item.appendChild(term);
       item.appendChild(description);
       compactDetails.appendChild(item);
@@ -1349,6 +1375,7 @@ export function renderCatalog({
       } else {
         const price = el('p', 'catalog-price');
         appendTextWithPriceSpans(price, display.priceLabel);
+        if (variants.length) { price.setAttribute('aria-live', 'polite'); price.setAttribute('aria-atomic', 'true'); }
         body.appendChild(price);
       }
     }
@@ -1399,6 +1426,35 @@ export function renderCatalog({
     detailBtn.textContent = 'Details';
     actions.appendChild(detailBtn);
 
+    if (variantPicker) {
+      const whatsapp = el('a', 'btn btn-primary catalog-variant-whatsapp');
+      whatsapp.textContent = 'Ask on WhatsApp';
+      whatsapp.target = '_blank';
+      whatsapp.rel = 'noopener';
+      const selectVariant = (variantIndex) => {
+        product = { ...originalProduct, ...variants[variantIndex] };
+        variantButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === variantIndex)));
+        compactDetails.querySelector('[data-detail="Storage"]').textContent = product.storage;
+        const battery = compactDetails.querySelector('[data-detail="Battery"]');
+        if (battery) battery.textContent = product.batteryHealth;
+        body.querySelectorAll('.catalog-badge').forEach((badge) => {
+          if (/^Battery /i.test(badge.textContent)) badge.textContent = `Battery ${product.batteryHealth}`;
+          else if (/^\d+\s*(GB|TB)$/i.test(badge.textContent)) badge.textContent = product.storage;
+        });
+        const price = body.querySelector('.catalog-price');
+        if (price) { price.textContent = ''; appendTextWithPriceSpans(price, formatPrice(product.price)); }
+        detailBtn.href = `${detailHref}?variant=${variantIndex}`;
+        const message = `Hi Uncle Apple! Please confirm availability for: ${titleText}, ${product.color || ''}, ${product.storage}, battery ${product.batteryHealth}, ${formatPrice(product.price)}.`;
+        whatsapp.href = `https://wa.me/${WHATSAPP_NUMBER_E164}?text=${encodeURIComponent(message)}`;
+      };
+      variantButtons.forEach((button, variantIndex) => button.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        selectVariant(variantIndex);
+      }));
+      selectVariant(0);
+      body.appendChild(whatsapp);
+    }
     body.appendChild(actions);
     card.appendChild(body);
 

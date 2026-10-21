@@ -133,3 +133,34 @@ describe('renderCatalog', () => {
     mountEl.remove();
   });
 });
+
+it('switches storage, battery, price and purchase links directly on a variant card', () => {
+  const mountEl = document.createElement('div');
+  document.body.appendChild(mountEl);
+  const product = {
+    title: 'iPhone XR', productTitle: 'iPhone XR - Options', color: 'Black',
+    storage: '64GB / 128GB', batteryHealth: '87% / 89%',
+    subtitle: '64GB / Battery 87%: GMD 10,000 • 128GB / Battery 89%: GMD 12,000',
+    price: 10000, images: [],
+    variants: [{ storage: '64GB', batteryHealth: '87%', price: 10000 }, { storage: '128GB', batteryHealth: '89%', price: 12000 }],
+  };
+  renderCatalog({ mountEl, products: [product], startIndex: 44 });
+  const buttons = mountEl.querySelectorAll('.catalog-variant-button');
+  expect(buttons).toHaveLength(2);
+  expect(mountEl.querySelector('.catalog-price')).toHaveTextContent(/^GMD 10,000$/);
+  buttons[1].click();
+  expect(buttons[1]).toHaveAttribute('aria-pressed', 'true');
+  expect(buttons[0]).toHaveAttribute('aria-pressed', 'false');
+  expect(mountEl.querySelector('.catalog-price')).toHaveTextContent(/^GMD 12,000$/);
+  expect(mountEl.querySelector('[data-detail="Battery"]')).toHaveTextContent('89%');
+  expect(mountEl.querySelector('[data-detail="Storage"]')).toHaveTextContent('128GB');
+  expect(mountEl.querySelector('.catalog-badge-row')).toHaveTextContent('128GB');
+  expect(mountEl.querySelector('.catalog-badge-row')).toHaveTextContent('Battery 89%');
+  expect(mountEl.querySelector('.catalog-actions a')).toHaveAttribute('href', expect.stringContaining('?variant=1'));
+  const message = new URL(mountEl.querySelector('.catalog-variant-whatsapp').href).searchParams.get('text');
+  expect(message).toContain('128GB'); expect(message).toContain('89%'); expect(message).toContain('GMD 12,000');
+  buttons[0].click();
+  expect(mountEl.querySelector('.catalog-price')).toHaveTextContent(/^GMD 10,000$/);
+  expect(product.storage).toBe('64GB / 128GB');
+  mountEl.remove();
+});
