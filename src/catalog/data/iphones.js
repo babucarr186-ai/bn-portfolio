@@ -132,4 +132,35 @@ const iphone11Green = {
   mediaFit: 'contain',
 };
 
-export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green];
+const iphoneXRBlackOptions = {
+  title: 'iPhone XR',
+  productTitle: 'iPhone XR - Black - 64GB or 128GB - Used',
+  subtitle: 'Black • Used • 64GB / Battery 87%: GMD 10,000 • 128GB / Battery 89%: GMD 12,000',
+  kind: 'phone',
+  color: 'Black',
+  storage: '64GB / 128GB',
+  batteryHealth: '87% / 89%',
+  condition: 'Used',
+  price: 10000,
+  sold: false,
+  availability: 'Available',
+  listingDate: '2026-10-21',
+  shortDescription: 'Choose 64GB with 87% battery for GMD 10,000 or 128GB with 89% battery for GMD 12,000. Both are used. Product photos are shared between the two options; the battery and storage screenshots show the 64GB device.',
+  description: 'Used black iPhone XR. Select 64GB with 87% battery health at GMD 10,000, or 128GB with 89% battery health at GMD 12,000. Shared product photos; screenshots show the 64GB model with 87% battery.',
+  whatsAppMessage: 'Hi Uncle Apple! I am interested in the used black iPhone XR, 64GB, battery 87%, GMD 10,000.',
+  variants: [
+    { storage: '64GB', batteryHealth: '87%', price: 10000 },
+    { storage: '128GB', batteryHealth: '89%', price: 12000 },
+  ],
+  images: [
+    'products/iphones/iphone-xr-black-options/iphone-xr-back.jpeg',
+    'products/iphones/iphone-xr-black-options/iphone-xr-front.jpeg',
+    'products/iphones/iphone-xr-black-options/iphone-xr-box.jpeg',
+    'products/iphones/iphone-xr-black-options/iphone-xr-accessories.jpeg',
+    'products/iphones/iphone-xr-black-options/iphone-xr-battery-64gb.jpeg',
+    'products/iphones/iphone-xr-black-options/iphone-xr-info-64gb.jpeg',
+  ],
+  mediaFit: 'contain',
+};
+
+export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions];
