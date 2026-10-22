@@ -382,7 +382,7 @@ function buildDisplayContent(product) {
 
   const batteryPercent = parseBatteryPercent(batteryLabel || product?.batteryHealth);
   const summary = primary.slice(0, 3).join(' • ');
-  const note = createSalesNote({ conditionLabel, batteryPercent, extras });
+  const note = normalizeSpace(product?.cardNote) || createSalesNote({ conditionLabel, batteryPercent, extras });
 
   return {
     summary,
@@ -450,7 +450,7 @@ function buildCatalogBadges(product, details) {
   pushBadge(battery);
   pushBadge(storage);
   pushBadge(color);
-  if (!isAvailabilityStatus(condition)) pushBadge(condition);
+  if (condition !== 'Ready to use' && !isAvailabilityStatus(condition)) pushBadge(condition);
   if (/original parts/i.test(authenticity)) pushBadge('Original Parts');
 
   return badges;
@@ -1052,6 +1052,7 @@ export function renderCatalog({
     let product = variants.length ? { ...originalProduct, ...variants[0] } : originalProduct;
     const card = el('article', 'catalog-card');
     card.dataset.kind = product.kind || 'laptop';
+    if (product.catalogWhatsAppLabel) card.dataset.priceRequest = 'true';
 
     if (product?.sold) {
       card.classList.add('is-sold');
@@ -1251,7 +1252,7 @@ export function renderCatalog({
     statusTag.textContent = product?.sold ? (product?.availability || 'SOLD OUT') : product?.reserved ? 'RESERVED' : 'Available';
     tags.appendChild(statusTag);
 
-    if (details.conditionLabel) {
+    if (details.conditionLabel && details.conditionLabel !== 'Ready to use') {
       const conditionTag = el('span', 'catalog-tag catalog-tag--neutral');
       conditionTag.textContent = details.conditionLabel;
       tags.appendChild(conditionTag);
@@ -1428,7 +1429,7 @@ export function renderCatalog({
 
     if (!product?.sold && product?.catalogWhatsAppLabel) {
       const requestPriceBtn = document.createElement('a');
-      requestPriceBtn.className = 'btn btn-whatsapp btn-small';
+      requestPriceBtn.className = 'btn btn-whatsapp btn-small catalog-price-request';
       requestPriceBtn.href = buildWhatsAppHref(product.whatsAppMessage);
       requestPriceBtn.target = '_blank';
       requestPriceBtn.rel = 'noopener';
