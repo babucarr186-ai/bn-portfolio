@@ -1,5 +1,6 @@
 export const giftCards = [
   {
+    seoSlug: 'apple-gift-card-1',
     title: 'Apple Gift Card',
     subtitle:
       'A simple gift for everyone • Digital or physical • Choose your amount • From GMD 300 • Fast WhatsApp response',

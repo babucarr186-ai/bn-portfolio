@@ -70,7 +70,7 @@ describe('renderRecommendationRail', () => {
 });
 
 describe('renderCatalog', () => {
-  it('keeps detail links matched to original inventory indexes after sold items are filtered out', () => {
+  it('keeps permanent detail links when inventory is filtered or assigned different display indexes', () => {
     const mountEl = document.createElement('div');
     document.body.appendChild(mountEl);
 
@@ -78,11 +78,13 @@ describe('renderCatalog', () => {
       mountEl,
       products: [
         {
+          seoSlug: 'iphone-13-128gb-1',
           title: 'iPhone 13',
           productTitle: 'iPhone 13 128GB',
           images: ['/products/placeholders/placeholder-phone.svg'],
         },
         {
+          seoSlug: 'iphone-15-256gb-3',
           title: 'iPhone 15',
           productTitle: 'iPhone 15 256GB',
           images: ['/products/placeholders/placeholder-phone.svg'],
@@ -112,6 +114,7 @@ describe('renderCatalog', () => {
       mountEl,
       products: [
         {
+          seoSlug: 'iphone-12-128gb',
           title: 'iPhone 12',
           subtitle: '128GB • Very clean • Battery 84%',
           price: 24500,
@@ -138,6 +141,7 @@ it('switches storage, battery, price and detail links directly on a variant card
   const mountEl = document.createElement('div');
   document.body.appendChild(mountEl);
   const product = {
+    seoSlug: 'iphone-xr-options',
     title: 'iPhone XR', productTitle: 'iPhone XR - Options', color: 'Black',
     storage: '64GB / 128GB', batteryHealth: '87% / 89%',
     subtitle: '64GB / Battery 87%: GMD 10,000 • 128GB / Battery 89%: GMD 12,000',

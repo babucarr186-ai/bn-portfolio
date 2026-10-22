@@ -53,6 +53,7 @@ describe('SEO description helpers', () => {
       absoluteUrl: 'https://uncleapplestore.com/',
     };
     const schema = buildProductSchema(config, {
+      seoSlug: 'test-iphone-1',
       title: 'Test iPhone',
       price: 10000,
       image: 'products/placeholders/placeholder-phone.svg',

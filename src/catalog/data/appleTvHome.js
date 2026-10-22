@@ -1,5 +1,6 @@
 export const appleTvHome = [
   {
+    seoSlug: 'apple-tv-4k-1',
     title: 'Apple TV 4K',
     subtitle:
       'Gen 3 (2022) • 64GB • Black • Used (Good condition) • Compatible accessories • GMD 10,200',
@@ -18,6 +19,7 @@ export const appleTvHome = [
     ],
   },
   {
+    seoSlug: 'homepod-2',
     title: 'HomePod',
     subtitle:
       '2018 • White • Wi‑Fi • Siri • AirPlay • Excellent condition • 1‑year guarantee • GMD 9,500',
@@ -34,6 +36,7 @@ export const appleTvHome = [
     ],
   },
   {
+    seoSlug: 'homepod-mini-3',
     title: 'HomePod mini',
     subtitle:
       'White • Good condition • Warranty included • Bluetooth + Wi‑Fi • GMD 8,500',

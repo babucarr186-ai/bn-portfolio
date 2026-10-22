@@ -1,6 +1,7 @@
 import { startOfferCountdown } from './offerCountdown.js';
 import { formatListingDate, getListingDate } from './listingDates.js';
 import { WHATSAPP_NUMBER_E164 } from '../contactConfig.js';
+import { getProductPath } from './productUrls.js';
 
 const RESPONSIVE_WIDTHS = [300, 600, 900, 1200];
 
@@ -131,11 +132,10 @@ function slugify(value) {
     .replace(/(^-|-$)/g, '');
 }
 
-function buildProductPageHref(product, index) {
+function buildProductPageHref(product) {
   const categoryKey = document.documentElement.dataset.category || 'iphones';
-  const slugBase = slugify(product?.productTitle || product?.title || 'product') || 'product';
   const baseUrl = String(import.meta.env.BASE_URL || '/').replace(/\/?$/, '/');
-  return `${baseUrl}p/${categoryKey}/${slugBase}-${Number(index) + 1}/`;
+  return `${baseUrl}${getProductPath(categoryKey, product).slice(1)}`;
 }
 
 function el(tag, className) {
@@ -1088,7 +1088,7 @@ export function renderCatalog({
     const display = buildCatalogCardSummary(product);
     if (variants.length) display.priceLabel = formatPrice(product.price);
     const details = buildCatalogCardDetails(product);
-    const detailHref = buildProductPageHref(product, detailIndex);
+    const detailHref = buildProductPageHref(originalProduct);
     const cardBadges = buildCatalogBadges(product, details);
     const images = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
     const imagesToUse = images.length ? images : [product.image].filter(Boolean);
