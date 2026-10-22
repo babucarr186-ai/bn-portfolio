@@ -336,21 +336,23 @@ export function buildProductSchema(config, product) {
   const description = normalizeSpace(product?.seoMetaDescription) || buildSchemaDescription(product, summary);
   const url = buildProductUrl(config, product);
   const price = normalizeSchemaPrice(product?.price);
+  // Rich product results need a real public offer. Sold listings hide their
+  // price, and price-request listings have none, so describe those as pages.
+  const hasPublicOffer = price !== null && !product?.sold;
 
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
-    '@id': `${url}#product`,
+    '@type': hasPublicOffer ? 'Product' : 'WebPage',
+    '@id': `${url}#${hasPublicOffer ? 'product' : 'webpage'}`,
     name: normalizeSpace(product?.pageTitle || product?.productTitle || product?.title || `${config.sectionLabel} listing`),
     image: pickProductImages(product),
     description,
-    brand: { '@type': 'Brand', name: normalizeSpace(product?.brand || 'Apple') },
     url,
-    availability: schemaAvailabilityUrl(product),
-    itemCondition: schemaConditionUrl(product),
   };
 
-  if (price !== null) {
+  if (hasPublicOffer) {
+    schema.brand = { '@type': 'Brand', name: normalizeSpace(product?.brand || 'Apple') };
+    schema.itemCondition = schemaConditionUrl(product);
     schema.offers = {
       '@type': 'Offer',
       url,
@@ -412,15 +414,16 @@ function buildItemListSchema(config, productSchemas) {
     itemListElement: productSchemas.map((schema, index) => ({
       '@type': 'ListItem',
       position: index + 1,
+      name: schema.name,
       url: schema.url,
-      item: { '@id': schema['@id'] },
     })),
   };
 }
 
 function buildSchemaMarkup(config) {
   const productSchemas = config.products.map((product) => buildProductSchema(config, product));
-  const schemas = [buildItemListSchema(config, productSchemas), ...productSchemas];
+  // Product rich results apply to individual product pages, not category grids.
+  const schemas = [buildItemListSchema(config, productSchemas)];
 
   return `<!-- SEO-SCHEMA:START ${config.file} -->\n  <script type="application/ld+json">\n${JSON.stringify(schemas, null, 2)}\n  </script>\n<!-- SEO-SCHEMA:END ${config.file} -->`;
 }
