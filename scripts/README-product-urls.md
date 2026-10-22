@@ -29,3 +29,13 @@ Only current product pages belong in the sitemap.
 If a page must move, add its exact old path and the final destination to that
 JSON map. Redirects must lead directly to an existing product, never another
 redirect, a different device, or the homepage. The build checks these constraints.
+
+# Product structured data
+
+Available devices with a visible numeric price publish `Product` and `Offer`
+markup on their individual pages. Price-request and sold listings publish
+`WebPage` and breadcrumb markup instead, preserving their canonical URLs,
+content, images, and indexability without inventing prices or reviews. Sold
+prices stay hidden in the page and its structured data. Category grids publish
+an `ItemList` linking to each listing; product rich-result markup belongs on the
+individual product pages.
