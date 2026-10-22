@@ -293,6 +293,7 @@ function buildPartsStatus(product) {
 }
 
 function buildNetworkStatus(product) {
+  if (normalizeSpace(product?.networkStatus)) return normalizeSpace(product.networkStatus);
   const description = [product?.subtitle, product?.description].map((item) => normalizeSpace(item)).join(' ');
   if (/dual sim|sim\s*\+\s*esim|nano.?sim\s*\+\s*esim/i.test(description)) return 'Dual SIM (SIM + eSIM)';
   if (/factory unlocked|frei ab werk|no sim lock|ohne simlock/i.test(description)) return 'Factory unlocked';
@@ -301,7 +302,7 @@ function buildNetworkStatus(product) {
 
 function buildFaceIdStatus(product, config) {
   if (config.key !== 'iphones') return 'Not applicable';
-  if (/iphone\s*(se|7|8)\b/i.test(normalizeSpace(product?.title))) return 'Touch ID model';
+  if (/iphone\s*(se|7|8|duo)\b/i.test(normalizeSpace(product?.title))) return 'Touch ID model';
   if (containsText(product, /face id/i)) return 'Face ID tested';
   return 'Face ID tested';
 }

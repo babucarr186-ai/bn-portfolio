@@ -1426,6 +1426,16 @@ export function renderCatalog({
     detailBtn.textContent = 'Details';
     actions.appendChild(detailBtn);
 
+    if (!product?.sold && product?.catalogWhatsAppLabel) {
+      const requestPriceBtn = document.createElement('a');
+      requestPriceBtn.className = 'btn btn-whatsapp btn-small';
+      requestPriceBtn.href = buildWhatsAppHref(product.whatsAppMessage);
+      requestPriceBtn.target = '_blank';
+      requestPriceBtn.rel = 'noopener';
+      requestPriceBtn.textContent = product.catalogWhatsAppLabel;
+      actions.appendChild(requestPriceBtn);
+    }
+
     if (variantPicker) {
       const selectVariant = (variantIndex) => {
         product = { ...originalProduct, ...variants[variantIndex] };

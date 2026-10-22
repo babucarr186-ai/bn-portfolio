@@ -163,4 +163,34 @@ const iphoneXRBlackOptions = {
   mediaFit: 'contain',
 };
 
-export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions];
+const iphoneDuoNightSky = {
+  title: 'iPhone Duo',
+  productTitle: 'iPhone Duo (512GB) - Night Sky',
+  subtitle: '512GB • Night Sky • Available now • No pre-order • Free original Apple case • Price on request',
+  kind: 'phone',
+  color: 'Night Sky',
+  storage: '512GB',
+  sold: false,
+  availability: 'Available now - No pre-order',
+  listingDate: '2026-10-22',
+  networkStatus: 'Confirm network compatibility on WhatsApp',
+  shortDescription: 'Available now, no pre-order. iPhone Duo with 512GB storage in Night Sky, including a free original Apple case in your choice of colour. Request the price on WhatsApp.',
+  description: 'iPhone Duo with 512GB storage in Night Sky. Available to buy now, with no pre-order required. Includes a free original Apple case in your choice of colour. Request the price and your preferred case colour on WhatsApp.',
+  longDescription: 'iPhone Duo with 512GB storage in Night Sky. Available to buy now, with no pre-order required. Includes a free original Apple case in your choice of colour. Request the price and your preferred case colour on WhatsApp.',
+  whatsAppMessage: 'Hi Uncle Apple! Please share the price of the iPhone Duo, 512GB, Night Sky, available now with no pre-order. I would also like to choose the colour of the free original Apple case.',
+  ctaPrimaryLabel: 'Request price on WhatsApp',
+  catalogWhatsAppLabel: 'Request price on WhatsApp',
+  ctaTitle: 'Available now - No pre-order',
+  ctaText: 'Request the price on WhatsApp and tell us your preferred colour for the free original Apple case.',
+  productHighlights: ['512GB storage', 'Night Sky finish', 'Available now - no pre-order', 'Free original Apple case', 'Choice of case colour', 'Price on request via WhatsApp'],
+  images: [
+    'products/iphones/iphone-duo-512gb-night-sky/iphone-duo-night-sky.jpeg',
+    'products/iphones/iphone-duo-512gb-night-sky/iphone-duo-case-burgundy.jpeg',
+    'products/iphones/iphone-duo-512gb-night-sky/iphone-duo-case-dark.jpeg',
+    'products/iphones/iphone-duo-512gb-night-sky/iphone-duo-flyer.jpg',
+  ],
+  mediaFit: 'contain',
+};
+
+// Append listings: existing product URLs include their array index.
+export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions, iphoneDuoNightSky];
