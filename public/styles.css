@@ -1257,11 +1257,13 @@ html[data-category="iphones"] .catalog-frame img{
 
 @media (max-width: 767px) {
   body[data-page='home'] #trendingGrid {
-    align-items: stretch;
+    align-items: flex-start;
     min-height: 0;
   }
 
   body[data-page='home'] #trendingGrid .catalog-card {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
     width: min(224px, 70vw);
     height: auto;
     min-height: 0;
