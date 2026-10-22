@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { buildCatalogCardSummary } from '../src/catalog/renderCatalog.js';
 import { getProductPath, getProductSlug, validateProductUrls } from '../src/catalog/productUrls.js';
-import { buildProductRedirectBlock } from './product-redirects.mjs';
+import { buildProductRedirectBlock, buildStaticProductRedirectHtml } from './product-redirects.mjs';
 import { WHATSAPP_NUMBER_E164 } from '../src/contactConfig.js';
 import { accessories } from '../src/catalog/data/accessories.js';
 import { airpods } from '../src/catalog/data/airpods.js';
@@ -914,6 +914,13 @@ export async function generateSeoSnippets() {
   }
 
   await generateProductPages();
+  // GitHub Pages ignores _redirects. Instant refresh pages also preserve old
+  // product addresses on static hosts; Netlify serves the forced 301 instead.
+  for (const [from, to] of Object.entries(redirects)) {
+    const outDir = resolve(projectRoot, 'public', from.slice(1));
+    await mkdir(outDir, { recursive: true });
+    await writeFile(resolve(outDir, 'index.html'), buildStaticProductRedirectHtml(to), 'utf8');
+  }
   await updateSitemap();
   const redirectsPath = resolve(projectRoot, 'public/_redirects');
   const existingRedirects = await readFile(redirectsPath, 'utf8');

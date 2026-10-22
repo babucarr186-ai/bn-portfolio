@@ -17,8 +17,14 @@ other products.
 `product-url-redirects.json` maps confirmed historical addresses to current
 listings. The initial mappings were recovered from catalog history using
 unambiguous product-photo matches within the same category. Ambiguous matches
-were excluded. These mappings generate a marked block of Netlify 301 rules in
-`public/_redirects`; keep manually maintained domain redirects outside that block.
+were excluded. These mappings generate a marked block of forced Netlify 301 rules
+in `public/_redirects`; keep manually maintained domain redirects outside that
+block. They also generate static pages with zero-second meta refresh, canonical
+links, and visible fallback links for GitHub Pages, which ignores `_redirects`.
+On GitHub Pages these pages return HTTP 200 and immediately redirect in the
+browser; Google interprets an instant meta refresh as a permanent redirect.
+Forced Netlify rules take precedence over the static fallback files.
+Only current product pages belong in the sitemap.
 
 If a page must move, add its exact old path and the final destination to that
 JSON map. Redirects must lead directly to an existing product, never another
