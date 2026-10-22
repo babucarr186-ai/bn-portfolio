@@ -1,5 +1,6 @@
 export const macbooks = [
 	{
+		seoSlug: 'apple-imac-21-5-inch-retina-4k-2019-16gb-ram-512gb-ssd-like-new-1',
 		"title": "Apple iMac 21.5-inch Retina 4K (2019)",
 		"subtitle": "16GB RAM • 512GB SSD • AMD Radeon Pro 560X 4GB • Like new • Original box • GMD 46,000",
 		"kind": "desktop",
@@ -31,6 +32,7 @@ export const macbooks = [
 		]
 	},
 	{
+		seoSlug: 'apple-imac-24-inch-m1-silver-256gb-ssd-complete-set-with-original-accessories-and-box-2',
 		title: 'Apple iMac 24-inch (M1)',
 		subtitle:
 			'Silver • Apple M1 chip • 256GB SSD • 24-inch Retina 4.5K display • Original accessories • Original box • GMD 60,000',
@@ -66,6 +68,7 @@ export const macbooks = [
 		],
 	},
 	{
+		seoSlug: 'macbook-pro-14-inch-m5-space-black-16gb-1tb-brand-new-and-sealed-3',
 		title: 'MacBook Pro 14-inch (M5)',
 		subtitle:
 			'Space Black • M5 chip • 16GB unified memory • 1TB SSD • Brand new • Factory sealed • Original Apple receipt',
@@ -99,6 +102,7 @@ export const macbooks = [
 		],
 	},
 	{
+		seoSlug: 'macbook-air-13-3-inch-2019-rose-gold-8gb-256gb-grade-a-4',
 		title: 'MacBook Air 13.3-inch (2019)',
 		subtitle:
 			'Rose Gold • 8GB RAM • 256GB SSD • Battery 92% • 130 cycles • Grade A • Touch ID working • GMD 35,000',
@@ -137,6 +141,7 @@ export const macbooks = [
 		],
 	},
 	{
+		seoSlug: 'apple-macbook-retina-12-inch-2017-rose-gold-core-m3-8gb-256gb-ssd-5',
 		title: 'Apple MacBook Retina 12-inch (2017)',
 		subtitle:
 			'Rose Gold • Intel Core m3 • 8GB RAM • 256GB SSD • 107 battery cycles • macOS Ventura • Ready to use • GMD 30,000',
@@ -178,6 +183,7 @@ export const macbooks = [
 		],
 	},
 	{
+		seoSlug: 'macbook-pro-13-inch-2017-i5-8gb-256gb-like-new-warranty-included-6',
 		title: 'MacBook Pro 13-inch (2017)',
 		subtitle:
 			'256GB • Intel Core i5 • Warranty included • GMD 25,000',
@@ -205,6 +211,7 @@ export const macbooks = [
 		],
 	},
 	{
+		seoSlug: 'macbook-pro-13-inch-2016-i5-16gb-256gb-used-neat-condition-7',
 		title: 'MacBook Pro 13-inch (2016)',
 		subtitle:
 			'Intel Core i5 • 16GB RAM • 256GB SSD • 2× Thunderbolt 3 • Battery good (221 cycles) • Used • Neat used condition • GMD 20,000',
@@ -240,6 +247,7 @@ export const macbooks = [
 		],
 	},
 	{
+		seoSlug: 'macbook-neo-13-inch-purple-8gb-256gb-8',
 		title: 'MacBook Neo 13-inch',
 		subtitle:
 			'Purple • 8GB RAM • 256GB SSD • 6-core CPU • 5-core GPU • GMD 57,000',
@@ -277,6 +285,7 @@ export const macbooks = [
 		],
 	},
 {
+  seoSlug: 'macbook-pro-13-inch-2017-four-thunderbolt-3-ports-8gb-256gb-ssd-touch-id-9',
   "title": "MacBook Pro 13-inch (2017) — Four Thunderbolt 3 Ports",
   "listingDate": "2026-10-09",
   "stockRemaining": 2,

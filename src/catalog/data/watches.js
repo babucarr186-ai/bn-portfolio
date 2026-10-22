@@ -1,5 +1,6 @@
 export const watches = [
   {
+    seoSlug: 'premium-two-tone-apple-watch-band-case-set-1',
     title: 'Premium Two-Tone Apple Watch Band + Case Set',
     subtitle:
       'Compatible with 42/44/45MM • Includes protective TPU case • Stainless steel look • Easy adjustable fit • GMD 1,500',
@@ -17,6 +18,7 @@ export const watches = [
     ],
   },
   {
+    seoSlug: 'apple-watch-ultra-2-2024-2',
     title: 'Apple Watch Ultra 2 (2024)',
     subtitle:
       'Rugged GPS + Cellular • Fully tested • 12‑month warranty • Excellent condition • GMD 49,200',
@@ -35,6 +37,7 @@ export const watches = [
     ],
   },
   {
+    seoSlug: 'apple-watch-se-2022-3',
     title: 'Apple Watch SE (2022)',
     subtitle:
       '40mm • Great everyday Apple Watch • Fully tested • 12‑month warranty • GMD 10,620',
@@ -49,6 +52,7 @@ export const watches = [
     images: ['products/watches/watch-se-40mm-2022-1.jpg?v=20260301-1'],
   },
   {
+    seoSlug: 'apple-watch-series-7-45mm-4',
     title: 'Apple Watch Series 7 45MM',
     subtitle:
       '45mm • Midnight Blue • Aluminium case • GPS + Cellular',
@@ -82,6 +86,7 @@ export const watches = [
     ],
   },
   {
+    seoSlug: 'apple-watch-series-7-41mm-5',
     title: 'Apple Watch Series 7 (41mm)',
     subtitle:
       '41mm • Starlight • Aluminium case • Silicone band • Great everyday Apple Watch • GMD 10,000',
@@ -110,6 +115,7 @@ export const watches = [
     ],
   },
   {
+    seoSlug: 'apple-watch-series-3-42mm-6',
     title: 'Apple Watch Series 3 (42mm)',
     subtitle: '42mm • Gold aluminium case • Pink Sand sport band • Ready to use • GMD 5,825',
     kind: 'square',
@@ -129,6 +135,7 @@ export const watches = [
     ],
   },
   {
+    seoSlug: 'apple-watch-series-8-7',
     title: 'Apple Watch Series 8',
     subtitle: '41mm • Fully tested • Warranty included',
     kind: 'square',
@@ -149,6 +156,7 @@ export const watches = [
     ],
   },
   {
+    seoSlug: 'apple-watch-series-10-titanium-8',
     title: 'Apple Watch Series 10 (Titanium)',
     subtitle:
       '46MM • Premium titanium case • Fully tested • 12‑month warranty • Very good condition • GMD 39,000',
@@ -166,6 +174,7 @@ export const watches = [
     ],
   },
   {
+    seoSlug: 'apple-watch-series-8-45mm-9',
     title: 'Apple Watch Series 8 (45mm)',
     listingDate: '2026-10-09',
     shortDescription: 'Grade A condition with box, charger and 3 watch bands. GMD 15,000.',

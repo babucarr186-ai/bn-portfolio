@@ -1,6 +1,7 @@
 import { iphones as baseIphones } from './iphones.base.js';
 
 const iphoneSE2022ProductRed = {
+  seoSlug: 'iphone-se-2022-64gb-product-red-clean-used-battery-91-1',
   title: 'iPhone SE (2022)',
   subtitle: 'PRODUCT(RED) • 64GB • Clean used • Battery 91% • Charging cable included • No box • GMD 12,000',
   kind: 'phone',
@@ -46,6 +47,7 @@ const iphoneSE2022ProductRed = {
 };
 
 const iphone18ProMax = {
+  seoSlug: 'iphone-18-pro-max-256gb-burgundy-brand-new-in-box-2',
   title: 'iPhone 18 Pro Max',
   subtitle: 'Burgundy • 256GB • Brand new in box • Only available on order',
   kind: 'phone',
@@ -107,6 +109,7 @@ const currentIphones = updatedTarget
   : baseIphones;
 
 const iphone11Green = {
+  seoSlug: 'iphone-11-64gb-green-grade-a-battery-84-43',
   title: 'iPhone 11',
   subtitle: 'Green • 64GB • Grade A • Battery 84% • Box, charger and Lightning EarPods • GMD 13,500',
   kind: 'phone',
@@ -133,6 +136,7 @@ const iphone11Green = {
 };
 
 const iphoneXRBlackOptions = {
+  seoSlug: 'iphone-xr-black-64gb-or-128gb-used-44',
   title: 'iPhone XR',
   productTitle: 'iPhone XR - Black - 64GB or 128GB - Used',
   subtitle: 'Black • Used • 64GB / Battery 87%: GMD 10,000 • 128GB / Battery 89%: GMD 12,000',
@@ -164,6 +168,7 @@ const iphoneXRBlackOptions = {
 };
 
 const iphoneDuoNightSky = {
+  seoSlug: 'iphone-duo-512gb-night-sky-45',
   title: 'iPhone Duo',
   productTitle: 'iPhone Duo (512GB) - Night Sky',
   subtitle: '512GB • Night Sky • Available now • No pre-order • Free original Apple case • Price on request',
@@ -193,5 +198,5 @@ const iphoneDuoNightSky = {
   mediaFit: 'contain',
 };
 
-// Append listings: existing product URLs include their array index.
+// Keep each seoSlug permanent, even when listings are reordered or edited.
 export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions, iphoneDuoNightSky];

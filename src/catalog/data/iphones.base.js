@@ -2,6 +2,7 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 
 export const iphones = [
   {
+    seoSlug: 'iphone-17-air-256gb-black-new-0-battery-cycles-4',
     title: 'iPhone 17 Air',
     subtitle: 'Black • 256GB • New • 0 battery cycles • GMD 65,000',
     kind: 'phone',
@@ -37,6 +38,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-15-pro-max-256gb-blue-titanium-battery-88-563-cycles-box-and-charger-5',
     title: 'iPhone 15 Pro Max',
     subtitle: 'Blue Titanium • 256GB • Battery 88% • 563 cycles • Box and charger • GMD 60,000',
     kind: 'phone',
@@ -68,6 +70,7 @@ export const iphones = [
   },
 
   {
+    seoSlug: 'iphone-13-pro-max-256gb-gray-grade-a-battery-100-original-battery-6',
     title: 'iPhone 13 Pro Max',
     subtitle: 'Gray • 256GB • Grade A • Battery 100% • Original battery • Box and original charger • Germany sourced • GMD 36,000',
     kind: 'phone',
@@ -116,6 +119,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-14-pro-512gb-deep-purple-grade-a-battery-93-7',
     title: 'iPhone 14 Pro',
     subtitle: 'Deep Purple • 512GB • Grade A • Battery 93% • Original box and charging cable • GMD 50,000',
     kind: 'phone',
@@ -140,6 +144,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-14-pro-max-256gb-silver-grade-a-battery-85-8',
     title: 'iPhone 14 Pro Max',
     subtitle: 'Silver • 256GB • Grade A • Battery 85% • Box and charging cable • Germany sourced • GMD 45,000',
     kind: 'phone',
@@ -162,6 +167,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-17-pro-max-512gb-silver-brand-new-and-sealed-germany-sourced-9',
     title: 'iPhone 17 Pro Max',
     subtitle: 'Silver • 512GB • Brand new • Factory sealed • Original Apple device from Germany • Available in The Gambia • GMD 120,000',
     kind: 'phone',
@@ -179,6 +185,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-13-128gb-green-used-battery-84-10',
     title: 'iPhone 13',
     subtitle: 'Green • 128GB • Battery 84% • Used • Box and accessories included • Price on request',
     kind: 'phone',
@@ -199,6 +206,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-16-plus-128gb-256gb-blue-battery-85-100-no-sim-lock-11',
     title: 'iPhone 16 Plus',
     subtitle: 'Blue • 128GB / 256GB • Battery 85–100% • No SIM lock • Box + charging cable • GMD 58,000',
     kind: 'phone',
@@ -224,6 +232,7 @@ export const iphones = [
     mediaPad: 18,
   },
   {
+    seoSlug: 'iphone-14-pro-max-128gb-deep-purple-battery-100-original-battery-12',
     title: 'iPhone 14 Pro Max',
     subtitle: 'Deep Purple • 128GB • Battery 100% • Original battery • Box and original charger • GMD 43,000',
     kind: 'phone',
@@ -261,6 +270,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-xs-max-64gb-gold-very-clean-battery-81-original-parts-13',
     title: 'iPhone XS Max',
     subtitle: 'Gold • 64GB • Battery 81% • Very clean • Original parts • Imported from Germany • Uncle Apple Store Certified Device • GMD 12,000',
     kind: 'phone',
@@ -327,6 +337,7 @@ export const iphones = [
     mediaPad: 26,
   },
   {
+    seoSlug: 'iphone-17-pro-max-256gb-available-factory-unlocked-dual-sim-14',
     title: 'iPhone 17 Pro Max',
     subtitle: '256GB • Available • Factory unlocked • Dual SIM (SIM + eSIM) • Price on request',
     kind: 'phone',
@@ -347,6 +358,7 @@ export const iphones = [
     mediaPad: 18,
   },
   {
+    seoSlug: 'iphone-11-128gb-white-used-clean-battery-80-85-15',
     title: 'iPhone 11',
     subtitle: 'White • 128GB • Battery 80–85% • Clean • GMD 14,500',
     kind: 'phone',
@@ -367,6 +379,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-11-64gb-white-used-clean-battery-80-85-16',
     title: 'iPhone 11',
     subtitle: 'White • 64GB • Battery 80–85% • Clean • GMD 12,500',
     kind: 'phone',
@@ -390,6 +403,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-17-256gb-lavender-used-like-new-original-parts-17',
     title: 'iPhone 17',
     subtitle: 'Lavender • 256GB • Used (Like new) • Original parts',
     kind: 'phone',
@@ -412,6 +426,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-17-pro-256gb-brand-new-battery-100-nano-sim-esim-18',
     title: 'iPhone 17 Pro',
     subtitle: '256GB • Brand new • Battery 100% • Nano‑SIM + eSIM • GMD 85,000',
     kind: 'phone',
@@ -428,6 +443,7 @@ export const iphones = [
     images: ['products/iphones/iphone-17-pro-256gb/iphone-17-pro-256gb-1.jpg'],
   },
   {
+    seoSlug: 'iphone-se-2020-64gb-used-battery-87-19',
     title: 'iPhone SE (2020)',
     subtitle: '64GB • 4.7-inch • Used • Battery 87% • GMD 8,000',
     kind: 'phone',
@@ -446,6 +462,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-13-128gb-starlight-used-excellent-battery-86-20',
     title: 'iPhone 13',
     subtitle: 'Starlight • 128GB • Used (Excellent) • Battery 86% • 30days waranty • GMD 26,000',
     kind: 'phone',
@@ -465,6 +482,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-13-pro-512gb-gray-used-battery-100-germany-sourced-21',
     title: 'iPhone 13 Pro',
     subtitle: 'Gray • 512GB • Used • Battery 100% • Germany sourced • Available now • GMD 33,000',
     kind: 'phone',
@@ -487,6 +505,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-13-128gb-pink-used-like-new-battery-85-22',
     title: 'iPhone 13',
     subtitle: 'Pink • 128GB • Like new • Battery 85% • FREE Original GUESS case • GMD 26,000',
     kind: 'phone',
@@ -508,6 +527,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-13-128gb-starlight-used-almost-new-battery-81-23',
     title: 'iPhone 13',
     subtitle: 'Starlight • 128GB • Almost new • Battery 81% • GMD 26,000',
     kind: 'phone',
@@ -530,6 +550,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-13-pro-max-128gb-silver-used-back-glass-broken-battery-89-24',
     title: 'iPhone 13 Pro Max',
     subtitle: 'Silver • 128GB • Battery 89% • Used • Back glass broken • Price on request',
     kind: 'phone',
@@ -551,6 +572,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-13-green-128gb-used-excellent-battery-86-25',
     title: 'iPhone 13 Green',
     subtitle: '128GB • condition-Excellent • Battery-86% • 30 days Warranthy • GMD 26,000',
     kind: 'phone',
@@ -569,6 +591,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-x-64gb-white-used-good-battery-68-26',
     title: 'iPhone X',
     subtitle: 'White • 64GB • Battery 68% • Good condition • GMD 6,000',
     kind: 'phone',
@@ -587,6 +610,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-x-256gb-gray-used-very-clean-battery-90-27',
     title: 'iPhone X',
     subtitle: 'Gray • 256GB • Battery 90% • Very clean • GMD 9,000',
     kind: 'phone',
@@ -607,6 +631,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-xr-64gb-white-used-like-new-battery-89-28',
     title: 'iPhone XR',
     subtitle: 'White • 64GB • Battery 89% • Used (Like new) • GMD 9,000',
     kind: 'phone',
@@ -629,6 +654,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-xr-29',
     title: 'iPhone XR',
     subtitle: 'Red • 128GB • Battery 84% • Very clean • Original parts • Clear camera • 12‑month warranty • GMD 12,000',
     kind: 'phone',
@@ -646,6 +672,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-xr-128gb-black-used-excellent-battery-87-30',
     title: 'iPhone XR',
     subtitle: 'Black • 128GB • Battery 87% • Excellent • GMD 12,000',
     kind: 'phone',
@@ -669,6 +696,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-12-31',
     title: 'iPhone 12',
     subtitle: 'White • 64GB • Battery 82% • Clean • GMD 14,500',
     kind: 'phone',
@@ -685,6 +713,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-12-pro-32',
     title: 'iPhone 12 Pro',
     subtitle: '128GB • GMD 19,500',
     kind: 'phone',
@@ -696,6 +725,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-12-pro-256gb-gold-used-battery-83-factory-unlocked-33',
     title: 'iPhone 12 Pro',
     subtitle: 'Gold • 256GB • Battery 83% • Used • GMD 21,000',
     kind: 'phone',
@@ -717,6 +747,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-12-pro-max-128gb-gold-used-very-clean-battery-78-34',
     title: 'iPhone 12 Pro Max',
     subtitle: 'Gold • 128GB • Battery 78% • Very clean • Charger cable available • GMD 22,200',
     kind: 'phone',
@@ -739,6 +770,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-12-pro-max-128gb-pacific-blue-used-very-clean-battery-82-35',
     title: 'iPhone 12 Pro Max',
     subtitle: 'Pacific Blue • 128GB • Battery 82% • Very clean • Charger cable available • GMD 23,500',
     kind: 'phone',
@@ -761,6 +793,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-12-pro-max-128gb-grade-a-battery-84-germany-sourced-3',
     title: 'iPhone 12 Pro Max',
     subtitle: '128GB • Battery 84% • Very clean • GMD 24,500',
     kind: 'phone',
@@ -781,6 +814,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-11-pro-36',
     title: 'iPhone 11 Pro',
     subtitle: 'Green • 64GB • Battery 73% • Very clean • Original parts • GMD 10,000',
     kind: 'phone',
@@ -801,6 +835,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-11-pro-max-37',
     title: 'iPhone 11 Pro Max',
     subtitle: 'Gold • 256GB • Battery service 75% • Used (Like new) • Original parts • Very clean • GMD 17,500',
     kind: 'phone',
@@ -826,6 +861,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-11-pro-max-64gb-gray-used-very-good-battery-76-38',
     title: 'iPhone 11 Pro Max',
     subtitle: 'Gray • 64GB • Battery 76% • Very good • Original parts • GMD 16,000',
     kind: 'phone',
@@ -848,6 +884,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-7-plus-39',
     title: 'iPhone 7 Plus',
     subtitle: 'Black • 128GB • Battery 83% • Good condition • 12‑month warranty • GMD 5,500',
     kind: 'phone',
@@ -865,6 +902,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-14-128gb-starlight-used-like-new-battery-85-40',
     title: 'iPhone 14',
     subtitle: 'Starlight • 128GB • Used (Like new) • Battery 85% • 30 days warranty • GMD 25,000',
     kind: 'phone',
@@ -887,6 +925,7 @@ export const iphones = [
     ],
   },
   {
+    seoSlug: 'iphone-14-pro-128gb-gray-used-battery-82-41',
     title: 'iPhone 14 Pro',
     subtitle: 'Gray • 128GB • Used • Battery 82% • GMD 35,000',
     kind: 'phone',
@@ -906,6 +945,7 @@ export const iphones = [
   },
 
   {
+    seoSlug: 'iphone-14-256gb-black-used-like-new-battery-82-42',
     title: 'iPhone 14',
     subtitle:
       'Black • 256GB • Used (Like new) • Battery 82% • Original parts • 30 days warranty • GMD 25,000',

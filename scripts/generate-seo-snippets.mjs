@@ -5,6 +5,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildCatalogCardSummary } from '../src/catalog/renderCatalog.js';
+import { getProductPath, getProductSlug, validateProductUrls } from '../src/catalog/productUrls.js';
+import { buildProductRedirectBlock } from './product-redirects.mjs';
 import { WHATSAPP_NUMBER_E164 } from '../src/contactConfig.js';
 import { accessories } from '../src/catalog/data/accessories.js';
 import { airpods } from '../src/catalog/data/airpods.js';
@@ -100,13 +102,6 @@ const pageConfigs = [
 
 function normalizeSpace(value) {
   return String(value || '').replace(/\s+/g, ' ').trim();
-}
-
-function slugify(value) {
-  return normalizeSpace(value)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
 }
 
 function escapeHtml(value) {
@@ -251,13 +246,8 @@ function schemaAvailabilityUrl(product) {
   return product?.sold ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock';
 }
 
-function buildProductSlug(product, index) {
-  const base = slugify(product?.productTitle || product?.title || 'product') || 'product';
-  return `${base}-${index + 1}`;
-}
-
-function buildProductUrl(config, product, index) {
-  return `${siteOrigin}${productPathBase}/${config.key}/${buildProductSlug(product, index)}/`;
+function buildProductUrl(config, product) {
+  return `${siteOrigin}${getProductPath(config.key, product)}`;
 }
 
 function buildWhatsAppLink(message) {
@@ -341,10 +331,10 @@ function buildStoreSeller() {
   };
 }
 
-export function buildProductSchema(config, product, index) {
+export function buildProductSchema(config, product) {
   const summary = buildCatalogCardSummary(product);
   const description = normalizeSpace(product?.seoMetaDescription) || buildSchemaDescription(product, summary);
-  const url = buildProductUrl(config, product, index);
+  const url = buildProductUrl(config, product);
   const price = normalizeSchemaPrice(product?.price);
 
   const schema = {
@@ -429,7 +419,7 @@ function buildItemListSchema(config, productSchemas) {
 }
 
 function buildSchemaMarkup(config) {
-  const productSchemas = config.products.map((product, index) => buildProductSchema(config, product, index));
+  const productSchemas = config.products.map((product) => buildProductSchema(config, product));
   const schemas = [buildItemListSchema(config, productSchemas), ...productSchemas];
 
   return `<!-- SEO-SCHEMA:START ${config.file} -->\n  <script type="application/ld+json">\n${JSON.stringify(schemas, null, 2)}\n  </script>\n<!-- SEO-SCHEMA:END ${config.file} -->`;
@@ -624,8 +614,8 @@ function buildProductPageViewModel(config, product, schema) {
   };
 }
 
-function buildProductPageHtml(config, product, index) {
-  const schema = buildProductSchema(config, product, index);
+function buildProductPageHtml(config, product) {
+  const schema = buildProductSchema(config, product);
   const breadcrumbSchema = buildBreadcrumbSchema(config, schema);
   const viewModel = buildProductPageViewModel(config, product, schema);
   const canonical = schema.url;
@@ -882,11 +872,10 @@ async function generateProductPages() {
   await rm(outRoot, { recursive: true, force: true });
 
   for (const config of pageConfigs) {
-    for (let index = 0; index < config.products.length; index += 1) {
-      const product = config.products[index];
-      const outDir = resolve(outRoot, config.key, buildProductSlug(product, index));
+    for (const product of config.products) {
+      const outDir = resolve(outRoot, config.key, getProductSlug(product));
       await mkdir(outDir, { recursive: true });
-      await writeFile(resolve(outDir, 'index.html'), buildProductPageHtml(config, product, index), 'utf8');
+      await writeFile(resolve(outDir, 'index.html'), buildProductPageHtml(config, product), 'utf8');
     }
   }
 }
@@ -905,8 +894,8 @@ async function updateSitemap() {
   const urls = [];
 
   pageConfigs.forEach((config) => {
-    config.products.forEach((product, index) => {
-      urls.push(buildProductUrl(config, product, index));
+    config.products.forEach((product) => {
+      urls.push(buildProductUrl(config, product));
     });
   });
 
@@ -915,12 +904,21 @@ async function updateSitemap() {
 }
 
 export async function generateSeoSnippets() {
+  // Fail before deleting or overwriting pages if an author forgets a permanent
+  // slug or accidentally reuses an existing listing address.
+  const productPaths = validateProductUrls(pageConfigs);
+  const redirects = JSON.parse(await readFile(resolve(projectRoot, 'scripts/product-url-redirects.json'), 'utf8'));
+  const redirectBlock = buildProductRedirectBlock(redirects, productPaths);
   for (const config of pageConfigs) {
     await updatePage(config);
   }
 
   await generateProductPages();
   await updateSitemap();
+  const redirectsPath = resolve(projectRoot, 'public/_redirects');
+  const existingRedirects = await readFile(redirectsPath, 'utf8');
+  const manualRedirects = existingRedirects.replace(/\n?# PRODUCT-URL-REDIRECTS:START\n[\s\S]*?# PRODUCT-URL-REDIRECTS:END\n?/g, '');
+  await writeFile(redirectsPath, `${manualRedirects.trimEnd()}\n\n${redirectBlock}\n`, 'utf8');
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === scriptPath) {

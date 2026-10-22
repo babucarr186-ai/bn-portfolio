@@ -1,5 +1,6 @@
 export const ipads = [
   {
+    seoSlug: 'ipad-pro-space-gray-1',
     title: 'iPad Pro - Space Gray',
     subtitle: 'Used • Good condition • Box included • GMD 21,250',
     kind: 'square',
@@ -15,6 +16,7 @@ export const ipads = [
       'Hi Uncle Apple! Is this available: iPad Pro - Space Gray (used, good condition, box included). Price GMD 21,250. In The Gambia.',
   },
   {
+    seoSlug: 'ipad-10th-generation-64gb-silver-wi-fi-2',
     title: 'iPad (10th generation) - 64GB - Silver (Wi‑Fi)',
     subtitle: 'Used • 64GB • Wi‑Fi • Silver • GMD 25,000',
     kind: 'square',
@@ -29,6 +31,7 @@ export const ipads = [
       'Hi Uncle Apple! Is this available: iPad (10th generation) - 64GB, Silver (Wi‑Fi), used. Price GMD 25,000. In The Gambia.',
   },
   {
+    seoSlug: 'ipad-air-2020-64gb-space-gray-3',
     title: 'iPad Air (2020) - 64GB - Space Gray',
     subtitle: 'Used • 64GB • Space Gray • 12-month warranty • GMD 17,000',
     kind: 'square',
@@ -40,6 +43,7 @@ export const ipads = [
       'Hi Uncle Apple! Is this available: iPad Air (2020) - 64GB, Space Gray, used (12-month warranty). Price GMD 17,000. In The Gambia.',
   },
   {
+    seoSlug: 'ipad-mini-2021-64gb-4',
     title: 'iPad mini (2021) - 64GB',
     subtitle: 'Used • 64GB • 12-month warranty • GMD 22,300',
     kind: 'square',

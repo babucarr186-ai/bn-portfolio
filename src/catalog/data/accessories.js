@@ -1,5 +1,6 @@
 export const accessories = [
   {
+    seoSlug: 'mecca-hajj-love-gesture-case-for-iphone-17-1',
     title: 'Mecca Hajj Love Gesture Case for iPhone 17',
     subtitle: 'Black / Mixed colour • Drop protection • Large camera opening • GMD 350',
     kind: 'square',
@@ -14,6 +15,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'apple-earpods-with-lightning-connector-2',
     title: 'Apple EarPods with Lightning Connector',
     subtitle: 'Remote control • Microphone • White • GMD 1,650',
     kind: 'square',
@@ -31,6 +33,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'apple-magic-keyboard-finnish-swedish-layout-3',
     title: 'Apple Magic Keyboard (Finnish/Swedish Layout)',
     subtitle: 'Wireless Bluetooth • USB-C charging • White • QWERTY • GMD 3,000',
     kind: 'square',
@@ -46,6 +49,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'money-moves-creative-case-iphone-13-pro-4',
     title: 'Money Moves Creative Case – iPhone 13 Pro',
     subtitle: 'Orange • Protective raised edges • GMD 350',
     kind: 'square',
@@ -60,6 +64,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: '100-bill-creative-case-iphone-xs-max-5',
     title: '$100 Bill Creative Case – iPhone XS Max',
     subtitle: 'Banknote design • Raised camera protection • GMD 300',
     kind: 'square',
@@ -74,6 +79,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'retro-street-style-protective-case-iphone-14-pro-pro-max-6',
     title: 'Retro Street-Style Protective Case - iPhone 14 Pro / Pro Max',
     subtitle:
       'Grey • Full-coverage anti-drop protection • iPhone 14 Pro: GMD 350 • iPhone 14 Pro Max: GMD 375',
@@ -91,6 +97,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'apple-pencil-2nd-generation-7',
     title: 'Apple Pencil (2nd generation)',
     subtitle:
       'Precision for iPad • Compatible: iPad Pro 12.9 (2018–2022), iPad Pro 11 (2018–2022), iPad Air (2020–2022), iPad mini (2021) • Used (Good condition) • GMD 4,250',
@@ -107,6 +114,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'apple-magsafe-2-power-adapter-8',
     title: 'Apple MagSafe 2 Power Adapter',
     subtitle:
       '145W • Compatible: MacBook Air 11-inch (2015), MacBook Air 13-inch (2012–2017) • Used (Good condition) • GMD 3,320',
@@ -119,6 +127,7 @@ export const accessories = [
     images: ['products/accessories/magsafe-2-charger-1.jpg?v=20260301-1'],
   },
   {
+    seoSlug: 'apple-magic-mouse-2-9',
     title: 'Apple Magic Mouse 2',
     subtitle: 'Multi‑Touch surface • Used (Good condition) • GMD 2,550',
     kind: 'square',
@@ -135,6 +144,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'apple-magic-keyboard-for-ipad-pro-13-inch-m4-10',
     title: 'Apple Magic Keyboard for iPad Pro 13‑inch (M4)',
     subtitle: 'Comfortable typing • Trackpad • GMD 17,000',
     kind: 'square',
@@ -150,6 +160,7 @@ export const accessories = [
     ],
   },
   {
+    seoSlug: 'premium-two-tone-apple-watch-band-case-set-11',
     title: 'Premium Two-Tone Apple Watch Band + Case Set',
     subtitle:
       'Compatible with 42/44/45MM • Includes protective TPU case • Stainless steel look • Easy adjustable fit • GMD 1,500',

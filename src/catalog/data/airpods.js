@@ -1,5 +1,6 @@
 export const airpods = [
   {
+    seoSlug: 'beats-by-dr-dre-solo-pro-anc-wireless-1',
     title: 'Beats by Dr. Dre Solo Pro ANC Wireless',
     subtitle:
       'Original Beats by Dr. Dre • Gray • ANC noise cancelling • Wireless Bluetooth • On-ear • GMD 10,000',
@@ -42,6 +43,7 @@ export const airpods = [
     ],
   },
   {
+    seoSlug: 'beats-by-dr-dre-studio3-wireless-2',
     title: 'Beats by Dr. Dre Studio3 Wireless',
     subtitle:
       'Original Beats by Dr. Dre • Gray • Wireless Bluetooth • Over-ear • GMD 10,000',
@@ -84,6 +86,7 @@ export const airpods = [
     ],
   },
   {
+    seoSlug: 'airpods-2nd-generation-3',
     title: 'AirPods (2nd generation)',
     subtitle:
       'Used (Like new) • Ready to use • GMD 4,250',
@@ -103,6 +106,7 @@ export const airpods = [
     ],
   },
   {
+    seoSlug: 'airpods-max-2024-4',
     title: 'AirPods Max (2024)',
     subtitle:
       'Beige • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Excellent condition • GMD 36,550',
@@ -121,6 +125,7 @@ export const airpods = [
     ],
   },
   {
+    seoSlug: 'airpods-max-2020-5',
     title: 'AirPods Max (2020)',
     subtitle:
       'Green • Over‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Very good condition • GMD 22,500',
@@ -138,6 +143,7 @@ export const airpods = [
     ],
   },
   {
+    seoSlug: 'airpods-pro-2nd-generation-6',
     title: 'AirPods Pro (2nd generation)',
     subtitle:
       'In‑ear • Active Noise Cancellation • Transparency • Spatial Audio • Used (Good condition) • GMD 6,375',
@@ -156,6 +162,7 @@ export const airpods = [
     ],
   },
   {
+    seoSlug: 'apple-airpods-2nd-generation-7',
     "title": "Apple AirPods (2nd generation)",
     "subtitle": "Used • Good condition • Good battery • Charger included • Authentic Apple • GMD 4,500",
     "kind": "square",
@@ -188,6 +195,7 @@ export const airpods = [
     ]
   },
   {
+    seoSlug: 'apple-ipod-classic-160gb-black-with-accessories-8',
     title: 'Apple iPod Classic',
     productTitle: 'Apple iPod Classic (160GB) - Black - With accessories',
     subtitle: 'Black • 160GB • Clean used condition • Charger and earphones included • GMD 17,000',
