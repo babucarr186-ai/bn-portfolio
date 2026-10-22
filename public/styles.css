@@ -1278,3 +1278,13 @@ html[data-category="iphones"] .catalog-frame img{
     display: none;
   }
 }
+
+/* The supplied Duo hero includes white borders; the shorter frame removes
+   that empty margin while keeping the entire handset visible. */
+body[data-page='home'] :is(#trendingGrid, #inventory) .catalog-card[data-title='iPhone Duo'] .catalog-frame {
+  --frame-aspect: 4 / 3;
+}
+body[data-page='home'] :is(#trendingGrid, #inventory) .catalog-card[data-title='iPhone Duo'] .catalog-slide:first-child img {
+  height: 100%;
+  object-fit: cover;
+}

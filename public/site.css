@@ -3795,7 +3795,11 @@ footer .foot .foot-social__icons svg{
 
 /* Storage choices stay directly on the product card and detail page. */
 .catalog-variant-label { margin: 0 0 8px; font-size: 13px; font-weight: 650; color: #515154; }
-.catalog-variant-options { display: flex; gap: 8px; margin-bottom: 12px; }
-.catalog-variant-button { flex: 1; min-height: 44px; padding: 10px 12px; border: 1px solid #b9bcc2; border-radius: 12px; background: #fff; color: #16171a; font: inherit; font-weight: 700; cursor: pointer; }
+.catalog-variant-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin-bottom: 6px; }
+.catalog-variant-button { min-width: 0; min-height: 44px; padding: 10px 4px; border: 1px solid #b9bcc2; border-radius: 12px; background: #fff; color: #16171a; font: inherit; font-weight: 700; cursor: pointer; }
 .catalog-variant-button[aria-pressed="true"] { background: #101114; color: #fff; border-color: #101114; }
 .catalog-variant-button:focus-visible { outline: 3px solid #0071e3; outline-offset: 3px; }
+
+@media (max-width: 767px) {
+  .catalog-card .catalog-variant-button { font-size: 0.75rem; }
+}

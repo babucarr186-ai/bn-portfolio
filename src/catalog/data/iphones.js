@@ -180,7 +180,7 @@ const iphoneDuoNightSky = {
   whatsAppMessage: 'Hi Uncle Apple! Please share the price of the iPhone Duo, 512GB, Night Sky, available now with no pre-order. I would also like to choose the colour of the free original Apple case.',
   ctaPrimaryLabel: 'Request price on WhatsApp',
   catalogWhatsAppLabel: 'Request price on WhatsApp',
-  cardNote: 'Available now. No pre-order. Free original Apple case in your choice of colour.',
+  cardNote: 'No pre-order. Free original Apple case. Choose your colour.',
   ctaTitle: 'Available now - No pre-order',
   ctaText: 'Request the price on WhatsApp and tell us your preferred colour for the free original Apple case.',
   productHighlights: ['512GB storage', 'Night Sky finish', 'Available now - no pre-order', 'Free original Apple case', 'Choice of case colour', 'Price on request via WhatsApp'],
