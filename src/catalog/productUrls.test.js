@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { getProductPath, validateProductUrls } from './productUrls.js';
 import { iphones } from './data/iphones.js';
 import { buildProductSchema } from '../../scripts/generate-seo-snippets.mjs';
-import { buildProductRedirectBlock } from '../../scripts/product-redirects.mjs';
+import { buildProductRedirectBlock, buildStaticProductRedirectHtml } from '../../scripts/product-redirects.mjs';
 import { renderCatalog } from './renderCatalog.js';
 
 describe('permanent product URLs', () => {
@@ -40,10 +40,21 @@ describe('permanent product URLs', () => {
   it('only generates direct redirects to existing products without hijacking current pages', () => {
     const current = new Set(['/p/iphones/current/']);
     expect(buildProductRedirectBlock({ '/p/iphones/old/': '/p/iphones/current/' }, current))
-      .toContain('/p/iphones/old/ /p/iphones/current/ 301');
+      .toContain('/p/iphones/old/ /p/iphones/current/ 301!');
     expect(() => buildProductRedirectBlock({ '/p/iphones/old/': '/p/iphones/missing/' }, current))
       .toThrow(/target/);
     expect(() => buildProductRedirectBlock({ '/p/iphones/current/': '/p/iphones/current/' }, current))
       .toThrow(/replace/);
+  });
+
+  it('provides an immediate static-host redirect with the same canonical and fallback destination', () => {
+    const target = '/p/iphones/current/';
+    const page = new DOMParser().parseFromString(buildStaticProductRedirectHtml(target), 'text/html');
+    expect(page.querySelector('meta[http-equiv="refresh"]').content).toBe(`0; url=${target}`);
+    expect(page.querySelector('link[rel="canonical"]').getAttribute('href'))
+      .toBe(`https://uncleapplestore.com${target}`);
+    expect(page.querySelector('a').getAttribute('href')).toBe(target);
+    expect(() => buildStaticProductRedirectHtml('/p/iphones/../../evil/')).toThrow(/Invalid/);
+    expect(() => buildStaticProductRedirectHtml('https://example.com/')).toThrow(/Invalid/);
   });
 });
