@@ -1,0 +1,29 @@
+.gift-card-order { display: grid; gap: 12px; margin-top: 18px; max-width: 520px; text-align: left; }
+.gift-card-order label, .gift-card-order legend { font-weight: 700; }
+.gift-card-order select, .gift-card-order input { display: block; width: 100%; min-height: 48px; margin-top: 6px; border: 1px solid var(--btnBorder); border-radius: 12px; padding: 10px 12px; font: inherit; background: var(--bg); color: var(--text); }
+.gift-card-order fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.gift-card-amounts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+.gift-card-order button { min-height: 48px; font: inherit; cursor: pointer; }
+.gift-card-amounts button, .gift-card-quantity button { border: 1px solid var(--btnBorder); border-radius: 12px; background: var(--bg); color: var(--text); font-weight: 700; }
+.gift-card-amounts button[aria-pressed="true"] { background: var(--btn); color: var(--btnText); border-color: var(--btn); }
+.gift-card-order :focus-visible { outline: 3px solid #0071e3; outline-offset: 3px; }
+.gift-card-order button:disabled { opacity: .45; cursor: not-allowed; }
+.gift-card-quantity { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.gift-card-quantity div { display: flex; align-items: center; gap: 16px; }
+.gift-card-quantity button { width: 48px; font-size: 24px; }
+.gift-card-summary { display: grid; gap: 6px; padding-top: 10px; border-top: 1px solid var(--hairline); }
+.gift-card-summary div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.gift-card-price { font-size: clamp(1.6rem, 6vw, 2rem); letter-spacing: -.03em; }
+.gift-card-order p { margin: 0; font-size: .9rem; color: var(--muted); }
+.gift-card-order [data-error] { color: #b42318; }
+.gift-card-order [data-error]:empty { display: none; }
+.gift-card-order [hidden] { display: none; }
+.gift-card-order .btn { width: 100%; white-space: normal; }
+@media (max-width: 640px) { html[data-category="giftcards"] .hero-media { display: none; } }
+
+@media (max-width: 640px) {
+  html[data-category="giftcards"] .hero.hero-compact { padding-top: 20px; }
+  html[data-category="giftcards"] .hero-copy { gap: 10px; }
+  .gift-card-order { margin-top: 0; gap: 10px; width: 100%; }
+  html[data-category="giftcards"] .floating-whatsapp { display: none; }
+}

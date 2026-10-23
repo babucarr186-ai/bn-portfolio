@@ -197,3 +197,12 @@ git push
 ### Listing dates and order
 
 Add `listingDate: 'YYYY-MM-DD'` to every new product in `src/catalog/data/`. Use the publication date and keep it unchanged when editing the price or description. Append new products to the array so existing product URLs remain stable. Inventory and trending sections sort dated listings newest first; same-day listings use the newest appended item first. Undated older products retain their existing order and show no invented date. Dates appear on catalog cards and product detail pages.
+
+## Gift card selling rate
+
+Edit `GIFT_CARD_EUR_RATE` in `src/giftCardConfig.js` (GMD per EUR), then rebuild.
+This is the owner-controlled selling rate, not an external or live market exchange rate.
+The current owner-approved selling rate is 92 GMD per EUR. Update this setting when the owner changes the selling rate.
+Estimated GMD price = selected EUR value × quantity × rate, rounded once to the nearest whole Dalasi for both the page and WhatsApp estimate.
+Customers request confirmation of the current price and availability on WhatsApp before payment.
+Gift card product data lives in `src/catalog/data/giftcards.js`; do not add a fixed GMD price.

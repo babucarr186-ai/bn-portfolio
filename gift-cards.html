@@ -146,44 +146,10 @@
       {
         "@type": "ListItem",
         "position": 1,
-        "url": "https://uncleapplestore.com/p/giftcards/apple-gift-card-1/",
-        "item": {
-          "@id": "https://uncleapplestore.com/p/giftcards/apple-gift-card-1/#product"
-        }
+        "name": "Apple Gift Card",
+        "url": "https://uncleapplestore.com/p/giftcards/apple-gift-card-1/"
       }
     ]
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "@id": "https://uncleapplestore.com/p/giftcards/apple-gift-card-1/#product",
-    "name": "Apple Gift Card",
-    "image": [
-      "https://uncleapplestore.com/products/giftcards/apple-gift-card-1.jpg"
-    ],
-    "description": "Apple Gift Card available in digital or physical form with flexible amounts (starting from GMD 300). A simple Apple gift option for App Store purchases, subscriptions, accessories, and Apple device users.",
-    "brand": {
-      "@type": "Brand",
-      "name": "Apple"
-    },
-    "url": "https://uncleapplestore.com/p/giftcards/apple-gift-card-1/",
-    "availability": "https://schema.org/InStock",
-    "itemCondition": "https://schema.org/UsedCondition",
-    "offers": {
-      "@type": "Offer",
-      "url": "https://uncleapplestore.com/p/giftcards/apple-gift-card-1/",
-      "priceCurrency": "GMD",
-      "price": 300,
-      "availability": "https://schema.org/InStock",
-      "itemCondition": "https://schema.org/UsedCondition",
-      "seller": {
-        "@type": "ElectronicsStore",
-        "@id": "https://uncleapplestore.com/#store",
-        "name": "Uncle Apple Store",
-        "url": "https://uncleapplestore.com/",
-        "telephone": "+4915679652076"
-      }
-    }
   }
 ]
   </script>
@@ -223,13 +189,38 @@
       <div class="container">
         <div class="hero-grid">
           <div class="hero-copy">
-            <h1>What Can You Do With an Apple Gift Card?</h1>
-            <p class="sub">Did you know you can use an Apple Gift Card to pay for extra iCloud storage, apps, games and Apple subscriptions? Choose an amount and add it to your Apple Account balance.</p>
-
-            <div class="hero-actions" aria-label="Hero actions">
-              <a class="btn btn-primary" id="heroChat" href="#">Chat on WhatsApp</a>
-              <a class="btn btn-outline" href="#contact">Contact</a>
-            </div>
+            <h1>Choose your Apple Gift Card amount</h1>
+            <p class="sub">Choose a EUR amount and quantity. Confirm price and availability before payment.</p>
+            <form class="gift-card-order" id="giftCardOrder">
+              <label>Gift Card Type<select name="giftCardType" aria-label="Gift Card Type" required></select></label>
+              <fieldset>
+                <legend>Gift Card Value (EUR)</legend>
+                <div class="gift-card-amounts">
+                  <button type="button" data-amount="10" aria-pressed="true">€10</button>
+                  <button type="button" data-amount="25" aria-pressed="false">€25</button>
+                  <button type="button" data-amount="50" aria-pressed="false">€50</button>
+                  <button type="button" data-amount="100" aria-pressed="false">€100</button>
+                  <button type="button" data-amount="200" aria-pressed="false">€200</button>
+                  <button type="button" data-amount="custom" aria-pressed="false">Custom Amount</button>
+                </div>
+              </fieldset>
+              <label data-custom hidden>Custom amount (EUR)
+                <input name="customAmount" type="number" inputmode="decimal" min="0.01" step="0.01" aria-describedby="giftCardError" disabled />
+              </label>
+              <p id="giftCardError" data-error aria-live="polite"></p>
+              <div class="gift-card-quantity"><strong>Quantity</strong><div>
+                <button type="button" data-decrease aria-label="Decrease quantity">−</button>
+                <output data-quantity aria-label="Quantity">1</output>
+                <button type="button" data-increase aria-label="Increase quantity">+</button>
+              </div></div>
+              <div class="gift-card-summary" aria-live="polite" aria-atomic="true">
+                <div><span>Total Gift Card Value</span><strong data-total>—</strong></div>
+                <div><span>Current Estimated Price</span><strong class="gift-card-price" data-price>—</strong></div>
+              </div>
+              <button type="submit" class="btn btn-whatsapp" disabled>Request / Confirm on WhatsApp</button>
+              <p>Gift card prices are calculated using Uncle Apple Store’s current conversion rate. Final price is confirmed before payment.</p>
+              <noscript>Please enable JavaScript to calculate a gift card estimate, or <a href="#contact">contact us</a> to confirm the current price.</noscript>
+            </form>
           </div>
 
           <div class="hero-media" aria-label="Product image">
@@ -364,6 +355,7 @@
 
   <script type="module" src="/src/site.js"></script>
   <script type="module" src="/src/catalog/page.js"></script>
+  <script type="module" src="/src/giftCardOrder.js"></script>
   <script src="%BASE_URL%pwa-register.js"></script>
 </body>
 </html>

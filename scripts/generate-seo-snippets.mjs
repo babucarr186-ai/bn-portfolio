@@ -803,6 +803,7 @@ function buildProductPageHtml(config, product) {
             <div class="product-purchase-card${viewModel.sold ? ' product-purchase-card--sold' : ''}">
               ${product.variants?.length ? `<div id="product-variant" role="group" aria-label="Choose storage"><p class="catalog-variant-label">Choose storage</p><div class="catalog-variant-options">${product.variants.map((variant, variantIndex) => `<button type="button" class="catalog-variant-button" data-variant="${variantIndex}" aria-pressed="${variantIndex === 0}">${escapeHtml(variant.storage)}</button>`).join('')}</div></div>` : ''}
 ${priceMarkup ? `              ${priceMarkup}${countdownMarkup}\n` : ''}              <div class="product-status${viewModel.sold ? ' product-status--sold' : ''}"><span class="product-dot" aria-hidden="true"></span>${escapeHtml(viewModel.availabilityText)}</div>
+              ${config.key === 'giftcards' ? '<a class="btn btn-primary" href="/gift-cards.html#giftCardOrder">Choose gift card amount</a>' : ''}
               <div class="product-actions">
                 ${viewModel.sold
                   ? `<a class="btn btn-primary" href="${escapeAttribute(backLink)}">Browse available ${escapeHtml(config.sectionLabel)}</a>`
