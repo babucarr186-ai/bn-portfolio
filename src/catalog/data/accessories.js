@@ -69,6 +69,7 @@ export const accessories = [
     subtitle: 'Banknote design • Raised camera protection • GMD 300',
     kind: 'square',
     price: 300,
+    sold: true,
     description:
       'Creative $100 bill design case made for iPhone XS Max. Slim everyday protection with raised edges around the camera.',
     whatsAppMessage:
