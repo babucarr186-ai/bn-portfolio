@@ -27,3 +27,39 @@
   .gift-card-order { margin-top: 0; gap: 10px; width: 100%; }
   html[data-category="giftcards"] .floating-whatsapp { display: none; }
 }
+
+/* Gift Card landing page only: keep the buying flow ahead of supporting copy. */
+html[data-category="giftcards"] .hero-copy { justify-items: stretch; text-align: left; }
+html[data-category="giftcards"] .hero-copy h1 { font-size: clamp(1.65rem, 3.4vw, 2.75rem); line-height: 1.12; }
+html[data-category="giftcards"] .hero-copy .sub { font-size: 1rem; font-weight: 500; text-wrap: pretty; }
+.gift-card-order .gift-card-type { font-size: 1rem; font-weight: 700; color: var(--text); }
+.gift-card-order { width: 100%; margin-top: 4px; }
+.gift-card-summary { gap: 8px; }
+.gift-card-summary div { align-items: center; }
+.gift-card-price { font-weight: 850; font-variant-numeric: tabular-nums; }
+.gift-card-info { border-top: 1px solid var(--hairline); }
+.gift-card-info-grid { display: grid; gap: 24px; }
+.gift-card-info h2 { margin: 0 0 10px; font-size: 1.2rem; line-height: 1.3; }
+.gift-card-info p, .gift-card-info li { font-size: 1rem; line-height: 1.55; }
+.gift-card-info p { margin: 0; color: var(--muted); }
+.gift-card-info ul, .gift-card-info ol { padding-left: 22px; margin: 10px 0 0; }
+.gift-card-info li + li { margin-top: 6px; }
+.gift-card-info .gift-card-region { margin-top: 16px; color: var(--text); }
+html[data-category="giftcards"] #giftCardOrder,
+html[data-category="giftcards"] #product-apple-gift-card-1 { scroll-margin-top: 120px; }
+@media (min-width: 860px) { .gift-card-info-grid { grid-template-columns: 1fr 1fr; gap: 48px; } }
+@media (max-width: 640px) {
+  html[data-category="giftcards"] .nav-inner { padding-block: 4px; row-gap: 0; }
+  html[data-category="giftcards"] .nav .logo-img { height: 42px; }
+  html[data-category="giftcards"] .nav-links.nav-links--catbar { padding-block: 2px; }
+  html[data-category="giftcards"] .nav-links.nav-links--catbar a { min-height: 48px; padding-block: 4px; gap: 4px; }
+  html[data-category="giftcards"] .nav-links--catbar .nav-catbar__icon,
+  html[data-category="giftcards"] .nav-links--catbar .nav-catbar__icon svg { width: 20px; height: 20px; }
+  html[data-category="giftcards"] .hero.hero-compact { padding: 18px 0 24px; }
+  html[data-category="giftcards"] .hero-copy { gap: 8px; }
+  html[data-category="giftcards"] .hero-copy h1 { font-size: clamp(1.5rem, 6.2vw, 1.75rem); }
+  .gift-card-order { margin-top: 4px; gap: 10px; }
+  .gift-card-order legend { font-size: .95rem; }
+  .gift-card-order .btn { font-size: .95rem; }
+  html[data-category="giftcards"] .gift-card-info { padding: 24px 0; }
+}

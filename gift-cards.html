@@ -185,14 +185,17 @@
   </header>
 
   <main id="top">
-    <section class="hero hero-compact">
+    <section class="hero hero-compact" id="inventory">
       <div class="container">
         <div class="hero-grid">
           <div class="hero-copy">
             <h1>Choose your Apple Gift Card amount</h1>
             <p class="sub">Choose a EUR amount and quantity. Confirm price and availability before payment.</p>
             <form class="gift-card-order" id="giftCardOrder">
-              <label>Gift Card Type<select name="giftCardType" aria-label="Gift Card Type" required></select></label>
+              <div data-gift-card-type id="product-apple-gift-card-1">
+                <p class="gift-card-type" data-single-type hidden></p>
+                <label data-type-selector>Gift Card Type<select name="giftCardType" aria-label="Gift Card Type" required></select></label>
+              </div>
               <fieldset>
                 <legend>Gift Card Value (EUR)</legend>
                 <div class="gift-card-amounts">
@@ -249,30 +252,27 @@
       </div>
     </section>
 
-    <section class="section section-compact" aria-label="Gift card details">
-      <div class="container">
-        <h2 class="section-title">What can you use it for?</h2>
-        <p class="section-lead">Use your Apple Account balance for useful Apple services and digital purchases:</p>
-        <ul class="section-lead" style="margin-top:16px; padding-left:24px;">
-          <li>Buy extra iCloud storage with iCloud+</li>
-          <li>Download paid apps and games from the App Store</li>
-          <li>Pay for Apple Music, Apple TV+ and other eligible subscriptions</li>
-          <li>Buy movies, books and other eligible Apple content</li>
-        </ul>
-
-        <h2 class="section-title" style="margin-top:32px;">How it works</h2>
-        <p class="section-lead">Tell us the amount you need on WhatsApp. We confirm availability and provide the gift card code. Redeem the code in the App Store to add the value to your Apple Account balance.</p>
-        <p class="section-lead" style="margin-top:14px;"><strong>Important:</strong> Apple Gift Cards are country or region specific. Before buying, confirm that the card matches the country or region of your Apple Account.</p>
-      </div>
-    </section>
-
-    <section class="section section-compact" id="inventory" aria-label="Gift cards inventory">
-      <div class="container">
-        <h2 class="section-title">Inventory</h2>
-        <p class="section-lead">Browse Apple Gift Cards and compare with nearby categories like <a href="./index.html#inventory">iPhones</a>, <a href="./ipads.html">iPads</a>, and <a href="./accessories.html">Accessories</a>.</p>
-
-        <div class="catalog-wrap" aria-label="Inventory grid">
-          <div class="catalog-grid" id="catalogGrid"></div>
+    <section class="section section-compact gift-card-info" aria-label="Gift card details">
+      <div class="container gift-card-info-grid">
+        <div>
+          <h2>What can you use it for?</h2>
+          <p>Use your Apple Account balance for eligible Apple services and content:</p>
+          <ul>
+            <li>Extra iCloud storage with iCloud+</li>
+            <li>Paid apps and games from the App Store</li>
+            <li>Apple Music, Apple TV+ and eligible subscriptions</li>
+            <li>Movies, books and other eligible Apple content</li>
+          </ul>
+        </div>
+        <div>
+          <h2>How it works</h2>
+          <ol>
+            <li>Choose your amount.</li>
+            <li>Send your request on WhatsApp.</li>
+            <li>We confirm price and availability.</li>
+            <li>Receive the gift card code after completing your purchase.</li>
+          </ol>
+          <p class="gift-card-region"><strong>Check your region:</strong> Gift card codes are country or region specific. Confirm the card matches your Apple Account before buying.</p>
         </div>
       </div>
     </section>

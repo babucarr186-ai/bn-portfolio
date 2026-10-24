@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { URL as NodeURL } from 'node:url';
 import { calculateGiftCard, giftCardMessage, initGiftCardOrder } from './giftCardOrder.js';
 import { GIFT_CARD_EUR_RATE } from './giftCardConfig.js';
+import { giftCards } from './catalog/data/giftcards.js';
 import { WHATSAPP_NUMBER_E164 } from './contactConfig.js';
 
 vi.mock('./site.js', async () => {
@@ -46,6 +47,9 @@ describe('gift card form', () => {
   });
   it('loads supported type and initial estimate', () => {
     expect(text('[name="giftCardType"]')).toBe('Apple Gift Card');
+    expect(document.querySelector('[data-type-selector]').hidden).toBe(true);
+    expect(text('[data-single-type]')).toBe('Apple Gift Card');
+    expect(document.querySelector('[data-single-type]').hidden).toBe(false);
     expect(text('[data-price]')).toBe('GMD 920');
     expect(document.querySelector('[data-decrease]').disabled).toBe(true);
   });
@@ -122,6 +126,22 @@ describe('single selling rate configuration', () => {
     } finally {
       rateOverride.value = null;
       open.mockRestore();
+    }
+  });
+});
+
+
+describe('multiple active types', () => {
+  it('keeps the selector available when the catalog has multiple active products', () => {
+    giftCards.push({ title: 'Test catalog product' });
+    try {
+      document.body.innerHTML = page.match(/<form class="gift-card-order"[\s\S]*?<\/form>/)[0];
+      initGiftCardOrder(document.getElementById('giftCardOrder'));
+      expect(document.querySelector('[data-type-selector]').hidden).toBe(false);
+      expect(document.querySelector('[data-single-type]').hidden).toBe(true);
+      expect(document.querySelector('[name="giftCardType"]').options.length).toBe(2);
+    } finally {
+      giftCards.pop();
     }
   });
 });

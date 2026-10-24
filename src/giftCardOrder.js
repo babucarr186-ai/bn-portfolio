@@ -28,12 +28,19 @@ export function giftCardMessage(type, order) {
 export function initGiftCardOrder(form) {
   if (!form) return;
   const type = form.querySelector('[name="giftCardType"]');
-  giftCards.filter((product) => !product.sold).forEach((product) => {
+  const availableTypes = giftCards.filter((product) => !product.sold);
+  availableTypes.forEach((product) => {
     const option = document.createElement('option');
     option.value = product.title;
     option.textContent = product.title;
     type.append(option);
   });
+  const singleType = form.querySelector('[data-single-type]');
+  if (singleType && availableTypes.length === 1) {
+    singleType.textContent = availableTypes[0].title;
+    singleType.hidden = false;
+    form.querySelector('[data-type-selector]').hidden = true;
+  }
   const custom = form.querySelector('[name="customAmount"]');
   const customWrap = form.querySelector('[data-custom]');
   const error = form.querySelector('[data-error]');
