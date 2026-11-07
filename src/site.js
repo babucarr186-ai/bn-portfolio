@@ -1,3 +1,4 @@
+import './analytics.js';
 import { WHATSAPP_NUMBER_E164 } from './contactConfig.js';
 
 const STORE_NAME = 'Uncle Apple';
