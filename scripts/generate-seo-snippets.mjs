@@ -292,6 +292,7 @@ function buildNetworkStatus(product) {
 
 function buildFaceIdStatus(product, config) {
   if (config.key !== 'iphones') return 'Not applicable';
+  if (normalizeSpace(product?.faceIdStatus)) return normalizeSpace(product.faceIdStatus);
   if (/iphone\s*(se|7|8|duo)\b/i.test(normalizeSpace(product?.title))) return 'Touch ID model';
   if (containsText(product, /face id/i)) return 'Face ID tested';
   return 'Face ID tested';
@@ -546,7 +547,7 @@ function buildProductPageViewModel(config, product, schema) {
     'Trusted by customers across The Gambia',
   ]);
 
-  const trustChecks = uniqueText([
+  const trustChecks = uniqueText(product?.trustChecks || [
     importedFromLine || 'Imported from Germany',
     'Device Fully Tested',
     'Honest Battery Reporting',

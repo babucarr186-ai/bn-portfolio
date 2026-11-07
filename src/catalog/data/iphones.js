@@ -198,5 +198,38 @@ const iphoneDuoNightSky = {
   mediaFit: 'contain',
 };
 
+const iphone11Red256GB = {
+  seoSlug: 'iphone-11-256gb-red-used-excellent-battery-88-46',
+  title: 'iPhone 11',
+  productTitle: 'iPhone 11 (256GB) - Red - Used - Battery 88%',
+  subtitle: 'Red • 256GB • Excellent used condition • Battery 88% • GMD 18,500',
+  kind: 'phone',
+  color: 'Red',
+  storage: '256GB',
+  condition: 'Used - Excellent',
+  batteryHealth: '88%',
+  price: 18500,
+  sold: false,
+  availability: 'Available',
+  listingDate: '2026-11-07',
+  networkStatus: 'Confirm SIM-lock status before purchase',
+  faceIdStatus: 'Confirm Face ID status before purchase',
+  trustChecks: ['256GB storage', '88% battery health', 'Actual photos of this device', 'Confirm functions and included accessories before purchase'],
+  whatsAppMessage: 'Hi Uncle Apple! Please confirm availability for the red iPhone 11, 256GB, excellent used condition with no visible signs of wear, 88% battery health, GMD 18,500. Please also confirm the included accessories.',
+  shortDescription: 'Red iPhone 11 with 256GB storage and 88% battery health. Excellent used condition with no visible signs of wear.',
+  description: 'Used iPhone 11 in Red with 256GB storage and 88% battery health. Clean, excellent cosmetic condition with no visible signs of wear. Available for GMD 18,500. Contact Uncle Apple Store to confirm availability and included accessories before payment.',
+  longDescription: 'This red iPhone 11 has 256GB storage and 88% battery health. It is used and in excellent cosmetic condition, with no visible signs of wear. The photos show the actual red phone. Price: GMD 18,500. Please confirm availability, included accessories and any functional checks with Uncle Apple Store before payment.',
+  cardNote: 'Excellent used condition. No visible signs of wear.',
+  productHighlights: ['256GB storage', 'Red finish', '88% battery health', 'Excellent used condition', 'No visible signs of wear'],
+  keyFeatures: ['256GB storage', 'Red finish', '88% battery health'],
+  conditionReport: ['Used - Excellent cosmetic condition', 'No visible signs of wear', 'Battery health: 88%'],
+  images: [
+    'products/iphones/iphone-11-red-256gb/iphone-11-red-back.jpeg',
+    'products/iphones/iphone-11-red-256gb/iphone-11-red-camera.jpeg',
+    'products/iphones/iphone-11-red-256gb/iphone-11-red-finish.jpeg',
+  ],
+  mediaFit: 'contain',
+};
+
 // Keep each seoSlug permanent, even when listings are reordered or edited.
-export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions, iphoneDuoNightSky];
+export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions, iphoneDuoNightSky, iphone11Red256GB];
