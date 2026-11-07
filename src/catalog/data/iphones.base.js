@@ -3,35 +3,40 @@ const ESIM_UNLOCKED_DETAILS = 'Factory unlocked (Sperrstatus: Frei ab Werk). Dua
 export const iphones = [
   {
     seoSlug: 'iphone-17-air-256gb-black-new-0-battery-cycles-4',
-    title: 'iPhone 17 Air',
-    subtitle: 'Black • 256GB • New • 0 battery cycles • GMD 65,000',
+    title: 'iPhone Air',
+    subtitle: 'Black • 256GB • Brand new • Battery 100% • 0 battery cycles • GMD 70,000',
     kind: 'phone',
     color: 'Black',
     storage: '256GB',
     condition: 'Brand new',
+    batteryHealth: '100%',
     cycleCount: 0,
-    price: 65000,
+    price: 70000,
     sold: false,
     availability: 'Available',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone 17 Air - Black, 256GB, new condition, 0 battery cycles. Price GMD 65,000. Available in The Gambia.',
+      'Hi Uncle Apple! Please confirm availability for: iPhone Air - Black, 256GB, brand new condition, 100% battery health, 0 battery cycles. Price GMD 70,000. Available in The Gambia.',
     shortDescription:
-      'New iPhone 17 Air in Black with 256GB storage and 0 battery cycles.',
+      'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles.',
     description:
-      'New iPhone 17 Air in Black with 256GB storage and 0 battery cycles. Available for GMD 65,000.',
-    productTitle: 'iPhone 17 Air (256GB) - Black - New - 0 battery cycles',
+      'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles. Available for GMD 70,000.',
+    longDescription:
+      'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles. Available for GMD 70,000. View the actual device in the photos and contact Uncle Apple Store to confirm availability before payment.',
+    productTitle: 'iPhone Air (256GB) - Black - Brand new - Battery 100% - 0 battery cycles',
     productHighlights: [
       '256GB storage',
       'Black finish',
-      'New condition',
+      'Brand new condition',
+      'Battery health: 100%',
       '0 battery cycles',
     ],
     conditionReport: [
-      'New condition',
+      'Brand new condition',
+      'Battery health: 100%',
       'Battery cycle count: 0',
     ],
     images: [
-      'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-back.jpeg',
+      'products/iphones/iphone-17-air-256gb-black/iphone-air-black-display-20261107.jpeg',
       'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-front.jpeg',
       'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-box.jpeg',
       'products/iphones/iphone-17-air-256gb-black/iphone-17-air-black-cable.jpeg',
