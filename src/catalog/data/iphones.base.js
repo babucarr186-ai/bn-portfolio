@@ -458,8 +458,11 @@ export const iphones = [
     condition: 'Used',
     batteryHealth: '87%',
     price: 8000,
+    sold: true,
+    stockRemaining: 0,
+    availability: 'Sold',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone SE (2020) - 64GB, 4.7-inch display, battery 87%, nano‑SIM + eSIM. Price GMD 8,000. In The Gambia.',
+      'Hi Uncle Apple! I am interested in the sold iPhone SE (2020), 64GB, battery 87%. Please let me know if a similar device becomes available.',
     description:
       `Storage 64GB. 4.7-inch Retina HD display. Battery health 87%. Touch ID. 12MP camera with 4K video recording. Processor Apple A13 Bionic. ${ESIM_UNLOCKED_DETAILS} iOS updates supported (latest compatible version). Price GMD 8,000.`,
     productTitle: 'iPhone SE (2020) (64GB) - Used - Battery 87%',
