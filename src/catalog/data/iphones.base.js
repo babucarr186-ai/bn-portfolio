@@ -12,16 +12,16 @@ export const iphones = [
     batteryHealth: '100%',
     cycleCount: 0,
     price: 70000,
-    sold: false,
-    availability: 'Available',
+    sold: true,
+    availability: 'Sold',
     whatsAppMessage:
-      'Hi Uncle Apple! Please confirm availability for: iPhone Air - Black, 256GB, brand new condition, 100% battery health, 0 battery cycles. Price GMD 70,000. Available in The Gambia.',
+      'Hi Uncle Apple! I am interested in a device similar to the sold iPhone Air - Black, 256GB, 100% battery health. Please let me know if one becomes available.',
     shortDescription:
       'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles.',
     description:
-      'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles. Available for GMD 70,000.',
+      'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles. Sold. Listed price: GMD 70,000.',
     longDescription:
-      'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles. Available for GMD 70,000. View the actual device in the photos and contact Uncle Apple Store to confirm availability before payment.',
+      'Brand new iPhone Air in Black with 256GB storage, 100% battery health and 0 battery cycles. Sold. Listed price: GMD 70,000. View the actual device in the photos and contact Uncle Apple Store for similar devices.',
     productTitle: 'iPhone Air (256GB) - Black - Brand new - Battery 100% - 0 battery cycles',
     productHighlights: [
       '256GB storage',
