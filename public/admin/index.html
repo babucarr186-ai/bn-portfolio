@@ -56,13 +56,21 @@
           <button data-view="expenses" type="button">Expenses</button>
         </nav>
         <section class="view" id="view-overview">
-          <div class="section-heading"><h2>Store performance</h2><p>Recorded transactions, all time · GMD</p></div>
+          <section id="tracker-performance" class="panel" aria-labelledby="tracker-performance-title" hidden>
+            <div class="section-heading"><h2 id="tracker-performance-title">Sales history from Tracker 2 &amp; 3</h2><p>Imported records · GMD</p></div>
+            <div id="tracker-metrics" class="metrics"></div>
+            <p id="tracker-performance-note" class="notice"></p>
+            <button id="view-tracker-sales" class="subtle" type="button">View sales history</button>
+          </section>
+          <div class="section-heading">
+            <h2>Dashboard activity</h2><p>All entries saved in the dashboard · GMD</p>
+            <button id="overview-add-device" class="primary owner-only" type="button">Add device</button>
+          </div>
           <div id="metrics" class="metrics"></div>
           <div class="split">
             <article class="panel"><h3>Needs attention</h3><div id="alerts" class="alerts"></div></article>
             <article class="panel"><h3>Recent sales</h3><div id="recent-sales"></div></article>
           </div>
-          <p class="notice">Profit is an estimate based on recorded product purchase costs, sales, damages and expenses. It is not cash in the bank or a complete accounting statement. Existing public website listings are not yet synchronized with this dashboard.</p>
         </section>
         <section class="view" id="view-tracker" hidden>
 <div class="section-heading"><h2>Investment Tracker 2 &amp; 3</h2><p>Imported source records. Blank sale status does not confirm available stock. Historical sales are not counted as new dashboard revenue.</p></div>
@@ -76,7 +84,7 @@
             <div class="table-wrap"><table><thead><tr><th>SKU / Product</th><th>Category</th><th>Remaining</th><th>Cost/unit</th><th>Price/unit</th><th>Received</th></tr></thead><tbody id="inventory-rows"></tbody></table></div>
           </div>
           <form id="product-form" class="panel entry owner-only">
-            <h3>Add stock</h3><div class="form-grid">
+            <h3>Add device or accessory</h3><div class="form-grid">
               <label>Stock ID / SKU <input name="sku" placeholder="UA-IP-001" maxlength="48" required></label>
               <label>Product name <input name="name" placeholder="iPhone 14 Pro 128GB" maxlength="120" required></label>
               <label>Category <select name="category"><option>iPhone</option><option>MacBook / iMac</option><option>iPad</option><option>Apple Watch</option><option>AirPods</option><option>Accessories</option><option>Other</option></select></label>

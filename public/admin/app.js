@@ -58,6 +58,32 @@ function detailRow(name, info, value) {
     '</span></div><b>' + escapeHtml(value) + '</b></div>';
 }
 
+function metricCards(metrics, highlight = -1) {
+  return metrics.map(([label, value, help], index) =>
+    '<article class="metric' + (index === highlight ? ' highlight' : '') + '"><span class="label">' +
+    escapeHtml(label) + '</span><strong>' + escapeHtml(value) + '</strong><small>' + escapeHtml(help) + '</small></article>'
+  ).join('');
+}
+
+function drawTrackerPerformance() {
+  const sold = state.trackerRecords.filter((record) => record.status === 'sold');
+  const priced = sold.filter((record) => Number.isFinite(record.saleGmd));
+  const costed = priced.filter((record) => Number.isFinite(record.costGmd) && record.costEur !== 1);
+  const salesValue = priced.reduce((sum, record) => sum + Math.round(record.saleGmd * 100), 0) / 100;
+  const grossProfit = costed.reduce((sum, record) =>
+    sum + Math.round(record.saleGmd * 100) - Math.round(record.costGmd * 100), 0) / 100;
+  $('#tracker-metrics').innerHTML = metricCards([
+    ['Marked sold', String(sold.length), 'Devices marked sold in the sheets'],
+    ['Recorded sale value', priced.length ? money(salesValue) : '—', priced.length + ' sales with a recorded price'],
+    ['Estimated gross profit', costed.length ? money(grossProfit) : '—', costed.length + ' sales with a usable price and cost']
+  ]);
+  const excluded = sold.length - costed.length;
+  const note = ['Historical amounts come from the sheets. Gross profit is before expenses.'];
+  if (excluded) note.push(excluded + ' sold ' + (excluded === 1 ? 'record needs' : 'records need') + ' a price or buying cost check before profit can be calculated.');
+  $('#tracker-performance-note').textContent = note.join(' ');
+  $('#tracker-performance').hidden = state.member?.role !== 'owner' || sold.length === 0;
+}
+
 function drawTracker() {
   const search = $('#tracker-search').value.toLowerCase().trim();
   const filter = $('#tracker-filter').value;
@@ -83,12 +109,10 @@ function drawOverview() {
     ['Gross profit', money(revenue - soldCost), 'Revenue minus cost of sold goods'],
     ['Recorded losses', money(writeOff), state.losses.length + ' write-offs'],
     ['Operating expenses', money(expenses), 'Only costs entered here'],
-    ['Estimated result', money(revenue - soldCost - writeOff - expenses), 'Excludes costs not recorded']
+    ['Estimated result', money(revenue - soldCost - writeOff - expenses), 'Dashboard gross profit minus entered losses and expenses']
   ];
-  $('#metrics').innerHTML = kpis.map(([label, value, help], index) =>
-    '<article class="metric' + (index === 7 ? ' highlight' : '') + '"><span class="label">' +
-    escapeHtml(label) + '</span><strong>' + escapeHtml(value) + '</strong><small>' + escapeHtml(help) + '</small></article>'
-  ).join('');
+  $('#metrics').innerHTML = metricCards(kpis, 7);
+  drawTrackerPerformance();
   const aged = inStock.filter((product) => product.receivedOn && daysOld(product.receivedOn) >= 45);
   const low = inStock.filter((product) => product.stockQty <= 1);
   const unpaid = state.sales.filter((sale) => remaining(sale) > 0);
@@ -105,7 +129,7 @@ function drawOverview() {
   $('#recent-sales').innerHTML = state.sales.length
     ? [...state.sales].sort(byLatest).slice(0, 6).map((sale) =>
       detailRow(sale.productName, sale.date + ' · ' + sale.quantity + ' unit(s)', money(sale.totalGmd))).join('')
-    : '<p class="empty">No sales recorded yet.</p>';
+    : '<p class="empty">Sales saved under Sales &amp; payments will appear here.</p>';
 }
 
 function drawInventory() {
@@ -217,6 +241,16 @@ function exportCsv(file, rows) {
 }
 
 function attachActions() {
+  $('#overview-add-device').addEventListener('click', () => {
+    view('inventory');
+    $('#product-form').elements.sku.focus();
+  });
+  $('#view-tracker-sales').addEventListener('click', () => {
+    $('#tracker-search').value = '';
+    $('#tracker-filter').value = 'sold';
+    drawTracker();
+    view('tracker');
+  });
   $('#tracker-search').addEventListener('input', drawTracker);
   $('#tracker-filter').addEventListener('change', drawTracker);
   $('#tracker-export').addEventListener('click', () => exportCsv('tracker-2-3.csv', state.trackerRecords));
