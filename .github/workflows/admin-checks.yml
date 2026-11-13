@@ -1,0 +1,37 @@
+name: Private dashboard checks
+on:
+  pull_request:
+    paths:
+      - "public/admin/**"
+      - "firestore.rules"
+      - "firebase.json"
+      - "docs/store-dashboard-setup.md"
+      - ".github/workflows/admin-checks.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Parse admin JavaScript
+        run: |
+          node --check public/admin/app.js
+          node --check public/admin/firebase-config.js
+      - name: Install and run repository tests
+        run: |
+          npm ci
+          npm test
+      - name: Build public site and admin page
+        run: |
+          npm run build
+          test -f dist/admin/index.html
+          test -f dist/admin/app.js
+          test -f dist/admin/firebase-config.js
