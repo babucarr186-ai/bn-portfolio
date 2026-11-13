@@ -1,0 +1,36 @@
+{
+  "hosting": {
+    "public": "public/admin",
+    "ignore": [
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          },
+          {
+            "key": "X-Robots-Tag",
+            "value": "noindex, nofollow, noarchive"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "no-referrer"
+          }
+        ]
+      }
+    ],
+    "site": "uncle-apple-store"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}

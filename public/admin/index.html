@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#111827">
+  <title>Store management · Uncle Apple Store</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">U</span><span>Uncle Apple Store <small>PRIVATE MANAGEMENT</small></span></div>
+      <div class="top-actions"><span id="user-label"></span><button id="refresh" class="subtle" hidden type="button">Refresh</button><button id="logout" class="subtle" hidden type="button">Sign out</button></div>
+    </header>
+    <main>
+      <section id="setup" class="gate" hidden>
+        <div class="gate-card"><span class="eyebrow">Setup required</span><h1>Connect your private database</h1><p>This dashboard has no database connection yet. Follow the setup instructions in <code>docs/store-dashboard-setup.md</code>. No business data is stored in this website's source code.</p></div>
+      </section>
+      <section id="login-panel" class="gate" hidden>
+        <form id="login-form" class="gate-card">
+          <span class="eyebrow">Staff only</span><h1>Welcome back</h1><p>Sign in with your individual Uncle Apple Store account.</p>
+          <label>Email <input type="email" name="email" autocomplete="username" required></label>
+          <label>Password <input type="password" name="password" autocomplete="current-password" required></label>
+          <button type="submit" class="primary">Sign in securely</button>
+          <p class="fine">Accounts are created by the shop owner. No public registration is available.</p>
+        </form>
+      </section>
+      <section id="approval-panel" class="gate" hidden>
+        <div class="gate-card">
+          <span class="eyebrow">Account access check</span>
+          <h1>Let's fix your access</h1>
+          <p id="approval-reason">Checking your account permissions.</p>
+          <label>Signed-in email<input id="approval-email" readonly aria-label="Email used to sign in"></label>
+          <label>Authentication UID<input id="approval-uid" readonly aria-label="Exact Firebase authentication UID"></label>
+          <label>Database project<input id="approval-project" readonly aria-label="Firebase project ID"></label>
+          <p class="fine">In the Firebase Console, open Firestore → Data → (default) → users. Copy the existing document ID (not the full URL).</p>
+          <label>Paste existing Firestore document ID<input id="approval-firestore-id" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste exact document ID" aria-label="Existing Firestore users document ID"></label>
+          <button id="approval-compare" class="primary" type="button">Compare document IDs</button>
+          <p id="approval-compare-result" class="notice" role="status" aria-live="polite" hidden></p>
+          <p class="fine">Comparison happens only in this browser. It does not upload your UID or change your access rules. Never paste your password or credentials.</p>
+          <button id="approval-recheck" class="subtle" type="button">Recheck access</button>
+          <button id="approval-logout" class="subtle" type="button">Sign out / switch account</button>
+        </div>
+      </section>
+      <div id="app" hidden>
+        <div class="heading"><div><span class="eyebrow">Your shop, in one place</span><h1>Management dashboard</h1><p id="role-label">Live inventory and financial records</p></div><div class="heading-right"><span id="last-updated"></span></div></div>
+        <nav class="tabs" aria-label="Management sections">
+          <button data-view="overview" class="active" type="button">Overview</button>
+          <button data-view="tracker" class="owner-only" type="button">Tracker 2 &amp; 3</button>
+          <button data-view="inventory" type="button">Inventory</button>
+          <button data-view="sales" type="button">Sales & payments</button>
+          <button data-view="damages" type="button">Damages</button>
+          <button data-view="expenses" type="button">Expenses</button>
+        </nav>
+        <section class="view" id="view-overview">
+          <section id="tracker-performance" class="panel" aria-labelledby="tracker-performance-title" hidden>
+            <div class="section-heading"><h2 id="tracker-performance-title">Sales history from Tracker 2 &amp; 3</h2><p>Imported records · GMD</p></div>
+            <div id="tracker-metrics" class="metrics"></div>
+            <p id="tracker-performance-note" class="notice"></p>
+            <button id="view-tracker-sales" class="subtle" type="button">View sales history</button>
+          </section>
+          <div class="section-heading">
+            <h2>Dashboard activity</h2><p>All entries saved in the dashboard · GMD</p>
+            <button id="overview-add-device" class="primary owner-only" type="button">Add device</button>
+          </div>
+          <div id="metrics" class="metrics"></div>
+          <div class="split">
+            <article class="panel"><h3>Needs attention</h3><div id="alerts" class="alerts"></div></article>
+            <article class="panel"><h3>Recent sales</h3><div id="recent-sales"></div></article>
+          </div>
+        </section>
+        <section class="view" id="view-tracker" hidden>
+<div class="section-heading"><h2>Investment Tracker 2 &amp; 3</h2><p>Imported source records. Blank sale status does not confirm available stock. Historical sales are not counted as new dashboard revenue.</p></div>
+<p id="tracker-summary" class="notice"></p><div class="panel"><div class="toolbar"><input id="tracker-search" aria-label="Search tracker" placeholder="Search product, colour or source"><select id="tracker-filter" aria-label="Filter tracker"><option value="all">All records</option><option value="review">Needs stock review</option><option value="sold">Marked sold</option><option value="transit">Not delivered</option><option value="refunded">Refunded</option></select><button id="tracker-export" type="button">Export tracker CSV</button></div><div class="table-wrap"><table><thead><tr><th>Product / Source</th><th>Details</th><th>Status</th><th>Buying cost GMD</th><th>Recorded sale GMD</th><th>Notes / Action</th></tr></thead><tbody id="tracker-rows"></tbody></table></div></div>
+<p class="notice">Use “Review stock” to prepare an inventory entry. Confirm the device is still present, enter its selling price and actual received date, then save. Each source row has a unique stock ID to prevent duplicate imports.</p>
+</section>
+<section class="view" id="view-inventory" hidden>
+          <div class="section-heading"><h2>Inventory</h2><p>One record per device or accessory SKU. Units remaining update when a sale or loss is recorded.</p></div>
+          <div class="panel">
+            <div class="toolbar"><input id="inventory-search" aria-label="Search inventory" placeholder="Search product or SKU"><select id="inventory-filter" aria-label="Filter inventory"><option value="all">All products</option><option value="in-stock">In stock</option><option value="out">Out of stock</option><option value="aged">Unsold over 45 days</option></select><button id="export-products" class="subtle" type="button">Export CSV</button></div>
+            <div class="table-wrap"><table><thead><tr><th>SKU / Product</th><th>Category</th><th>Remaining</th><th>Cost/unit</th><th>Price/unit</th><th>Received</th></tr></thead><tbody id="inventory-rows"></tbody></table></div>
+          </div>
+          <form id="product-form" class="panel entry owner-only">
+            <h3>Add device or accessory</h3><div class="form-grid">
+              <label>Stock ID / SKU <input name="sku" placeholder="UA-IP-001" maxlength="48" required></label>
+              <label>Product name <input name="name" placeholder="iPhone 14 Pro 128GB" maxlength="120" required></label>
+              <label>Category <select name="category"><option>iPhone</option><option>MacBook / iMac</option><option>iPad</option><option>Apple Watch</option><option>AirPods</option><option>Accessories</option><option>Other</option></select></label>
+              <label>Quantity <input name="quantity" type="number" min="1" step="1" value="1" required></label>
+              <label>Buying cost per unit (GMD) <input name="cost" type="number" min="0" step="0.01" required></label>
+              <label>Sale price per unit (GMD) <input name="price" type="number" min="0" step="0.01" required></label>
+              <label>Received date <input name="receivedOn" type="date" required></label>
+              <label>Condition / notes <input name="notes" maxlength="300" placeholder="Battery 88%, boxed"></label>
+            </div><button class="primary" type="submit">Save stock</button>
+          </form>
+        </section>
+        <section class="view" id="view-sales" hidden>
+          <div class="section-heading"><h2>Sales & payments</h2><p>Sales value and cash actually collected are tracked separately.</p></div>
+          <div class="split">
+            <form id="sale-form" class="panel entry">
+              <h3>Record a sale</h3>
+              <label>Product <select name="productId" id="sale-product" required></select></label>
+              <div class="form-grid"><label>Quantity <input name="quantity" type="number" min="1" step="1" value="1" required></label><label>Price per unit (GMD) <input name="price" type="number" min="0" step="0.01" required></label><label>Paid now (GMD) <input name="paid" type="number" min="0" step="0.01" value="0" required></label><label>Payment method <select name="method"><option>Cash</option><option>Wave</option><option>Bank transfer</option><option>Other</option></select></label><label>Sale date <input name="date" type="date" required></label><label>Balance due date <input name="dueOn" type="date"></label></div>
+              <label>Customer reference (optional) <input name="customer" maxlength="120" placeholder="Name or order reference"></label>
+              <button class="primary" type="submit">Save sale & reduce stock</button>
+            </form>
+            <form id="payment-form" class="panel entry">
+              <h3>Record a later payment</h3>
+              <label>Unpaid sale <select name="saleId" id="payment-sale" required></select></label>
+              <label>Payment amount (GMD) <input name="amount" type="number" min="0.01" step="0.01" required></label>
+              <label>Payment method <select name="method"><option>Cash</option><option>Wave</option><option>Bank transfer</option><option>Other</option></select></label>
+              <button class="primary" type="submit">Record payment</button>
+            </form>
+          </div>
+          <div class="panel"><div class="toolbar"><h3>Sales ledger</h3><button id="export-sales" class="subtle" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Qty</th><th>Total</th><th>Collected</th><th>Outstanding</th><th>Customer</th></tr></thead><tbody id="sales-rows"></tbody></table></div></div>
+        </section>
+        <section class="view" id="view-damages" hidden>
+          <div class="section-heading"><h2>Damages & losses</h2><p>Write off damaged or missing stock. Record repair bills separately under Expenses.</p></div>
+          <form id="damage-form" class="panel entry">
+            <h3>Record stock loss</h3><div class="form-grid"><label>Product <select name="productId" id="damage-product" required></select></label><label>Quantity lost <input name="quantity" type="number" min="1" step="1" value="1" required></label><label>Reason <select name="reason"><option>Damaged</option><option>Lost / missing</option><option>Other write-off</option></select></label><label>Date <input name="date" type="date" required></label></div><label>Details <input name="notes" maxlength="300" placeholder="What happened?"></label><button class="primary danger" type="submit">Record loss & reduce stock</button>
+          </form>
+          <div class="panel"><h3>Damage history</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Qty</th><th>Cost written off</th><th>Reason</th></tr></thead><tbody id="damage-rows"></tbody></table></div></div>
+        </section>
+        <section class="view" id="view-expenses" hidden>
+          <div class="section-heading"><h2>Operating expenses</h2><p>Record rent, transport, repairs, electricity, fees and other shop costs.</p></div>
+          <form id="expense-form" class="panel entry owner-only"><h3>New expense</h3><div class="form-grid"><label>Category <select name="category"><option>Rent</option><option>Shipping / transport</option><option>Repair</option><option>Utilities</option><option>Fees</option><option>Marketing</option><option>Other</option></select></label><label>Amount (GMD) <input name="amount" min="0.01" step="0.01" type="number" required></label><label>Date <input name="date" type="date" required></label><label>Description <input name="note" maxlength="250"></label></div><button class="primary" type="submit">Save expense</button></form>
+          <div class="panel"><h3>Expense ledger</h3><div class="table-wrap"><table><thead><tr><th>Date</th><th>Category</th><th>Amount</th><th>Details</th></tr></thead><tbody id="expense-rows"></tbody></table></div></div>
+        </section>
+      </div>
+      <p id="feedback" role="status" aria-live="polite"></p>
+    </main>
+    <footer>Uncle Apple Store · Internal records only · <a href="https://uncleapplestore.com/">Return to shop</a></footer>
+  </div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

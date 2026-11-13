@@ -1,0 +1,83 @@
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172333;background:#f4f6fa;font-synthesis:none}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;line-height:1.5}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.5}
+a{color:#325b9c}
+.shell{max-width:1430px;margin:auto;min-height:100vh;padding:0 28px;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:88px;border-bottom:1px solid #dce2e9}
+.brand{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:750;letter-spacing:-.03em}
+.brand-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:#161e2e;color:white;font-size:22px}
+.brand small{display:block;font-weight:650;letter-spacing:.14em;font-size:9px;color:#7c8796}
+.top-actions{display:flex;align-items:center;gap:12px;font-size:13px;color:#576578}
+main{flex:1}
+.heading{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:33px 0 23px}
+h1{font-size:clamp(26px,4vw,38px);letter-spacing:-.045em;line-height:1.12;margin:4px 0 11px}
+h2{font-size:22px;letter-spacing:-.025em;margin:0}
+h3{font-size:17px;margin:0 0 18px;letter-spacing:-.025em}
+p{margin:0;color:#69788a}
+.heading-right{color:#687688;font-size:12px}
+.eyebrow{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:750;color:#6377a2}
+.tabs{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:27px}
+.tabs button{border:1px solid #dbe2eb;background:#fff;border-radius:10px;padding:11px 16px;color:#576478;font-weight:650}
+.tabs button.active{background:#172333;color:#fff;border-color:#172333}
+.view{padding-bottom:25px}
+.section-heading{display:flex;align-items:baseline;gap:16px;margin:7px 0 17px;flex-wrap:wrap}
+.section-heading p{font-size:13px}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.metric{background:#fff;border:1px solid #e0e5ec;border-radius:15px;padding:20px;min-width:0}
+.metric .label{color:#778392;font-size:12px;font-weight:650}
+.metric strong{display:block;font-size:clamp(21px,2vw,29px);letter-spacing:-.045em;margin:9px 0 2px;overflow-wrap:anywhere}
+.metric small{font-size:12px;color:#7b8998}
+.metric.highlight{background:#1c2b44;color:#fff;border-color:#1c2b44}
+.metric.highlight .label,.metric.highlight small{color:#c1cbd9}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:15px 0}
+.panel{background:white;border:1px solid #e1e6ec;border-radius:15px;padding:23px;margin:0 0 16px;min-width:0}
+.alert{border-top:1px solid #e9edf2;padding:14px 0}
+.alert:first-child{border-top:0;padding-top:0}
+.alert strong,.record strong{font-size:13px;display:block}
+.alert span,.record span{font-size:12px;color:#758398}
+.record{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #e9edf2;padding:12px 0}
+.record:first-child{border-top:0;padding-top:0}
+.record b{font-size:13px;white-space:nowrap}
+.notice{background:#f0f4fb;border:1px solid #dce6f5;border-radius:11px;padding:13px 15px;font-size:12px;line-height:1.6;margin-bottom:16px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.toolbar h3{margin:0 auto 0 0}
+.toolbar input{flex:1;min-width:190px}
+.toolbar select{min-width:160px}
+label{font-size:12px;font-weight:700;color:#4e5d70;display:block;margin-bottom:15px}
+input,select{display:block;width:100%;border:1px solid #ced8e4;background:#fff;border-radius:9px;padding:12px 13px;margin-top:6px;color:#172333;min-height:44px}
+input:focus,select:focus{outline:3px solid rgba(49,105,193,.14);border-color:#416bb1}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 15px}
+.entry{max-width:930px}
+.entry .primary{margin-top:5px}
+.primary{border:0;background:#193557;color:white;padding:12px 18px;border-radius:10px;font-weight:750;min-height:44px}
+.primary:hover{background:#254b78}
+.primary.danger{background:#9b2d37}
+.subtle{border:1px solid #ced8e4;background:#fff;color:#28394b;padding:8px 13px;border-radius:9px;font-weight:700}
+.table-wrap{width:100%;overflow:auto}
+table{width:100%;min-width:670px;border-collapse:collapse;text-align:left}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#83909f;font-weight:750;padding:11px 10px;background:#f7f9fc;white-space:nowrap}
+td{border-bottom:1px solid #edf0f4;padding:14px 10px;font-size:13px;vertical-align:top}
+td small{display:block;color:#7b8796;font-size:11px}
+td strong{font-weight:750}
+td.number{text-align:right;font-variant-numeric:tabular-nums}
+th.number{text-align:right}
+tr:last-child td{border-bottom:0}
+.empty{color:#7c8b9a;font-size:13px;padding:15px 0}
+.gate{min-height:62vh;display:grid;place-items:center;padding:35px 0}
+.gate-card{width:min(100%,430px);padding:34px;background:#fff;border:1px solid #e0e7ef;border-radius:19px;box-shadow:0 14px 50px rgba(18,42,70,.06)}
+.gate-card h1{font-size:29px;margin:10px 0}
+.gate-card p{font-size:14px;line-height:1.7;margin-bottom:25px}
+.gate-card button{width:100%}
+.gate-card code{overflow-wrap:anywhere}
+.gate-card .fine{font-size:12px;margin:14px 0 0}
+#feedback{position:fixed;bottom:20px;right:20px;max-width:min(420px,calc(100vw - 40px));background:#172333;color:#fff;border-radius:11px;box-shadow:0 9px 36px rgba(0,0,0,.17);padding:13px 19px;font-size:13px;z-index:10}
+#feedback:empty{display:none}
+#feedback.error{background:#9b2d37}
+footer{padding:25px 0;font-size:12px;color:#8a96a6;border-top:1px solid #dce2e9}
+footer a{margin-left:6px}
+@media(max-width:900px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.split{grid-template-columns:1fr}.heading{align-items:start}}
+@media(max-width:580px){.shell{padding:0 15px}.topbar{min-height:73px}.brand{font-size:14px}.brand-mark{width:34px;height:34px}.top-actions{gap:7px}.top-actions #user-label{display:none}.heading{margin:26px 0}.tabs{flex-wrap:nowrap;overflow:auto;margin:0 -15px 24px;padding:0 15px 5px}.tabs button{white-space:nowrap;font-size:12px;padding:10px 12px}.metric{padding:15px}.metric strong{font-size:21px}.panel{padding:16px}.form-grid{grid-template-columns:1fr}.toolbar input,.toolbar select{flex:1 1 100%}.gate-card{padding:24px}}
