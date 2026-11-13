@@ -4,7 +4,7 @@ import { firebaseConfig } from './firebase-config.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
 import {
-  getFirestore, collection, doc, getDoc, getDocs, runTransaction,
+  getFirestore, collection, doc, getDocFromServer, getDocs, runTransaction,
   addDoc, serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
 
@@ -377,7 +377,15 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
       return;
     }
     try {
-      const membership = await getDoc(doc(state.db, 'users', user.uid));
+      // Always query the server for access approval, rather than any stale local cache.
+      const approvalPath = doc(state.db, 'users', user.uid);
+      const membership = await getDocFromServer(approvalPath);
+      console.info('Store approval check', {
+        projectId: state.db.app.options.projectId,
+        databaseId: state.db._databaseId?.database || '(default)',
+        uidLength: user.uid.length,
+        approvedDocumentFound: membership.exists()
+      });
       const profile = membership.exists() ? membership.data() : {};
       if (profile.active !== true || !['owner', 'staff'].includes(profile.role)) {
         const reason = !membership.exists()
