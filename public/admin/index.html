@@ -28,6 +28,18 @@
           <p class="fine">Accounts are created by the shop owner. No public registration is available.</p>
         </form>
       </section>
+      <section id="approval-panel" class="gate" hidden>
+        <div class="gate-card">
+          <span class="eyebrow">Account access check</span>
+          <h1>Let's fix your access</h1>
+          <p id="approval-reason">Checking your account permissions.</p>
+          <label>Signed-in email<input id="approval-email" readonly aria-label="Email used to sign in"></label>
+          <label>Authentication UID<input id="approval-uid" readonly aria-label="Exact Firebase authentication UID"></label>
+          <label>Database project<input id="approval-project" readonly aria-label="Firebase project ID"></label>
+          <p class="fine">Compare the UID above with the document ID in Firestore → Data → users. These values must match character for character. Do not enter your password here.</p>
+          <button id="approval-logout" class="subtle" type="button">Sign out / switch account</button>
+        </div>
+      </section>
       <div id="app" hidden>
         <div class="heading"><div><span class="eyebrow">Your shop, in one place</span><h1>Management dashboard</h1><p id="role-label">Live inventory and financial records</p></div><div class="heading-right"><span id="last-updated"></span></div></div>
         <nav class="tabs" aria-label="Management sections">
