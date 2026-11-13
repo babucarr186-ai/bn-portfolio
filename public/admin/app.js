@@ -15,7 +15,7 @@ const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"'
 })[char]);
 const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Africa/Banjul' });
 const daysOld = (date) => Math.floor((Date.now() - new Date(String(date) + 'T12:00:00Z').getTime()) / 86400000);
-const state = { products: [], sales: [], losses: [], expenses: [], payments: [], member: null, user: null, db: null, auth: null };
+const state = { trackerRecords: [], products: [], sales: [], losses: [], expenses: [], payments: [], member: null, user: null, db: null, auth: null };
 let noticeTimer;
 
 function notice(message, error = false) {
@@ -56,6 +56,15 @@ function options(select, records, getText, placeholder) {
 function detailRow(name, info, value) {
   return '<div class="record"><div><strong>' + escapeHtml(name) + '</strong><span>' + escapeHtml(info) +
     '</span></div><b>' + escapeHtml(value) + '</b></div>';
+}
+
+function drawTracker() {
+  const search = $('#tracker-search').value.toLowerCase().trim();
+  const filter = $('#tracker-filter').value;
+  const records = state.trackerRecords.filter(r => (!search || [r.name,r.sourceSheet,r.notes,r.colour,r.storage].join(' ').toLowerCase().includes(search)) && (filter === 'all' || r.status === filter));
+  $('#tracker-summary').textContent = state.trackerRecords.length + ' source records · ' + state.trackerRecords.filter(r=>r.status==='sold').length + ' marked sold · ' + state.trackerRecords.filter(r=>r.status==='review').length + ' need stock confirmation. Source costs and sale amounts may be incomplete.';
+  const value = v => typeof v === 'number' ? money(v) : 'Not recorded';
+  $('#tracker-rows').innerHTML = records.length ? records.map(r => '<tr><td><strong>'+escapeHtml(r.name)+'</strong><small>'+escapeHtml(r.sourceSheet+' · row '+r.sourceRow)+'</small></td><td>'+escapeHtml([r.storage,r.colour,r.battery].filter(Boolean).join(' · '))+'</td><td>'+escapeHtml({sold:'Marked sold',review:'Needs stock review',transit:'Not delivered',refunded:'Refunded'}[r.status] || r.status)+'</td><td>'+value(r.costGmd)+'</td><td>'+value(r.saleGmd)+'</td><td>'+escapeHtml(r.notes || '')+(r.status==='review' ? '<br><button type="button" data-review="'+escapeHtml(r.id)+'">Review stock</button>' : '')+'</td></tr>').join('') : emptyRow(6);
 }
 
 function drawOverview() {
@@ -147,7 +156,7 @@ function drawExpenses() {
     money(e.amountGmd) + '</td><td>' + rowText(e.note) + '</td></tr>').join('') : emptyRow(4);
 }
 function draw() {
-  drawOverview(); drawInventory(); drawSales(); drawDamages(); drawExpenses();
+  drawTracker(); drawOverview(); drawInventory(); drawSales(); drawDamages(); drawExpenses();
   $('#last-updated').textContent = 'Updated ' + new Date().toLocaleString('en-GB');
   $('.owner-only') && document.querySelectorAll('.owner-only').forEach((node) => {
     node.hidden = state.member?.role !== 'owner';
@@ -155,6 +164,8 @@ function draw() {
 }
 async function loadData() {
   const names = ['products', 'sales', 'losses', 'expenses', 'payments'];
+  state.trackerRecords = [];
+  if (state.member?.role === 'owner') names.push('trackerRecords');
   const snapshots = await Promise.all(names.map((name) => getDocs(collection(state.db, name))));
   snapshots.forEach((snapshot, index) => {
     state[names[index]] = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
@@ -206,6 +217,27 @@ function exportCsv(file, rows) {
 }
 
 function attachActions() {
+  $('#tracker-search').addEventListener('input', drawTracker);
+  $('#tracker-filter').addEventListener('change', drawTracker);
+  $('#tracker-export').addEventListener('click', () => exportCsv('tracker-2-3.csv', state.trackerRecords));
+  $('#tracker-rows').addEventListener('click', event => {
+    const button = event.target.closest('[data-review]');
+    if (!button || state.member?.role !== 'owner') return;
+    const record = state.trackerRecords.find(r=>r.id===button.dataset.review);
+    if (!record) return;
+    if (state.products.some(p=>p.sku===record.id)) { notice('This source row already has an inventory entry.', true); return; }
+    const form = $('#product-form');
+    form.elements.sku.value = record.id;
+    form.elements.name.value = [record.name,record.storage,record.colour].filter(Boolean).join(' ');
+    form.elements.category.value = record.category;
+    form.elements.quantity.value = 1;
+    form.elements.cost.value = record.costGmd ?? '';
+    form.elements.price.value = '';
+    form.elements.receivedOn.value = '';
+    form.elements.notes.value = (record.sourceSheet+' row '+record.sourceRow+'; battery '+record.battery+'; '+(record.notes || '')).slice(0,300);
+    view('inventory'); form.scrollIntoView({behavior:'smooth'});
+    notice('Confirm physical stock, selling price and received date before saving.');
+  });
   document.querySelectorAll('[data-view]').forEach((button) =>
     button.addEventListener('click', () => view(button.dataset.view)));
   $('#inventory-search').addEventListener('input', drawInventory);

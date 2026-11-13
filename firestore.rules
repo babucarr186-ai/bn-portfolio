@@ -28,6 +28,12 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // Imported tracker history is private to the owner and cannot be rewritten by browser clients.
+    match /trackerRecords/{id} {
+      allow read: if owner();
+      allow write: if false;
+    }
+
     match /products/{sku} {
       allow read: if member();
       allow create: if owner()

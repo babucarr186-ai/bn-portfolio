@@ -49,6 +49,7 @@
         <div class="heading"><div><span class="eyebrow">Your shop, in one place</span><h1>Management dashboard</h1><p id="role-label">Live inventory and financial records</p></div><div class="heading-right"><span id="last-updated"></span></div></div>
         <nav class="tabs" aria-label="Management sections">
           <button data-view="overview" class="active" type="button">Overview</button>
+          <button data-view="tracker" class="owner-only" type="button">Tracker 2 &amp; 3</button>
           <button data-view="inventory" type="button">Inventory</button>
           <button data-view="sales" type="button">Sales & payments</button>
           <button data-view="damages" type="button">Damages</button>
@@ -63,7 +64,12 @@
           </div>
           <p class="notice">Profit is an estimate based on recorded product purchase costs, sales, damages and expenses. It is not cash in the bank or a complete accounting statement. Existing public website listings are not yet synchronized with this dashboard.</p>
         </section>
-        <section class="view" id="view-inventory" hidden>
+        <section class="view" id="view-tracker" hidden>
+<div class="section-heading"><h2>Investment Tracker 2 &amp; 3</h2><p>Imported source records. Blank sale status does not confirm available stock. Historical sales are not counted as new dashboard revenue.</p></div>
+<p id="tracker-summary" class="notice"></p><div class="panel"><div class="toolbar"><input id="tracker-search" aria-label="Search tracker" placeholder="Search product, colour or source"><select id="tracker-filter" aria-label="Filter tracker"><option value="all">All records</option><option value="review">Needs stock review</option><option value="sold">Marked sold</option><option value="transit">Not delivered</option><option value="refunded">Refunded</option></select><button id="tracker-export" type="button">Export tracker CSV</button></div><div class="table-wrap"><table><thead><tr><th>Product / Source</th><th>Details</th><th>Status</th><th>Buying cost GMD</th><th>Recorded sale GMD</th><th>Notes / Action</th></tr></thead><tbody id="tracker-rows"></tbody></table></div></div>
+<p class="notice">Use “Review stock” to prepare an inventory entry. Confirm the device is still present, enter its selling price and actual received date, then save. Each source row has a unique stock ID to prevent duplicate imports.</p>
+</section>
+<section class="view" id="view-inventory" hidden>
           <div class="section-heading"><h2>Inventory</h2><p>One record per device or accessory SKU. Units remaining update when a sale or loss is recorded.</p></div>
           <div class="panel">
             <div class="toolbar"><input id="inventory-search" aria-label="Search inventory" placeholder="Search product or SKU"><select id="inventory-filter" aria-label="Filter inventory"><option value="all">All products</option><option value="in-stock">In stock</option><option value="out">Out of stock</option><option value="aged">Unsold over 45 days</option></select><button id="export-products" class="subtle" type="button">Export CSV</button></div>
@@ -117,7 +123,7 @@
       </div>
       <p id="feedback" role="status" aria-live="polite"></p>
     </main>
-    <footer>Uncle Apple Store · Internal records only · <a href="/">Return to shop</a></footer>
+    <footer>Uncle Apple Store · Internal records only · <a href="https://uncleapplestore.com/">Return to shop</a></footer>
   </div>
   <script type="module" src="./app.js"></script>
 </body>

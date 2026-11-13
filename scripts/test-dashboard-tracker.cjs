@@ -1,0 +1,16 @@
+const {JSDOM}=require('jsdom');
+const fs=require('node:fs');
+const assert=require('node:assert/strict');
+const html=fs.readFileSync('public/admin/index.html','utf8');
+const dom=new JSDOM(html,{url:'https://example.test/',runScripts:'outside-only'});
+const source=fs.readFileSync('public/admin/app.js','utf8').replace(/^import[\s\S]*?;\n/gm,'');
+dom.window.eval('const firebaseConfig = null;\n'+source+`\nwindow.testState=state;window.drawTracker=drawTracker;`);
+const w=dom.window; const $=s=>w.document.querySelector(s);
+w.testState.member={role:'owner'};
+w.testState.trackerRecords=[{id:'TR2-R002',name:'iPhone <script>',sourceSheet:'Iphones 2 invent',sourceRow:2,status:'sold',costGmd:null,saleGmd:1000,notes:'<img src=x onerror=alert(1)>'},{id:'TR3-R002',name:'iPhone 13',sourceSheet:'iPhones inventory 3',sourceRow:2,status:'review',category:'iPhone',costGmd:15555,saleGmd:null,battery:'100%',storage:'128GB',colour:'Starlight'}];
+w.drawTracker();assert.equal($('#tracker-rows').children.length,2);assert.match($('#tracker-rows').textContent,/Not recorded/);assert.equal($('#tracker-rows script'),null);assert.equal($('#tracker-rows img'),null);
+$('#tracker-filter').value='sold';w.drawTracker();assert.equal($('#tracker-rows').children.length,1);assert.equal($('#tracker-rows button'),null);
+$('#tracker-filter').value='review';w.drawTracker();w.HTMLElement.prototype.scrollIntoView=()=>{};$('#tracker-rows button').click();assert.equal($('#product-form').elements.sku.value,'TR3-R002');assert.equal($('#product-form').elements.cost.value,'15555');assert.equal($('#product-form').elements.price.value,'');assert.equal($('#product-form').elements.receivedOn.value,'');assert.equal($('#view-inventory').hidden,false);
+$('#tracker-search').value='no-match';w.drawTracker();assert.match($('#tracker-rows').textContent,/No records/);
+assert.equal($('footer a').href,'https://uncleapplestore.com/');
+w.close();console.log('PASS: tracker filters, missing values, HTML escaping, stock review, and shop link.');
