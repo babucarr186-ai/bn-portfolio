@@ -225,6 +225,30 @@ function attachActions() {
   });
   $('#logout').addEventListener('click', () => signOut(state.auth));
   $('#approval-logout').addEventListener('click', () => signOut(state.auth));
+  $('#approval-recheck').addEventListener('click', () => window.location.reload());
+  $('#approval-compare').addEventListener('click', () => {
+    const fromAuth = $('#approval-uid').value;
+    const fromConsole = $('#approval-firestore-id').value;
+    const result = $('#approval-compare-result');
+    result.hidden = false;
+    if (!fromConsole) {
+      result.textContent = 'Paste the exact document ID from the Firebase Console. Do not type it from memory or a screenshot.';
+      return;
+    }
+    if (fromAuth === fromConsole) {
+      result.textContent = 'The IDs match exactly (' + fromAuth.length + ' characters). The dashboard still cannot find that document, so the next check must focus on the Firestore project and database, not your password or field order.';
+      return;
+    }
+    let mismatch = 0;
+    while (mismatch < fromAuth.length && mismatch < fromConsole.length &&
+      fromAuth[mismatch] === fromConsole[mismatch]) mismatch++;
+    const actualChar = fromAuth[mismatch] === undefined ? '(end)' : JSON.stringify(fromAuth[mismatch]);
+    const pastedChar = fromConsole[mismatch] === undefined ? '(end)' : JSON.stringify(fromConsole[mismatch]);
+    result.textContent = 'Different IDs. First mismatch at character ' + (mismatch + 1) +
+      ': authentication has ' + actualChar + ', Firestore ID has ' + pastedChar +
+      '. Lengths: auth ' + fromAuth.length + ', Firestore ' + fromConsole.length +
+      '. The Firestore users document must use the exact Authentication UID.';
+  });
   $('#login-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
