@@ -84,7 +84,13 @@ service cloud.firestore {
         && validMoney(request.resource.data.totalGmd)
         && validMoney(request.resource.data.paidGmd)
         && request.resource.data.paidGmd <= request.resource.data.totalGmd
-        && request.resource.data.totalGmd == request.resource.data.quantity * request.resource.data.unitPriceGmd
+        && request.resource.data.totalGmd >= (request.resource.data.quantity * request.resource.data.unitPriceGmd) - 0.01
+        && request.resource.data.totalGmd <= (request.resource.data.quantity * request.resource.data.unitPriceGmd) + 0.01
+        && exists(/databases/$(database)/documents/products/$(request.resource.data.productId))
+        && request.resource.data.unitCostGmd == get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.unitCostGmd
+        && request.resource.data.sku == get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.sku
+        && getAfter(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty ==
+           get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty - request.resource.data.quantity
         && dateText(request.resource.data.date);
       // Later instalment payments can increase paidGmd, never revenue or cost.
       allow update: if member()
@@ -118,6 +124,11 @@ service cloud.firestore {
         && request.resource.data.quantity is int
         && request.resource.data.quantity > 0
         && validMoney(request.resource.data.costGmd)
+        && exists(/databases/$(database)/documents/products/$(request.resource.data.productId))
+        && request.resource.data.costGmd >= get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.unitCostGmd * request.resource.data.quantity - 0.01
+        && request.resource.data.costGmd <= get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.unitCostGmd * request.resource.data.quantity + 0.01
+        && getAfter(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty ==
+           get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty - request.resource.data.quantity
         && dateText(request.resource.data.date);
       allow update, delete: if false;
     }
