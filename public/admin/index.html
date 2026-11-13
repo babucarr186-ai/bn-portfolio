@@ -36,7 +36,12 @@
           <label>Signed-in email<input id="approval-email" readonly aria-label="Email used to sign in"></label>
           <label>Authentication UID<input id="approval-uid" readonly aria-label="Exact Firebase authentication UID"></label>
           <label>Database project<input id="approval-project" readonly aria-label="Firebase project ID"></label>
-          <p class="fine">Compare the UID above with the document ID in Firestore → Data → users. These values must match character for character. Do not enter your password here.</p>
+          <p class="fine">In the Firebase Console, open Firestore → Data → (default) → users. Copy the existing document ID (not the full URL).</p>
+          <label>Paste existing Firestore document ID<input id="approval-firestore-id" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Paste exact document ID" aria-label="Existing Firestore users document ID"></label>
+          <button id="approval-compare" class="primary" type="button">Compare document IDs</button>
+          <p id="approval-compare-result" class="notice" role="status" aria-live="polite" hidden></p>
+          <p class="fine">Comparison happens only in this browser. It does not upload your UID or change your access rules. Never paste your password or credentials.</p>
+          <button id="approval-recheck" class="subtle" type="button">Recheck access</button>
           <button id="approval-logout" class="subtle" type="button">Sign out / switch account</button>
         </div>
       </section>
