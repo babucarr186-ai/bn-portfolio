@@ -224,6 +224,7 @@ function attachActions() {
     try { await loadData(); notice('Records refreshed.'); } catch (err) { notice(err.message, true); }
   });
   $('#logout').addEventListener('click', () => signOut(state.auth));
+  $('#approval-logout').addEventListener('click', () => signOut(state.auth));
   $('#login-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -365,6 +366,7 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
   onAuthStateChanged(state.auth, async (user) => {
     $('#app').hidden = true;
     $('#login-panel').hidden = true;
+    $('#approval-panel').hidden = true;
     $('#refresh').hidden = true;
     $('#logout').hidden = true;
     state.user = null;
@@ -378,8 +380,17 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
       const membership = await getDoc(doc(state.db, 'users', user.uid));
       const profile = membership.exists() ? membership.data() : {};
       if (profile.active !== true || !['owner', 'staff'].includes(profile.role)) {
-        await signOut(state.auth);
-        notice('This account has not been approved for the dashboard.', true);
+        const reason = !membership.exists()
+          ? 'No matching user approval document was found in this Firebase project.'
+          : (typeof profile.active !== 'boolean' || profile.active !== true)
+            ? 'The approval document exists, but the active field is not a boolean true.'
+            : 'The approval document exists, but the role must be exactly owner or staff.';
+        $('#approval-reason').textContent = reason;
+        $('#approval-email').value = user.email || '';
+        $('#approval-uid').value = user.uid;
+        $('#approval-project').value = firebaseConfig.projectId;
+        $('#approval-panel').hidden = false;
+        notice('Your credentials worked. Check the approval information shown.', true);
         return;
       }
       state.user = user;
