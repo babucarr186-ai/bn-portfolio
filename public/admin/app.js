@@ -1,12 +1,12 @@
 // Private Uncle Apple Store operations. All protected data lives in Firestore, never in this bundle.
 // Firebase web configuration contains public identifiers, not passwords. Security is enforced by Firestore rules.
 import { firebaseConfig } from './firebase-config.js';
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
 import {
   getFirestore, collection, doc, getDoc, getDocs, runTransaction,
   addDoc, serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js';
+} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
 
 const $ = (selector) => document.querySelector(selector);
 const money = (value) => 'D ' + new Intl.NumberFormat('en-GB', { maximumFractionDigits: 2 }).format(Number(value) || 0);
