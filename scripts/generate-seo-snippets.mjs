@@ -606,8 +606,8 @@ function buildProductPageViewModel(config, product, schema) {
     conditionReport,
     trustItems,
     trustChecks,
-    specRows,
-    details: [
+    specRows: product.specRows ?? specRows,
+    details: product.details ?? [
       { label: 'Storage', value: storage || 'Not specified' },
       { label: 'Battery health', value: batteryHealth || 'Not specified' },
       { label: 'Condition', value: condition },

@@ -1,5 +1,50 @@
 export const airpods = [
   {
+    seoSlug: 'beats-solo-pro-wireless-red',
+    title: 'Beats Solo Pro Wireless – Red',
+    subtitle: 'Red • Grade A • Battery charge 100% • Complete set • Sourced from Germany • Price on request',
+    kind: 'square',
+    brand: 'Beats by Dr. Dre',
+    color: 'Red',
+    condition: 'Grade A',
+    origin: 'Germany',
+    authenticity: 'Authenticity guaranteed',
+    listingDate: '2026-11-14',
+    description:
+      'Red Beats Solo Pro wireless headphones in Grade A condition with no visible signs of use. Fully tested, complete set, and sourced from Germany. Authenticity guaranteed by Uncle Apple Store.',
+    shortDescription:
+      'Grade A with no visible signs of use. Fully tested, complete set, and sourced from Germany. Authenticity guaranteed.',
+    longDescription:
+      'Red Beats Solo Pro wireless on-ear headphones with Active Noise Cancellation and Transparency mode. The battery showed 100% charge during testing. Comes as a complete set with the original box and Lightning charging cable.',
+    productHighlights: ['Red color', 'Grade A condition', 'Complete set', 'Sourced from Germany', 'Authenticity guaranteed'],
+    keyFeatures: ['Wireless Bluetooth', 'Active Noise Cancellation', 'Transparency mode', 'Foldable on-ear design'],
+    conditionReport: ['Grade A condition with no visible signs of use', 'Fully tested', 'Battery charge at testing: 100%', 'Authenticity guaranteed'],
+    details: [
+      { label: 'Condition', value: 'Grade A' },
+      { label: 'Battery charge at testing', value: '100%' },
+      { label: 'Included', value: 'Complete set' },
+      { label: 'Source', value: 'Germany' },
+      { label: 'Authenticity', value: 'Guaranteed' },
+    ],
+    specRows: [
+      { label: 'Color', value: 'Red' },
+      { label: 'Fit', value: 'On-ear' },
+      { label: 'Connectivity', value: 'Bluetooth' },
+      { label: 'Listening modes', value: 'Active Noise Cancellation and Transparency' },
+      { label: 'Charging port', value: 'Lightning' },
+    ],
+    trustChecks: ['Sourced from Germany', 'Fully tested', 'Authenticity guaranteed by Uncle Apple Store'],
+    heroEyebrow: 'Wireless headphones',
+    whatsAppMessage:
+      'Hi Uncle Apple! Please confirm the price and availability of the red Beats Solo Pro Wireless headphones, Grade A, complete set.',
+    mediaFit: 'contain',
+    mediaPad: 14,
+    images: [
+      'products/airpods/beats-solo-pro-wireless-red/beats-solo-pro-red-on-stand.jpg',
+      'products/airpods/beats-solo-pro-wireless-red/beats-solo-pro-red-box-and-accessories.jpg',
+    ],
+  },
+  {
     seoSlug: 'beats-by-dr-dre-solo-pro-anc-wireless-1',
     title: 'Beats by Dr. Dre Solo Pro ANC Wireless',
     subtitle:
