@@ -15,7 +15,7 @@ const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"'
 })[char]);
 const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Africa/Banjul' });
 const daysOld = (date) => Math.floor((Date.now() - new Date(String(date) + 'T12:00:00Z').getTime()) / 86400000);
-const state = { trackerRecords: [], products: [], sales: [], losses: [], expenses: [], payments: [], member: null, user: null, db: null, auth: null };
+const state = { trackerRecords: [], products: [], staffInventory: [], staffSales: [], sales: [], losses: [], expenses: [], payments: [], member: null, user: null, db: null, auth: null };
 let noticeTimer;
 
 function notice(message, error = false) {
@@ -94,15 +94,21 @@ function drawTracker() {
 }
 
 function drawOverview() {
-  const revenue = state.sales.reduce((acc, item) => acc + Number(item.totalGmd || 0), 0);
-  const collected = state.sales.reduce((acc, item) => acc + Number(item.paidGmd || 0), 0);
-  const soldCost = state.sales.reduce((acc, item) => acc + Number(item.unitCostGmd || 0) * Number(item.quantity || 0), 0);
+  const allSales = [...state.sales, ...state.staffSales];
+  const revenue = allSales.reduce((acc, item) => acc + Number(item.totalGmd || 0), 0);
+  const collected = allSales.reduce((acc, item) => acc + Number(item.paidGmd || 0), 0);
+  const soldCost = allSales.reduce((acc, item) => {
+    // Staff transactions never contain private cost data; owner resolves cost from the
+    // original private inventory record. Unique SKUs are treated as single cost lots.
+    const unitCost = item.unitCostGmd ?? state.products.find((p) => p.id === item.productId)?.unitCostGmd ?? 0;
+    return acc + Number(unitCost) * Number(item.quantity || 0);
+  }, 0);
   const writeOff = state.losses.reduce((acc, item) => acc + Number(item.costGmd || 0), 0);
   const expenses = state.expenses.reduce((acc, item) => acc + Number(item.amountGmd || 0), 0);
   const stockValue = state.products.reduce((acc, item) => acc + Number(item.stockQty || 0) * Number(item.unitCostGmd || 0), 0);
   const inStock = state.products.filter((product) => product.stockQty > 0);
   const kpis = [
-    ['Sales revenue', money(revenue), state.sales.length + ' recorded transactions'],
+    ['Sales revenue', money(revenue), allSales.length + ' recorded transactions'],
     ['Cash collected', money(collected), 'Includes later instalment payments'],
     ['Customer balances', money(revenue - collected), 'Sold but not yet collected'],
     ['Inventory at cost', money(stockValue), inStock.length + ' active product lines'],
@@ -115,7 +121,7 @@ function drawOverview() {
   drawTrackerPerformance();
   const aged = inStock.filter((product) => product.receivedOn && daysOld(product.receivedOn) >= 45);
   const low = inStock.filter((product) => product.stockQty <= 1);
-  const unpaid = state.sales.filter((sale) => remaining(sale) > 0);
+  const unpaid = allSales.filter((sale) => remaining(sale) > 0);
   const overdue = unpaid.filter((sale) => sale.dueOn && sale.dueOn < today());
   const attention = [
     ['Aged unsold stock', aged.length + ' lines', 'Held for at least 45 days'],
@@ -126,8 +132,8 @@ function drawOverview() {
   $('#alerts').innerHTML = attention.map(([title, number, detail]) =>
     '<div class="alert"><strong>' + escapeHtml(title) + ': ' + escapeHtml(number) + '</strong><span>' +
     escapeHtml(detail) + '</span></div>').join('');
-  $('#recent-sales').innerHTML = state.sales.length
-    ? [...state.sales].sort(byLatest).slice(0, 6).map((sale) =>
+  $('#recent-sales').innerHTML = allSales.length
+    ? [...allSales].sort(byLatest).slice(0, 6).map((sale) =>
       detailRow(sale.productName, sale.date + ' · ' + sale.quantity + ' unit(s)', money(sale.totalGmd))).join('')
     : '<p class="empty">Sales saved under Sales &amp; payments will appear here.</p>';
 }
@@ -150,6 +156,10 @@ function drawInventory() {
   const available = state.products.filter((item) => item.stockQty > 0).sort((a, b) => a.name.localeCompare(b.name));
   options($('#sale-product'), available, productLabel, 'Choose a product');
   options($('#damage-product'), available, productLabel, 'Choose a product');
+  const missing = state.products.filter(p => !state.staffInventory.some(s => s.id === p.id));
+  $('#publish-status').textContent = missing.length
+    ? missing.length + ' existing products are not yet available in the staff catalogue.'
+    : 'Every registered product is in the staff catalogue.';
 }
 
 function drawSales() {
@@ -163,6 +173,13 @@ function drawSales() {
   options($('#payment-sale'), sales.filter((s) => remaining(s) > 0),
     (s) => s.productName + ' · ' + (s.customer || s.date) + ' · ' + money(remaining(s)) + ' remaining',
     'Choose an unpaid sale');
+  const staffSales = [...state.staffSales].sort(byLatest);
+  $('#staff-sales-rows').innerHTML = staffSales.length ? staffSales.map(s =>
+    '<tr><td>' + rowText(s.date) + '</td><td><small>' + rowText(s.createdBy) +
+    '</small></td><td>' + rowText(s.productName) + ' × ' + s.quantity +
+    '</td><td>' + rowText(s.customer) + '</td><td>' + money(s.totalGmd) +
+    '</td><td>' + money(s.paidGmd) + '</td><td>' + money(remaining(s)) + '</td></tr>'
+  ).join('') : emptyRow(7, 'No staff sales recorded.');
 }
 
 function drawDamages() {
@@ -187,7 +204,7 @@ function draw() {
   });
 }
 async function loadData() {
-  const names = ['products', 'sales', 'losses', 'expenses', 'payments'];
+  const names = ['products', 'sales', 'losses', 'expenses', 'payments', 'staffInventory', 'staffSales'];
   state.trackerRecords = [];
   if (state.member?.role === 'owner') names.push('trackerRecords');
   const snapshots = await Promise.all(names.map((name) => getDocs(collection(state.db, name))));
@@ -274,6 +291,40 @@ function attachActions() {
   });
   document.querySelectorAll('[data-view]').forEach((button) =>
     button.addEventListener('click', () => view(button.dataset.view)));
+  $('#publish-staff').addEventListener('click', async () => {
+    if (state.member?.role !== 'owner') return;
+    const missing = state.products.filter(p => !state.staffInventory.some(x => x.id === p.id));
+    if (!missing.length) { notice('Everything is already published.'); return; }
+    if (!window.confirm('Share ' + missing.length + ' products with staff? Only stock, selling prices and basic product descriptions will be shared. Private buying costs and notes stay hidden.')) return;
+    const button = $('#publish-staff');
+    button.disabled = true;
+    let published = 0;
+    try {
+      for (const product of missing) {
+        await runTransaction(state.db, async tx => {
+          const ref = doc(state.db, 'staffInventory', product.id);
+          const existing = await tx.get(ref);
+          if (existing.exists()) return;
+          // Private notes may contain supplier or buying price: never publish them.
+          tx.set(ref, {
+            sku: product.sku, name: product.name, category: product.category,
+            stockQty: product.stockQty, unitPriceGmd: product.unitPriceGmd,
+            receivedOn: product.receivedOn, notes: '',
+            createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+          });
+        });
+        published++;
+      }
+      await loadData();
+      notice('Published ' + published + ' products with no private cost data.');
+    } catch (error) {
+      console.error('Staff publishing failed', error);
+      await loadData();
+      notice('Publishing stopped after ' + published + ' products. Recheck inventory before retrying. ' + (error?.message || ''), true);
+    } finally {
+      button.disabled = false;
+    }
+  });
   $('#inventory-search').addEventListener('input', drawInventory);
   $('#inventory-filter').addEventListener('change', drawInventory);
   $('#export-products').addEventListener('click', () =>
@@ -346,8 +397,17 @@ function attachActions() {
       if (!record.name) throw new Error('Enter a product name.');
       await runTransaction(state.db, async (transaction) => {
         const ref = doc(state.db, 'products', sku);
-        if ((await transaction.get(ref)).exists()) throw new Error('That SKU already exists.');
+        const staffRef = doc(state.db, 'staffInventory', sku);
+        const privateExisting = await transaction.get(ref);
+        const staffExisting = await transaction.get(staffRef);
+        if (privateExisting.exists() || staffExisting.exists()) throw new Error('That SKU already exists.');
         transaction.set(ref, record);
+        transaction.set(staffRef, {
+          sku, name: record.name, category: record.category, stockQty: record.stockQty,
+          unitPriceGmd: record.unitPriceGmd, receivedOn: record.receivedOn,
+          notes: formValue(form, 'staffNotes'),
+          createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+        });
       });
     }, 'Stock saved successfully.');
   });
@@ -365,11 +425,19 @@ function attachActions() {
       const userId = authenticatedUid();
       await runTransaction(state.db, async (transaction) => {
         const productRef = doc(state.db, 'products', productId);
+        const staffRef = doc(state.db, 'staffInventory', productId);
         const snap = await transaction.get(productRef);
+        const staffSnap = await transaction.get(staffRef);
         if (!snap.exists()) throw new Error('Product not found.');
         const product = snap.data();
         if (product.stockQty < quantity) throw new Error('Not enough stock remaining.');
+        if (staffSnap.exists() && staffSnap.data().stockQty !== product.stockQty) {
+          throw new Error('Staff stock and private stock disagree. Reconcile stock before selling.');
+        }
         transaction.update(productRef, { stockQty: product.stockQty - quantity, updatedAt: serverTimestamp() });
+        if (staffSnap.exists()) transaction.update(staffRef, {
+          stockQty: product.stockQty - quantity, updatedAt: serverTimestamp()
+        });
         const saleRef = doc(collection(state.db, 'sales'));
         transaction.set(saleRef, {
           productId, productName: product.name, sku: product.sku, quantity, unitPriceGmd, totalGmd,
@@ -417,11 +485,19 @@ function attachActions() {
       const uid = authenticatedUid();
       await runTransaction(state.db, async (transaction) => {
         const ref = doc(state.db, 'products', productId);
+        const safeRef = doc(state.db, 'staffInventory', productId);
         const snapshot = await transaction.get(ref);
+        const safeSnapshot = await transaction.get(safeRef);
         if (!snapshot.exists()) throw new Error('Product not found.');
         const product = snapshot.data();
         if (product.stockQty < quantity) throw new Error('Not enough stock remaining.');
+        if (safeSnapshot.exists() && safeSnapshot.data().stockQty !== product.stockQty) {
+          throw new Error('Staff stock and private stock disagree. Reconcile stock before write-off.');
+        }
         transaction.update(ref, { stockQty: product.stockQty - quantity, updatedAt: serverTimestamp() });
+        if (safeSnapshot.exists()) transaction.update(safeRef, {
+          stockQty: product.stockQty - quantity, updatedAt: serverTimestamp()
+        });
         transaction.set(doc(collection(state.db, 'losses')), {
           productId, productName: product.name, sku: product.sku, quantity,
           costGmd: Number((quantity * Number(product.unitCostGmd)).toFixed(2)),
@@ -493,6 +569,10 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
       }
       state.user = user;
       state.member = profile;
+      if (profile.role === 'staff') {
+        window.location.replace('./staff.html');
+        return;
+      }
       $('#user-label').textContent = user.email || 'Signed in';
       $('#role-label').textContent = (profile.role === 'owner' ? 'Owner' : 'Staff') + ' access · Live store records';
       $('#app').hidden = false;
