@@ -83,6 +83,11 @@
             <div class="toolbar"><input id="inventory-search" aria-label="Search inventory" placeholder="Search product or SKU"><select id="inventory-filter" aria-label="Filter inventory"><option value="all">All products</option><option value="in-stock">In stock</option><option value="out">Out of stock</option><option value="aged">Unsold over 45 days</option></select><button id="export-products" class="subtle" type="button">Export CSV</button></div>
             <div class="table-wrap"><table><thead><tr><th>SKU / Product</th><th>Category</th><th>Remaining</th><th>Cost/unit</th><th>Price/unit</th><th>Received</th></tr></thead><tbody id="inventory-rows"></tbody></table></div>
           </div>
+          <div class="panel owner-only">
+            <div class="toolbar"><h3>Worker catalogue</h3><button id="publish-staff" class="subtle" type="button">Publish missing products to staff</button></div>
+            <p class="notice">Worker product records exclude buying cost, profit and private notes. Products already shared will not be overwritten. Publish only after confirming staff should see the items.</p>
+            <p id="publish-status" class="empty"></p>
+          </div>
           <form id="product-form" class="panel entry owner-only">
             <h3>Add device or accessory</h3><div class="form-grid">
               <label>Stock ID / SKU <input name="sku" placeholder="UA-IP-001" maxlength="48" required></label>
@@ -93,6 +98,7 @@
               <label>Sale price per unit (GMD) <input name="price" type="number" min="0" step="0.01" required></label>
               <label>Received date <input name="receivedOn" type="date" required></label>
               <label>Condition / notes <input name="notes" maxlength="300" placeholder="Battery 88%, boxed"></label>
+              <label>Staff-visible specifications <input name="staffNotes" maxlength="250" placeholder="Battery, condition, serial details only — NO buying costs"></label>
             </div><button class="primary" type="submit">Save stock</button>
           </form>
         </section>
@@ -115,6 +121,9 @@
             </form>
           </div>
           <div class="panel"><div class="toolbar"><h3>Sales ledger</h3><button id="export-sales" class="subtle" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Qty</th><th>Total</th><th>Collected</th><th>Outstanding</th><th>Customer</th></tr></thead><tbody id="sales-rows"></tbody></table></div></div>
+          <div class="panel owner-only"><div class="toolbar"><h3>Worker sales ledger</h3><span class="minor">All staff transactions, private to owner</span></div>
+            <div class="table-wrap"><table><thead><tr><th>Date</th><th>Employee</th><th>Product</th><th>Customer</th><th>Total</th><th>Paid</th><th>Balance</th></tr></thead><tbody id="staff-sales-rows"></tbody></table></div>
+          </div>
         </section>
         <section class="view" id="view-damages" hidden>
           <div class="section-heading"><h2>Damages & losses</h2><p>Write off damaged or missing stock. Record repair bills separately under Expenses.</p></div>
