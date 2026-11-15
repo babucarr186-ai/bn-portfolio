@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#12111a">
+<title>Staff inventory · Uncle Apple Store</title>
+<link rel="stylesheet" href="./staff.css">
+</head>
+<body>
+<div class="shell">
+<header class="topbar"><div class="brand"><span class="brand-icon">U</span><div><strong>Uncle Apple Store</strong><small>STAFF WORKSPACE</small></div></div><div><span id="account"></span> <button id="sign-out" class="secondary" type="button" hidden>Sign out</button></div></header>
+<main>
+<section id="login-panel" class="login-card" hidden>
+  <p class="eyebrow">Authorized store staff</p><h1>Staff sign in</h1>
+  <p>View stock, sell products and record customer payments.</p>
+  <form id="login-form"><label>Email<input name="email" type="email" autocomplete="username" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button class="primary">Sign in</button></form>
+</section>
+<section id="unauthorized" class="login-card" hidden><h1>Account not approved</h1><p>Your Firebase sign-in worked, but this account has not been approved for store access. Contact the owner.</p><button class="secondary" id="switch-account">Switch account</button></section>
+<section id="workspace" hidden>
+  <div class="heading"><div><p class="eyebrow">Inventory & customer service</p><h1>Staff dashboard</h1><p>Products, sales and payments only.</p></div><span id="last-updated" class="minor"></span></div>
+  <div class="cards"><article class="metric"><span>Available product lines</span><strong id="available-count">—</strong></article><article class="metric"><span>My sales recorded today</span><strong id="shift-count">—</strong></article></div>
+  <div class="tabs"><button class="selected" data-tab="inventory">Inventory</button><button data-tab="sale">Record sale</button><button data-tab="payments">Customer payments</button></div>
+  <section id="tab-inventory" class="tab-content">
+    <div class="panel"><div class="panel-head"><h2>Available products</h2><button id="refresh" type="button" class="secondary">Refresh</button></div>
+    <input id="search" type="search" placeholder="Search model, SKU, notes or serial number" aria-label="Search stock">
+    <p id="empty-stock" class="minor" hidden>No available products yet. Ask the owner to publish stock for staff.</p>
+    <div class="table-scroll"><table><thead><tr><th>Product / Stock ID</th><th>Condition & notes</th><th>Available</th><th>Selling price</th></tr></thead><tbody id="inventory-list"></tbody></table></div></div>
+  </section>
+  <section id="tab-sale" class="tab-content" hidden>
+    <form id="sale-form" class="panel form"><h2>Record a customer sale</h2>
+      <label>Product<select name="productId" id="sale-product" required></select></label>
+      <div class="columns"><label>Quantity<input name="quantity" type="number" min="1" step="1" value="1" required></label><label>Selling price / unit (GMD)<input name="unitPrice" id="unit-price" readonly></label><label>Received now (GMD)<input name="paid" type="number" min="0" step="0.01" value="0" required></label><label>Payment method<select name="method"><option>Cash</option><option>Wave</option><option>Bank transfer</option><option>Other</option></select></label><label>Sale date<input name="date" type="date" required></label><label>Balance due date<input name="dueOn" type="date"></label></div>
+      <label>Customer name / reference<input name="customer" maxlength="100" placeholder="Name or customer reference" required></label>
+      <p class="minor" id="sale-total">Choose an item to view the sale total.</p>
+      <button class="primary" type="submit">Save sale and reduce stock</button>
+    </form>
+  </section>
+  <section id="tab-payments" class="tab-content" hidden>
+    <div class="columns sections">
+      <form id="payment-form" class="panel form"><h2>Record an additional payment</h2><p class="minor">Only your recorded sales appear here.</p>
+        <label>Outstanding sale<select id="payment-sale" name="saleId" required></select></label>
+        <label>Amount received (GMD)<input name="amount" type="number" min="0.01" step="0.01" required></label>
+        <label>Payment method<select name="method"><option>Cash</option><option>Wave</option><option>Bank transfer</option><option>Other</option></select></label>
+        <button type="submit" class="primary">Save payment</button>
+      </form>
+      <div class="panel"><h2>My sales</h2><p class="minor">Only transactions recorded using your own login.</p><div id="my-sales" class="sales"></div></div>
+    </div>
+  </section>
+  <p class="note">Buying costs, profits, investments and the owner's financial reports are not available in this workspace. Report a price discrepancy to the owner; staff cannot edit prices.</p>
+</section>
+<p id="feedback" role="status" aria-live="polite"></p>
+</main>
+<footer>Uncle Apple Store · Authorized staff only</footer>
+</div>
+<script type="module" src="./staff.js"></script>
+</body>
+</html>
