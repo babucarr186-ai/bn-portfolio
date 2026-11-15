@@ -13,6 +13,18 @@ service cloud.firestore {
     function owner() {
       return member() && get(memberPath()).data.role == 'owner';
     }
+    function staff() {
+      return member() && get(memberPath()).data.role == 'staff';
+    }
+    function staffSalePath(id) {
+      return /databases/$(database)/documents/staffSales/$(id);
+    }
+    function catalogPath(sku) {
+      return /databases/$(database)/documents/staffInventory/$(sku);
+    }
+    function privateProductPath(sku) {
+      return /databases/$(database)/documents/products/$(sku);
+    }
     function validMoney(v) {
       return (v is int || v is float) && v >= 0 && v <= 1000000000;
     }
@@ -35,7 +47,8 @@ service cloud.firestore {
     }
 
     match /products/{sku} {
-      allow read: if member();
+      // Legacy products include the confidential unitCostGmd field.
+      allow read: if owner();
       allow create: if owner()
         && request.resource.data.keys().hasAll([
           'sku', 'name', 'category', 'stockQty', 'unitCostGmd',
@@ -52,29 +65,37 @@ service cloud.firestore {
         && validMoney(request.resource.data.unitCostGmd)
         && validMoney(request.resource.data.unitPriceGmd)
         && dateText(request.resource.data.receivedOn);
-      // Sales and write-offs use transactions. Staff can only reduce remaining stock.
-      // Owner can correct records; changes should be audited operationally.
-      allow update: if member() && (
-        (
-          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stockQty', 'updatedAt'])
-          && request.resource.data.stockQty is int
-          && request.resource.data.stockQty >= 0
-          && request.resource.data.stockQty < resource.data.stockQty
-        )
-        || (
-          owner()
-          && request.resource.data.stockQty is int
+      // An approved worker can only decrement a PRIVATE product's stock inside
+      // the same transaction as a matching new staff sale and safe stock update.
+      // No read access to the purchase cost is ever granted.
+      allow update: if (
+        owner() && request.resource.data.stockQty is int
           && request.resource.data.stockQty >= 0
           && validMoney(request.resource.data.unitCostGmd)
           && validMoney(request.resource.data.unitPriceGmd)
-        )
+      ) || (
+        staff()
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['stockQty', 'lastSaleId', 'updatedAt'])
+          && request.resource.data.stockQty is int
+          && request.resource.data.stockQty >= 0
+          && request.resource.data.stockQty < resource.data.stockQty
+          && request.resource.data.lastSaleId is string
+          && !exists(staffSalePath(request.resource.data.lastSaleId))
+          && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.productId == sku
+          && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.createdBy == request.auth.uid
+          && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.quantity ==
+              resource.data.stockQty - request.resource.data.stockQty
+          && getAfter(catalogPath(sku)).data.stockQty == request.resource.data.stockQty
+          && getAfter(catalogPath(sku)).data.lastSaleId == request.resource.data.lastSaleId
       );
       allow delete: if false;
     }
 
     match /sales/{id} {
-      allow read: if member();
-      allow create: if member()
+      // Historical transactions snapshot purchase costs: owner only.
+      allow read: if owner();
+      allow create: if owner()
         && request.resource.data.keys().hasAll([
           'productId', 'productName', 'sku', 'quantity',
           'unitCostGmd', 'unitPriceGmd', 'totalGmd', 'paidGmd',
@@ -99,7 +120,7 @@ service cloud.firestore {
            get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty - request.resource.data.quantity
         && dateText(request.resource.data.date);
       // Later instalment payments can increase paidGmd, never revenue or cost.
-      allow update: if member()
+      allow update: if owner()
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['paidGmd', 'updatedAt'])
         && validMoney(request.resource.data.paidGmd)
         && request.resource.data.paidGmd > resource.data.paidGmd
@@ -108,8 +129,8 @@ service cloud.firestore {
     }
 
     match /payments/{id} {
-      allow read: if member();
-      allow create: if member()
+      allow read: if owner();
+      allow create: if owner()
         && request.resource.data.keys().hasAll(['saleId', 'amountGmd', 'method', 'createdBy'])
         && request.resource.data.saleId is string
         && request.resource.data.createdBy == request.auth.uid
@@ -120,8 +141,8 @@ service cloud.firestore {
     }
 
     match /losses/{id} {
-      allow read: if member();
-      allow create: if member()
+      allow read: if owner();
+      allow create: if owner()
         && request.resource.data.keys().hasAll([
           'productId', 'productName', 'sku', 'quantity', 'costGmd', 'reason', 'date', 'createdBy'
         ])
@@ -140,13 +161,141 @@ service cloud.firestore {
     }
 
     match /expenses/{id} {
-      allow read: if member();
+      allow read: if owner();
       allow create: if owner()
         && request.resource.data.keys().hasAll(['category', 'amountGmd', 'date', 'createdBy'])
         && request.resource.data.createdBy == request.auth.uid
         && validMoney(request.resource.data.amountGmd)
         && request.resource.data.amountGmd > 0
         && dateText(request.resource.data.date);
+      allow update, delete: if false;
+    }
+
+    // Staff-safe product copy: NO purchase cost, supplier, profit or investment.
+    // Publish owner-checked products from the owner dashboard before staff use.
+    match /staffInventory/{sku} {
+      allow read: if member();
+      allow create: if owner()
+        && request.resource.data.keys().hasOnly([
+          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd',
+          'receivedOn', 'notes', 'updatedAt', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd', 'receivedOn'
+        ])
+        && request.resource.data.sku == sku
+        && request.resource.data.stockQty is int
+        && request.resource.data.stockQty >= 0
+        && validMoney(request.resource.data.unitPriceGmd)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 120;
+      allow update: if (
+        owner() && request.resource.data.keys().hasOnly([
+          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd',
+          'receivedOn', 'notes', 'updatedAt', 'createdAt', 'lastSaleId'
+        ]) && request.resource.data.stockQty is int
+          && request.resource.data.stockQty >= 0
+          && validMoney(request.resource.data.unitPriceGmd)
+      ) || (
+        staff()
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['stockQty', 'lastSaleId', 'updatedAt'])
+        && request.resource.data.stockQty is int
+        && request.resource.data.stockQty >= 0
+        && request.resource.data.stockQty < resource.data.stockQty
+        && request.resource.data.lastSaleId is string
+        && !exists(staffSalePath(request.resource.data.lastSaleId))
+        && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.productId == sku
+        && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.createdBy == request.auth.uid
+        && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.quantity ==
+            resource.data.stockQty - request.resource.data.stockQty
+        && getAfter(privateProductPath(sku)).data.stockQty == request.resource.data.stockQty
+        && getAfter(privateProductPath(sku)).data.lastSaleId == request.resource.data.lastSaleId
+      );
+      allow delete: if false;
+    }
+
+    // Staff view ONLY their own transactions. Owners can review all sales.
+    // No document in this collection may include unitCostGmd or profitability.
+    match /staffSales/{id} {
+      allow get, list: if owner() || (
+        staff() && resource.data.createdBy == request.auth.uid
+      );
+      allow create: if member()
+        && request.resource.data.keys().hasOnly([
+          'productId','productName','sku','quantity','unitPriceGmd',
+          'totalGmd','paidGmd','method','date','dueOn','customer',
+          'createdBy','createdAt','updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'productId','productName','sku','quantity','unitPriceGmd',
+          'totalGmd','paidGmd','method','date','createdBy'
+        ])
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.productId == request.resource.data.sku
+        && request.resource.data.quantity is int
+        && request.resource.data.quantity > 0
+        && request.resource.data.quantity <= 1000000
+        && validMoney(request.resource.data.unitPriceGmd)
+        && validMoney(request.resource.data.totalGmd)
+        && validMoney(request.resource.data.paidGmd)
+        && request.resource.data.totalGmd >= request.resource.data.quantity * request.resource.data.unitPriceGmd - 0.01
+        && request.resource.data.totalGmd <= request.resource.data.quantity * request.resource.data.unitPriceGmd + 0.01
+        && request.resource.data.paidGmd <= request.resource.data.totalGmd
+        && request.resource.data.unitPriceGmd == get(catalogPath(request.resource.data.sku)).data.unitPriceGmd
+        && request.resource.data.productName == get(catalogPath(request.resource.data.sku)).data.name
+        && request.resource.data.method is string
+        && request.resource.data.method.size() <= 32
+        && request.resource.data.date is string
+        && request.resource.data.date.size() <= 12
+        && getAfter(catalogPath(request.resource.data.sku)).data.stockQty ==
+          get(catalogPath(request.resource.data.sku)).data.stockQty - request.resource.data.quantity
+        && getAfter(privateProductPath(request.resource.data.sku)).data.stockQty ==
+          get(privateProductPath(request.resource.data.sku)).data.stockQty - request.resource.data.quantity
+        && getAfter(catalogPath(request.resource.data.sku)).data.lastSaleId == id
+        && getAfter(privateProductPath(request.resource.data.sku)).data.lastSaleId == id;
+      allow update: if (owner() || (
+        staff() && resource.data.createdBy == request.auth.uid
+      )) && request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['paidGmd', 'lastPaymentId', 'updatedAt'])
+        && validMoney(request.resource.data.paidGmd)
+        && request.resource.data.paidGmd > resource.data.paidGmd
+        && request.resource.data.paidGmd <= resource.data.totalGmd
+        && request.resource.data.lastPaymentId is string
+        && !exists(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId))
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.saleId == id
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.createdBy == request.auth.uid
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.amountGmd >= request.resource.data.paidGmd - resource.data.paidGmd - 0.01
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.amountGmd <= request.resource.data.paidGmd - resource.data.paidGmd + 0.01;
+      allow delete: if false;
+    }
+
+    match /staffPayments/{id} {
+      allow get, list: if owner() || (
+        staff() && resource.data.createdBy == request.auth.uid
+      );
+      allow create: if member()
+        && request.resource.data.keys().hasOnly([
+          'saleId', 'amountGmd', 'method', 'createdBy', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'saleId', 'amountGmd', 'method', 'createdBy'
+        ])
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.saleId is string
+        && request.resource.data.method is string
+        && validMoney(request.resource.data.amountGmd)
+        && request.resource.data.amountGmd > 0
+        && exists(staffSalePath(request.resource.data.saleId))
+        && getAfter(staffSalePath(request.resource.data.saleId)).data.lastPaymentId == id
+        && getAfter(staffSalePath(request.resource.data.saleId)).data.paidGmd >=
+             get(staffSalePath(request.resource.data.saleId)).data.paidGmd +
+             request.resource.data.amountGmd - 0.01
+        && getAfter(staffSalePath(request.resource.data.saleId)).data.paidGmd <=
+             get(staffSalePath(request.resource.data.saleId)).data.paidGmd +
+             request.resource.data.amountGmd + 0.01;
       allow update, delete: if false;
     }
 
