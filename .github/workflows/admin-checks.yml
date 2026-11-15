@@ -6,6 +6,7 @@ on:
       - "firestore.rules"
       - "firebase.json"
       - "docs/store-dashboard-setup.md"
+      - "scripts/staff-firestore-rules.test.mjs"
       - ".github/workflows/admin-checks.yml"
   workflow_dispatch:
 
@@ -24,7 +25,9 @@ jobs:
       - name: Parse admin JavaScript
         run: |
           node --check public/admin/app.js
+          node --check public/admin/staff.js
           node --check public/admin/firebase-config.js
+          node --check scripts/staff-firestore-rules.test.mjs
       - name: Install dependencies
         run: npm ci
       - name: Run existing repository tests (informational until baseline failures are fixed)
@@ -40,3 +43,15 @@ jobs:
           test -f dist/admin/index.html
           test -f dist/admin/app.js
           test -f dist/admin/firebase-config.js
+          test -f dist/admin/staff.html
+          test -f dist/admin/staff.js
+          test -f dist/admin/staff.css
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install Firebase emulator testing utilities
+        run: npm install --no-save firebase @firebase/rules-unit-testing firebase-tools
+      - name: Test Firestore role isolation and atomic stock changes
+        run: npx firebase emulators:exec --only firestore --project demo-uas-staff-permissions "node scripts/staff-firestore-rules.test.mjs"
