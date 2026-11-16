@@ -1,8 +1,9 @@
+import { staffIdentifier, recordStaffSale, recordStaffPayment } from './staff-data.js';
 import { firebaseConfig } from './firebase-config.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
 import {
-  getFirestore, collection, doc, getDocFromServer, getDocs, query, where,
+  getFirestore, collection, doc, getDocFromServer, getDocsFromServer, query, where,
   runTransaction, increment, serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
 
@@ -13,7 +14,7 @@ const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ({
 const amount = (v) => Number(v);
 const gmd = (x) => 'D ' + (Number(x) || 0).toLocaleString('en-US',{maximumFractionDigits:2});
 const today = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Banjul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-const state = { user:null, profile:null, inventory:[], sales:[], db:null, auth:null };
+const state = { user:null, inventory:[], sales:[], db:null, auth:null };
 let noticeTimer;
 function notice(message,error=false) {
   const el = $('#feedback');
@@ -37,14 +38,21 @@ function showTab(name){
 }
 function drawInventory(){
   const term=$('#search').value.toLowerCase().trim();
-  const items=state.inventory.filter(p=>[p.name,p.sku,p.category,p.notes].join(' ').toLowerCase().includes(term));
+  const identifier = staffIdentifier(term);
+  const items = (term ? state.inventory : available()).filter((p) =>
+    [p.name, p.sku, p.category].some((value) => String(value || '').toLowerCase().includes(term)) ||
+    (identifier && [p.serialNumber, p.imei].includes(identifier)));
+
   $('#available-count').textContent=available().length.toLocaleString('en-US');
   $('#empty-stock').hidden=items.length>0;
   $('#inventory-list').innerHTML=items.map(p=>
     '<tr><td><strong>'+escapeHtml(p.name)+'</strong><small>'+escapeHtml(p.sku)+' · '+escapeHtml(p.category)+'</small></td>'+
-    '<td>'+escapeHtml(p.notes||'—')+'</td><td>'+p.stockQty+'</td><td>'+gmd(p.unitPriceGmd)+'</td></tr>'
+    '<td>'+escapeHtml([p.storage, p.colour, p.batteryHealth && p.batteryHealth + '% battery'].filter(Boolean).join(' · ') || '—')+
+    '</td><td>'+escapeHtml(p.stockQty)+'</td><td>'+(p.unitPriceGmd > 0 ? gmd(p.unitPriceGmd) : 'Ask owner') +
+    (p.stockQty > 0 && p.unitPriceGmd > 0
+      ? '<br><button type="button" class="secondary" data-sell-product="' + escapeHtml(p.id) + '">Sell</button>' : '') + '</td></tr>'
   ).join('');
-  setOptions($('#sale-product'),available(),p=>p.name+' · '+p.sku+' ('+p.stockQty+' left)','Select an available product');
+  setOptions($('#sale-product'),available().filter(p => p.unitPriceGmd > 0),p=>p.name+' · '+p.sku+' ('+p.stockQty+' left)','Select an available product');
   updateSalePrice();
 }
 function updateSalePrice(){
@@ -66,14 +74,14 @@ function drawSales(){
     s=>(s.customer||'Customer')+' · '+s.productName+' · '+gmd(balance(s))+' outstanding','Choose an unpaid sale');
 }
 async function load(){
-  if(!state.user)return;
-  const [products,sales]=await Promise.all([
-    getDocs(collection(state.db,'staffInventory')),
-    state.profile.role==='owner'
-      ? getDocs(query(collection(state.db,'staffSales'),where('createdBy','==',state.user.uid)))
-      : getDocs(query(collection(state.db,'staffSales'),where('createdBy','==',state.user.uid)))
+  const user = state.user;
+  if (!user) return;
+  const [products, sales] = await Promise.all([
+    getDocsFromServer(collection(state.db, 'staffCatalog')),
+    getDocsFromServer(query(collection(state.db, 'staffSales'), where('createdBy', '==', user.uid)))
   ]);
-  state.inventory=products.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.name.localeCompare(b.name));
+  if (state.user !== user) return;
+  state.inventory=products.docs.map(d=>({...d.data(),id:d.id})).sort((a,b)=>a.name.localeCompare(b.name));
   state.sales=sales.docs.map(d=>({id:d.id,...d.data()}));
   drawInventory();drawSales();
   $('#last-updated').textContent='Updated '+new Date().toLocaleTimeString('en-GB');
@@ -85,8 +93,13 @@ async function withForm(form,work,label){
     await work();
     form.reset();
     $('#sale-form [name="date"]').value=today();
-    await load();
-    notice(label);
+    try {
+      await load();
+      notice(label);
+    } catch (error) {
+      console.error('Staff refresh failed', error);
+      notice(label + ' Use Refresh to reload your list.', true);
+    }
   } catch(e){
     console.error('Staff operation failed',e);
     notice(e?.message||'Could not save changes',true);
@@ -96,6 +109,14 @@ document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()
 $('#sale-product').addEventListener('change',updateSalePrice);
 $('#sale-form [name="quantity"]').addEventListener('input',updateSalePrice);
 $('#search').addEventListener('input',drawInventory);
+$('#inventory-list').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-sell-product]');
+  if (!button) return;
+  showTab('sale');
+  $('#sale-product').value = button.dataset.sellProduct;
+  updateSalePrice();
+  $('#sale-form [name="quantity"]').focus();
+});
 $('#refresh').addEventListener('click',async()=>{try{await load();notice('Stock refreshed.');}catch(e){notice(e.message,true);}});
 $('#sign-out').addEventListener('click',()=>signOut(state.auth));
 $('#switch-account').addEventListener('click',()=>signOut(state.auth));
@@ -117,7 +138,7 @@ $('#sale-form').addEventListener('submit',(event)=>{
   event.preventDefault();
   const form=event.currentTarget;
   withForm(form,async()=>{
-    if(!state.user||!state.profile)throw Error('Sign in first.');
+    if(!state.user)throw Error('Sign in first.');
     const sku=formField(form,'productId');
     const quantity=amount(formField(form,'quantity'));
     const paidGmd=amount(formField(form,'paid'));
@@ -126,35 +147,12 @@ $('#sale-form').addEventListener('submit',(event)=>{
     if(!sku||!Number.isSafeInteger(quantity)||quantity<1||quantity>1000000)throw Error('Choose a product and a valid whole-number quantity.');
     if(!Number.isFinite(paidGmd)||paidGmd<0||paidGmd>1000000000)throw Error('Enter a valid payment amount.');
     if(!customer||customer.length>100)throw Error('Enter a customer name or reference (up to 100 characters).');
-    await runTransaction(state.db,async(tx)=>{
-      const safeRef=doc(state.db,'staffInventory',sku);
-      const privateRef=doc(state.db,'products',sku);
-      const snap=await tx.get(safeRef); // Staff cannot read the private purchase-cost record.
-      if(!snap.exists())throw Error('This product is no longer available.');
-      const product=snap.data();
-      if(!Number.isSafeInteger(product.stockQty)||quantity>product.stockQty)throw Error('Insufficient stock available.');
-      const unitPriceGmd=Number(product.unitPriceGmd);
-      const totalGmd=Number((unitPriceGmd*quantity).toFixed(2));
-      if(!Number.isFinite(totalGmd)||totalGmd>1000000000||paidGmd>totalGmd)
-        throw Error('Payment exceeds total or the price is invalid.');
-      const saleRef=doc(collection(state.db,'staffSales'));
-      tx.update(safeRef,{
-        stockQty:product.stockQty-quantity,
-        lastSaleId:saleRef.id,
-        updatedAt:serverTimestamp()
-      });
-      // Blind numeric decrement: never reads the private product or its purchase cost.
-      tx.update(privateRef,{
-        stockQty:increment(-quantity),
-        lastSaleId:saleRef.id,
-        updatedAt:serverTimestamp()
-      });
-      tx.set(saleRef,{
-        productId:sku,sku,productName:product.name,quantity,unitPriceGmd,totalGmd,paidGmd,
-        method,date:formField(form,'date'),dueOn:formField(form,'dueOn'),customer,
-        createdBy:state.user.uid,createdAt:serverTimestamp(),updatedAt:serverTimestamp()
-      });
-    });
+    const uid = state.user.uid;
+    const date = formField(form, 'date');
+    const dueOn = formField(form, 'dueOn');
+    if (!date || date > today()) throw new Error('Choose today or an earlier sale date.');
+    await recordStaffSale(state.db, { sku, quantity, paidGmd, method, customer, date, dueOn, uid },
+      { doc, collection, runTransaction, increment, serverTimestamp });
   },'Sale saved. Stock updated.');
 });
 
@@ -166,18 +164,9 @@ $('#payment-form').addEventListener('submit',(event)=>{
     const id=formField(form,'saleId');
     const payment=amount(formField(form,'amount'));
     if(!id||!Number.isFinite(payment)||payment<=0||payment>1000000000)throw Error('Choose a sale and valid payment.');
-    await runTransaction(state.db,async(tx)=>{
-      const saleRef=doc(state.db,'staffSales',id);
-      const snap=await tx.get(saleRef);
-      if(!snap.exists())throw Error('Sale not found.');
-      const sale=snap.data();
-      if(sale.createdBy!==state.user.uid)throw Error('Only your own transactions can be updated.');
-      const newPaid=Number((Number(sale.paidGmd)+payment).toFixed(2));
-      if(newPaid>Number(sale.totalGmd)+0.001)throw Error('Payment exceeds the balance due.');
-      const paymentRef=doc(collection(state.db,'staffPayments'));
-      tx.update(saleRef,{paidGmd:newPaid,lastPaymentId:paymentRef.id,updatedAt:serverTimestamp()});
-      tx.set(paymentRef,{saleId:id,amountGmd:payment,method:formField(form,'method'),createdBy:state.user.uid,createdAt:serverTimestamp()});
-    });
+    await recordStaffPayment(state.db, {
+      id, amount: payment, method: formField(form, 'method'), uid: state.user.uid
+    }, { doc, collection, runTransaction, serverTimestamp });
   },'Payment recorded.');
 });
 
@@ -188,26 +177,46 @@ if(!firebaseConfig?.apiKey||!firebaseConfig?.projectId){
   const firebaseApp=initializeApp(firebaseConfig);
   state.auth=getAuth(firebaseApp);
   state.db=getFirestore(firebaseApp);
+  let authSession = 0;
   onAuthStateChanged(state.auth,async(user)=>{
+    const session = ++authSession;
     $('#workspace').hidden=true;
     $('#unauthorized').hidden=true;
     $('#login-panel').hidden=true;
     $('#sign-out').hidden=!user;
-    state.user=null;state.profile=null;
+    state.user = null;
+    state.inventory = [];
+    state.sales = [];
+    $('#account').textContent = '';
+    $('#search').value = '';
+    $('#inventory-list').replaceChildren();
+    $('#my-sales').replaceChildren();
+    $('#sale-product').replaceChildren();
+    $('#payment-sale').replaceChildren();
+    $('#sale-form').reset();
+    $('#payment-form').reset();
+    $('#sale-form [name="date"]').value = today();
+    showTab('inventory');
     if(!user){$('#login-panel').hidden=false;$('#account').textContent='';return;}
     try{
       const userRef=doc(state.db,'users',user.uid);
       const snap=await getDocFromServer(userRef);
+      if (session !== authSession) return;
       const p=snap.exists()?snap.data():null;
-      if(!p||p.active!==true||!['owner','staff'].includes(p.role)){
+      if (p?.active === true && p.role === 'owner') {
+        window.location.replace('./');
+        return;
+      }
+      if(!p||p.active!==true||p.role!=='staff'){
         $('#unauthorized').hidden=false;
         return;
       }
-      state.user=user;state.profile=p;
+      state.user = user;
       $('#account').textContent=user.email||'Authorized user';
-      $('#workspace').hidden=false;
       await load();
+      if (session === authSession) $('#workspace').hidden = false;
     }catch(e){
+      if (session !== authSession) return;
       console.error('Staff access failed',e);
       notice('Could not load staff records. Contact the owner.',true);
       $('#unauthorized').hidden=false;

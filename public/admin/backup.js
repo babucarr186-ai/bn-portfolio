@@ -11,11 +11,11 @@ const $ = (s) => document.querySelector(s);
 const feedback = (message) => { $('#feedback').textContent = message; };
 const names = [
   'products', 'productDrafts', 'sales', 'payments', 'losses', 'expenses',
-  'trackerRecords', 'users', 'staffInventory', 'staffSales', 'staffPayments'
+  'trackerRecords', 'users', 'staffCatalog', 'staffInventory', 'staffSales', 'staffPayments', 'productCosts'
 ];
 // Optional collections are not yet permitted under the CURRENT live rules.
 // Their access will only be enabled after the new staff-safe rules are deployed.
-const optionalCollections = new Set(['staffInventory', 'staffSales', 'staffPayments']);
+const optionalCollections = new Set(['staffCatalog', 'staffInventory', 'staffSales', 'staffPayments', 'productCosts']);
 const auth = getAuth(initializeApp(firebaseConfig));
 const db = getFirestore(auth.app);
 let owner = null;

@@ -1,68 +1,32 @@
-# Uncle Apple Store — staff privacy rollout (NOT YET LIVE)
+# Staff access
 
-This is a **review branch**, not a production change. Do not deploy the new Firestore rules until their emulator authorization tests pass, owner data is backed up, and the complete stock/sales workflow has been verified in a staging project.
+Staff sign in using their individual email at `/staff.html`. The main dashboard also sends an approved staff user there. The owner continues to use the main dashboard. Firebase Authentication verifies the account, and a Firestore `users/{uid}` document controls dashboard access.
 
-## Access policy
+| Staff can | Owner controls |
+| --- | --- |
+| Search stock by model, SKU, serial number or IMEI, and see selling prices and device details | Buying costs, profit, expenses, losses, drafts, private notes and tracker records |
+| Record a sale at the listed price and collect payments on their own sales | Add stock, edit prices, review all sales and record payments on staff sales |
 
-| Data | Owner | Staff |
-| --- | --- | --- |
-| \`products\` (includes unitCostGmd) | read/write | NO READ, stock-only transactional blind decrement |
-| \`staffInventory\` (no purchase costs) | read/write/publish | read; sale-linked stock decrement only |
-| \`sales\`, \`payments\` (legacy financial data) | read/write | NO ACCESS |
-| \`staffSales\`, \`staffPayments\` | all records | ONLY their own transactions, with transaction-linked updates |
-| \`losses\`, \`expenses\`, \`trackerRecords\` | owner | NO ACCESS |
-| \`users\` | approved administrator | only own role document |
-| Profit, investment dashboards | owner only | never rendered or queried |
+The staff catalog is an allowlisted copy of existing inventory. Publishing stock creates these copies and private cost versions without modifying the source records. New owner product edits, sales and write-offs keep the catalog updated. Staff sales reduce both stock counts atomically. Staff cannot read cost versions or another staff member's transactions. The owner dashboard includes staff sales and their original buying cost in the charts and ledger.
 
-*Product cost is not a field in staffInventory or staffSales.* Existing source inventory and its private notes remain in \`products\`.
+## Deploy to Uncle Apple Store
 
-## Workflow
+Use the staff-permissions branch and an authenticated Firebase CLI with access to the `uncle-apple-store` project. Save the current Firestore rules and download a fresh owner export before replacing the rules. The JSON export is not a full disaster-recovery backup. Keep staff accounts inactive during deployment and initial checks.
 
-1. Owner creates staff account in **Firebase Authentication** and then creates its \`users/<AUTH_UID>\` document with \`role\` (string) \`staff\` and \`active\` (boolean) \`true\`. Do NOT give workers Google/Firebase Console IAM access or the project owner's Google credentials.
-2. Owner continues to log in at \`/admin/\`; workers log in at \`/admin/staff.html\`. A staff member using the owner login is redirected to their staff view.
-3. Owner reviews products and clicks **Publish missing products to staff**. This creates a copy with name, SKU, category, stock, retail price and date only; private notes and purchase costs are not copied. New items created in the owner UI create both docs automatically.
-4. Staff looks up SKU or product name, records a sale (customer, quantity, fixed selling price, initial payment, method and due date). One atomic transaction creates a staff sale and reduces the safe and private stock counts. It uses a blind decrement to the private document and cannot read private costs.
-5. Staff records later instalments for only their own sales; an atomic transaction updates the collected amount and creates an immutable staff payment record.
-6. Owner sees all staff sales and owner legacy sales in the financial overview and a new staff-sales ledger. Owner-only costs are resolved by SKU for profit estimates. Accurate accounting requires stable purchase-cost-per-SKU lots and proper expense recording.
+From the branch's checkout, run these in order:
 
-**Do not use the Worker login as a business-owner email account.** Each worker should have a unique personal login. Never share passwords.
+```sh
+firebase deploy --only firestore:rules --project uncle-apple-store --config firebase.json
+firebase deploy --only hosting --project uncle-apple-store --config firebase.dashboard-ui.json
+```
 
-## Limitations to address before operational launch
+The Hosting config targets the private dashboard's Firebase site. These commands do not deploy the storefront.
 
-- **Transactions are not bank reconciliation.** Staff can register a payment that must later be matched to cash or Wave receipts by the owner.
-- Worker access to their own transactions implies they can calculate their own recorded sales amounts. The entire-store financial reports remain hidden.
-- Staff can ONLY see sales they created. A shared customer follow-up queue, shared shifts, refunds and returns require additional role design. Do not grant unrestricted historical sales access as a shortcut.
-- Owner edits to inventory outside the dashboard (direct Firestore Console updates) could desynchronize the safe and private stock records. Use the dashboard and reconcile both stores if bulk editing.
-- Product purchase-cost estimates use the *current* private cost document for worker sales. This requires each SKU to represent a unique cost lot; if cost changes, add immutable lot costing before claiming accounting accuracy.
-- The staff-facing \`notes\` field must never contain supplier prices, trade terms, passwords or private personal details. The existing product-publish action omits old private notes automatically.
-- The website's public product listings are **not automatically synchronized** with Firestore. This rollout changes only the private admin.
-- Existing Firestore records need backed-up, reviewed, and reconciled before migration. Do not bulk import unverified old Google Sheets records.
-- Firestore rules protect mobile/web clients. Anyone granted Firebase Console/Cloud IAM administration may bypass client rules. Keep project administration owner-only.
-- Before a live deployment test the Firebase rules in the emulator for the 4 personas: anonymous, inactive, staff A, staff B, and owner. Verify rejection of cost reads, global sales listing, price edits, unlinked writes, and overpayments.
+1. Open the owner dashboard, verify the existing stock and sales are visible, then go to **Products → Publish existing stock for staff**. Repeat safely if interrupted. A product with a zero selling price is visible in stock but staff cannot sell it.
+2. In Firebase Authentication, create one account with the staff member's own email. Use a temporary password and have them set their own password through Firebase's password reset flow. In Firestore, add a document to the `users` collection with the exact UID as the document ID, `role` (string) set to `staff`, and `active` (boolean) set to `true`.
+3. Use a separate browser session to sign in and confirm stock lookup at [Staff sign in](https://uncle-apple-store.web.app/staff.html). Do not enter a fake sale on production stock. The automated browser test covers sales and payments in emulators.
+4. To revoke access, set `active` to `false` and disable the Authentication user. If a rollback is required, deactivate staff profiles before restoring a previous policy. Once staff transactions exist, preserve the staff collections and private cost versions so the owner can reconcile those records.
 
-## Test in CI
+## Verification
 
-\`scripts/staff-firestore-rules.test.mjs\` contains Firestore Emulator checks for deny/allow permissions and atomic sale/payment writes. Workflow: \`.github/workflows/admin-checks.yml\`. These tests require Firebase Tools, Java, and \`@firebase/rules-unit-testing\`. **Do not merge while the tests fail.**
-
-## Rollout commands (after tests and owner approval only)
-
-\`\`\`bash
-git pull
-npm ci
-npm run build
-firebase hosting:channel:deploy admin-test --project uncle-apple-store --expires 7d --config firebase.admin-preview.json
-\`\`\`
-
-The preview configuration publishes only \`dist/admin/\`. Its staff URL is the preview Channel URL plus \`/staff.html\`. Publishing to the preview does not update \`uncleapplestore.com\`.
-
-Deploy Firestore rules **separately** after confirming that active owner operations are compatible and after reviewing the current production rules backup:
-
-\`\`\`bash
-firebase deploy --only firestore:rules --project uncle-apple-store
-\`\`\`
-
-This command overwrites live rules. Rollout must be deliberate; it is not safe to execute blindly or assume all owner workflows are working after a new ruleset.
-
-## Firebase console approval
-
-If an authorized user cannot see their dashboard, compare Firebase Authentication UID and Firestore \`users/<UID>\` **exactly**. The document must exist in the **default** database of the \`uncle-apple-store\` project and use a boolean \`active: true\`. Do not repeatedly delete/create owner accounts. This is separate from the GitHub/Firebase CLI Google account.
+The **Private dashboard checks** workflow runs the Firestore rules suite and the browser sign-in flow against Firebase emulators using synthetic records. It verifies that staff cannot read costs or private collections, change the selling price, alter stock without a sale, view another staff member's records, or access the dashboard without an approved account. It also checks owner drafts and identifiers, atomic sales and payments, the owner ledger and charts, and simultaneous attempts to sell the last unit.
