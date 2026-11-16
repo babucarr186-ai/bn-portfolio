@@ -122,6 +122,7 @@
             <div class="toolbar">
               <input id="inventory-search" type="search" aria-label="Search by serial number, IMEI, product name or SKU" placeholder="Search serial number, IMEI, name or SKU" autocomplete="off" autocapitalize="off" spellcheck="false">
               <select id="inventory-filter" aria-label="Filter products"><option value="all">All products</option><option value="in-stock">In stock</option><option value="out">Out of stock</option><option value="aged">In stock for 45+ days</option><option value="serial">Missing iPhone serial number</option><option value="low">Low accessory stock</option></select>
+              <button class="subtle owner-only" id="publish-staff-stock" type="button">Publish existing stock for staff</button>
               <button id="export-products" class="subtle" type="button">Export CSV</button>
             </div>
             <p id="inventory-summary" class="fine" role="status"></p>
@@ -229,6 +230,6 @@
     </main>
     <footer>Uncle Apple Store · Internal records only · <a href="https://uncleapplestore.com/">Return to shop</a></footer>
   </div>
-  <script type="module" src="./app.js?v=4"></script>
+  <script type="module" src="./app.js?v=20261116-staff"></script>
 </body>
 </html>

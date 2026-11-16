@@ -1,5 +1,6 @@
 import { renderInsights } from './insights.js';
 import { initProductAssist } from './product-assist.js';
+import { recordedCost, staffCatalogRecord, withStaffCosts, recordStaffPayment } from './staff-data.js';
 // Private Uncle Apple Store operations. All protected data lives in Firestore, never in this bundle.
 // Firebase web configuration contains public identifiers, not passwords. Security is enforced by Firestore rules.
 import { firebaseConfig } from './firebase-config.js';
@@ -120,7 +121,8 @@ function drawTracker() {
 function drawOverview() {
   const revenue = state.sales.reduce((acc, item) => acc + Number(item.totalGmd || 0), 0);
   const collected = state.sales.reduce((acc, item) => acc + Number(item.paidGmd || 0), 0);
-  const soldCost = state.sales.reduce((acc, item) => acc + Number(item.unitCostGmd || 0) * Number(item.quantity || 0), 0);
+  const costsKnown = state.sales.every((sale) => recordedCost(sale) !== null);
+  const soldCost = state.sales.reduce((acc, item) => acc + (recordedCost(item) ?? 0) * Number(item.quantity || 0), 0);
   const writeOff = state.losses.reduce((acc, item) => acc + Number(item.costGmd || 0), 0);
   const expenses = state.expenses.reduce((acc, item) => acc + Number(item.amountGmd || 0), 0);
   const stockValue = state.products.reduce((acc, item) => acc + Number(item.stockQty || 0) * Number(item.unitCostGmd || 0), 0);
@@ -130,10 +132,10 @@ function drawOverview() {
     ['Cash collected', money(collected), 'Includes later instalment payments'],
     ['Customer balances', money(revenue - collected), 'Sold but not yet collected'],
     ['Inventory at cost', money(stockValue), inStock.length + ' active product lines'],
-    ['Gross profit', money(revenue - soldCost), 'Revenue minus cost of sold goods'],
+    ['Gross profit', costsKnown ? money(revenue - soldCost) : '—', costsKnown ? 'Revenue minus cost of sold goods' : 'Some sales have no recorded buying cost'],
     ['Recorded losses', money(writeOff), state.losses.length + ' write-offs'],
     ['Operating expenses', money(expenses), 'Only costs entered here'],
-    ['Estimated result', money(revenue - soldCost - writeOff - expenses), 'Dashboard gross profit minus entered losses and expenses']
+    ['Estimated result', costsKnown ? money(revenue - soldCost - writeOff - expenses) : '—', costsKnown ? 'Gross profit minus entered losses and expenses' : 'Some sales have no recorded buying cost']
   ];
   $('#metrics').innerHTML = metricCards(kpis, 7);
   drawTrackerPerformance();
@@ -222,11 +224,14 @@ function drawSales() {
   const sales = [...state.sales].sort(byLatest);
   $('#sales-rows').innerHTML = sales.length ? sales.map((s) =>
     '<tr><td>' + rowText(s.date) + '</td><td><strong>' + rowText(s.productName) +
-    '</strong><small>' + rowText(s.sku) + '</small></td><td>' + s.quantity +
+    '</strong><small>' + rowText(s.sku) + (s.staffSale ? ' · Staff sale' : '') + '</small></td><td>' + s.quantity +
     '</td><td>' + money(s.totalGmd) + '</td><td>' + money(s.paidGmd) +
     '</td><td>' + money(remaining(s)) + '</td><td>' + rowText(s.customer) + '</td></tr>').join('')
     : emptyRow(7);
-  options($('#payment-sale'), sales.filter((s) => remaining(s) > 0),
+  const unpaid = sales.filter((s) => remaining(s) > 0).map((sale) => ({
+    ...sale, id: (sale.staffSale ? 'staff/' : 'owner/') + sale.id
+  }));
+  options($('#payment-sale'), unpaid,
     (s) => s.productName + ' · ' + (s.customer || s.date) + ' · ' + money(remaining(s)) + ' remaining',
     'Choose an unpaid sale');
 }
@@ -262,14 +267,16 @@ function draw() {
 
 async function loadData() {
   const session = authCheck;
-  const names = ['products', 'productDrafts', 'sales', 'losses'];
-  if (state.member?.role === 'owner') names.push('trackerRecords', 'expenses');
+  const names = ['products', 'productDrafts', 'sales', 'losses', 'trackerRecords', 'expenses', 'staffSales', 'productCosts'];
   const snapshots = await Promise.all(names.map((name) => getDocs(collection(state.db, name))));
   if (session !== authCheck) return;
-  snapshots.forEach((snapshot, index) => {
-    const name = names[index] === 'productDrafts' ? 'drafts' : names[index];
-    state[name] = snapshot.docs.map((item) => ({ ...item.data(), id: item.id }));
-  });
+  const records = Object.fromEntries(names.map((name, index) => [
+    name, snapshots[index].docs.map((item) => ({ ...item.data(), id: item.id }))
+  ]));
+  for (const name of ['products', 'losses', 'trackerRecords', 'expenses']) state[name] = records[name];
+  state.drafts = records.productDrafts;
+  state.sales = records.sales.concat(withStaffCosts(records.staffSales, records.productCosts));
+
   draw();
 }
 
@@ -487,6 +494,48 @@ function readProductForm(form, action) {
   return { ...details, ...stock, stockQty, category: values.category, sku: values.sku };
 }
 
+// A sale keeps the cost version in use when it was recorded. This value is
+// readable only by the owner, even though staff can reference its random ID.
+function writeStaffCatalog(transaction, catalogSnapshot, product, sku, previous) {
+  const existingVersion = catalogSnapshot.data()?.costVersion;
+  const unitCostGmd = recordedCost(product);
+  const costRef = existingVersion && unitCostGmd === recordedCost(previous)
+    ? null : doc(collection(state.db, 'productCosts'));
+  const catalog = staffCatalogRecord(product, sku, costRef?.id || existingVersion);
+  if (!catalog) return false;
+  if (costRef) transaction.set(costRef, { productId: sku, unitCostGmd });
+  transaction.set(catalogSnapshot.ref, { ...catalog, updatedAt: serverTimestamp() });
+  return true;
+}
+
+async function publishStaffStock() {
+  const button = $('#publish-staff-stock');
+  button.disabled = true;
+  let published = 0;
+  let skipped = 0;
+  try {
+    const snapshots = await getDocs(collection(state.db, 'products'));
+    for (const item of snapshots.docs) {
+      authenticatedUid();
+      const outcome = await runTransaction(state.db, async (transaction) => {
+        const product = await transaction.get(item.ref);
+        const catalog = await transaction.get(doc(state.db, 'staffCatalog', item.id));
+        if (catalog.exists()) return 'existing';
+        if (!product.exists()) return 'skipped';
+        return writeStaffCatalog(transaction, catalog, product.data(), item.id, product.data()) ? 'new' : 'skipped';
+      });
+      if (outcome === 'new') published++;
+      if (outcome === 'skipped') skipped++;
+    }
+    notice(published + ' product lines published for staff.' + (skipped ? ' ' + skipped + ' need a valid name, price or quantity.' : ''));
+  } catch (error) {
+    console.error('Staff stock publication failed', error);
+    notice('Published ' + published + ' product lines before the update stopped. Try again to resume.', true);
+  } finally {
+    button.disabled = false;
+  }
+}
+
 async function saveEditorAction(action, values, current) {
   const uid = authenticatedUid();
   const draftRef = current.draft ? doc(state.db, 'productDrafts', current.draft.id)
@@ -517,6 +566,7 @@ async function saveEditorAction(action, values, current) {
     if (productSnapshot.exists() && !current.product) throw new Error('That SKU already exists. Choose another SKU or open the existing product.');
     if (!productSnapshot.exists() && current.product) throw new Error('This product could not be found. Refresh the product list.');
     const previous = productSnapshot.exists() ? productSnapshot.data() : {};
+    const catalog = await transaction.get(doc(state.db, 'staffCatalog', productRef.id));
     if (current.product && Object.keys(values).some((field) => (previous[field] ?? '') !== (current.product[field] ?? ''))) {
       throw new Error('This product changed on another device. Close it and use Refresh before editing again.');
     }
@@ -538,6 +588,7 @@ async function saveEditorAction(action, values, current) {
         if (!assignedHere) transaction.set(ref, { productId: productRef.id });
       } else if (assignedHere) transaction.delete(ref);
     });
+    writeStaffCatalog(transaction, catalog, { ...previous, ...values }, productRef.id, previous);
     if (current.product) transaction.update(productRef, { ...values, updatedAt: serverTimestamp() });
     else transaction.set(productRef, {
       ...values, createdBy: uid, createdAt: serverTimestamp(), updatedAt: serverTimestamp()
@@ -677,6 +728,7 @@ function attachActions() {
     }));
   $('#inventory-search').addEventListener('input', drawInventory);
   $('#inventory-filter').addEventListener('change', drawInventory);
+  $('#publish-staff-stock').addEventListener('click', publishStaffStock);
   $('#export-products').addEventListener('click', () =>
     exportCsv('uncle-apple-inventory.csv', state.products.map((p) => ({
       sku: p.sku, name: p.name, category: p.category, remaining: p.stockQty,
@@ -751,8 +803,11 @@ function attachActions() {
         const snap = await transaction.get(productRef);
         if (!snap.exists()) throw new Error('Product not found.');
         const product = snap.data();
+        const catalog = await transaction.get(doc(state.db, 'staffCatalog', productId));
         if (product.stockQty < quantity) throw new Error('Not enough stock remaining.');
-        transaction.update(productRef, { stockQty: product.stockQty - quantity, updatedAt: serverTimestamp() });
+        const stockQty = product.stockQty - quantity;
+        writeStaffCatalog(transaction, catalog, { ...product, stockQty }, productId, product);
+        transaction.update(productRef, { stockQty, updatedAt: serverTimestamp() });
         const saleRef = doc(collection(state.db, 'sales'));
         transaction.set(saleRef, {
           productId, productName: product.name, sku: product.sku, quantity, unitPriceGmd, totalGmd,
@@ -772,10 +827,16 @@ function attachActions() {
   $('#payment-form').addEventListener('submit', (event) => {
     event.preventDefault(); const form = event.currentTarget;
     process(form, async () => {
-      const saleId = formValue(form, 'saleId');
+      const selection = formValue(form, 'saleId');
       const paid = amount(form, 'amount', { positive: true });
-      if (!saleId) throw new Error('Choose an unpaid sale.');
+      if (!selection) throw new Error('Choose an unpaid sale.');
       const uid = authenticatedUid();
+      const saleId = selection.split('/')[1];
+      if (selection.startsWith('staff/')) {
+        await recordStaffPayment(state.db, { id: saleId, amount: paid, method: formValue(form, 'method'), uid },
+          { doc, collection, runTransaction, serverTimestamp });
+        return;
+      }
       await runTransaction(state.db, async (transaction) => {
         const ref = doc(state.db, 'sales', saleId);
         const snapshot = await transaction.get(ref);
@@ -803,8 +864,11 @@ function attachActions() {
         const snapshot = await transaction.get(ref);
         if (!snapshot.exists()) throw new Error('Product not found.');
         const product = snapshot.data();
+        const catalog = await transaction.get(doc(state.db, 'staffCatalog', productId));
         if (product.stockQty < quantity) throw new Error('Not enough stock remaining.');
-        transaction.update(ref, { stockQty: product.stockQty - quantity, updatedAt: serverTimestamp() });
+        const stockQty = product.stockQty - quantity;
+        writeStaffCatalog(transaction, catalog, { ...product, stockQty }, productId, product);
+        transaction.update(ref, { stockQty, updatedAt: serverTimestamp() });
         transaction.set(doc(collection(state.db, 'losses')), {
           productId, productName: product.name, sku: product.sku, quantity,
           costGmd: Number((quantity * Number(product.unitCostGmd)).toFixed(2)),
@@ -883,6 +947,10 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
         $('#approval-project').value = firebaseConfig.projectId;
         $('#approval-panel').hidden = false;
         notice('Your credentials worked. Check the approval information shown.', true);
+        return;
+      }
+      if (profile.role === 'staff') {
+        window.location.replace('./staff.html');
         return;
       }
       state.user = user;
