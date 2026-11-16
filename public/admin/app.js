@@ -1,3 +1,5 @@
+import { renderInsights } from './insights.js';
+import { initProductAssist } from './product-assist.js';
 // Private Uncle Apple Store operations. All protected data lives in Firestore, never in this bundle.
 // Firebase web configuration contains public identifiers, not passwords. Security is enforced by Firestore rules.
 import { firebaseConfig } from './firebase-config.js';
@@ -15,8 +17,13 @@ const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"'
 })[char]);
 const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Africa/Banjul' });
 const daysOld = (date) => Math.floor((Date.now() - new Date(String(date) + 'T12:00:00Z').getTime()) / 86400000);
-const state = { trackerRecords: [], products: [], staffInventory: [], staffSales: [], sales: [], losses: [], expenses: [], payments: [], member: null, user: null, db: null, auth: null };
+const state = { trackerRecords: [], products: [], drafts: [], sales: [], losses: [], expenses: [], member: null, user: null, db: null, auth: null };
 let noticeTimer;
+let productAssist;
+let activeView = 'overview';
+let editor = {};
+let selectedProduct;
+let authCheck = 0;
 
 function notice(message, error = false) {
   const element = $('#feedback');
@@ -27,7 +34,7 @@ function notice(message, error = false) {
 }
 
 function formValue(form, name) {
-  return String(new FormData(form).get(name) || '').trim();
+  return String(form.elements.namedItem(name)?.value ?? '').trim();
 }
 function amount(form, field, { positive = false, integer = false } = {}) {
   const raw = formValue(form, field);
@@ -87,28 +94,39 @@ function drawTrackerPerformance() {
 function drawTracker() {
   const search = $('#tracker-search').value.toLowerCase().trim();
   const filter = $('#tracker-filter').value;
-  const records = state.trackerRecords.filter(r => (!search || [r.name,r.sourceSheet,r.notes,r.colour,r.storage].join(' ').toLowerCase().includes(search)) && (filter === 'all' || r.status === filter));
-  $('#tracker-summary').textContent = state.trackerRecords.length + ' source records · ' + state.trackerRecords.filter(r=>r.status==='sold').length + ' marked sold · ' + state.trackerRecords.filter(r=>r.status==='review').length + ' need stock confirmation. Source costs and sale amounts may be incomplete.';
-  const value = v => typeof v === 'number' ? money(v) : 'Not recorded';
-  $('#tracker-rows').innerHTML = records.length ? records.map(r => '<tr><td><strong>'+escapeHtml(r.name)+'</strong><small>'+escapeHtml(r.sourceSheet+' · row '+r.sourceRow)+'</small></td><td>'+escapeHtml([r.storage,r.colour,r.battery].filter(Boolean).join(' · '))+'</td><td>'+escapeHtml({sold:'Marked sold',review:'Needs stock review',transit:'Not delivered',refunded:'Refunded'}[r.status] || r.status)+'</td><td>'+value(r.costGmd)+'</td><td>'+value(r.saleGmd)+'</td><td>'+escapeHtml(r.notes || '')+(r.status==='review' ? '<br><button type="button" data-review="'+escapeHtml(r.id)+'">Review stock</button>' : '')+'</td></tr>').join('') : emptyRow(6);
+  const stocked = new Set(state.products.map((item) => item.sku));
+  const records = state.trackerRecords.filter(r => (!search || [r.name,r.sourceSheet,r.notes,r.colour,r.storage,r.id].join(' ').toLowerCase().includes(search)) && (filter === 'all' || r.status === filter) && (filter !== 'review' || !stocked.has(r.id)));
+  $('#tracker-summary').textContent = state.trackerRecords.length + ' imported records · ' +
+    state.trackerRecords.filter((record) => record.status === 'sold').length + ' marked sold · ' +
+    state.trackerRecords.filter((record) => record.status === 'review' && !stocked.has(record.id)).length +
+    ' need stock confirmation.';
+  const value = (amount) => typeof amount === 'number' ? money(amount) : 'Not recorded';
+  const statusLabels = { sold: 'Marked sold', review: 'Needs stock review', transit: 'Not delivered', refunded: 'Refunded' };
+  $('#tracker-rows').innerHTML = records.length ? records.map((record) => {
+    const imported = stocked.has(record.id);
+    const reviewAction = record.status !== 'review' ? '' : imported ? '<small>Added to inventory</small>'
+      : '<button type="button" class="subtle" data-review="' + escapeHtml(record.id) + '">Review stock</button>';
+    const details = [record.storage, record.colour, record.battery].filter(Boolean).join(' · ');
+    return '<tr><td><strong>' + escapeHtml(record.name) + '</strong><small>' +
+      escapeHtml(record.sourceSheet + ' · row ' + record.sourceRow) + '</small></td><td>' + rowText(details) +
+      '</td><td><span class="badge plain">' + rowText(statusLabels[record.status] || record.status) +
+      '</span></td><td data-label="Buying cost">' + value(record.costGmd) +
+      '</td><td data-label="Recorded sale">' + value(record.saleGmd) +
+      '</td><td>' + (record.notes ? '<small>' + escapeHtml(record.notes) + '</small>' : '') + reviewAction + '</td></tr>';
+  }).join('') : emptyRow(6);
+
 }
 
 function drawOverview() {
-  const allSales = [...state.sales, ...state.staffSales];
-  const revenue = allSales.reduce((acc, item) => acc + Number(item.totalGmd || 0), 0);
-  const collected = allSales.reduce((acc, item) => acc + Number(item.paidGmd || 0), 0);
-  const soldCost = allSales.reduce((acc, item) => {
-    // Staff transactions never contain private cost data; owner resolves cost from the
-    // original private inventory record. Unique SKUs are treated as single cost lots.
-    const unitCost = item.unitCostGmd ?? state.products.find((p) => p.id === item.productId)?.unitCostGmd ?? 0;
-    return acc + Number(unitCost) * Number(item.quantity || 0);
-  }, 0);
+  const revenue = state.sales.reduce((acc, item) => acc + Number(item.totalGmd || 0), 0);
+  const collected = state.sales.reduce((acc, item) => acc + Number(item.paidGmd || 0), 0);
+  const soldCost = state.sales.reduce((acc, item) => acc + Number(item.unitCostGmd || 0) * Number(item.quantity || 0), 0);
   const writeOff = state.losses.reduce((acc, item) => acc + Number(item.costGmd || 0), 0);
   const expenses = state.expenses.reduce((acc, item) => acc + Number(item.amountGmd || 0), 0);
   const stockValue = state.products.reduce((acc, item) => acc + Number(item.stockQty || 0) * Number(item.unitCostGmd || 0), 0);
   const inStock = state.products.filter((product) => product.stockQty > 0);
   const kpis = [
-    ['Sales revenue', money(revenue), allSales.length + ' recorded transactions'],
+    ['Sales revenue', money(revenue), state.sales.length + ' recorded transactions'],
     ['Cash collected', money(collected), 'Includes later instalment payments'],
     ['Customer balances', money(revenue - collected), 'Sold but not yet collected'],
     ['Inventory at cost', money(stockValue), inStock.length + ' active product lines'],
@@ -119,47 +137,85 @@ function drawOverview() {
   ];
   $('#metrics').innerHTML = metricCards(kpis, 7);
   drawTrackerPerformance();
+  renderInsights($('#store-insights'), state, today());
+  $('#stock-count').textContent = inStock.reduce((total, product) => total + Number(product.stockQty), 0);
+  $('#draft-count').textContent = state.drafts.length;
+  const stockToCheck = inStock.filter((product) => product.category === 'iPhone' && !product.serialNumber);
   const aged = inStock.filter((product) => product.receivedOn && daysOld(product.receivedOn) >= 45);
-  const low = inStock.filter((product) => product.stockQty <= 1);
-  const unpaid = allSales.filter((sale) => remaining(sale) > 0);
+  const low = inStock.filter((product) => product.category === 'Accessories' && product.stockQty === 1);
+  const unpaid = state.sales.filter((sale) => remaining(sale) > 0);
   const overdue = unpaid.filter((sale) => sale.dueOn && sale.dueOn < today());
+  const importedSkus = new Set(state.products.map((product) => product.sku));
+  const toReview = state.trackerRecords.filter((record) => record.status === 'review' && !importedSkus.has(record.id));
   const attention = [
-    ['Aged unsold stock', aged.length + ' lines', 'Held for at least 45 days'],
-    ['Low stock', low.length + ' lines', 'Only 1 unit left'],
-    ['Outstanding payments', unpaid.length + ' sales', money(unpaid.reduce((sum, sale) => sum + remaining(sale), 0)) + ' due'],
-    ['Past-due payments', overdue.length + ' sales', 'Due date has passed']
-  ];
-  $('#alerts').innerHTML = attention.map(([title, number, detail]) =>
-    '<div class="alert"><strong>' + escapeHtml(title) + ': ' + escapeHtml(number) + '</strong><span>' +
-    escapeHtml(detail) + '</span></div>').join('');
-  $('#recent-sales').innerHTML = allSales.length
-    ? [...allSales].sort(byLatest).slice(0, 6).map((sale) =>
-      detailRow(sale.productName, sale.date + ' · ' + sale.quantity + ' unit(s)', money(sale.totalGmd))).join('')
-    : '<p class="empty">Sales saved under Sales &amp; payments will appear here.</p>';
+    ['iPhones missing a serial number', stockToCheck.length, 'Open a product to add its serial number.', 'serial'],
+    ['Unpaid sales', unpaid.length, money(unpaid.reduce((sum, sale) => sum + remaining(sale), 0)) + ' outstanding' + (overdue.length ? ' · ' + overdue.length + ' overdue' : ''), 'unpaid'],
+    ['Older stock', aged.length, 'In stock for at least 45 days.', 'aged'],
+    ['Low stock', low.length, 'Accessory lines with one unit left.', 'low'],
+    ['Tracker stock to confirm', toReview.length, 'Check which imported items are still in the shop.', 'tracker']
+  ].filter(([, count]) => count > 0);
+  $('#attention-count').textContent = attention.length;
+  $('#alerts').innerHTML = attention.length ? attention.map(([title, count, detail, action]) =>
+    '<button type="button" class="alert" data-attention="' + action + '"><div><strong>' + escapeHtml(title) +
+    '</strong><small>' + escapeHtml(detail) + '</small></div><span class="alert-number">' + count +
+    '<span aria-hidden="true"> ›</span></span></button>').join('') : '<p class="empty">You’re all caught up.</p>';
+  $('#recent-sales').innerHTML = state.sales.length
+    ? [...state.sales].sort(byLatest).slice(0, 5).map((sale) =>
+      detailRow(sale.productName, sale.date + ' · Qty ' + sale.quantity, money(sale.totalGmd))).join('')
+    : '<p class="empty">New sales recorded in this dashboard appear here.</p>';
 }
 
+const normalizeIdentifier = (value) => String(value ?? '').toUpperCase().replace(/[\s-]+/g, '');
+const productOrder = (a, b) => a.name.localeCompare(b.name, undefined, { numeric: true });
+const deviceSpecs = (item) =>
+  [item.storage, item.colour, item.batteryHealth == null ? '' : item.batteryHealth + '% battery'].filter(Boolean).join(' · ');
+const productStatus = (product) => product.stockQty > 0
+  ? ['In stock', 'green']
+  : (state.sales.some((sale) => sale.productId === product.id) ? ['Sold out', 'plain'] : ['Out of stock', 'plain']);
+
 function drawInventory() {
-  const search = $('#inventory-search').value.toLowerCase().trim();
+  const rawQuery = $('#inventory-search').value.trim();
+  const query = rawQuery.toLowerCase();
+  const idQuery = normalizeIdentifier(rawQuery);
   const filter = $('#inventory-filter').value;
-  const visible = state.products.filter((item) => {
-    if (search && !(item.name + ' ' + item.sku + ' ' + item.category).toLowerCase().includes(search)) return false;
-    if (filter === 'in-stock' && item.stockQty < 1) return false;
-    if (filter === 'out' && item.stockQty > 0) return false;
-    if (filter === 'aged' && !(item.stockQty > 0 && item.receivedOn && daysOld(item.receivedOn) >= 45)) return false;
+  const eligible = state.products.filter((item) => {
+    if (filter === 'in-stock') return item.stockQty > 0;
+    if (filter === 'out') return item.stockQty <= 0;
+    if (filter === 'aged') return item.stockQty > 0 && item.receivedOn && daysOld(item.receivedOn) >= 45;
+    if (filter === 'serial') return item.stockQty > 0 && item.category === 'iPhone' && !item.serialNumber;
+    if (filter === 'low') return item.stockQty === 1 && item.category === 'Accessories';
     return true;
-  }).sort((a, b) => a.name.localeCompare(b.name));
-  $('#inventory-rows').innerHTML = visible.length ? visible.map((p) =>
-    '<tr><td><strong>' + escapeHtml(p.name) + '</strong><small>' + escapeHtml(p.sku) +
-    (p.notes ? ' · ' + escapeHtml(p.notes) : '') + '</small></td><td>' + rowText(p.category) +
-    '</td><td>' + p.stockQty + '</td><td>' + money(p.unitCostGmd) + '</td><td>' + money(p.unitPriceGmd) +
-    '</td><td>' + rowText(p.receivedOn) + '</td></tr>').join('') : emptyRow(6, 'No products match this filter.');
-  const available = state.products.filter((item) => item.stockQty > 0).sort((a, b) => a.name.localeCompare(b.name));
+  });
+  const exact = query ? eligible.filter((item) => [item.serialNumber, item.imei].some((value) =>
+    value && normalizeIdentifier(value) === idQuery)) : [];
+  const visible = (exact.length ? exact : eligible.filter((item) => !query ||
+    [item.name, item.sku, item.category, item.colour, item.storage].join(' ').toLowerCase().includes(query))).sort(productOrder);
+  $('#inventory-summary').textContent = visible.length + (visible.length === 1 ? ' product' : ' products');
+  $('#inventory-rows').innerHTML = visible.length ? visible.map((product) => {
+    const [status, tone] = productStatus(product);
+    const subtitle = deviceSpecs(product) || product.category;
+    return '<button class="product-row" type="button" data-product="' + escapeHtml(product.id) +
+      '"><span class="row-icon" aria-hidden="true">' + (product.category === 'iPhone' ? '▯' : '▤') +
+      '</span><span class="row-main"><strong>' + escapeHtml(product.name) + '</strong><small>' + escapeHtml(subtitle) +
+      '</small><small class="sku">' + escapeHtml(product.sku) + '</small></span><span class="row-side"><span class="badge ' +
+      tone + '">' + status + '</span><strong>' + money(product.unitPriceGmd) + '</strong></span><span class="chevron" aria-hidden="true">›</span></button>';
+  }).join('') : '<p class="empty">' + (query ? 'No matching product. Check the full serial number or IMEI.' : 'No products in this view.') + '</p>';
+}
+
+function drawDrafts() {
+  const list = [...state.drafts].sort((a, b) => (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0));
+  $('#draft-list').innerHTML = list.length ? list.map((draft) =>
+    '<button class="product-row" type="button" data-draft="' + escapeHtml(draft.id) +
+    '"><span class="row-icon" aria-hidden="true">▤</span><span class="row-main"><strong>' + escapeHtml(draft.name || 'Untitled product') +
+    '</strong><small>' + escapeHtml(deviceSpecs({ ...draft, batteryHealth: draft.battery || null }) || draft.category) +
+    '</small></span><span class="row-side"><span class="badge plain">Draft</span></span><span class="chevron" aria-hidden="true">›</span></button>'
+  ).join('') : '<p class="empty">No drafts yet. Use “Save draft” while adding a product.</p>';
+}
+
+function drawProductOptions() {
+  const available = state.products.filter((item) => item.stockQty > 0).sort(productOrder);
   options($('#sale-product'), available, productLabel, 'Choose a product');
   options($('#damage-product'), available, productLabel, 'Choose a product');
-  const missing = state.products.filter(p => !state.staffInventory.some(s => s.id === p.id));
-  $('#publish-status').textContent = missing.length
-    ? missing.length + ' existing products are not yet available in the staff catalogue.'
-    : 'Every registered product is in the staff catalogue.';
 }
 
 function drawSales() {
@@ -173,13 +229,6 @@ function drawSales() {
   options($('#payment-sale'), sales.filter((s) => remaining(s) > 0),
     (s) => s.productName + ' · ' + (s.customer || s.date) + ' · ' + money(remaining(s)) + ' remaining',
     'Choose an unpaid sale');
-  const staffSales = [...state.staffSales].sort(byLatest);
-  $('#staff-sales-rows').innerHTML = staffSales.length ? staffSales.map(s =>
-    '<tr><td>' + rowText(s.date) + '</td><td><small>' + rowText(s.createdBy) +
-    '</small></td><td>' + rowText(s.productName) + ' × ' + s.quantity +
-    '</td><td>' + rowText(s.customer) + '</td><td>' + money(s.totalGmd) +
-    '</td><td>' + money(s.paidGmd) + '</td><td>' + money(remaining(s)) + '</td></tr>'
-  ).join('') : emptyRow(7, 'No staff sales recorded.');
 }
 
 function drawDamages() {
@@ -197,28 +246,63 @@ function drawExpenses() {
     money(e.amountGmd) + '</td><td>' + rowText(e.note) + '</td></tr>').join('') : emptyRow(4);
 }
 function draw() {
-  drawTracker(); drawOverview(); drawInventory(); drawSales(); drawDamages(); drawExpenses();
-  $('#last-updated').textContent = 'Updated ' + new Date().toLocaleString('en-GB');
-  $('.owner-only') && document.querySelectorAll('.owner-only').forEach((node) => {
+  drawTracker();
+  drawOverview();
+  drawInventory();
+  drawDrafts();
+  drawProductOptions();
+  drawSales();
+  drawDamages();
+  drawExpenses();
+  $('#last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  document.querySelectorAll('.owner-only:not(.view)').forEach((node) => {
     node.hidden = state.member?.role !== 'owner';
   });
 }
+
 async function loadData() {
-  const names = ['products', 'sales', 'losses', 'expenses', 'payments', 'staffInventory', 'staffSales'];
-  state.trackerRecords = [];
-  if (state.member?.role === 'owner') names.push('trackerRecords');
+  const session = authCheck;
+  const names = ['products', 'productDrafts', 'sales', 'losses'];
+  if (state.member?.role === 'owner') names.push('trackerRecords', 'expenses');
   const snapshots = await Promise.all(names.map((name) => getDocs(collection(state.db, name))));
+  if (session !== authCheck) return;
   snapshots.forEach((snapshot, index) => {
-    state[names[index]] = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+    const name = names[index] === 'productDrafts' ? 'drafts' : names[index];
+    state[name] = snapshot.docs.map((item) => ({ ...item.data(), id: item.id }));
   });
   draw();
 }
-function view(name) {
-  document.querySelectorAll('.view').forEach((node) => { node.hidden = node.id !== 'view-' + name; });
+
+function view(name, focus = true) {
+  const target = $('#view-' + name);
+  if (!target || (target.classList.contains('owner-only') && state.member?.role !== 'owner')) return;
+  activeView = name;
+  document.querySelectorAll('.view').forEach((node) => { node.hidden = node !== target; });
   document.querySelectorAll('[data-view]').forEach((node) => {
-    node.classList.toggle('active', node.dataset.view === name);
+    const selected = node.dataset.view === name;
+    node.classList.toggle('active', selected);
+    if (selected && node.closest('nav')) node.setAttribute('aria-current', 'page');
+    else node.removeAttribute('aria-current');
   });
+  const more = $('.more-menu');
+  more.open = false;
+  more.classList.toggle('active', Boolean(more.querySelector('[aria-current="page"]')));
+  if (focus) {
+    target.querySelector('h1')?.focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+  }
 }
+
+async function refreshAfterSave(message) {
+  notice(message);
+  try {
+    await loadData();
+  } catch (err) {
+    console.error('Could not refresh after save', err);
+    notice(message + ' Use Refresh to reload the list.', true);
+  }
+}
+
 async function process(form, operation, successText) {
   const submit = form.querySelector('button[type="submit"]');
   submit.disabled = true;
@@ -226,8 +310,7 @@ async function process(form, operation, successText) {
     await operation();
     form.reset();
     setDates();
-    await loadData();
-    notice(successText);
+    await refreshAfterSave(successText);
   } catch (err) {
     console.error('Dashboard operation failed', err);
     notice(err.message || 'Unable to save the record.', true);
@@ -257,16 +340,320 @@ function exportCsv(file, rows) {
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
+function showProducts(filter, query = '', openExact = false) {
+  $('#inventory-filter').value = filter;
+  $('#inventory-search').value = query;
+  drawInventory();
+  view('inventory');
+  const matches = [...$('#inventory-rows').querySelectorAll('[data-product]')];
+  if (!openExact || matches.length !== 1) return;
+  const product = state.products.find((item) => item.id === matches[0].dataset.product);
+  if ([product.serialNumber, product.imei].some((value) => value && normalizeIdentifier(value) === normalizeIdentifier(query))) {
+    openProduct(product);
+  }
+}
+
+function openProduct(product) {
+  selectedProduct = product;
+  const [status, tone] = productStatus(product);
+  const details = [
+    ['Stock ID (SKU)', product.sku],
+    ['Category', product.category],
+    ['Storage', product.storage],
+    ['Colour', product.colour],
+    ['Battery health', product.batteryHealth == null ? '' : product.batteryHealth + '%'],
+    ['Serial number', product.serialNumber],
+    ['IMEI', product.imei],
+    ['Quantity in stock', product.stockQty],
+    ['Selling price', money(product.unitPriceGmd)],
+    ...(state.member?.role === 'owner' ? [['Buying cost', money(product.unitCostGmd)]] : []),
+    ['Received date', product.receivedOn],
+    ['Notes', product.notes]
+  ];
+  $('#detail-title').textContent = product.name;
+  $('#detail-body').innerHTML = '<p class="detail-status"><span class="badge ' + tone + '">' + status +
+    '</span></p><dl class="detail-grid">' + details.map(([label, value]) =>
+      '<div><dt>' + escapeHtml(label) + '</dt><dd>' + escapeHtml(value ?? '—') +
+      (value === '' ? '—' : '') + '</dd></div>').join('') + '</dl>';
+  $('#detail-sale').hidden = product.stockQty <= 0;
+  $('#detail-dialog').showModal();
+}
+
+const productFields = ['name', 'category', 'storage', 'colour', 'battery', 'serialNumber', 'imei', 'quantity', 'cost', 'price', 'receivedOn', 'notes', 'sku'];
+const isSingleDevice = (category) => !['Accessories', 'Other'].includes(category);
+
+function syncCategory() {
+  const form = $('#product-form');
+  const category = form.elements.category.value;
+  const iphone = category === 'iPhone';
+  const mobile = iphone || category === 'iPad' || category === 'Apple Watch';
+  const device = isSingleDevice(category);
+  $('#product-name-label').textContent = iphone ? 'iPhone model' : 'Product name / model';
+  form.elements.name.placeholder = iphone ? 'e.g. iPhone 14 Pro' : 'Enter product name';
+  $('#identifier-hint').hidden = !iphone;
+  $('#field-storage').hidden = !['iPhone', 'iPad', 'MacBook / iMac'].includes(category);
+  $('#field-battery').hidden = !device || category === 'AirPods';
+  $('#field-serial').hidden = !device && !form.elements.serialNumber.value;
+  $('#field-imei').hidden = !mobile && !form.elements.imei.value;
+  $('#field-quantity').hidden = editor.product || device;
+  if (device && !editor.product) form.elements.quantity.value = '1';
+  productAssist?.update();
+}
+
+function stockId() {
+  return 'UA-' + crypto.randomUUID().replace(/-/g, '').slice(0, 16).toUpperCase();
+}
+
+function openEditor({ product, draft, record } = {}) {
+  const form = $('#product-form');
+  const dialog = $('#product-dialog');
+  form.reset();
+  editor = {
+    product, draft, sourceId: record?.id || draft?.sourceId || '',
+    newSku: draft?.sku || record?.id || stockId(), revision: draft?.revision
+  };
+  const values = draft || (product ? {
+    ...product, battery: product.batteryHealth, cost: product.unitCostGmd, price: product.unitPriceGmd
+  } : record ? {
+    name: record.name, category: record.category, storage: record.storage, colour: record.colour,
+    battery: /^\d{1,3}(?:\.0+)?%?$/.test(record.battery) ? Number(String(record.battery).replace('%', '')) : '',
+    cost: record.costGmd, sku: record.id,
+    notes: (record.sourceSheet + ' row ' + record.sourceRow + '; ' + (record.notes || '')).slice(0, 300)
+  } : {});
+  for (const field of productFields) {
+    if (values[field] != null) form.elements[field].value = values[field];
+  }
+  const ownerEditing = product && state.member?.role === 'owner';
+  if (!form.elements.category.value) form.elements.category.value = 'Other';
+  if (!draft && !product && !record) form.elements.receivedOn.value = today();
+  form.elements.category.disabled = Boolean(product);
+  form.elements.name.disabled = Boolean(product && !ownerEditing);
+  form.elements.sku.readOnly = Boolean(editor.sourceId);
+  $('#stock-fields').hidden = Boolean(product && !ownerEditing);
+  $('#sku-settings').hidden = Boolean(product);
+  $('#sku-settings').open = false;
+  $('#product-dialog-title').textContent = product ? 'Edit product details' : draft ? 'Finish draft' : 'Add product';
+  $('#product-form-intro').textContent = product ? 'Stock quantity updates when sales or losses are recorded.'
+    : editor.sourceId ? 'Confirm physical stock, price and received date.' : 'Add one record for each device.';
+  $('#save-product').textContent = product ? 'Save changes' : 'Add to stock';
+  $('#save-draft').hidden = Boolean(product);
+  $('#delete-draft').hidden = !draft;
+  $('#product-form-error').hidden = true;
+  syncCategory();
+  dialog.showModal();
+  (product && !ownerEditing ? form.elements.serialNumber : form.elements.name).focus();
+}
+
+function deviceIdentifiers(record) {
+  return [record.serialNumber && ['serial', normalizeIdentifier(record.serialNumber)], record.imei && ['imei', normalizeIdentifier(record.imei)]]
+    .filter(Boolean).map(([type, value]) => type + '-' + value);
+}
+
+function readProductForm(form, action) {
+  const values = Object.fromEntries(productFields.map((field) => [field, formValue(form, field)]));
+  if (editor.product && !values.name) values.name = editor.product.name;
+  if (editor.product) values.category = editor.product.category;
+  values.sku = editor.product?.id || editor.sourceId || values.sku.toUpperCase() || editor.newSku;
+  values.serialNumber = normalizeIdentifier(values.serialNumber);
+  values.imei = normalizeIdentifier(values.imei);
+  if (!values.name) throw new Error('Enter the product name or iPhone model.');
+  if (action === 'draft') return values;
+  if (!editor.product && !/^[A-Z0-9][A-Z0-9_-]{1,47}$/.test(values.sku)) {
+    throw new Error('Use 2–48 letters, numbers, hyphens or underscores for the SKU.');
+  }
+  if (values.serialNumber && !/^[A-Z0-9]{3,32}$/.test(values.serialNumber)) {
+    throw new Error('Enter a serial number with 3–32 letters or digits.');
+  }
+  if (values.imei && !/^\d{15}$/.test(values.imei)) throw new Error('Enter a 15-digit IMEI.');
+  if (form.elements.battery.validity.badInput) throw new Error('Enter battery health as a whole number from 1 to 100.');
+  const battery = values.battery === '' ? null : Number(values.battery);
+  if (battery !== null && (!Number.isInteger(battery) || battery < 1 || battery > 100)) {
+    throw new Error('Enter battery health as a whole number from 1 to 100.');
+  }
+  const details = {
+    storage: values.storage, colour: values.colour, batteryHealth: battery,
+    serialNumber: values.serialNumber, imei: values.imei, notes: values.notes
+  };
+  if (editor.product && state.member.role !== 'owner') return details;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(values.receivedOn)) throw new Error('Choose the received date.');
+  const stock = {
+    name: values.name, unitCostGmd: amount(form, 'cost'), unitPriceGmd: amount(form, 'price'),
+    receivedOn: values.receivedOn
+  };
+  if (editor.product) return { ...details, ...stock };
+  const stockQty = isSingleDevice(values.category) ? 1 : amount(form, 'quantity', { positive: true, integer: true });
+  if (stockQty > 1000000) throw new Error('Enter a quantity of 1,000,000 or less.');
+  if ((values.serialNumber || values.imei) && stockQty > 1) throw new Error('Enter one record per serial number or IMEI.');
+  return { ...details, ...stock, stockQty, category: values.category, sku: values.sku };
+}
+
+async function saveEditorAction(action, values, current) {
+  const uid = authenticatedUid();
+  const draftRef = current.draft ? doc(state.db, 'productDrafts', current.draft.id)
+    : action === 'draft' ? doc(collection(state.db, 'productDrafts')) : null;
+  await runTransaction(state.db, async (transaction) => {
+    const draftSnapshot = current.draft ? await transaction.get(draftRef) : null;
+    if (draftSnapshot && (!draftSnapshot.exists() || draftSnapshot.data().revision !== current.revision)) {
+      throw new Error('This draft changed on another device. Close it and use Refresh before trying again.');
+    }
+    if (action === 'delete') {
+      transaction.delete(draftRef);
+      return;
+    }
+    if (action === 'draft') {
+      const draft = {
+        ...values, sourceId: current.sourceId, revision: crypto.randomUUID(),
+        updatedAt: serverTimestamp(), updatedBy: uid
+      };
+      if (!draftSnapshot) {
+        draft.createdAt = serverTimestamp();
+        draft.createdBy = uid;
+      }
+      transaction.set(draftRef, draft, { merge: true });
+      return;
+    }
+    const productRef = doc(state.db, 'products', current.product?.id || values.sku);
+    const productSnapshot = await transaction.get(productRef);
+    if (productSnapshot.exists() && !current.product) throw new Error('That SKU already exists. Choose another SKU or open the existing product.');
+    if (!productSnapshot.exists() && current.product) throw new Error('This product could not be found. Refresh the product list.');
+    const previous = productSnapshot.exists() ? productSnapshot.data() : {};
+    if (current.product && Object.keys(values).some((field) => (previous[field] ?? '') !== (current.product[field] ?? ''))) {
+      throw new Error('This product changed on another device. Close it and use Refresh before editing again.');
+    }
+    if (previous.stockQty > 1 && (values.serialNumber || values.imei)) {
+      throw new Error('This stock line has several units. Add a separate record for each device with its own identifier.');
+    }
+    const newIds = deviceIdentifiers(values);
+    const oldIds = deviceIdentifiers(previous);
+    const duplicate = state.products.some((product) => product.id !== productRef.id &&
+      deviceIdentifiers(product).some((id) => newIds.includes(id)));
+    if (duplicate) throw new Error('A product already uses this serial number or IMEI.');
+    const refs = [...new Set([...newIds, ...oldIds])].map((id) => doc(state.db, 'productIdentifiers', id));
+    const entries = await Promise.all(refs.map((ref) => transaction.get(ref)));
+    entries.forEach((entry, index) => {
+      const ref = refs[index];
+      const assignedHere = entry.exists() && entry.data().productId === productRef.id;
+      if (newIds.includes(ref.id)) {
+        if (entry.exists() && !assignedHere) throw new Error('A product already uses this serial number or IMEI.');
+        if (!assignedHere) transaction.set(ref, { productId: productRef.id });
+      } else if (assignedHere) transaction.delete(ref);
+    });
+    if (current.product) transaction.update(productRef, { ...values, updatedAt: serverTimestamp() });
+    else transaction.set(productRef, {
+      ...values, createdBy: uid, createdAt: serverTimestamp(), updatedAt: serverTimestamp()
+    });
+    if (current.draft) transaction.delete(draftRef);
+  });
+}
+
+async function runEditorAction(action) {
+  const current = editor;
+  if (current.busy) return;
+  const session = authCheck;
+  const form = $('#product-form');
+  const errorBox = $('#product-form-error');
+  const buttons = [...form.querySelectorAll('button')];
+  current.busy = true;
+  buttons.forEach((button) => { button.disabled = true; });
+  errorBox.hidden = true;
+  try {
+    const values = action === 'delete' ? {} : readProductForm(form, action);
+    await saveEditorAction(action, values, current);
+    if (session !== authCheck) return;
+    $('#product-dialog').close();
+    const message = action === 'draft' ? 'Draft saved.' : action === 'delete' ? 'Draft deleted.'
+      : current.product ? 'Product details updated.' : 'Product added to stock.';
+    await refreshAfterSave(message);
+    if (session !== authCheck) return;
+    if (action === 'draft' || action === 'delete') view('drafts');
+    else if (!current.product) showProducts('all', values.sku);
+    else {
+      const updated = state.products.find((p) => p.id === current.product.id);
+      if (updated) openProduct(updated);
+    }
+  } catch (err) {
+    if (session !== authCheck) return;
+    errorBox.textContent = err.code === 'permission-denied' ? 'Your account could not save this entry. Ask the shop owner to check dashboard access.' : err.message;
+    errorBox.hidden = false;
+    errorBox.scrollIntoView({ block: 'nearest' });
+  } finally {
+    current.busy = false;
+    buttons.forEach((button) => { button.disabled = false; });
+  }
+}
+
 function attachActions() {
-  $('#overview-add-device').addEventListener('click', () => {
-    view('inventory');
-    $('#product-form').elements.sku.focus();
+  productAssist = initProductAssist({
+    form: $('#product-form'), getProducts: () => state.products,
+    getCurrentId: () => editor.product?.id,
+    openExisting: (product) => { $('#product-dialog').close(); openProduct(product); }
+  });
+  ['#overview-add-device', '#inventory-add', '#draft-add'].forEach((selector) =>
+    $(selector).addEventListener('click', () => openEditor()));
+  $('#quick-search').addEventListener('submit', (event) => {
+    event.preventDefault();
+    showProducts('all', formValue(event.currentTarget, 'query'), true);
+  });
+  $('#open-stock').addEventListener('click', () => showProducts('in-stock'));
+  $('#open-attention').addEventListener('click', () => {
+    $('#attention-title').focus({ preventScroll: true });
+    $('#attention-panel').scrollIntoView({ block: 'start' });
+  });
+  $('#alerts').addEventListener('click', (event) => {
+    const action = event.target.closest('[data-attention]')?.dataset.attention;
+    if (action === 'unpaid') {
+      view('sales');
+      $('#payment-sale').focus();
+    } else if (action === 'tracker') {
+      $('#tracker-search').value = '';
+      $('#tracker-filter').value = 'review';
+      drawTracker();
+      view('tracker');
+    } else if (action) {
+      showProducts(action);
+    }
   });
   $('#view-tracker-sales').addEventListener('click', () => {
     $('#tracker-search').value = '';
     $('#tracker-filter').value = 'sold';
     drawTracker();
     view('tracker');
+  });
+  $('#product-form').elements.category.addEventListener('change', syncCategory);
+  $('#product-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    runEditorAction('product');
+  });
+  $('#save-draft').addEventListener('click', () => runEditorAction('draft'));
+  $('#delete-draft').addEventListener('click', () => {
+    if (window.confirm('Delete this draft?')) runEditorAction('delete');
+  });
+  document.querySelectorAll('[data-close-dialog]').forEach((button) =>
+    button.addEventListener('click', () => button.closest('dialog').close()));
+  $('#product-dialog').addEventListener('cancel', (event) => {
+    if (editor.busy) event.preventDefault();
+  });
+  $('#draft-list').addEventListener('click', (event) => {
+    const item = event.target.closest('[data-draft]');
+    const draft = item && state.drafts.find((record) => record.id === item.dataset.draft);
+    if (draft) openEditor({ draft });
+  });
+  $('#inventory-rows').addEventListener('click', (event) => {
+    const item = event.target.closest('[data-product]');
+    const product = item && state.products.find((record) => record.id === item.dataset.product);
+    if (product) openProduct(product);
+  });
+  $('#detail-edit').addEventListener('click', () => {
+    $('#detail-dialog').close();
+    openEditor({ product: selectedProduct });
+  });
+  $('#detail-sale').addEventListener('click', () => {
+    $('#detail-dialog').close();
+    view('sales');
+    $('#sale-product').value = selectedProduct.id;
+    $('#sale-product').dispatchEvent(new Event('change'));
+    $('#sale-form [name="quantity"]').value = 1;
+    $('#sale-form [name="paid"]').focus();
   });
   $('#tracker-search').addEventListener('input', drawTracker);
   $('#tracker-filter').addEventListener('change', drawTracker);
@@ -276,60 +663,25 @@ function attachActions() {
     if (!button || state.member?.role !== 'owner') return;
     const record = state.trackerRecords.find(r=>r.id===button.dataset.review);
     if (!record) return;
-    if (state.products.some(p=>p.sku===record.id)) { notice('This source row already has an inventory entry.', true); return; }
-    const form = $('#product-form');
-    form.elements.sku.value = record.id;
-    form.elements.name.value = [record.name,record.storage,record.colour].filter(Boolean).join(' ');
-    form.elements.category.value = record.category;
-    form.elements.quantity.value = 1;
-    form.elements.cost.value = record.costGmd ?? '';
-    form.elements.price.value = '';
-    form.elements.receivedOn.value = '';
-    form.elements.notes.value = (record.sourceSheet+' row '+record.sourceRow+'; battery '+record.battery+'; '+(record.notes || '')).slice(0,300);
-    view('inventory'); form.scrollIntoView({behavior:'smooth'});
-    notice('Confirm physical stock, selling price and received date before saving.');
+    if (state.products.some((product) => product.sku === record.id)) {
+      notice('This source row already has an inventory entry.', true);
+      return;
+    }
+    const draft = state.drafts.find((item) => item.sourceId === record.id);
+    openEditor(draft ? { draft } : { record });
   });
   document.querySelectorAll('[data-view]').forEach((button) =>
-    button.addEventListener('click', () => view(button.dataset.view)));
-  $('#publish-staff').addEventListener('click', async () => {
-    if (state.member?.role !== 'owner') return;
-    const missing = state.products.filter(p => !state.staffInventory.some(x => x.id === p.id));
-    if (!missing.length) { notice('Everything is already published.'); return; }
-    if (!window.confirm('Share ' + missing.length + ' products with staff? Only stock, selling prices and basic product descriptions will be shared. Private buying costs and notes stay hidden.')) return;
-    const button = $('#publish-staff');
-    button.disabled = true;
-    let published = 0;
-    try {
-      for (const product of missing) {
-        await runTransaction(state.db, async tx => {
-          const ref = doc(state.db, 'staffInventory', product.id);
-          const existing = await tx.get(ref);
-          if (existing.exists()) return;
-          // Private notes may contain supplier or buying price: never publish them.
-          tx.set(ref, {
-            sku: product.sku, name: product.name, category: product.category,
-            stockQty: product.stockQty, unitPriceGmd: product.unitPriceGmd,
-            receivedOn: product.receivedOn, notes: '',
-            createdAt: serverTimestamp(), updatedAt: serverTimestamp()
-          });
-        });
-        published++;
-      }
-      await loadData();
-      notice('Published ' + published + ' products with no private cost data.');
-    } catch (error) {
-      console.error('Staff publishing failed', error);
-      await loadData();
-      notice('Publishing stopped after ' + published + ' products. Recheck inventory before retrying. ' + (error?.message || ''), true);
-    } finally {
-      button.disabled = false;
-    }
-  });
+    button.addEventListener('click', () => {
+      if (button.dataset.view === 'inventory' && activeView !== 'inventory') showProducts('all');
+      else view(button.dataset.view);
+    }));
   $('#inventory-search').addEventListener('input', drawInventory);
   $('#inventory-filter').addEventListener('change', drawInventory);
   $('#export-products').addEventListener('click', () =>
     exportCsv('uncle-apple-inventory.csv', state.products.map((p) => ({
       sku: p.sku, name: p.name, category: p.category, remaining: p.stockQty,
+      storage: p.storage || '', colour: p.colour || '', batteryHealth: p.batteryHealth ?? '',
+      serialNumber: p.serialNumber || '', imei: p.imei || '',
       costGmd: p.unitCostGmd, priceGmd: p.unitPriceGmd, receivedOn: p.receivedOn, notes: p.notes || ''
     }))));
   $('#export-sales').addEventListener('click', () =>
@@ -341,6 +693,8 @@ function attachActions() {
     try { await loadData(); notice('Records refreshed.'); } catch (err) { notice(err.message, true); }
   });
   $('#logout').addEventListener('click', () => signOut(state.auth));
+  $('#reload-dashboard').addEventListener('click', () => window.location.reload());
+  $('#error-logout').addEventListener('click', () => signOut(state.auth));
   $('#approval-logout').addEventListener('click', () => signOut(state.auth));
   $('#approval-recheck').addEventListener('click', () => window.location.reload());
   $('#approval-compare').addEventListener('click', () => {
@@ -381,37 +735,6 @@ function attachActions() {
     if (product) $('#sale-form [name="price"]').value = product.unitPriceGmd;
   });
 
-  $('#product-form').addEventListener('submit', (event) => {
-    event.preventDefault(); const form = event.currentTarget;
-    process(form, async () => {
-      if (state.member.role !== 'owner') throw new Error('Only the owner can add stock.');
-      const sku = formValue(form, 'sku').toUpperCase();
-      if (!/^[A-Z0-9][A-Z0-9_-]{1,47}$/.test(sku)) throw new Error('Use 2–48 letters, numbers, hyphens or underscores for the SKU.');
-      const record = {
-        sku, name: formValue(form, 'name'), category: formValue(form, 'category'),
-        stockQty: amount(form, 'quantity', { positive: true, integer: true }),
-        unitCostGmd: amount(form, 'cost'), unitPriceGmd: amount(form, 'price'),
-        receivedOn: formValue(form, 'receivedOn'), notes: formValue(form, 'notes'),
-        createdBy: authenticatedUid(), createdAt: serverTimestamp(), updatedAt: serverTimestamp()
-      };
-      if (!record.name) throw new Error('Enter a product name.');
-      await runTransaction(state.db, async (transaction) => {
-        const ref = doc(state.db, 'products', sku);
-        const staffRef = doc(state.db, 'staffInventory', sku);
-        const privateExisting = await transaction.get(ref);
-        const staffExisting = await transaction.get(staffRef);
-        if (privateExisting.exists() || staffExisting.exists()) throw new Error('That SKU already exists.');
-        transaction.set(ref, record);
-        transaction.set(staffRef, {
-          sku, name: record.name, category: record.category, stockQty: record.stockQty,
-          unitPriceGmd: record.unitPriceGmd, receivedOn: record.receivedOn,
-          notes: formValue(form, 'staffNotes'),
-          createdAt: serverTimestamp(), updatedAt: serverTimestamp()
-        });
-      });
-    }, 'Stock saved successfully.');
-  });
-
   $('#sale-form').addEventListener('submit', (event) => {
     event.preventDefault(); const form = event.currentTarget;
     process(form, async () => {
@@ -425,19 +748,11 @@ function attachActions() {
       const userId = authenticatedUid();
       await runTransaction(state.db, async (transaction) => {
         const productRef = doc(state.db, 'products', productId);
-        const staffRef = doc(state.db, 'staffInventory', productId);
         const snap = await transaction.get(productRef);
-        const staffSnap = await transaction.get(staffRef);
         if (!snap.exists()) throw new Error('Product not found.');
         const product = snap.data();
         if (product.stockQty < quantity) throw new Error('Not enough stock remaining.');
-        if (staffSnap.exists() && staffSnap.data().stockQty !== product.stockQty) {
-          throw new Error('Staff stock and private stock disagree. Reconcile stock before selling.');
-        }
         transaction.update(productRef, { stockQty: product.stockQty - quantity, updatedAt: serverTimestamp() });
-        if (staffSnap.exists()) transaction.update(staffRef, {
-          stockQty: product.stockQty - quantity, updatedAt: serverTimestamp()
-        });
         const saleRef = doc(collection(state.db, 'sales'));
         transaction.set(saleRef, {
           productId, productName: product.name, sku: product.sku, quantity, unitPriceGmd, totalGmd,
@@ -485,19 +800,11 @@ function attachActions() {
       const uid = authenticatedUid();
       await runTransaction(state.db, async (transaction) => {
         const ref = doc(state.db, 'products', productId);
-        const safeRef = doc(state.db, 'staffInventory', productId);
         const snapshot = await transaction.get(ref);
-        const safeSnapshot = await transaction.get(safeRef);
         if (!snapshot.exists()) throw new Error('Product not found.');
         const product = snapshot.data();
         if (product.stockQty < quantity) throw new Error('Not enough stock remaining.');
-        if (safeSnapshot.exists() && safeSnapshot.data().stockQty !== product.stockQty) {
-          throw new Error('Staff stock and private stock disagree. Reconcile stock before write-off.');
-        }
         transaction.update(ref, { stockQty: product.stockQty - quantity, updatedAt: serverTimestamp() });
-        if (safeSnapshot.exists()) transaction.update(safeRef, {
-          stockQty: product.stockQty - quantity, updatedAt: serverTimestamp()
-        });
         transaction.set(doc(collection(state.db, 'losses')), {
           productId, productName: product.name, sku: product.sku, quantity,
           costGmd: Number((quantity * Number(product.unitCostGmd)).toFixed(2)),
@@ -530,7 +837,17 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
   state.auth = getAuth(firebaseApp);
   state.db = getFirestore(firebaseApp);
   onAuthStateChanged(state.auth, async (user) => {
+    const session = ++authCheck;
+    productAssist.stop();
+    $('#store-insights').replaceChildren();
+    $('#store-insights').hidden = true;
     $('#app').hidden = true;
+    $('#load-error').hidden = true;
+    document.querySelectorAll('dialog[open]').forEach((dialog) => dialog.close());
+    ['trackerRecords', 'products', 'drafts', 'sales', 'losses', 'expenses'].forEach((name) => { state[name] = []; });
+    $('#inventory-search').value = '';
+    $('#quick-search').reset();
+    $('#tracker-search').value = '';
     $('#login-panel').hidden = true;
     $('#approval-panel').hidden = true;
     $('#refresh').hidden = true;
@@ -546,6 +863,7 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
       // Always query the server for access approval, rather than any stale local cache.
       const approvalPath = doc(state.db, 'users', user.uid);
       const membership = await getDocFromServer(approvalPath);
+      if (session !== authCheck) return;
       console.info('Store approval check', {
         projectId: state.db.app.options.projectId,
         databaseId: state.db._databaseId?.database || '(default)',
@@ -569,21 +887,21 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
       }
       state.user = user;
       state.member = profile;
-      if (profile.role === 'staff') {
-        window.location.replace('./staff.html');
-        return;
-      }
       $('#user-label').textContent = user.email || 'Signed in';
-      $('#role-label').textContent = (profile.role === 'owner' ? 'Owner' : 'Staff') + ' access · Live store records';
+      $('#role-label').textContent = profile.role === 'owner' ? 'Owner access' : 'Staff access';
+      await loadData();
+      if (session !== authCheck) return;
+      view('overview', false);
       $('#app').hidden = false;
       $('#refresh').hidden = false;
       $('#logout').hidden = false;
-      await loadData();
     } catch (error) {
+      if (session !== authCheck) return;
       console.error('Dashboard failed to load', error);
       notice('Could not load shop records. Check Firebase setup and Firestore rules.', true);
       $('#app').hidden = true;
-      $('#login-panel').hidden = false;
+      $('#login-panel').hidden = true;
+      $('#load-error').hidden = false;
     }
   });
 }

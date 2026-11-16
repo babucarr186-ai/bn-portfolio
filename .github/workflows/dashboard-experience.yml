@@ -1,0 +1,39 @@
+name: Dashboard experience checks
+on:
+  push:
+    branches: [feature/dashboard-charts-scanning]
+  pull_request:
+    paths:
+      - 'public/admin/**'
+      - 'scripts/dashboard-*.test.*'
+      - '.github/workflows/dashboard-experience.yml'
+permissions:
+  contents: read
+jobs:
+  experience:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --test scripts/dashboard-insights.test.mjs
+      - run: |
+          node --check public/admin/app.js
+          node --check public/admin/product-assist.js
+          node --check public/admin/insights.js
+          node --check public/admin/models.js
+      - run: npm install --no-save playwright@1.58.2
+      - run: npx playwright install --with-deps chromium
+      - name: Test UI with synthetic records only
+        run: |
+          python3 -m http.server 4173 --directory public/admin > /tmp/dashboard-http.log 2>&1 &
+          node scripts/dashboard-ui.test.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dashboard-preview-screenshots
+          path: test-results/
