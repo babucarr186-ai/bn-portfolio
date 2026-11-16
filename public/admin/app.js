@@ -1,3 +1,4 @@
+import { openReceipt } from './receipts.js';
 import { renderInsights } from './insights.js';
 import { initProductAssist } from './product-assist.js';
 // Private Uncle Apple Store operations. All protected data lives in Firestore, never in this bundle.
@@ -15,7 +16,7 @@ const money = (value) => 'D ' + new Intl.NumberFormat('en-GB', { maximumFraction
 const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, (char) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 })[char]);
-const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Africa/Banjul' });
+const today = () => new Date().toISOString().slice(0, 10); // Banjul uses UTC year-round.
 const daysOld = (date) => Math.floor((Date.now() - new Date(String(date) + 'T12:00:00Z').getTime()) / 86400000);
 const state = { trackerRecords: [], products: [], drafts: [], sales: [], losses: [], expenses: [], member: null, user: null, db: null, auth: null };
 let noticeTimer;
@@ -120,6 +121,8 @@ function drawTracker() {
 function drawOverview() {
   const revenue = state.sales.reduce((acc, item) => acc + Number(item.totalGmd || 0), 0);
   const collected = state.sales.reduce((acc, item) => acc + Number(item.paidGmd || 0), 0);
+  const costComplete = state.sales.every(s => typeof s.unitCostGmd === 'number' && Number.isFinite(s.unitCostGmd) && s.unitCostGmd >= 0);
+  const stockCostComplete = state.products.filter(p => p.stockQty > 0).every(p => typeof p.unitCostGmd === 'number' && Number.isFinite(p.unitCostGmd) && p.unitCostGmd >= 0);
   const soldCost = state.sales.reduce((acc, item) => acc + Number(item.unitCostGmd || 0) * Number(item.quantity || 0), 0);
   const writeOff = state.losses.reduce((acc, item) => acc + Number(item.costGmd || 0), 0);
   const expenses = state.expenses.reduce((acc, item) => acc + Number(item.amountGmd || 0), 0);
@@ -129,11 +132,11 @@ function drawOverview() {
     ['Sales revenue', money(revenue), state.sales.length + ' recorded transactions'],
     ['Cash collected', money(collected), 'Includes later instalment payments'],
     ['Customer balances', money(revenue - collected), 'Sold but not yet collected'],
-    ['Inventory at cost', money(stockValue), inStock.length + ' active product lines'],
-    ['Gross profit', money(revenue - soldCost), 'Revenue minus cost of sold goods'],
+    ['Inventory at cost', stockCostComplete ? money(stockValue) : 'Incomplete', inStock.length + ' active product lines'],
+    ['Gross profit', costComplete ? money(revenue - soldCost) : 'Unknown', costComplete ? 'Revenue minus cost of sold goods' : 'Buying costs are missing'],
     ['Recorded losses', money(writeOff), state.losses.length + ' write-offs'],
     ['Operating expenses', money(expenses), 'Only costs entered here'],
-    ['Estimated result', money(revenue - soldCost - writeOff - expenses), 'Dashboard gross profit minus entered losses and expenses']
+    ['Estimated result', costComplete ? money(revenue - soldCost - writeOff - expenses) : 'Unknown', 'Dashboard gross profit minus entered losses and expenses']
   ];
   $('#metrics').innerHTML = metricCards(kpis, 7);
   drawTrackerPerformance();
@@ -224,8 +227,11 @@ function drawSales() {
     '<tr><td>' + rowText(s.date) + '</td><td><strong>' + rowText(s.productName) +
     '</strong><small>' + rowText(s.sku) + '</small></td><td>' + s.quantity +
     '</td><td>' + money(s.totalGmd) + '</td><td>' + money(s.paidGmd) +
-    '</td><td>' + money(remaining(s)) + '</td><td>' + rowText(s.customer) + '</td></tr>').join('')
+    '</td><td>' + money(remaining(s)) + '</td><td>' + rowText(s.customer) + '<br><button type="button" class="text-button" data-receipt="' + escapeHtml(s.id) + '">Receipt</button></td></tr>').join('')
     : emptyRow(7);
+  $('#sales-rows').querySelectorAll('[data-receipt]').forEach(button => button.addEventListener('click', () => {
+    try { openReceipt(state.sales.find(s => s.id === button.dataset.receipt)); } catch(error) { notice(error.message, true); }
+  }));
   options($('#payment-sale'), sales.filter((s) => remaining(s) > 0),
     (s) => s.productName + ' · ' + (s.customer || s.date) + ' · ' + money(remaining(s)) + ' remaining',
     'Choose an unpaid sale');
@@ -262,6 +268,7 @@ function draw() {
 
 async function loadData() {
   const session = authCheck;
+  if (state.member?.role !== 'owner') throw new Error('Owner dashboard only. Staff isolation must be verified before staff operations are enabled.');
   const names = ['products', 'productDrafts', 'sales', 'losses'];
   if (state.member?.role === 'owner') names.push('trackerRecords', 'expenses');
   const snapshots = await Promise.all(names.map((name) => getDocs(collection(state.db, name))));
@@ -304,6 +311,8 @@ async function refreshAfterSave(message) {
 }
 
 async function process(form, operation, successText) {
+  if (form.dataset.saving === 'true') return;
+  form.dataset.saving = 'true';
   const submit = form.querySelector('button[type="submit"]');
   submit.disabled = true;
   try {
@@ -314,7 +323,7 @@ async function process(form, operation, successText) {
   } catch (err) {
     console.error('Dashboard operation failed', err);
     notice(err.message || 'Unable to save the record.', true);
-  } finally { submit.disabled = false; }
+  } finally { submit.disabled = false; delete form.dataset.saving; }
 }
 function setDates() {
   document.querySelectorAll('input[type=date][required]').forEach((el) => { if (!el.value) el.value = today(); });
@@ -745,6 +754,8 @@ function attachActions() {
       const totalGmd = Number((quantity * unitPriceGmd).toFixed(2));
       if (totalGmd > 1000000000 || paidGmd > totalGmd) throw new Error('Paid amount cannot exceed the sale total.');
       if (!productId) throw new Error('Choose a product.');
+      const saleDate = formValue(form, 'date');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(saleDate) || !Number.isFinite(Date.parse(saleDate)) || new Date(saleDate).toISOString().slice(0,10) !== saleDate || saleDate > today()) throw new Error('Choose a valid sale date, today or earlier.');
       const userId = authenticatedUid();
       await runTransaction(state.db, async (transaction) => {
         const productRef = doc(state.db, 'products', productId);

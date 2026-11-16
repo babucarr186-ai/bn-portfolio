@@ -20,12 +20,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: node --test scripts/dashboard-insights.test.mjs
+      - run: node --test scripts/dashboard-insights.test.mjs scripts/dashboard-performance.test.mjs
       - run: |
           node --check public/admin/app.js
           node --check public/admin/product-assist.js
           node --check public/admin/insights.js
           node --check public/admin/models.js
+          node scripts/build-dashboard.mjs
       - run: npm install --no-save playwright@1.58.2
       - run: npx playwright install --with-deps chromium
       - name: Test UI with synthetic records only
