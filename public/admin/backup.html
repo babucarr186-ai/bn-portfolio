@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>Owner data export · Uncle Apple Store</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    body{max-width:820px;margin:0 auto;padding:2rem 1rem}
+    main{display:grid;gap:1rem}
+    .backup-panel{padding:1.4rem;border:1px solid #4b347b;border-radius:14px;background:#141022}
+    .backup-panel p{line-height:1.55}
+    input{display:block;width:100%;max-width:520px;margin:.4rem 0 1rem;padding:.8rem}
+    button{padding:.8rem 1.25rem;cursor:pointer}
+    button:disabled{opacity:.5;cursor:wait}
+    #feedback{white-space:pre-wrap;line-height:1.5}
+    .warning{color:#ffdba2}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Uncle Apple Store — owner data export</h1>
+    <p>This local download is for the store owner only. It reads records without changing them.</p>
+    <section id="login-panel" class="backup-panel" hidden>
+      <h2>Owner sign-in</h2>
+      <form id="login-form">
+        <label>Email<input name="email" type="email" autocomplete="username" required></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+        <button type="submit">Sign in</button>
+      </form>
+    </section>
+    <section id="owner-panel" class="backup-panel" hidden>
+      <h2>Export private records</h2>
+      <p>Signed in as <strong id="account"></strong>.</p>
+      <p>Export includes: products, drafts, sales, payments, expenses, losses, imported tracker records, account roles, and worker-safe data. Known product serial/IMEI index documents are also read individually.</p>
+      <p class="warning"><strong>Not a full disaster-recovery backup:</strong> unknown collections, subcollections and orphaned identifier records cannot be discovered with these client permissions. Collections are read sequentially, not as one consistent snapshot. Do not use this as your only long-term backup.</p>
+      <button id="export" type="button">Download private records as JSON</button>
+      <button id="sign-out" type="button">Sign out</button>
+    </section>
+    <p id="feedback" role="status" aria-live="polite">Checking access…</p>
+    <p><a href="./index.html">Back to owner dashboard</a></p>
+    <p class="warning">The JSON contains confidential buying costs and customer details. Save it to an encrypted private folder. Never upload it to public GitHub, share it with staff, or email it unencrypted.</p>
+  </main>
+  <script type="module" src="./backup.js"></script>
+</body>
+</html>
