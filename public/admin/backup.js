@@ -13,6 +13,9 @@ const names = [
   'products', 'productDrafts', 'sales', 'payments', 'losses', 'expenses',
   'trackerRecords', 'users', 'staffInventory', 'staffSales', 'staffPayments'
 ];
+// Optional collections are not yet permitted under the CURRENT live rules.
+// Their access will only be enabled after the new staff-safe rules are deployed.
+const optionalCollections = new Set(['staffInventory', 'staffSales', 'staffPayments']);
 const auth = getAuth(initializeApp(firebaseConfig));
 const db = getFirestore(auth.app);
 let owner = null;
@@ -118,9 +121,18 @@ $('#export').addEventListener('click', async () => {
   button.disabled = true;
   try {
     const collections = {};
+    const skippedCollections = [];
     for (const name of names) {
       feedback('Reading ' + name + '…');
-      collections[name] = await collect(name);
+      try {
+        collections[name] = await collect(name);
+      } catch (error) {
+        if (optionalCollections.has(name) && error?.code === 'permission-denied') {
+          skippedCollections.push(name);
+          continue;
+        }
+        throw error;
+      }
     }
     feedback('Checking known serial and IMEI index documents…');
     const identifiers = await collectKnownIdentifiers(collections.products);
@@ -134,6 +146,7 @@ $('#export').addEventListener('click', async () => {
       exportedAt,
       signedInUid: owner.uid,
       counts,
+      skippedCollections,
       limitations: [
         'NOT a managed Firestore backup or atomic point-in-time snapshot',
         'Only explicitly listed root collections were exported; no unknown collections or subcollections',
@@ -144,8 +157,9 @@ $('#export').addEventListener('click', async () => {
       collections
     };
     saveAsJson(payload);
-    feedback('Download requested. Verify that the JSON file exists on your computer before changing any live rules. ' +
-      Object.values(counts).reduce((a, b) => a + b, 0) + ' document records were read.');
+    feedback('Download requested. Verify the JSON file before changing live rules. ' +
+      Object.values(counts).reduce((a, b) => a + b, 0) + ' document records were read.' +
+      (skippedCollections.length ? ' Not accessible under current rules: ' + skippedCollections.join(', ') + '.' : ''));
   } catch (error) {
     console.error('Read-only backup failed', error);
     feedback('Export aborted; no partial file was downloaded. ' + (error?.message || 'Review Firestore permissions.'));
