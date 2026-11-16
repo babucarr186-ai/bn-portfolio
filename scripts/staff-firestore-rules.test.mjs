@@ -38,6 +38,12 @@ try {
       }),
       setDoc(doc(db,'payments','privatePayment'),{saleId:'legacy1',amountGmd:2200}),
       setDoc(doc(db,'expenses','privateExpense'),{amountGmd:700}),
+      setDoc(doc(db,'productDrafts','privateDraft'),{
+        name:'iPhone Test',category:'iPhone',cost:'1000',
+        createdBy:'owner',createdAt:new Date('2026-11-15'),updatedAt:new Date('2026-11-15'),
+        updatedBy:'owner'
+      }),
+      setDoc(doc(db,'productIdentifiers','serial-ABCD123'),{productId:safeSku}),
       setDoc(doc(db,'trackerRecords','privateTracker'),{investment:100000})
     ]);
   });
@@ -51,6 +57,15 @@ try {
   }
   await assertSucceeds(getDoc(doc(staff,'staffInventory',safeSku)));
   await assertSucceeds(getDoc(doc(owner,'products',safeSku)));
+  // Preserve production draft and identifier collections without exposing cost data.
+  await assertSucceeds(getDoc(doc(owner,'productDrafts','privateDraft')));
+  await assertSucceeds(getDoc(doc(owner,'productIdentifiers','serial-ABCD123')));
+  await assertFails(getDoc(doc(staff,'productDrafts','privateDraft')));
+  await assertFails(getDoc(doc(staff,'productIdentifiers','serial-ABCD123')));
+  await assertFails(setDoc(doc(staff,'productDrafts','badDraft'),{name:'Leaked cost',cost:'1'}));
+  await assertFails(setDoc(doc(staff,'productIdentifiers','serial-NEW'),{productId:safeSku}));
+  await assertFails(updateDoc(doc(staff,'productDrafts','privateDraft'),{cost:'0'}));
+
   for (const path of [
     ['products',safeSku],['sales','legacy1'],['payments','privatePayment'],
     ['expenses','privateExpense'],['trackerRecords','privateTracker']
