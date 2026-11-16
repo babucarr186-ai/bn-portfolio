@@ -27,6 +27,7 @@ jobs:
           node --check public/admin/app.js
           node --check public/admin/staff.js
           node --check public/admin/backup.js
+          node --check scripts/validate-store-backup.cjs
           node --check public/admin/firebase-config.js
           node --check scripts/staff-firestore-rules.test.mjs
       - name: Install dependencies
