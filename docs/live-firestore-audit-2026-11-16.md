@@ -41,4 +41,4 @@ The current Firebase Auth users screen showed **one account** on 2026-11-16. The
 
 ### Important limitation
 
-Firestone / Cloud Firestore security rules protect client SDK operations, not project administrators with IAM/Admin SDK credentials. Keep Firebase Console IAM restricted to owners.
+Cloud Firestore security rules protect client SDK operations, not project administrators with IAM/Admin SDK credentials. Keep Firebase Console IAM restricted to owners.
