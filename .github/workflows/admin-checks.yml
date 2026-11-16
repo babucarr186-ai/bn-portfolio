@@ -26,6 +26,7 @@ jobs:
         run: |
           node --check public/admin/app.js
           node --check public/admin/staff.js
+          node --check public/admin/backup.js
           node --check public/admin/firebase-config.js
           node --check scripts/staff-firestore-rules.test.mjs
       - name: Install dependencies
@@ -46,6 +47,8 @@ jobs:
           test -f dist/admin/staff.html
           test -f dist/admin/staff.js
           test -f dist/admin/staff.css
+          test -f dist/admin/backup.html
+          test -f dist/admin/backup.js
 
       - uses: actions/setup-java@v4
         with:
