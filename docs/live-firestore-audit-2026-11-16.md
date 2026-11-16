@@ -42,3 +42,16 @@ The current Firebase Auth users screen showed **one account** on 2026-11-16. The
 ### Important limitation
 
 Cloud Firestore security rules protect client SDK operations, not project administrators with IAM/Admin SDK credentials. Keep Firebase Console IAM restricted to owners.
+
+## Free-plan, browser-only record export (development preview)
+
+The development branch includes `public/admin/backup.html` + `backup.js` for an **owner-only, read-only, local JSON export** of explicitly named root collections. No database writes and no managed export services. Use only after preview deployment and a successful owner login.
+
+1. Build and deploy the admin-only preview, not production Hosting:
+   `npm ci && npm run build && firebase hosting:channel:deploy admin-test --project uncle-apple-store --expires 7d --config firebase.admin-preview.json`.
+2. Open the returned preview URL followed by `/backup.html`, authenticate as owner, and click **Download private records as JSON**.
+3. Confirm the file exists locally and the saved JSON `counts` agree with the displayed source collection counts; retain it privately and encrypted.
+
+**Limitations:** Unlike a managed Firestore backup, this is not an atomic snapshot or tested restore package. The client cannot list the `productIdentifiers` collection, so it fetches only known index IDs derived from product documents. Unknown collections, subcollections, and orphaned identifier documents are not included; those need a privileged Admin SDK export/verification before production migration. The file can contain customer names, payment records, costs, and staff identities; do **not** store it in public GitHub or send it unencrypted.
+
+Firebase documentation confirms that scheduled Firestore backups, PITR, and managed import/export require Blaze billing. Do not upgrade or create paid storage without the owner's separate informed decision.
