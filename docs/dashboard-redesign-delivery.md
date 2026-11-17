@@ -1,3 +1,5 @@
+> Status update: the owner dashboard was deployed on 17 November. See [current release report](dashboard-release-2026-11-17.md). The original report below records the pre-access state.
+
 # Uncle Apple Store implementation and release report — 16 November 2026
 
 ## Delivery status
