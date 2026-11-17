@@ -35,6 +35,7 @@
       <p>Signed in as <strong id="account"></strong>.</p>
       <p>Export includes: products, drafts, sales, payments, expenses, losses, imported tracker records, account roles, and worker-safe data. Known product serial/IMEI index documents are also read individually.</p>
       <p class="warning"><strong>Not a full disaster-recovery backup:</strong> unknown collections, subcollections and orphaned identifier records cannot be discovered with these client permissions. Collections are read sequentially, not as one consistent snapshot. Do not use this as your only long-term backup.</p>
+      <label>Verify your owner password before exporting<input id="verify-password" type="password" autocomplete="current-password"></label>
       <button id="export" type="button">Download private records as JSON</button>
       <button id="sign-out" type="button">Sign out</button>
     </section>

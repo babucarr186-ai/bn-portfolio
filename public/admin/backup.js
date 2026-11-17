@@ -2,7 +2,7 @@
 // This does not write to Firestore or upload customer data anywhere.
 import { firebaseConfig } from './firebase-config.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
+import { getAuth, EmailAuthProvider, reauthenticateWithCredential, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
 import {
   getFirestore, collection, doc, getDocFromServer, getDocsFromServer, query, orderBy, documentId, limit, startAfter
 } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
@@ -120,6 +120,12 @@ $('#export').addEventListener('click', async () => {
   const button = $('#export');
   button.disabled = true;
   try {
+    const password = $('#verify-password').value;
+    $('#verify-password').value = '';
+    if (!password || !owner.email) throw new Error('Enter your owner password to verify this sensitive export.');
+    await reauthenticateWithCredential(owner, EmailAuthProvider.credential(owner.email, password));
+    const profile = await getDocFromServer(doc(db, 'users', owner.uid));
+    if (profile.data()?.role !== 'owner' || profile.data()?.active !== true) throw new Error('Active owner access required.');
     const collections = {};
     const skippedCollections = [];
     for (const name of names) {
@@ -156,6 +162,7 @@ $('#export').addEventListener('click', async () => {
       knownIdentifierCount: identifiers.knownIndexIDs,
       collections
     };
+    if (auth.currentUser?.uid !== payload.signedInUid) throw new Error('Your session changed; export cancelled.');
     saveAsJson(payload);
     feedback('Download requested. Verify the JSON file before changing live rules. ' +
       Object.values(counts).reduce((a, b) => a + b, 0) + ' document records were read.' +

@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <meta name="theme-color" content="#0c0b10">
   <title>Shop dashboard · Uncle Apple Store</title>
-  <link rel="stylesheet" href="./styles.css?v=4">
+  <link rel="stylesheet" href="./styles.css?v=5">
 </head>
 <body>
   <div class="shell">
@@ -71,7 +71,7 @@
         <div class="workspace">
         <section class="view" id="view-overview">
           <div class="page-heading">
-            <div><p id="role-label" class="eyebrow">Shop operations</p><h1 tabindex="-1">Shop overview</h1></div>
+            <div><p id="role-label" class="eyebrow">Shop operations</p><h1 tabindex="-1">Business overview</h1></div>
             <button id="overview-add-device" class="primary" type="button"><span aria-hidden="true">＋</span> Add product</button>
           </div>
           <section class="finder" aria-labelledby="finder-title">
@@ -83,6 +83,7 @@
               <button class="primary" type="submit">Search</button>
             </form>
           </section>
+          <section id="store-insights" class="owner-only" aria-label="Store performance charts" hidden></section>
           <div class="shortcuts" aria-label="Shop shortcuts">
             <button class="shortcut" id="open-stock" type="button"><span>In stock</span><strong id="stock-count">—</strong><small>View products ›</small></button>
             <button class="shortcut" data-view="drafts" type="button"><span>Drafts</span><strong id="draft-count">—</strong><small>Finish an entry ›</small></button>
@@ -92,7 +93,6 @@
             <section class="panel" id="attention-panel" aria-labelledby="attention-title"><div class="panel-head"><h2 id="attention-title" tabindex="-1">Needs attention</h2></div><div id="alerts" class="alerts"></div></section>
             <section class="panel" aria-labelledby="recent-title"><div class="panel-head"><h2 id="recent-title">Recent sales</h2><button data-view="sales" class="text-button" type="button">View sales ›</button></div><div id="recent-sales"></div></section>
           </div>
-          <section id="store-insights" class="owner-only" aria-label="Store performance charts" hidden></section>
           <p id="last-updated" class="fine"></p>
         </section>
         <section class="view owner-only" id="view-reports" hidden>
@@ -153,7 +153,7 @@
               <button class="primary" type="submit">Record payment</button>
             </form>
           </div>
-          <div class="panel"><div class="toolbar"><h3>Sales ledger</h3><button id="export-sales" class="subtle" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Qty</th><th>Total</th><th>Collected</th><th>Outstanding</th><th>Customer</th></tr></thead><tbody id="sales-rows"></tbody></table></div></div>
+          <div class="panel"><div class="toolbar"><h3>Sales ledger</h3><button id="export-sales" class="subtle" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Product</th><th>Qty</th><th>Total</th><th>Collected</th><th>Outstanding</th><th>Customer / Receipt</th></tr></thead><tbody id="sales-rows"></tbody></table></div></div>
         </section>
         <section class="view" id="view-damages" hidden>
           <div class="section-heading"><h1 tabindex="-1">Damages & losses</h1><p>Write off damaged or missing stock. Record repair bills separately under Expenses.</p></div>
@@ -229,6 +229,6 @@
     </main>
     <footer>Uncle Apple Store · Internal records only · <a href="https://uncleapplestore.com/">Return to shop</a></footer>
   </div>
-  <script type="module" src="./app.js?v=4"></script>
+  <script type="module" src="./app.js?v=5"></script>
 </body>
 </html>
