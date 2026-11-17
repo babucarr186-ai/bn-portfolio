@@ -24,19 +24,19 @@ Available dashboard sales are recent; the default completed-month window therefo
 - Live rules' staff cost leak reproduced locally. Proposed interim owner-only rules deny staff get/list/create/update across confidential legacy paths while preserving owner workflows. Syntax validator returns no errors.
 - Real owner sign-in/record loading confirmed by the owner in preview. No real staff account exists; no staff production login test was possible without adding accounts. Emulator tests are not live staff-token tests.
 
-## Security change awaiting explicit approval
+## Security change deployed after explicit approval
 
-The exact prototype change in `firestore.owner-only.rules` is `member()` accepting only `['owner']` instead of `['owner','staff']`; no schema/data migration. A dedicated rules-only configuration is `firebase.owner-security.json`. Owner CRUD validation remains the previously deployed validation. This is an interim confidentiality restriction, not a completed staff system or a complete schema-hardening rewrite.
+After explicit owner approval, `firestore.owner-only.rules` was deployed: `member()` now accepts only `['owner']` instead of `['owner','staff']`; no schema/data migration. The dedicated rules-only configuration is `firebase.owner-security.json`. The CLI confirmed a successful compilation and release; the Firebase MCP retrieval confirmed exact production source equality. A post-rules read confirmed original document paths and fields unchanged. Owner CRUD validation remains the previously deployed validation. This is an interim confidentiality restriction, not a completed staff system or a complete schema-hardening rewrite.
 
 I've set up prototype Security Rules to keep the data in Firestore safe. They are designed to be secure for blocking staff access to legacy documents containing private purchase costs while preserving approved owner workflows. However, you should review and verify them before broadly sharing your app. If you'd like, I can help you harden these rules.
 
-Automatic approval review rejected production deployment because persistent denial of staff workflows requires explicit owner approval of this precise rule change. The owner approval question is pending. The existing production rules remain in effect until approval and successful verified deployment. Do not enable staff accounts meanwhile. Local UI denial is not a database security boundary.
+Automatic approval review initially blocked deployment pending explicit approval. The owner then explicitly approved this precise change in chat. Deployment and active-source verification subsequently succeeded. Staff database access is now denied by deployed rules; staff operational workflows remain incomplete.
 
-Once explicitly approved, deploy only `firestore:rules` with the dedicated config and verify the deployed source. Keep prior live rules for rollback. Do not deploy the separate candidate `firestore.rules`, which assumes an unfinished staff-data migration.
+The approved release used only `firestore:rules` with the dedicated config. Prior live rules are retained privately for rollback. Do not deploy the separate candidate `firestore.rules`, which assumes an unfinished staff-data migration.
 
 ## Hosting recovery
 
-Previous version: `add035cdfbee8f54`. New verified preview version: `85e2361ea297f3c3`. Only site `uncle-apple-store` was promoted. Hosting rollback restores frontend/configuration only; it does not restore data or rules. A subsequent owner refresh/login check is recommended after the rules decision.
+Previous version: `add035cdfbee8f54`. New verified preview version: `85e2361ea297f3c3`. Only site `uncle-apple-store` was promoted. Hosting rollback restores frontend/configuration only; it does not restore data or rules. A subsequent owner refresh/login check is recommended now that the approved rules deployment is complete.
 
 ## Still incomplete
 
