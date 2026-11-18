@@ -148,8 +148,8 @@ service cloud.firestore {
         && validMoney(request.resource.data.unitPriceGmd)
         && dateText(request.resource.data.receivedOn)
         && validDetails(request.resource.data, sku);
-      // An approved worker can only decrement a PRIVATE product's stock inside
-      // the same transaction as a matching new staff sale and safe stock update.
+      // A worker can change private stock only in a linked sale or cancellation.
+      // Rule checks also require the worker-visible stock to match.
       // No read access to the purchase cost is ever granted.
       allow update: if (
         owner()
@@ -183,14 +183,33 @@ service cloud.firestore {
           && getAfter(catalogPath(sku)).data.stockQty == request.resource.data.stockQty
           && getAfter(catalogPath(sku)).data.lastSaleId == request.resource.data.lastSaleId
       );
+      allow update: if staffRestockForCancellation(sku);
       allow delete: if false;
+    }
+
+    function staffRestockForCancellation(sku) {
+      let saleId = request.resource.data.get('lastCancellationId', '');
+      let sale = staffSalePath(saleId);
+      return staff()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['stockQty', 'lastCancellationId', 'updatedAt'])
+        && saleId is string && saleId.size() > 0
+        && request.resource.data.updatedAt == request.time
+        && get(sale).data.productId == sku
+        && get(sale).data.createdBy == request.auth.uid
+        && get(sale).data.paidGmd == 0
+        && get(sale).data.get('cancelledAt', null) == null
+        && getAfter(sale).data.cancelledAt == request.time
+        && request.resource.data.stockQty == resource.data.stockQty + get(sale).data.quantity
+        && (request.resource.data.stockQty <= 1 || (
+          resource.data.get('serialNumber', '') == '' && resource.data.get('imei', '') == ''
+        ));
     }
 
     function validSaleCancellation(saleKey) {
       let product = productPath(resource.data.productId);
       let stock = catalogPath(resource.data.productId);
-      return owner()
-        && resource.data.get('cancelledAt', null) == null
+      return resource.data.get('cancelledAt', null) == null
         && request.resource.data.diff(resource.data).affectedKeys()
           .hasOnly(['cancelledAt', 'cancelledBy', 'refundedGmd'])
         && request.resource.data.cancelledAt == request.time
@@ -231,7 +250,7 @@ service cloud.firestore {
            get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty - request.resource.data.quantity
         && dateText(request.resource.data.date);
       // Later instalment payments can increase paidGmd, never revenue or cost.
-      allow update: if validSaleCancellation('sales/' + id);
+      allow update: if owner() && validSaleCancellation('sales/' + id);
       allow update: if owner()
         && resource.data.get('cancelledAt', null) == null
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['paidGmd', 'updatedAt'])
@@ -326,6 +345,7 @@ service cloud.firestore {
         && getAfter(privateProductPath(sku)).data.stockQty == request.resource.data.stockQty
         && getAfter(privateProductPath(sku)).data.lastSaleId == request.resource.data.lastSaleId
       );
+      allow update: if staffRestockForCancellation(sku);
       allow delete: if false;
     }
 
@@ -370,7 +390,11 @@ service cloud.firestore {
           get(privateProductPath(request.resource.data.sku)).data.stockQty - request.resource.data.quantity
         && getAfter(catalogPath(request.resource.data.sku)).data.lastSaleId == id
         && getAfter(privateProductPath(request.resource.data.sku)).data.lastSaleId == id;
-      allow update: if validSaleCancellation('staffSales/' + id);
+      allow update: if owner() && validSaleCancellation('staffSales/' + id);
+      allow update: if staff() && resource.data.createdBy == request.auth.uid
+        && resource.data.paidGmd == 0
+        && validSaleCancellation(id)
+        && getAfter(catalogPath(resource.data.productId)).data.lastCancellationId == id;
       allow update: if (owner() || (
         staff() && resource.data.createdBy == request.auth.uid
       )) && resource.data.get('cancelledAt', null) == null

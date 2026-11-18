@@ -137,6 +137,15 @@ try {
   assert.equal(staffProduct.unitPriceGmd, 2300);
   assert.equal(staffProduct.unitCostGmd, undefined);
   assert.equal(staffProduct.notes, undefined);
+  const workerCancel = (db, saleId, uid, productId = safeSku, restore = 1) => runTransaction(db, async (tx) => {
+    const stockUpdate = { stockQty: increment(restore), lastCancellationId: saleId, updatedAt: serverTimestamp() };
+    tx.update(doc(db, 'staffInventory', productId), stockUpdate);
+    tx.update(doc(db, 'products', productId), stockUpdate);
+    tx.update(doc(db, 'staffSales', saleId), {
+      cancelledAt: serverTimestamp(), cancelledBy: uid, refundedGmd: 0
+    });
+  });
+  await assertFails(workerCancel(staff, saleRef.id, 'staffA'));
   const staffSale = doc(owner, 'staffSales', saleRef.id);
   const cancellation = {
     cancelledAt: serverTimestamp(), cancelledBy: 'owner', refundedGmd: 2200
@@ -180,6 +189,26 @@ try {
     ...cancellation, refundedGmd: 0
   }));
   await assertFails(updateDoc(ownerSale, { paidGmd: 100, updatedAt: serverTimestamp() }));
+  assert.equal((await getDoc(ownerProduct)).data().stockQty, 3);
+  assert.equal((await getDoc(ownerCatalog)).data().stockQty, 3);
+  const unpaidSaleRef = doc(collection(staff, 'staffSales'));
+  await assertSucceeds(runTransaction(staff, async (tx) => {
+    const sold = { stockQty: increment(-1), lastSaleId: unpaidSaleRef.id, updatedAt: serverTimestamp() };
+    tx.update(safeRef, sold);
+    tx.update(privateRef, sold);
+    tx.set(unpaidSaleRef, {
+      productId: safeSku, sku: safeSku, productName: 'iPhone Test', quantity: 1,
+      unitPriceGmd: 2300, totalGmd: 2300, paidGmd: 0, method: 'Cash',
+      date: '2026-11-15', createdBy: 'staffA'
+    });
+  }));
+  await assertFails(workerCancel(another, unpaidSaleRef.id, 'staffB'));
+  await assertFails(workerCancel(staff, unpaidSaleRef.id, 'staffA', safeSku, 2));
+  await assertFails(updateDoc(unpaidSaleRef, {
+    cancelledAt: serverTimestamp(), cancelledBy: 'staffA', refundedGmd: 0
+  }));
+  await assertSucceeds(workerCancel(staff, unpaidSaleRef.id, 'staffA'));
+  await assertFails(workerCancel(staff, unpaidSaleRef.id, 'staffA'));
   assert.equal((await getDoc(ownerProduct)).data().stockQty, 3);
   assert.equal((await getDoc(ownerCatalog)).data().stockQty, 3);
   console.log('PASS: owner-only finances, safe inventory, atomic staff sales, payments, and denied unauthorized writes');

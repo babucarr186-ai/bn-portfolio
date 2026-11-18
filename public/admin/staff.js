@@ -63,7 +63,10 @@ function drawSales(){
     '<small>'+escapeHtml(s.date)+' · '+escapeHtml(s.productName)+' × '+s.quantity+'</small></div>'+
     '<div><strong>'+gmd(s.totalGmd)+'</strong>'+
     (s.cancelledAt ? '<small>Cancelled</small>' : '<small>Balance: '+gmd(balance(s))+'</small>'+
-      '<button type="button" class="secondary" data-receipt="'+escapeHtml(s.id)+'">Print receipt</button>')+'</div></div>'
+      '<button type="button" class="secondary" data-receipt="'+escapeHtml(s.id)+'">Print receipt</button>'+
+      (state.profile?.role === 'staff' && s.paidGmd === 0
+        ? ' <button type="button" class="secondary" data-cancel-sale="'+escapeHtml(s.id)+'">Cancel &amp; restock</button>'
+        : ''))+'</div></div>'
   ).join(''):'<p class="minor">No sales under your account yet.</p>';
   setOptions($('#payment-sale'),sales.filter(s=>!s.cancelledAt && balance(s)>0),
     s=>(s.customer||'Customer')+' · '+s.productName+' · '+gmd(balance(s))+' outstanding','Choose an unpaid sale');
@@ -110,6 +113,44 @@ $('#my-sales').addEventListener('click', (event) => {
     openReceipt({ ...sale, id: 'staff:' + sale.id });
   } catch (error) {
     notice(error.message, true);
+  }
+});
+$('#my-sales').addEventListener('click', async (event) => {
+  const button = event.target.closest('button[data-cancel-sale]');
+  if (!button || state.profile?.role !== 'staff' || !state.user) return;
+  const uid = state.user.uid;
+  const sale = state.sales.find((record) =>
+    record.id === button.dataset.cancelSale && record.createdBy === uid && !record.cancelledAt && record.paidGmd === 0
+  );
+  if (!sale || !window.confirm('Cancel this unpaid sale and put ' + sale.productName + ' back in stock?')) return;
+  button.disabled = true;
+  try {
+    const saleRef = doc(state.db, 'staffSales', sale.id);
+    await runTransaction(state.db, async (tx) => {
+      const snapshot = await tx.get(saleRef);
+      if (!snapshot.exists() || snapshot.data().cancelledAt) throw Error('This sale was already cancelled.');
+      const current = snapshot.data();
+      if (current.paidGmd !== 0) throw Error('A payment is recorded. Ask the owner to handle this cancellation.');
+      const stockRef = doc(state.db, 'staffInventory', current.productId);
+      const stock = await tx.get(stockRef);
+      if (!stock.exists()) throw Error('The product could not be found.');
+      const product = stock.data();
+      if ((product.serialNumber || product.imei) && product.stockQty + current.quantity > 1) {
+        throw Error('This device is already in stock. Ask the owner to check the record.');
+      }
+      const restock = {
+        stockQty: increment(current.quantity), lastCancellationId: sale.id, updatedAt: serverTimestamp()
+      };
+      tx.update(stockRef, restock);
+      tx.update(doc(state.db, 'products', current.productId), restock);
+      tx.update(saleRef, { cancelledAt: serverTimestamp(), cancelledBy: uid, refundedGmd: 0 });
+    });
+    await load();
+    notice('Sale cancelled and stock restored.');
+  } catch (error) {
+    notice(error.message, true);
+  } finally {
+    button.disabled = false;
   }
 });
 $('#refresh').addEventListener('click',async()=>{try{await load();notice('Stock refreshed.');}catch(e){notice(e.message,true);}});
