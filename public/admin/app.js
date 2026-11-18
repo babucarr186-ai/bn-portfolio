@@ -949,10 +949,14 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
         notice('Your credentials worked. Check the approval information shown.', true);
         return;
       }
+      if (profile.role === 'staff') {
+        window.location.replace('./staff.html');
+        return;
+      }
       state.user = user;
       state.member = profile;
       $('#user-label').textContent = user.email || 'Signed in';
-      $('#role-label').textContent = profile.role === 'owner' ? 'Owner access' : 'Staff access';
+      $('#role-label').textContent = 'Owner access';
       await loadData();
       if (session !== authCheck) return;
       view('overview', false);
