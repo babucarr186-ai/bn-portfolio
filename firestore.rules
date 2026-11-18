@@ -152,13 +152,21 @@ service cloud.firestore {
       // the same transaction as a matching new staff sale and safe stock update.
       // No read access to the purchase cost is ever granted.
       allow update: if (
-        owner() && request.resource.data.stockQty is int
+        owner()
+          && request.resource.data.stockQty is int
           && request.resource.data.stockQty >= 0
-          && validMoney(request.resource.data.unitCostGmd)
+          && (
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stockQty', 'updatedAt'])
+              && request.resource.data.stockQty < resource.data.stockQty
+            || validMoney(request.resource.data.unitCostGmd)
           && validMoney(request.resource.data.unitPriceGmd)
           && validDetails(request.resource.data, sku)
           && releasedIdentifier(resource.data, request.resource.data, sku, 'serialNumber', 'serial-')
           && releasedIdentifier(resource.data, request.resource.data, sku, 'imei', 'imei-')
+          )
+          && (!exists(catalogPath(sku)) || matchesStaffProduct(
+            getAfter(catalogPath(sku)).data, request.resource.data, sku
+          ))
       ) || (
         staff()
           && request.resource.data.diff(resource.data).affectedKeys()
@@ -257,32 +265,32 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
-    // Staff-safe product copy: NO purchase cost, supplier, profit or investment.
-    // Publish owner-checked products from the owner dashboard before staff use.
+    function matchesStaffProduct(safe, product, sku) {
+      return safe.keys().hasOnly([
+          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd', 'receivedOn',
+          'storage', 'colour', 'batteryHealth', 'serialNumber', 'imei', 'updatedAt'
+        ])
+        && safe.sku == sku
+        && safe.name == product.name
+        && safe.category == product.category
+        && safe.stockQty == product.stockQty
+        && safe.unitPriceGmd == product.unitPriceGmd
+        && safe.receivedOn == product.get('receivedOn', '')
+        && safe.storage == product.get('storage', '')
+        && safe.colour == product.get('colour', '')
+        && safe.batteryHealth == product.get('batteryHealth', null)
+        && safe.serialNumber == product.get('serialNumber', '')
+        && safe.imei == product.get('imei', '')
+        && safe.updatedAt == request.time;
+    }
+
     match /staffInventory/{sku} {
       allow read: if member();
-      allow create: if owner()
-        && request.resource.data.keys().hasOnly([
-          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd',
-          'receivedOn', 'notes', 'updatedAt', 'createdAt'
-        ])
-        && request.resource.data.keys().hasAll([
-          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd', 'receivedOn'
-        ])
-        && request.resource.data.sku == sku
-        && request.resource.data.stockQty is int
-        && request.resource.data.stockQty >= 0
-        && validMoney(request.resource.data.unitPriceGmd)
-        && request.resource.data.name is string
-        && request.resource.data.name.size() > 0
-        && request.resource.data.name.size() <= 120;
+      allow create: if owner() && matchesStaffProduct(
+        request.resource.data, getAfter(privateProductPath(sku)).data, sku
+      );
       allow update: if (
-        owner() && request.resource.data.keys().hasOnly([
-          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd',
-          'receivedOn', 'notes', 'updatedAt', 'createdAt', 'lastSaleId'
-        ]) && request.resource.data.stockQty is int
-          && request.resource.data.stockQty >= 0
-          && validMoney(request.resource.data.unitPriceGmd)
+        owner() && matchesStaffProduct(request.resource.data, getAfter(privateProductPath(sku)).data, sku)
       ) || (
         staff()
         && request.resource.data.diff(resource.data).affectedKeys()
@@ -331,6 +339,7 @@ service cloud.firestore {
         && request.resource.data.totalGmd <= request.resource.data.quantity * request.resource.data.unitPriceGmd + 0.01
         && request.resource.data.paidGmd <= request.resource.data.totalGmd
         && request.resource.data.unitPriceGmd == get(catalogPath(request.resource.data.sku)).data.unitPriceGmd
+        && request.resource.data.unitPriceGmd == get(privateProductPath(request.resource.data.sku)).data.unitPriceGmd
         && request.resource.data.productName == get(catalogPath(request.resource.data.sku)).data.name
         && request.resource.data.method is string
         && request.resource.data.method.size() <= 32

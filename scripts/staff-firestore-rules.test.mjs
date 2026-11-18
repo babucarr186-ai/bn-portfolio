@@ -21,7 +21,7 @@ const privateData = {
 };
 const staffData = {
   sku:safeSku,name:'iPhone Test',category:'iPhone',
-  stockQty:3,unitPriceGmd:2200,receivedOn:'2026-11-15',notes:'Battery 89%'
+  stockQty:3,unitPriceGmd:2200,receivedOn:'2026-11-15',storage:'', colour:'', batteryHealth:null, serialNumber:'', imei:''
 };
 try {
   await testEnv.withSecurityRulesDisabled(async context => {
@@ -121,6 +121,22 @@ try {
   await assertFails(updateDoc(doc(staff,'staffSales',saleRef.id),{paidGmd:2001}));
   await assertFails(updateDoc(doc(staff,'staffInventory',safeSku),{stockQty:0}));
   await assertFails(setDoc(doc(staff,'staffInventory','UA-FAKE'),staffData));
+  const ownerProduct = doc(owner, 'products', safeSku);
+  const ownerCatalog = doc(owner, 'staffInventory', safeSku);
+  await assertFails(updateDoc(ownerProduct, { unitPriceGmd: 2300 }));
+  await assertFails(setDoc(ownerCatalog, {
+    ...staffData, stockQty: 2, unitCostGmd: 1000, updatedAt: serverTimestamp()
+  }));
+  await assertSucceeds(runTransaction(owner, async (tx) => {
+    tx.update(ownerProduct, { unitPriceGmd: 2300 });
+    tx.set(ownerCatalog, {
+      ...staffData, stockQty: 2, unitPriceGmd: 2300, updatedAt: serverTimestamp()
+    });
+  }));
+  const staffProduct = (await getDoc(doc(staff, 'staffInventory', safeSku))).data();
+  assert.equal(staffProduct.unitPriceGmd, 2300);
+  assert.equal(staffProduct.unitCostGmd, undefined);
+  assert.equal(staffProduct.notes, undefined);
   console.log('PASS: owner-only finances, safe inventory, atomic staff sales, payments, and denied unauthorized writes');
 } finally {
   await testEnv.cleanup();

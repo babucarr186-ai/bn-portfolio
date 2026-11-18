@@ -23,7 +23,7 @@
   <div class="tabs"><button class="selected" data-tab="inventory">Inventory</button><button data-tab="sale">Record sale</button><button data-tab="payments">Customer payments</button></div>
   <section id="tab-inventory" class="tab-content">
     <div class="panel"><div class="panel-head"><h2>Available products</h2><button id="refresh" type="button" class="secondary">Refresh</button></div>
-    <input id="search" type="search" placeholder="Search model, SKU, notes or serial number" aria-label="Search stock">
+    <input id="search" type="search" placeholder="Search model, SKU, serial number or IMEI" aria-label="Search stock">
     <p id="empty-stock" class="minor" hidden>No available products yet. Ask the owner to publish stock for staff.</p>
     <div class="table-scroll"><table><thead><tr><th>Product / Stock ID</th><th>Condition & notes</th><th>Available</th><th>Selling price</th></tr></thead><tbody id="inventory-list"></tbody></table></div></div>
   </section>
@@ -53,6 +53,6 @@
 </main>
 <footer>Uncle Apple Store · Authorized staff only</footer>
 </div>
-<script type="module" src="./staff.js"></script>
+<script type="module" src="./staff.js?v=2"></script>
 </body>
 </html>

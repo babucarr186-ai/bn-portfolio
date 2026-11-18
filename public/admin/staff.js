@@ -37,12 +37,12 @@ function showTab(name){
 }
 function drawInventory(){
   const term=$('#search').value.toLowerCase().trim();
-  const items=state.inventory.filter(p=>[p.name,p.sku,p.category,p.notes].join(' ').toLowerCase().includes(term));
+  const items=state.inventory.filter(p=>[p.name,p.sku,p.category,p.serialNumber,p.imei].join(' ').toLowerCase().includes(term));
   $('#available-count').textContent=available().length.toLocaleString('en-US');
   $('#empty-stock').hidden=items.length>0;
   $('#inventory-list').innerHTML=items.map(p=>
     '<tr><td><strong>'+escapeHtml(p.name)+'</strong><small>'+escapeHtml(p.sku)+' · '+escapeHtml(p.category)+'</small></td>'+
-    '<td>'+escapeHtml(p.notes||'—')+'</td><td>'+p.stockQty+'</td><td>'+gmd(p.unitPriceGmd)+'</td></tr>'
+    '<td>'+escapeHtml([p.storage,p.colour,p.batteryHealth == null ? '' : p.batteryHealth + '% battery'].filter(Boolean).join(' · ') || '—')+'</td><td>'+p.stockQty+'</td><td>'+gmd(p.unitPriceGmd)+'</td></tr>'
   ).join('');
   setOptions($('#sale-product'),available(),p=>p.name+' · '+p.sku+' ('+p.stockQty+' left)','Select an available product');
   updateSalePrice();
