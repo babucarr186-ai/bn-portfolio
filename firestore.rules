@@ -1,0 +1,446 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function memberPath() {
+      return /databases/$(database)/documents/users/$(request.auth.uid);
+    }
+    function member() {
+      return request.auth != null
+        && exists(memberPath())
+        && get(memberPath()).data.active == true
+        && get(memberPath()).data.role in ['owner', 'staff'];
+    }
+    function owner() {
+      return member() && get(memberPath()).data.role == 'owner';
+    }
+    function staff() {
+      return member() && get(memberPath()).data.role == 'staff';
+    }
+    function staffSalePath(id) {
+      return /databases/$(database)/documents/staffSales/$(id);
+    }
+    function catalogPath(sku) {
+      return /databases/$(database)/documents/staffInventory/$(sku);
+    }
+    function privateProductPath(sku) {
+      return /databases/$(database)/documents/products/$(sku);
+    }
+    function validMoney(v) {
+      return (v is int || v is float) && v >= 0 && v <= 1000000000;
+    }
+    function dateText(v) {
+      return v is string && v.size() <= 12;
+    }
+
+    function productPath(id) {
+      return /databases/$(database)/documents/products/$(id);
+    }
+    function identifierPath(prefix, value) {
+      return /databases/$(database)/documents/productIdentifiers/$(prefix + value);
+    }
+    function identifierMatches(data, id) {
+      return (data.get('serialNumber', '') != '' && id == 'serial-' + data.serialNumber)
+        || (data.get('imei', '') != '' && id == 'imei-' + data.imei);
+    }
+    function claimedIdentifier(data, sku, field, prefix) {
+      let value = data.get(field, '');
+      return value == '' || (
+        data.stockQty <= 1
+        && existsAfter(identifierPath(prefix, value))
+        && getAfter(identifierPath(prefix, value)).data.productId == sku
+      );
+    }
+    function releasedIdentifier(before, after, sku, field, prefix) {
+      let old = before.get(field, '');
+      let path = identifierPath(prefix, old);
+      return old == '' || old == after.get(field, '')
+        || !existsAfter(path)
+        || getAfter(path).data.productId != sku;
+    }
+    function textUpTo(value, max) {
+      return value is string && value.size() <= max;
+    }
+    function validDetails(data, sku) {
+      let serial = data.get('serialNumber', '');
+      let imei = data.get('imei', '');
+      let battery = data.get('batteryHealth', null);
+      return serial is string && (serial == '' || serial.matches('^[A-Z0-9]{3,32}$'))
+        && imei is string && (imei == '' || imei.matches('^[0-9]{15}$'))
+        && (battery == null || (battery is int && battery >= 1 && battery <= 100))
+        && textUpTo(data.get('storage', ''), 32)
+        && textUpTo(data.get('colour', ''), 48)
+        && textUpTo(data.get('notes', ''), 300)
+        && claimedIdentifier(data, sku, 'serialNumber', 'serial-')
+        && claimedIdentifier(data, sku, 'imei', 'imei-');
+    }
+    function validDraft(data) {
+      return data.keys().hasOnly([
+          'name', 'category', 'storage', 'colour', 'battery', 'serialNumber', 'imei', 'quantity',
+          'cost', 'price', 'receivedOn', 'notes', 'sku', 'sourceId', 'revision',
+          'createdAt', 'createdBy', 'updatedAt', 'updatedBy'
+        ])
+        && textUpTo(data.name, 120) && data.name.size() > 0
+        && textUpTo(data.category, 48) && textUpTo(data.storage, 32) && textUpTo(data.colour, 48)
+        && textUpTo(data.serialNumber, 40) && textUpTo(data.imei, 24) && textUpTo(data.battery, 16)
+        && textUpTo(data.quantity, 20) && textUpTo(data.cost, 24) && textUpTo(data.price, 24)
+        && textUpTo(data.receivedOn, 12) && textUpTo(data.notes, 300)
+        && textUpTo(data.sku, 48) && textUpTo(data.sourceId, 48) && textUpTo(data.revision, 36)
+        && data.updatedBy == request.auth.uid && data.updatedAt == request.time;
+    }
+
+    // Retain live owner draft workflow, but block staff access to draft costs.
+    match /productDrafts/{id} {
+      allow read, delete: if owner();
+      allow create: if owner() && validDraft(request.resource.data)
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+      allow update: if owner() && validDraft(request.resource.data)
+        && request.resource.data.createdBy == resource.data.createdBy
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.sourceId == resource.data.sourceId;
+    }
+
+    // Retain the live serial / IMEI uniqueness index with owner-only writes.
+    match /productIdentifiers/{id} {
+      allow get: if owner();
+      allow create: if owner()
+        && request.resource.data.keys().hasOnly(['productId'])
+        && request.resource.data.productId is string
+        && existsAfter(productPath(request.resource.data.productId))
+        && identifierMatches(getAfter(productPath(request.resource.data.productId)).data, id);
+      allow delete: if owner()
+        && existsAfter(productPath(resource.data.productId))
+        && !identifierMatches(getAfter(productPath(resource.data.productId)).data, id);
+      allow list, update: if false;
+    }
+
+    // Only the project administrator (Firebase console or Admin SDK) can approve users.
+    // Never let browser clients assign themselves 'owner' or 'staff'.
+    match /users/{uid} {
+      allow get: if request.auth != null && (request.auth.uid == uid || owner());
+      allow list: if owner();
+      allow create, update, delete: if false;
+    }
+
+    // Imported tracker history is private to the owner and cannot be rewritten by browser clients.
+    match /trackerRecords/{id} {
+      allow read: if owner();
+      allow write: if false;
+    }
+
+    match /products/{sku} {
+      // Legacy products include the confidential unitCostGmd field.
+      allow read: if owner();
+      allow create: if owner()
+        && request.resource.data.keys().hasAll([
+          'sku', 'name', 'category', 'stockQty', 'unitCostGmd',
+          'unitPriceGmd', 'receivedOn', 'createdBy'
+        ])
+        && request.resource.data.sku == sku
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 120
+        && request.resource.data.stockQty is int
+        && request.resource.data.stockQty > 0
+        && request.resource.data.stockQty <= 1000000
+        && validMoney(request.resource.data.unitCostGmd)
+        && validMoney(request.resource.data.unitPriceGmd)
+        && dateText(request.resource.data.receivedOn)
+        && validDetails(request.resource.data, sku);
+      // A worker can change private stock only in a linked sale or cancellation.
+      // Rule checks also require the worker-visible stock to match.
+      // No read access to the purchase cost is ever granted.
+      allow update: if (
+        owner()
+          && request.resource.data.stockQty is int
+          && request.resource.data.stockQty >= 0
+          && (
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stockQty', 'updatedAt'])
+              && request.resource.data.stockQty < resource.data.stockQty
+            || validMoney(request.resource.data.unitCostGmd)
+          && validMoney(request.resource.data.unitPriceGmd)
+          && validDetails(request.resource.data, sku)
+          && releasedIdentifier(resource.data, request.resource.data, sku, 'serialNumber', 'serial-')
+          && releasedIdentifier(resource.data, request.resource.data, sku, 'imei', 'imei-')
+          )
+          && (!exists(catalogPath(sku)) || matchesStaffProduct(
+            getAfter(catalogPath(sku)).data, request.resource.data, sku
+          ))
+      ) || (
+        staff()
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['stockQty', 'lastSaleId', 'updatedAt'])
+          && request.resource.data.stockQty is int
+          && request.resource.data.stockQty >= 0
+          && request.resource.data.stockQty < resource.data.stockQty
+          && request.resource.data.lastSaleId is string
+          && !exists(staffSalePath(request.resource.data.lastSaleId))
+          && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.productId == sku
+          && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.createdBy == request.auth.uid
+          && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.quantity ==
+              resource.data.stockQty - request.resource.data.stockQty
+          && getAfter(catalogPath(sku)).data.stockQty == request.resource.data.stockQty
+          && getAfter(catalogPath(sku)).data.lastSaleId == request.resource.data.lastSaleId
+      );
+      allow update: if staffRestockForCancellation(sku);
+      allow delete: if false;
+    }
+
+    function staffRestockForCancellation(sku) {
+      let saleId = request.resource.data.get('lastCancellationId', '');
+      let sale = staffSalePath(saleId);
+      return staff()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['stockQty', 'lastCancellationId', 'updatedAt'])
+        && saleId is string && saleId.size() > 0
+        && request.resource.data.updatedAt == request.time
+        && get(sale).data.productId == sku
+        && get(sale).data.createdBy == request.auth.uid
+        && get(sale).data.paidGmd == 0
+        && get(sale).data.get('cancelledAt', null) == null
+        && getAfter(sale).data.cancelledAt == request.time
+        && request.resource.data.stockQty == resource.data.stockQty + get(sale).data.quantity
+        && (request.resource.data.stockQty <= 1 || (
+          resource.data.get('serialNumber', '') == '' && resource.data.get('imei', '') == ''
+        ));
+    }
+
+    function validSaleCancellation(saleKey) {
+      let product = productPath(resource.data.productId);
+      let stock = catalogPath(resource.data.productId);
+      return resource.data.get('cancelledAt', null) == null
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['cancelledAt', 'cancelledBy', 'refundedGmd'])
+        && request.resource.data.cancelledAt == request.time
+        && request.resource.data.cancelledBy == request.auth.uid
+        && request.resource.data.refundedGmd == resource.data.paidGmd
+        && getAfter(product).data.lastCancellationId == saleKey
+        && getAfter(product).data.updatedAt == request.time
+        && getAfter(product).data.stockQty == get(product).data.stockQty + resource.data.quantity
+        && getAfter(stock).data.stockQty == getAfter(product).data.stockQty
+        && getAfter(stock).data.updatedAt == request.time;
+    }
+
+    match /sales/{id} {
+      // Historical transactions snapshot purchase costs: owner only.
+      allow read: if owner();
+      allow create: if owner()
+        && request.resource.data.keys().hasAll([
+          'productId', 'productName', 'sku', 'quantity',
+          'unitCostGmd', 'unitPriceGmd', 'totalGmd', 'paidGmd',
+          'createdBy', 'date'
+        ])
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.quantity is int
+        && request.resource.data.quantity > 0
+        && request.resource.data.quantity <= 1000000
+        && validMoney(request.resource.data.unitCostGmd)
+        && validMoney(request.resource.data.unitPriceGmd)
+        && validMoney(request.resource.data.totalGmd)
+        && validMoney(request.resource.data.paidGmd)
+        && request.resource.data.paidGmd <= request.resource.data.totalGmd
+        && request.resource.data.totalGmd >= (request.resource.data.quantity * request.resource.data.unitPriceGmd) - 0.01
+        && request.resource.data.totalGmd <= (request.resource.data.quantity * request.resource.data.unitPriceGmd) + 0.01
+        && exists(/databases/$(database)/documents/products/$(request.resource.data.productId))
+        && request.resource.data.unitCostGmd == get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.unitCostGmd
+        && request.resource.data.sku == get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.sku
+        && getAfter(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty ==
+           get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty - request.resource.data.quantity
+        && dateText(request.resource.data.date);
+      // Later instalment payments can increase paidGmd, never revenue or cost.
+      allow update: if owner() && validSaleCancellation('sales/' + id);
+      allow update: if owner()
+        && resource.data.get('cancelledAt', null) == null
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['paidGmd', 'updatedAt'])
+        && validMoney(request.resource.data.paidGmd)
+        && request.resource.data.paidGmd > resource.data.paidGmd
+        && request.resource.data.paidGmd <= resource.data.totalGmd;
+      allow delete: if false;
+    }
+
+    match /payments/{id} {
+      allow read: if owner();
+      allow create: if owner()
+        && request.resource.data.keys().hasAll(['saleId', 'amountGmd', 'method', 'createdBy'])
+        && request.resource.data.saleId is string
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.method is string
+        && validMoney(request.resource.data.amountGmd)
+        && request.resource.data.amountGmd > 0;
+      allow update, delete: if false;
+    }
+
+    match /losses/{id} {
+      allow read: if owner();
+      allow create: if owner()
+        && request.resource.data.keys().hasAll([
+          'productId', 'productName', 'sku', 'quantity', 'costGmd', 'reason', 'date', 'createdBy'
+        ])
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.quantity is int
+        && request.resource.data.quantity > 0
+        && validMoney(request.resource.data.costGmd)
+        && exists(/databases/$(database)/documents/products/$(request.resource.data.productId))
+        && request.resource.data.costGmd >= get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.unitCostGmd * request.resource.data.quantity - 0.01
+        && request.resource.data.costGmd <= get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.unitCostGmd * request.resource.data.quantity + 0.01
+        && getAfter(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty ==
+           get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty - request.resource.data.quantity
+        && dateText(request.resource.data.date);
+      allow update, delete: if false;
+    }
+
+    match /expenses/{id} {
+      allow read: if owner();
+      allow create: if owner()
+        && request.resource.data.keys().hasAll(['category', 'amountGmd', 'date', 'createdBy'])
+        && request.resource.data.createdBy == request.auth.uid
+        && validMoney(request.resource.data.amountGmd)
+        && request.resource.data.amountGmd > 0
+        && dateText(request.resource.data.date);
+      allow update, delete: if false;
+    }
+
+    function matchesStaffProduct(safe, product, sku) {
+      return safe.keys().hasOnly([
+          'sku', 'name', 'category', 'stockQty', 'unitPriceGmd', 'receivedOn',
+          'storage', 'colour', 'batteryHealth', 'serialNumber', 'imei', 'updatedAt'
+        ])
+        && safe.sku == sku
+        && safe.name == product.name
+        && safe.category == product.category
+        && safe.stockQty == product.stockQty
+        && safe.unitPriceGmd == product.unitPriceGmd
+        && safe.receivedOn == product.get('receivedOn', '')
+        && safe.storage == product.get('storage', '')
+        && safe.colour == product.get('colour', '')
+        && safe.batteryHealth == product.get('batteryHealth', null)
+        && safe.serialNumber == product.get('serialNumber', '')
+        && safe.imei == product.get('imei', '')
+        && safe.updatedAt == request.time;
+    }
+
+    match /staffInventory/{sku} {
+      allow read: if member();
+      allow create: if owner() && matchesStaffProduct(
+        request.resource.data, getAfter(privateProductPath(sku)).data, sku
+      );
+      allow update: if (
+        owner() && matchesStaffProduct(request.resource.data, getAfter(privateProductPath(sku)).data, sku)
+      ) || (
+        staff()
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['stockQty', 'lastSaleId', 'updatedAt'])
+        && request.resource.data.stockQty is int
+        && request.resource.data.stockQty >= 0
+        && request.resource.data.stockQty < resource.data.stockQty
+        && request.resource.data.lastSaleId is string
+        && !exists(staffSalePath(request.resource.data.lastSaleId))
+        && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.productId == sku
+        && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.createdBy == request.auth.uid
+        && getAfter(staffSalePath(request.resource.data.lastSaleId)).data.quantity ==
+            resource.data.stockQty - request.resource.data.stockQty
+        && getAfter(privateProductPath(sku)).data.stockQty == request.resource.data.stockQty
+        && getAfter(privateProductPath(sku)).data.lastSaleId == request.resource.data.lastSaleId
+      );
+      allow update: if staffRestockForCancellation(sku);
+      allow delete: if false;
+    }
+
+    // Staff view ONLY their own transactions. Owners can review all sales.
+    // No document in this collection may include unitCostGmd or profitability.
+    match /staffSales/{id} {
+      allow get, list: if owner() || (
+        staff() && resource.data.createdBy == request.auth.uid
+      );
+      allow create: if member()
+        && request.resource.data.keys().hasOnly([
+          'productId','productName','sku','quantity','unitPriceGmd',
+          'totalGmd','paidGmd','method','date','dueOn','customer',
+          'createdBy','createdAt','updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'productId','productName','sku','quantity','unitPriceGmd',
+          'totalGmd','paidGmd','method','date','createdBy'
+        ])
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.productId is string
+        && request.resource.data.productId == request.resource.data.sku
+        && request.resource.data.quantity is int
+        && request.resource.data.quantity > 0
+        && request.resource.data.quantity <= 1000000
+        && validMoney(request.resource.data.unitPriceGmd)
+        && validMoney(request.resource.data.totalGmd)
+        && validMoney(request.resource.data.paidGmd)
+        && request.resource.data.totalGmd >= request.resource.data.quantity * request.resource.data.unitPriceGmd - 0.01
+        && request.resource.data.totalGmd <= request.resource.data.quantity * request.resource.data.unitPriceGmd + 0.01
+        && request.resource.data.paidGmd <= request.resource.data.totalGmd
+        && request.resource.data.unitPriceGmd == get(catalogPath(request.resource.data.sku)).data.unitPriceGmd
+        && request.resource.data.unitPriceGmd == get(privateProductPath(request.resource.data.sku)).data.unitPriceGmd
+        && request.resource.data.productName == get(catalogPath(request.resource.data.sku)).data.name
+        && request.resource.data.method is string
+        && request.resource.data.method.size() <= 32
+        && request.resource.data.date is string
+        && request.resource.data.date.size() <= 12
+        && getAfter(catalogPath(request.resource.data.sku)).data.stockQty ==
+          get(catalogPath(request.resource.data.sku)).data.stockQty - request.resource.data.quantity
+        && getAfter(privateProductPath(request.resource.data.sku)).data.stockQty ==
+          get(privateProductPath(request.resource.data.sku)).data.stockQty - request.resource.data.quantity
+        && getAfter(catalogPath(request.resource.data.sku)).data.lastSaleId == id
+        && getAfter(privateProductPath(request.resource.data.sku)).data.lastSaleId == id;
+      allow update: if owner() && validSaleCancellation('staffSales/' + id);
+      allow update: if staff() && resource.data.createdBy == request.auth.uid
+        && resource.data.paidGmd == 0
+        && validSaleCancellation(id)
+        && getAfter(catalogPath(resource.data.productId)).data.lastCancellationId == id;
+      allow update: if (owner() || (
+        staff() && resource.data.createdBy == request.auth.uid
+      )) && resource.data.get('cancelledAt', null) == null
+        && request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['paidGmd', 'lastPaymentId', 'updatedAt'])
+        && validMoney(request.resource.data.paidGmd)
+        && request.resource.data.paidGmd > resource.data.paidGmd
+        && request.resource.data.paidGmd <= resource.data.totalGmd
+        && request.resource.data.lastPaymentId is string
+        && !exists(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId))
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.saleId == id
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.createdBy == request.auth.uid
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.amountGmd >= request.resource.data.paidGmd - resource.data.paidGmd - 0.01
+        && getAfter(/databases/$(database)/documents/staffPayments/$(request.resource.data.lastPaymentId)).data.amountGmd <= request.resource.data.paidGmd - resource.data.paidGmd + 0.01;
+      allow delete: if false;
+    }
+
+    match /staffPayments/{id} {
+      allow get, list: if owner() || (
+        staff() && resource.data.createdBy == request.auth.uid
+      );
+      allow create: if member()
+        && request.resource.data.keys().hasOnly([
+          'saleId', 'amountGmd', 'method', 'createdBy', 'createdAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'saleId', 'amountGmd', 'method', 'createdBy'
+        ])
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.saleId is string
+        && request.resource.data.method is string
+        && validMoney(request.resource.data.amountGmd)
+        && request.resource.data.amountGmd > 0
+        && exists(staffSalePath(request.resource.data.saleId))
+        && getAfter(staffSalePath(request.resource.data.saleId)).data.lastPaymentId == id
+        && getAfter(staffSalePath(request.resource.data.saleId)).data.paidGmd >=
+             get(staffSalePath(request.resource.data.saleId)).data.paidGmd +
+             request.resource.data.amountGmd - 0.01
+        && getAfter(staffSalePath(request.resource.data.saleId)).data.paidGmd <=
+             get(staffSalePath(request.resource.data.saleId)).data.paidGmd +
+             request.resource.data.amountGmd + 0.01;
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
