@@ -56,15 +56,16 @@ function updateSalePrice(){
 }
 function drawSales(){
   const date=today();
-  $('#shift-count').textContent=state.sales.filter(s=>s.date===date).length.toLocaleString('en-US');
+  $('#shift-count').textContent=state.sales.filter(s=>!s.cancelledAt && s.date===date).length.toLocaleString('en-US');
   const sales=[...state.sales].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
   $('#my-sales').innerHTML=sales.length?sales.map(s=>
     '<div class="entry"><div><strong>'+escapeHtml(s.customer||'Customer')+'</strong>'+
     '<small>'+escapeHtml(s.date)+' · '+escapeHtml(s.productName)+' × '+s.quantity+'</small></div>'+
-    '<div><strong>'+gmd(s.totalGmd)+'</strong><small>Balance: '+gmd(balance(s))+'</small>'+
-    '<button type="button" class="secondary" data-receipt="'+escapeHtml(s.id)+'">Print receipt</button></div></div>'
+    '<div><strong>'+gmd(s.totalGmd)+'</strong>'+
+    (s.cancelledAt ? '<small>Cancelled</small>' : '<small>Balance: '+gmd(balance(s))+'</small>'+
+      '<button type="button" class="secondary" data-receipt="'+escapeHtml(s.id)+'">Print receipt</button>')+'</div></div>'
   ).join(''):'<p class="minor">No sales under your account yet.</p>';
-  setOptions($('#payment-sale'),sales.filter(s=>balance(s)>0),
+  setOptions($('#payment-sale'),sales.filter(s=>!s.cancelledAt && balance(s)>0),
     s=>(s.customer||'Customer')+' · '+s.productName+' · '+gmd(balance(s))+' outstanding','Choose an unpaid sale');
 }
 async function load(){
@@ -102,7 +103,7 @@ $('#my-sales').addEventListener('click', (event) => {
   const button = event.target.closest('button[data-receipt]');
   if (!button || !state.user) return;
   const sale = state.sales.find((record) =>
-    record.id === button.dataset.receipt && record.createdBy === state.user.uid
+    !record.cancelledAt && record.id === button.dataset.receipt && record.createdBy === state.user.uid
   );
   if (!sale) return;
   try {
@@ -186,6 +187,7 @@ $('#payment-form').addEventListener('submit',(event)=>{
       const snap=await tx.get(saleRef);
       if(!snap.exists())throw Error('Sale not found.');
       const sale=snap.data();
+      if(sale.cancelledAt)throw Error('This sale was cancelled.');
       if(sale.createdBy!==state.user.uid)throw Error('Only your own transactions can be updated.');
       const newPaid=Number((Number(sale.paidGmd)+payment).toFixed(2));
       if(newPaid>Number(sale.totalGmd)+0.001)throw Error('Payment exceeds the balance due.');

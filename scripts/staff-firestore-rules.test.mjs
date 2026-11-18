@@ -137,6 +137,51 @@ try {
   assert.equal(staffProduct.unitPriceGmd, 2300);
   assert.equal(staffProduct.unitCostGmd, undefined);
   assert.equal(staffProduct.notes, undefined);
+  const staffSale = doc(owner, 'staffSales', saleRef.id);
+  const cancellation = {
+    cancelledAt: serverTimestamp(), cancelledBy: 'owner', refundedGmd: 2200
+  };
+  await assertFails(updateDoc(doc(staff, 'staffSales', saleRef.id), {
+    ...cancellation, cancelledBy: 'staffA'
+  }));
+  await assertFails(updateDoc(staffSale, cancellation));
+  const restock = (saleDocument, saleKey, stockQty, fields) => runTransaction(owner, async (tx) => {
+    tx.update(ownerProduct, {
+      stockQty, lastCancellationId: saleKey, updatedAt: serverTimestamp()
+    });
+    tx.set(ownerCatalog, {
+      ...staffData, stockQty, unitPriceGmd: 2300, updatedAt: serverTimestamp()
+    });
+    tx.update(saleDocument, fields);
+  });
+  await assertFails(restock(staffSale, 'staffSales/' + saleRef.id, 3, {
+    ...cancellation, refundedGmd: 0
+  }));
+  await assertSucceeds(restock(staffSale, 'staffSales/' + saleRef.id, 3, cancellation));
+  await assertFails(restock(staffSale, 'staffSales/' + saleRef.id, 4, cancellation));
+  assert.equal((await getDoc(ownerProduct)).data().stockQty, 3);
+  assert.equal((await getDoc(ownerCatalog)).data().stockQty, 3);
+  assert.equal((await getDoc(staffSale)).data().refundedGmd, 2200);
+  assert.equal((await getDoc(staffSale)).data().paidGmd, 2200);
+
+  const ownerSale = doc(owner, 'sales', 'owner-cancellation-test');
+  await assertSucceeds(runTransaction(owner, async (tx) => {
+    tx.update(ownerProduct, { stockQty: 2, updatedAt: serverTimestamp() });
+    tx.set(ownerCatalog, {
+      ...staffData, stockQty: 2, unitPriceGmd: 2300, updatedAt: serverTimestamp()
+    });
+    tx.set(ownerSale, {
+      productId: safeSku, sku: safeSku, productName: 'iPhone Test', quantity: 1,
+      unitPriceGmd: 2300, unitCostGmd: 1000, totalGmd: 2300, paidGmd: 0,
+      date: '2026-11-15', createdBy: 'owner'
+    });
+  }));
+  await assertSucceeds(restock(ownerSale, 'sales/' + ownerSale.id, 3, {
+    ...cancellation, refundedGmd: 0
+  }));
+  await assertFails(updateDoc(ownerSale, { paidGmd: 100, updatedAt: serverTimestamp() }));
+  assert.equal((await getDoc(ownerProduct)).data().stockQty, 3);
+  assert.equal((await getDoc(ownerCatalog)).data().stockQty, 3);
   console.log('PASS: owner-only finances, safe inventory, atomic staff sales, payments, and denied unauthorized writes');
 } finally {
   await testEnv.cleanup();

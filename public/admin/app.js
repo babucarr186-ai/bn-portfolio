@@ -18,7 +18,7 @@ const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"'
 })[char]);
 const today = () => new Date().toISOString().slice(0, 10); // Banjul uses UTC year-round.
 const daysOld = (date) => Math.floor((Date.now() - new Date(String(date) + 'T12:00:00Z').getTime()) / 86400000);
-const state = { trackerRecords: [], products: [], drafts: [], sales: [], losses: [], expenses: [], member: null, user: null, db: null, auth: null };
+const state = { trackerRecords: [], products: [], drafts: [], sales: [], cancelledSales: [], losses: [], expenses: [], member: null, user: null, db: null, auth: null };
 let noticeTimer;
 let productAssist;
 let activeView = 'overview';
@@ -222,19 +222,66 @@ function drawProductOptions() {
 }
 
 function drawSales() {
-  const sales = [...state.sales].sort(byLatest);
+  const sales = [...state.sales, ...state.cancelledSales].sort(byLatest);
   $('#sales-rows').innerHTML = sales.length ? sales.map((s) =>
     '<tr><td>' + rowText(s.date) + '</td><td><strong>' + rowText(s.productName) +
     '</strong><small>' + rowText(s.sku) + '</small></td><td>' + s.quantity +
     '</td><td>' + money(s.totalGmd) + '</td><td>' + money(s.paidGmd) +
-    '</td><td>' + money(remaining(s)) + '</td><td>' + rowText(s.customer) + '<br><button type="button" class="text-button" data-receipt="' + escapeHtml(s.id) + '">Receipt</button></td></tr>').join('')
+    '</td><td>' + (s.cancelledAt ? '—' : money(remaining(s))) + '</td><td>' + rowText(s.customer) +
+    (s.cancelledAt
+      ? '<small>Cancelled · Refunded ' + money(s.refundedGmd) + '</small>'
+      : '<br><button type="button" class="text-button" data-receipt="' + escapeHtml(s.id) +
+        '">Receipt</button> <button type="button" class="text-button" data-cancel-sale="' +
+        escapeHtml(s.id) + '">Cancel &amp; restock</button>') + '</td></tr>').join('')
     : emptyRow(7);
   $('#sales-rows').querySelectorAll('[data-receipt]').forEach(button => button.addEventListener('click', () => {
     try { openReceipt(state.sales.find(s => s.id === button.dataset.receipt)); } catch(error) { notice(error.message, true); }
   }));
-  options($('#payment-sale'), sales.filter((s) => remaining(s) > 0),
+  options($('#payment-sale'), sales.filter((s) => !s.cancelledAt && remaining(s) > 0),
     (s) => s.productName + ' · ' + (s.customer || s.date) + ' · ' + money(remaining(s)) + ' remaining',
     'Choose an unpaid sale');
+}
+
+async function cancelSale(sale) {
+  const collectionName = sale.staffSaleId ? 'staffSales' : 'sales';
+  const saleRef = doc(state.db, collectionName, sale.staffSaleId || sale.id);
+  const uid = authenticatedUid();
+  const message = 'Cancel this sale and put ' + sale.quantity + ' × ' + sale.productName + ' back in stock?';
+  const refund = sale.paidGmd > 0
+    ? '\n\nConfirm only after you have already refunded ' + money(sale.paidGmd) + ' to the customer.'
+    : '';
+  if (!window.confirm(message + refund)) return;
+
+  await runTransaction(state.db, async (transaction) => {
+    const saleSnapshot = await transaction.get(saleRef);
+    if (!saleSnapshot.exists() || saleSnapshot.data().cancelledAt) {
+      throw new Error('This sale is already cancelled or no longer exists. Refresh the sales list.');
+    }
+    const current = saleSnapshot.data();
+    if (current.paidGmd !== sale.paidGmd) {
+      throw new Error('The payment amount changed. Refresh and check the refund before cancelling.');
+    }
+    const productRef = doc(state.db, 'products', current.productId);
+    const productSnapshot = await transaction.get(productRef);
+    if (!productSnapshot.exists()) throw new Error('The original product record could not be found.');
+    const product = productSnapshot.data();
+    const stockQty = product.stockQty + current.quantity;
+    if ((product.serialNumber || product.imei) && stockQty > 1) {
+      throw new Error('This device is already in stock. Check its serial number or IMEI before cancelling.');
+    }
+    transaction.update(productRef, {
+      stockQty,
+      lastCancellationId: collectionName + '/' + saleRef.id,
+      updatedAt: serverTimestamp()
+    });
+    syncStaffProduct(transaction, productRef.id, { ...product, stockQty });
+    transaction.update(saleRef, {
+      cancelledAt: serverTimestamp(),
+      cancelledBy: uid,
+      refundedGmd: current.paidGmd
+    });
+  });
+  await refreshAfterSave('Sale cancelled and stock restored.');
 }
 
 function drawDamages() {
@@ -297,6 +344,8 @@ async function loadData() {
   state.sales.push(...state.staffSales.map((sale) => ({
     ...sale, id: 'staff:' + sale.id, staffSaleId: sale.id
   })));
+  state.cancelledSales = state.sales.filter((sale) => sale.cancelledAt);
+  state.sales = state.sales.filter((sale) => !sale.cancelledAt);
   draw();
 }
 
@@ -735,10 +784,21 @@ function attachActions() {
       serialNumber: p.serialNumber || '', imei: p.imei || '',
       costGmd: p.unitCostGmd, priceGmd: p.unitPriceGmd, receivedOn: p.receivedOn, notes: p.notes || ''
     }))));
+  $('#sales-rows').addEventListener('click', async (event) => {
+    const button = event.target.closest('button[data-cancel-sale]');
+    if (!button || state.member?.role !== 'owner') return;
+    const sale = state.sales.find((record) => record.id === button.dataset.cancelSale);
+    if (!sale) return;
+    button.disabled = true;
+    try { await cancelSale(sale); }
+    catch (error) { notice(error.message, true); }
+    finally { button.disabled = false; }
+  });
   $('#export-sales').addEventListener('click', () =>
-    exportCsv('uncle-apple-sales.csv', state.sales.map((s) => ({
+    exportCsv('uncle-apple-sales.csv', [...state.sales, ...state.cancelledSales].map((s) => ({
       date: s.date, sku: s.sku, product: s.productName, quantity: s.quantity, totalGmd: s.totalGmd,
-      paidGmd: s.paidGmd, outstandingGmd: remaining(s), customer: s.customer || '', dueOn: s.dueOn || ''
+      paidGmd: s.paidGmd, status: s.cancelledAt ? 'Cancelled' : 'Recorded',
+      refundedGmd: s.refundedGmd ?? 0, outstandingGmd: s.cancelledAt ? 0 : remaining(s), customer: s.customer || '', dueOn: s.dueOn || ''
     }))));
   $('#refresh').addEventListener('click', async () => {
     try { await loadData(); notice('Records refreshed.'); } catch (err) { notice(err.message, true); }
@@ -839,6 +899,7 @@ function attachActions() {
         const snapshot = await transaction.get(ref);
         if (!snapshot.exists()) throw new Error('Sale not found.');
         const sale = snapshot.data();
+        if (sale.cancelledAt) throw new Error('This sale was cancelled.');
         if (Number(sale.paidGmd) + paid > Number(sale.totalGmd) + 0.001) throw new Error('Payment exceeds the outstanding balance.');
         const paymentRef = doc(collection(state.db, paymentCollection));
         transaction.update(ref, {
@@ -908,7 +969,7 @@ if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !f
     $('#app').hidden = true;
     $('#load-error').hidden = true;
     document.querySelectorAll('dialog[open]').forEach((dialog) => dialog.close());
-    ['trackerRecords', 'products', 'drafts', 'sales', 'staffSales', 'losses', 'expenses'].forEach((name) => { state[name] = []; });
+    ['trackerRecords', 'products', 'drafts', 'sales', 'cancelledSales', 'staffSales', 'losses', 'expenses'].forEach((name) => { state[name] = []; });
     $('#inventory-search').value = '';
     $('#quick-search').reset();
     $('#tracker-search').value = '';

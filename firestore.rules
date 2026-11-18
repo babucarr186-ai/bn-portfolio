@@ -186,6 +186,23 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    function validSaleCancellation(saleKey) {
+      let product = productPath(resource.data.productId);
+      let stock = catalogPath(resource.data.productId);
+      return owner()
+        && resource.data.get('cancelledAt', null) == null
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['cancelledAt', 'cancelledBy', 'refundedGmd'])
+        && request.resource.data.cancelledAt == request.time
+        && request.resource.data.cancelledBy == request.auth.uid
+        && request.resource.data.refundedGmd == resource.data.paidGmd
+        && getAfter(product).data.lastCancellationId == saleKey
+        && getAfter(product).data.updatedAt == request.time
+        && getAfter(product).data.stockQty == get(product).data.stockQty + resource.data.quantity
+        && getAfter(stock).data.stockQty == getAfter(product).data.stockQty
+        && getAfter(stock).data.updatedAt == request.time;
+    }
+
     match /sales/{id} {
       // Historical transactions snapshot purchase costs: owner only.
       allow read: if owner();
@@ -214,7 +231,9 @@ service cloud.firestore {
            get(/databases/$(database)/documents/products/$(request.resource.data.productId)).data.stockQty - request.resource.data.quantity
         && dateText(request.resource.data.date);
       // Later instalment payments can increase paidGmd, never revenue or cost.
+      allow update: if validSaleCancellation('sales/' + id);
       allow update: if owner()
+        && resource.data.get('cancelledAt', null) == null
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['paidGmd', 'updatedAt'])
         && validMoney(request.resource.data.paidGmd)
         && request.resource.data.paidGmd > resource.data.paidGmd
@@ -351,9 +370,11 @@ service cloud.firestore {
           get(privateProductPath(request.resource.data.sku)).data.stockQty - request.resource.data.quantity
         && getAfter(catalogPath(request.resource.data.sku)).data.lastSaleId == id
         && getAfter(privateProductPath(request.resource.data.sku)).data.lastSaleId == id;
+      allow update: if validSaleCancellation('staffSales/' + id);
       allow update: if (owner() || (
         staff() && resource.data.createdBy == request.auth.uid
-      )) && request.resource.data.diff(resource.data).affectedKeys()
+      )) && resource.data.get('cancelledAt', null) == null
+        && request.resource.data.diff(resource.data).affectedKeys()
         .hasOnly(['paidGmd', 'lastPaymentId', 'updatedAt'])
         && validMoney(request.resource.data.paidGmd)
         && request.resource.data.paidGmd > resource.data.paidGmd
