@@ -231,5 +231,36 @@ const iphone11Red256GB = {
   mediaFit: 'contain',
 };
 
+const iphone11Green82 = {
+  seoSlug: 'iphone-11-64gb-green-clean-good-battery-82',
+  title: 'iPhone 11',
+  productTitle: 'iPhone 11 (64GB) - Green - Clean good condition - Battery 82%',
+  subtitle: 'Green • 64GB • Clean good condition • Battery 82% • Box, charger, Lightning EarPods and cable • GMD 14,500',
+  kind: 'phone',
+  color: 'Green',
+  storage: '64GB',
+  condition: 'Used - Good',
+  batteryHealth: '82%',
+  price: 14500,
+  sold: false,
+  stockRemaining: 1,
+  availability: 'Available',
+  listingDate: '2026-11-21',
+  networkStatus: 'Confirm SIM-lock status with the store',
+  faceIdStatus: 'Confirm Face ID status with the store',
+  trustChecks: ['82% battery health', 'Actual photos of this device', 'Box, charger, Lightning EarPods and cable included'],
+  whatsAppMessage: 'Hi Uncle Apple! Please confirm availability for the green iPhone 11, 64GB, clean good used condition, battery health 82%. Includes box, charger, wired Lightning EarPods and charging cable. Price GMD 14,500.',
+  shortDescription: 'Green iPhone 11 with 64GB storage and 82% battery health. Clean, good used condition. Box, charger, wired Lightning EarPods and charging cable included.',
+  description: 'iPhone 11 in Green with 64GB storage and 82% battery health. Used and in clean, good condition. Includes the box, charger, wired EarPods with Lightning connector and charging cable. Price GMD 14,500. Photos show the actual phone and included accessories.',
+  productHighlights: ['64GB storage', 'Green finish', '82% battery health', 'Clean, good used condition', 'Box and charger included', 'Wired Lightning EarPods and charging cable included'],
+  conditionReport: ['Used - Good condition', 'Clean cosmetic condition', 'Battery health: 82%', 'Box, charger, wired Lightning EarPods and charging cable included'],
+  images: [
+    'products/iphones/iphone-11-green-64gb-battery-82/iphone-11-green-back.jpeg',
+    'products/iphones/iphone-11-green-64gb-battery-82/iphone-11-green-box-accessories.jpeg',
+    'products/iphones/iphone-11-green-64gb-battery-82/iphone-11-green-charger-earpods.jpeg',
+  ],
+  mediaFit: 'contain',
+};
+
 // Keep each seoSlug permanent, even when listings are reordered or edited.
-export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions, iphoneDuoNightSky, iphone11Red256GB];
+export const iphones = [iphoneSE2022ProductRed, iphone18ProMax, ...currentIphones, iphone11Green, iphoneXRBlackOptions, iphoneDuoNightSky, iphone11Red256GB, iphone11Green82];
